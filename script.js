@@ -2,24 +2,24 @@ let jobsData = [];
 let originalData = [];
 
 async function loadJobsData() {
-    try {
-        const response = await fetch('data.json');
-        const data = await response.json();
-        jobsData = data.jobs;
-        populateTable(jobsData);
-        initializeData();
-    } catch (error) {
-        console.error('Error loading jobs data:', error);
-    }
+	try {
+		const response = await fetch("data.json");
+		const data = await response.json();
+		jobsData = data.jobs;
+		populateTable(jobsData);
+		initializeData();
+	} catch (error) {
+		console.error("Error loading jobs data:", error);
+	}
 }
 
 function populateTable(jobs) {
-    const tbody = document.getElementById('jobTableBody');
-    tbody.innerHTML = '';
-    
-    jobs.forEach(job => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
+	const tbody = document.getElementById("jobTableBody");
+	tbody.innerHTML = "";
+
+	jobs.forEach((job) => {
+		const row = tbody.insertRow();
+		row.innerHTML = `
             <td><span class="priority priority-${job.priority.toLowerCase()}"></span>${job.priority}</td>
             <td class="company-name">${job.company}</td>
             <td>${job.position}</td>
@@ -34,36 +34,27 @@ function populateTable(jobs) {
             <td class="notes">${job.notes}</td>
             <td><button onclick="editRow(this)">Edit</button></td>
         `;
-    });
+	});
 }
 
 function getStatusClass(status) {
-    const statusMap = {
-        'Applied': 'applied',
-        'Phone Screening': 'screening',
-        'Interview': 'interview',
-        'Final Round': 'final',
-        'Offer': 'offer',
-        'Rejected': 'rejected',
-        'Withdrawn': 'withdrawn'
-    };
-    return statusMap[status] || 'applied';
+	return status.toLowerCase().replace(/\s+/g, '_');
 }
 
 function initializeData() {
-    const rows = document.querySelectorAll('#jobTableBody tr');
-    originalData = Array.from(rows).map(row => row.innerHTML);
-    updateStats();
+	const rows = document.querySelectorAll("#jobTableBody tr");
+	originalData = Array.from(rows).map((row) => row.innerHTML);
+	updateStats();
 }
 
 function addRow() {
-    const tbody = document.getElementById('jobTableBody');
-    const newRow = tbody.insertRow(0);
-    newRow.innerHTML = `
+	const tbody = document.getElementById("jobTableBody");
+	const newRow = tbody.insertRow(0);
+	newRow.innerHTML = `
         <td><span class="priority priority-medium"></span>Medium</td>
         <td class="company-name"><input class="editable" placeholder="Company Name"></td>
         <td><input class="editable" placeholder="Position Title"></td>
-        <td class="date"><input class="editable" type="date" value="${new Date().toISOString().split('T')[0]}"></td>
+        <td class="date"><input class="editable" type="date" value="${new Date().toISOString().split("T")[0]}"></td>
         <td><span class="status status-applied">Applied</span></td>
         <td><input class="editable" placeholder="Current Phase"></td>
         <td><span class="next-task"><input class="editable" placeholder="Next Task"></span></td>
@@ -74,65 +65,69 @@ function addRow() {
         <td class="notes"><input class="editable" placeholder="Notes"></td>
         <td><button onclick="saveRow(this)">Save</button></td>
     `;
-    updateStats();
+	updateStats();
 }
 
 function editRow(button) {
-    const row = button.closest('tr');
-    const cells = row.querySelectorAll('td');
-    
-    // Make cells editable (simplified for demo)
-    alert('Edit functionality would be implemented here. In a real app, you would make cells editable or open a modal.');
+	const row = button.closest("tr");
+	const cells = row.querySelectorAll("td");
+
+	// Make cells editable (simplified for demo)
+	alert(
+		"Edit functionality would be implemented here. In a real app, you would make cells editable or open a modal.",
+	);
 }
 
 function saveRow(button) {
-    const row = button.closest('tr');
-    // Save functionality would be implemented here
-    button.textContent = 'Edit';
-    button.onclick = function() { editRow(this); };
-    updateStats();
+	const row = button.closest("tr");
+	// Save functionality would be implemented here
+	button.textContent = "Edit";
+	button.onclick = function () {
+		editRow(this);
+	};
+	updateStats();
 }
 
 function filterByStatus(status) {
-    let filteredJobs = jobsData;
-    if (status) {
-        filteredJobs = jobsData.filter(job => job.status === status);
-    }
-    populateTable(filteredJobs);
-    updateStats(filteredJobs);
+	let filteredJobs = jobsData;
+	if (status) {
+		filteredJobs = jobsData.filter((job) => job.status === status);
+	}
+	populateTable(filteredJobs);
+	updateStats(filteredJobs);
 }
 
 function filterByPriority(priority) {
-    let filteredJobs = jobsData;
-    if (priority) {
-        filteredJobs = jobsData.filter(job => job.priority === priority);
-    }
-    populateTable(filteredJobs);
-    updateStats(filteredJobs);
+	let filteredJobs = jobsData;
+	if (priority) {
+		filteredJobs = jobsData.filter((job) => job.priority === priority);
+	}
+	populateTable(filteredJobs);
+	updateStats(filteredJobs);
 }
 
 function updateStats(filteredJobs = null) {
-    const jobs = filteredJobs || jobsData;
-    let total = jobs.length;
-    let active = 0;
-    let interviews = 0;
-    let offers = 0;
-    let rejections = 0;
-    
-    jobs.forEach(job => {
-        const status = job.status;
-        if (status !== 'Rejected' && status !== 'Withdrawn') active++;
-        if (status.includes('Interview') || status === 'Final Round') interviews++;
-        if (status === 'Offer') offers++;
-        if (status === 'Rejected') rejections++;
-    });
-    
-    document.getElementById('totalApps').textContent = total;
-    document.getElementById('activeApps').textContent = active;
-    document.getElementById('interviews').textContent = interviews;
-    document.getElementById('offers').textContent = offers;
-    document.getElementById('rejections').textContent = rejections;
+	const jobs = filteredJobs || jobsData;
+	let total = jobs.length;
+	let active = 0;
+	let interviews = 0;
+	let offers = 0;
+	let rejections = 0;
+
+	jobs.forEach((job) => {
+		const status = job.status;
+		if (status !== "Rejected" && status !== "Withdrawn") active++;
+		if (status.includes("Interview") || status === "Final Round") interviews++;
+		if (status === "Offer") offers++;
+		if (status === "Rejected") rejections++;
+	});
+
+	document.getElementById("totalApps").textContent = total;
+	document.getElementById("activeApps").textContent = active;
+	document.getElementById("interviews").textContent = interviews;
+	document.getElementById("offers").textContent = offers;
+	document.getElementById("rejections").textContent = rejections;
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', loadJobsData);
+document.addEventListener("DOMContentLoaded", loadJobsData);

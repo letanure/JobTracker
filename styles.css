@@ -104,7 +104,7 @@ tr:hover {
     background: var(--status-applied-bg); 
     color: var(--status-applied-text); 
 }
-.status-screening { 
+.status-phone_screening { 
     background: var(--status-screening-bg); 
     color: var(--status-screening-text); 
 }
@@ -112,7 +112,7 @@ tr:hover {
     background: var(--status-interview-bg); 
     color: var(--status-interview-text); 
 }
-.status-final { 
+.status-final_round { 
     background: var(--status-final-bg); 
     color: var(--status-final-text); 
 }
