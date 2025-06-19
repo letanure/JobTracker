@@ -1,3 +1,7 @@
+// ============================================================================
+// CONSTANTS AND DATA
+// ============================================================================
+
 const STATUSES = [
 	"Applied",
 	"Phone Screening", 
@@ -35,9 +39,6 @@ const PHASES = [
 	"Salary Negotiation"
 ];
 
-let jobsData = [];
-let originalData = [];
-
 // Demo data for first-time users
 const DEMO_DATA = [
 	{
@@ -74,26 +75,57 @@ const DEMO_DATA = [
 	}
 ];
 
+let jobsData = [];
+let originalData = [];
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+function getStatusClass(status) {
+	return status.toLowerCase().replace(/\s+/g, '_');
+}
+
+function getUniqueValues(array, property) {
+	return [...new Set(array.map(item => item[property]))];
+}
+
+function createElement(tag, className, textContent) {
+	const element = document.createElement(tag);
+	if (className) element.className = className;
+	if (textContent) element.textContent = textContent;
+	return element;
+}
+
+function createOption(value, text, selected = false) {
+	const option = createElement('option');
+	option.value = value;
+	option.textContent = text;
+	if (selected) option.selected = true;
+	return option;
+}
+
+function refreshInterface() {
+	populateTable(jobsData);
+	generateHeaderFilters();
+	generateDataLists();
+	updateStats();
+}
+
+// ============================================================================
+// SELECT COMPONENT CREATORS
+// ============================================================================
+
 function createStatusSelect(selectedValue = '', includeEmpty = true, className = 'filter-select', onChange = null) {
-	const select = document.createElement('select');
-	select.className = className;
+	const select = createElement('select', className);
 	
 	if (includeEmpty) {
-		const emptyOption = document.createElement('option');
-		emptyOption.value = '';
-		emptyOption.textContent = 'All Statuses';
-		select.appendChild(emptyOption);
+		select.appendChild(createOption('', 'All Statuses'));
 	}
 	
-	STATUSES.forEach(status => {
-		const option = document.createElement('option');
-		option.value = status;
-		option.textContent = status;
-		if (status === selectedValue) {
-			option.selected = true;
-		}
-		select.appendChild(option);
-	});
+	for (const status of STATUSES) {
+		select.appendChild(createOption(status, status, status === selectedValue));
+	}
 	
 	if (onChange) {
 		select.onchange = onChange;
@@ -103,25 +135,16 @@ function createStatusSelect(selectedValue = '', includeEmpty = true, className =
 }
 
 function createPrioritySelect(selectedValue = '', includeEmpty = true, className = 'filter-select', onChange = null) {
-	const select = document.createElement('select');
-	select.className = className;
+	const select = createElement('select', className);
 	
 	if (includeEmpty) {
-		const emptyOption = document.createElement('option');
-		emptyOption.value = '';
-		emptyOption.textContent = 'All Priorities';
-		select.appendChild(emptyOption);
+		select.appendChild(createOption('', 'All Priorities'));
 	}
 	
-	PRIORITIES.forEach(priority => {
-		const option = document.createElement('option');
-		option.value = priority;
-		option.textContent = includeEmpty ? `${priority} Priority` : priority;
-		if (priority === selectedValue) {
-			option.selected = true;
-		}
-		select.appendChild(option);
-	});
+	for (const priority of PRIORITIES) {
+		const text = includeEmpty ? `${priority} Priority` : priority;
+		select.appendChild(createOption(priority, text, priority === selectedValue));
+	}
 	
 	if (onChange) {
 		select.onchange = onChange;
@@ -131,25 +154,15 @@ function createPrioritySelect(selectedValue = '', includeEmpty = true, className
 }
 
 function createPhaseSelect(selectedValue = '', includeEmpty = true, className = 'filter-select', onChange = null) {
-	const select = document.createElement('select');
-	select.className = className;
+	const select = createElement('select', className);
 	
 	if (includeEmpty) {
-		const emptyOption = document.createElement('option');
-		emptyOption.value = '';
-		emptyOption.textContent = 'All Phases';
-		select.appendChild(emptyOption);
+		select.appendChild(createOption('', 'All Phases'));
 	}
 	
-	PHASES.forEach(phase => {
-		const option = document.createElement('option');
-		option.value = phase;
-		option.textContent = phase;
-		if (phase === selectedValue) {
-			option.selected = true;
-		}
-		select.appendChild(option);
-	});
+	for (const phase of PHASES) {
+		select.appendChild(createOption(phase, phase, phase === selectedValue));
+	}
 	
 	if (onChange) {
 		select.onchange = onChange;
@@ -158,167 +171,9 @@ function createPhaseSelect(selectedValue = '', includeEmpty = true, className = 
 	return select;
 }
 
-function generateDataLists() {
-	// Get unique values from existing jobs
-	const existingCompanies = [...new Set(jobsData.map(job => job.company))];
-	const existingPositions = [...new Set(jobsData.map(job => job.position))];
-	const existingLocations = [...new Set(jobsData.map(job => job.location))];
-	
-	// Generate company datalist
-	let companyDatalist = document.getElementById('companiesDatalist');
-	if (!companyDatalist) {
-		companyDatalist = document.createElement('datalist');
-		companyDatalist.id = 'companiesDatalist';
-		document.body.appendChild(companyDatalist);
-	}
-	companyDatalist.innerHTML = '';
-	existingCompanies.forEach(company => {
-		const option = document.createElement('option');
-		option.value = company;
-		companyDatalist.appendChild(option);
-	});
-	
-	// Generate position datalist
-	let positionDatalist = document.getElementById('positionsDatalist');
-	if (!positionDatalist) {
-		positionDatalist = document.createElement('datalist');
-		positionDatalist.id = 'positionsDatalist';
-		document.body.appendChild(positionDatalist);
-	}
-	positionDatalist.innerHTML = '';
-	existingPositions.forEach(position => {
-		const option = document.createElement('option');
-		option.value = position;
-		positionDatalist.appendChild(option);
-	});
-	
-	// Generate location datalist
-	let locationDatalist = document.getElementById('locationsDatalist');
-	if (!locationDatalist) {
-		locationDatalist = document.createElement('datalist');
-		locationDatalist.id = 'locationsDatalist';
-		document.body.appendChild(locationDatalist);
-	}
-	locationDatalist.innerHTML = '';
-	existingLocations.forEach(location => {
-		const option = document.createElement('option');
-		option.value = location;
-		locationDatalist.appendChild(option);
-	});
-}
-
-function generateHeaderFilters() {
-	generatePriorityDropdown();
-	generateStatusDropdown();
-	generatePhaseDropdown();
-}
-
-function generatePriorityDropdown() {
-	const dropdown = document.getElementById('priorityDropdown');
-	dropdown.innerHTML = '';
-	
-	// Get unique priorities from current data
-	const existingPriorities = [...new Set(jobsData.map(job => job.priority))];
-	
-	// Add "All" option
-	const allOption = document.createElement('div');
-	allOption.className = 'dropdown-option';
-	allOption.textContent = 'All Priorities';
-	allOption.onclick = () => {
-		filterByPriority('');
-		closeDropdown('priorityDropdown');
-	};
-	dropdown.appendChild(allOption);
-	
-	// Add only existing priority options
-	existingPriorities.forEach(priority => {
-		const option = document.createElement('div');
-		option.className = 'dropdown-option';
-		option.textContent = priority;
-		option.onclick = () => {
-			filterByPriority(priority);
-			closeDropdown('priorityDropdown');
-		};
-		dropdown.appendChild(option);
-	});
-}
-
-function generateStatusDropdown() {
-	const dropdown = document.getElementById('statusDropdown');
-	dropdown.innerHTML = '';
-	
-	// Get unique statuses from current data
-	const existingStatuses = [...new Set(jobsData.map(job => job.status))];
-	
-	// Add "All" option
-	const allOption = document.createElement('div');
-	allOption.className = 'dropdown-option';
-	allOption.textContent = 'All Statuses';
-	allOption.onclick = () => {
-		filterByStatus('');
-		closeDropdown('statusDropdown');
-	};
-	dropdown.appendChild(allOption);
-	
-	// Add only existing status options
-	existingStatuses.forEach(status => {
-		const option = document.createElement('div');
-		option.className = 'dropdown-option';
-		option.textContent = status;
-		option.onclick = () => {
-			filterByStatus(status);
-			closeDropdown('statusDropdown');
-		};
-		dropdown.appendChild(option);
-	});
-}
-
-function generatePhaseDropdown() {
-	const dropdown = document.getElementById('phaseDropdown');
-	dropdown.innerHTML = '';
-	
-	// Get unique phases from current data
-	const existingPhases = [...new Set(jobsData.map(job => job.currentPhase))];
-	
-	// Add "All" option
-	const allOption = document.createElement('div');
-	allOption.className = 'dropdown-option';
-	allOption.textContent = 'All Phases';
-	allOption.onclick = () => {
-		filterByPhase('');
-		closeDropdown('phaseDropdown');
-	};
-	dropdown.appendChild(allOption);
-	
-	// Add only existing phase options
-	existingPhases.forEach(phase => {
-		const option = document.createElement('div');
-		option.className = 'dropdown-option';
-		option.textContent = phase;
-		option.onclick = () => {
-			filterByPhase(phase);
-			closeDropdown('phaseDropdown');
-		};
-		dropdown.appendChild(option);
-	});
-}
-
-function toggleDropdown(dropdownId) {
-	const dropdown = document.getElementById(dropdownId);
-	const isVisible = dropdown.style.display === 'block';
-	
-	// Close all dropdowns first
-	document.querySelectorAll('.filter-dropdown').forEach(d => {
-		d.style.display = 'none';
-	});
-	
-	// Toggle the clicked dropdown
-	dropdown.style.display = isVisible ? 'none' : 'block';
-}
-
-function closeDropdown(dropdownId) {
-	document.getElementById(dropdownId).style.display = 'none';
-}
+// ============================================================================
+// DATA PERSISTENCE
+// ============================================================================
 
 function saveToLocalStorage() {
 	localStorage.setItem('jobTrackerData', JSON.stringify(jobsData));
@@ -331,12 +186,10 @@ function loadJobsData() {
 		
 		if (savedData) {
 			jobsData = JSON.parse(savedData);
-			// Check if data is empty array
 			if (jobsData.length === 0) {
 				shouldShowDemo = true;
 			}
 		} else {
-			// No localStorage data exists
 			shouldShowDemo = true;
 			jobsData = [];
 		}
@@ -354,37 +207,119 @@ function loadJobsData() {
 			}
 		}
 		
-		populateTable(jobsData);
-		generateHeaderFilters();
-		generateDataLists();
+		refreshInterface();
 		initializeData();
 	} catch (error) {
 		console.error("Error loading jobs data:", error);
-		// Fallback - ask user about demo data
 		const userWantsDemoData = confirm(
 			"There was an error loading your data.\n\n" +
 			"Would you like to start with 2 example job applications?"
 		);
 		
-		if (userWantsDemoData) {
-			jobsData = [...DEMO_DATA];
-		} else {
-			jobsData = [];
-		}
-		
+		jobsData = userWantsDemoData ? [...DEMO_DATA] : [];
 		saveToLocalStorage();
-		populateTable(jobsData);
-		generateHeaderFilters();
-		generateDataLists();
+		refreshInterface();
 		initializeData();
 	}
 }
+
+// ============================================================================
+// DATALIST GENERATORS
+// ============================================================================
+
+function createOrUpdateDatalist(id, values) {
+	let datalist = document.getElementById(id);
+	if (!datalist) {
+		datalist = createElement('datalist');
+		datalist.id = id;
+		document.body.appendChild(datalist);
+	}
+	
+	datalist.innerHTML = '';
+	for (const value of values) {
+		datalist.appendChild(createOption(value));
+	}
+}
+
+function generateDataLists() {
+	const existingCompanies = getUniqueValues(jobsData, 'company');
+	const existingPositions = getUniqueValues(jobsData, 'position');
+	const existingLocations = getUniqueValues(jobsData, 'location');
+	
+	createOrUpdateDatalist('companiesDatalist', existingCompanies);
+	createOrUpdateDatalist('positionsDatalist', existingPositions);
+	createOrUpdateDatalist('locationsDatalist', existingLocations);
+}
+
+// ============================================================================
+// DROPDOWN FILTER GENERATORS
+// ============================================================================
+
+function createDropdownOption(text, clickHandler) {
+	const option = createElement('div', 'dropdown-option', text);
+	option.onclick = clickHandler;
+	return option;
+}
+
+function generateDropdown(dropdownId, values, filterFunction, allLabel) {
+	const dropdown = document.getElementById(dropdownId);
+	dropdown.innerHTML = '';
+	
+	// Add "All" option
+	dropdown.appendChild(createDropdownOption(allLabel, () => {
+		filterFunction('');
+		closeDropdown(dropdownId);
+	}));
+	
+	// Add value options
+	for (const value of values) {
+		dropdown.appendChild(createDropdownOption(value, () => {
+			filterFunction(value);
+			closeDropdown(dropdownId);
+		}));
+	}
+}
+
+function generateHeaderFilters() {
+	const existingPriorities = getUniqueValues(jobsData, 'priority');
+	const existingStatuses = getUniqueValues(jobsData, 'status');
+	const existingPhases = getUniqueValues(jobsData, 'currentPhase');
+	
+	generateDropdown('priorityDropdown', existingPriorities, filterByPriority, 'All Priorities');
+	generateDropdown('statusDropdown', existingStatuses, filterByStatus, 'All Statuses');
+	generateDropdown('phaseDropdown', existingPhases, filterByPhase, 'All Phases');
+}
+
+// ============================================================================
+// DROPDOWN UI CONTROLS
+// ============================================================================
+
+function toggleDropdown(dropdownId) {
+	const dropdown = document.getElementById(dropdownId);
+	const isVisible = dropdown.style.display === 'block';
+	
+	// Close all dropdowns first
+	for (const d of document.querySelectorAll('.filter-dropdown')) {
+		d.style.display = 'none';
+	}
+	
+	// Toggle the clicked dropdown
+	dropdown.style.display = isVisible ? 'none' : 'block';
+}
+
+function closeDropdown(dropdownId) {
+	document.getElementById(dropdownId).style.display = 'none';
+}
+
+// ============================================================================
+// TABLE MANAGEMENT
+// ============================================================================
 
 function populateTable(jobs) {
 	const tbody = document.getElementById("jobTableBody");
 	tbody.innerHTML = "";
 
-	jobs.forEach((job) => {
+	for (const job of jobs) {
 		const row = tbody.insertRow();
 		row.innerHTML = `
             <td class="priority-cell"><span class="priority priority-${job.priority.toLowerCase()}"></span>${job.priority}</td>
@@ -422,11 +357,7 @@ function populateTable(jobs) {
                 editRow(editButton);
             }
         });
-	});
-}
-
-function getStatusClass(status) {
-	return status.toLowerCase().replace(/\s+/g, '_');
+	}
 }
 
 function initializeData() {
@@ -435,73 +366,87 @@ function initializeData() {
 	updateStats();
 }
 
+// ============================================================================
+// ROW OPERATIONS
+// ============================================================================
+
 function addRow() {
 	const tbody = document.getElementById("jobTableBody");
 	const newRow = tbody.insertRow(0);
 	
-	// Create cells
-	const priorityCell = newRow.insertCell();
-	const companyCell = newRow.insertCell();
-	const positionCell = newRow.insertCell();
-	const appliedDateCell = newRow.insertCell();
-	const statusCell = newRow.insertCell();
-	const currentPhaseCell = newRow.insertCell();
-	const nextTaskCell = newRow.insertCell();
-	const dueDateCell = newRow.insertCell();
-	const contactCell = newRow.insertCell();
-	const salaryCell = newRow.insertCell();
-	const locationCell = newRow.insertCell();
-	const notesCell = newRow.insertCell();
-	const actionsCell = newRow.insertCell();
+	// Create and configure cells
+	const cells = {
+		priority: newRow.insertCell(),
+		company: newRow.insertCell(),
+		position: newRow.insertCell(),
+		appliedDate: newRow.insertCell(),
+		status: newRow.insertCell(),
+		currentPhase: newRow.insertCell(),
+		nextTask: newRow.insertCell(),
+		dueDate: newRow.insertCell(),
+		contact: newRow.insertCell(),
+		salary: newRow.insertCell(),
+		location: newRow.insertCell(),
+		notes: newRow.insertCell(),
+		actions: newRow.insertCell()
+	};
 	
-	// Add classes
-	priorityCell.className = 'priority-cell';
-	companyCell.className = 'company-name';
-	appliedDateCell.className = 'date';
-	dueDateCell.className = 'date';
-	contactCell.className = 'contact';
-	salaryCell.className = 'salary';
-	notesCell.className = 'notes';
+	// Add CSS classes
+	cells.priority.className = 'priority-cell';
+	cells.company.className = 'company-name';
+	cells.appliedDate.className = 'date';
+	cells.dueDate.className = 'date';
+	cells.contact.className = 'contact';
+	cells.salary.className = 'salary';
+	cells.notes.className = 'notes';
 	
-	// Create priority select
-	const prioritySelect = createPrioritySelect('Medium', false, 'editable');
-	priorityCell.appendChild(prioritySelect);
+	// Add form controls
+	cells.priority.appendChild(createPrioritySelect('Medium', false, 'editable'));
+	cells.status.appendChild(createStatusSelect('Applied', false, 'editable'));
+	cells.currentPhase.appendChild(createPhaseSelect('Application Review', false, 'editable'));
 	
-	// Create status select  
-	const statusSelect = createStatusSelect('Applied', false, 'editable');
-	statusCell.appendChild(statusSelect);
+	// Add input fields
+	const inputFields = [
+		{ cell: cells.company, placeholder: "Company Name", list: "companiesDatalist" },
+		{ cell: cells.position, placeholder: "Position Title", list: "positionsDatalist" },
+		{ cell: cells.appliedDate, type: "date", value: new Date().toISOString().split("T")[0] },
+		{ cell: cells.nextTask, placeholder: "Next Task" },
+		{ cell: cells.dueDate, type: "date" },
+		{ cell: cells.contact, placeholder: "Name & Email" },
+		{ cell: cells.salary, placeholder: "Salary Range" },
+		{ cell: cells.location, placeholder: "Location", list: "locationsDatalist" },
+		{ cell: cells.notes, placeholder: "Notes" }
+	];
 	
-	// Create phase select
-	const phaseSelect = createPhaseSelect('Application Review', false, 'editable');
-	currentPhaseCell.appendChild(phaseSelect);
+	for (const field of inputFields) {
+		const input = createElement('input', 'editable');
+		input.placeholder = field.placeholder || '';
+		if (field.type) input.type = field.type;
+		if (field.value) input.value = field.value;
+		if (field.list) input.setAttribute('list', field.list);
+		field.cell.appendChild(input);
+	}
 	
-	// Fill other cells
-	companyCell.innerHTML = '<input class="editable" placeholder="Company Name" list="companiesDatalist">';
-	positionCell.innerHTML = '<input class="editable" placeholder="Position Title" list="positionsDatalist">';
-	appliedDateCell.innerHTML = `<input class="editable" type="date" value="${new Date().toISOString().split("T")[0]}">`;
-	nextTaskCell.innerHTML = '<input class="editable" placeholder="Next Task">';
-	dueDateCell.innerHTML = '<input class="editable" type="date">';
-	contactCell.innerHTML = '<input class="editable" placeholder="Name & Email">';
-	salaryCell.innerHTML = '<input class="editable" placeholder="Salary Range">';
-	locationCell.innerHTML = '<input class="editable" placeholder="Location" list="locationsDatalist">';
-	notesCell.innerHTML = '<input class="editable" placeholder="Notes">';
-	actionsCell.innerHTML = '<button onclick="saveRow(this)" class="action-btn edit-btn"><span class="material-symbols-outlined">save</span></button>';
+	// Add save button
+	cells.actions.innerHTML = '<button onclick="saveRow(this)" class="action-btn edit-btn"><span class="material-symbols-outlined">save</span></button>';
 	
 	updateStats();
+}
+
+function getJobIdFromRow(row) {
+	const deleteButton = row.querySelector('[onclick*="deleteJob"]');
+	return deleteButton ? parseInt(deleteButton.getAttribute('onclick').match(/\d+/)[0]) : null;
 }
 
 function editRow(button) {
 	const row = button.closest("tr");
 	const cells = row.cells;
-	
-	// Get the job ID from the delete button
-	const deleteButton = row.querySelector('[onclick*="deleteJob"]');
-	const jobId = parseInt(deleteButton.getAttribute('onclick').match(/\d+/)[0]);
+	const jobId = getJobIdFromRow(row);
 	const job = jobsData.find(j => j.id === jobId);
 	
 	if (!job) return;
 	
-	// Store original values for cancel functionality
+	// Store original content for cancel functionality
 	row.dataset.originalContent = row.innerHTML;
 	
 	// Convert row to editable form
@@ -529,79 +474,11 @@ function editRow(button) {
 	`;
 }
 
-function deleteJob(jobId) {
-	const jobToDelete = jobsData.find(job => job.id === jobId);
-	if (!jobToDelete) return;
-	
-	const confirmed = confirm(`Are you sure you want to delete the application for ${jobToDelete.position} at ${jobToDelete.company}?`);
-	
-	if (confirmed) {
-		// Remove from jobsData
-		jobsData = jobsData.filter(job => job.id !== jobId);
-		
-		// Save to localStorage
-		saveToLocalStorage();
-		
-		// Refresh the interface
-		populateTable(jobsData);
-		generateHeaderFilters();
-		generateDataLists();
-		updateStats();
-	}
-}
-
-function saveRow(button) {
-	const row = button.closest("tr");
-	const cells = row.cells;
-	
-	// Get values from the row
-	const prioritySelect = cells[0].querySelector('select');
-	const statusSelect = cells[4].querySelector('select');
-	const phaseSelect = cells[5].querySelector('select');
-	
-	const newJob = {
-		id: Date.now(), // Simple ID generation
-		priority: prioritySelect ? prioritySelect.value : 'Medium',
-		company: cells[1].querySelector('input').value,
-		position: cells[2].querySelector('input').value,
-		appliedDate: cells[3].querySelector('input').value,
-		status: statusSelect ? statusSelect.value : 'Applied',
-		currentPhase: phaseSelect ? phaseSelect.value : 'Application Review',
-		nextTask: cells[6].querySelector('input').value,
-		dueDate: cells[7].querySelector('input').value,
-		contactPerson: cells[8].querySelector('input').value.split('\\n')[0] || '',
-		contactEmail: cells[8].querySelector('input').value.split('\\n')[1] || '',
-		salaryRange: cells[9].querySelector('input').value,
-		location: cells[10].querySelector('input').value,
-		notes: cells[11].querySelector('input').value
-	};
-	
-	// Add to jobsData and save
-	jobsData.unshift(newJob);
-	saveToLocalStorage();
-	
-	// Refresh the table and filters
-	populateTable(jobsData);
-	generateHeaderFilters();
-	generateDataLists();
-	updateStats();
-}
-
-function saveEditedRow(button, jobId) {
-	const row = button.closest("tr");
-	const cells = row.cells;
-	
-	// Find the job to update
-	const jobIndex = jobsData.findIndex(job => job.id === jobId);
-	if (jobIndex === -1) return;
-	
-	// Get contact info from textarea
+function extractFormData(cells) {
 	const contactText = cells[8].querySelector('textarea').value;
 	const contactLines = contactText.split('\n');
 	
-	// Update the job object
-	jobsData[jobIndex] = {
-		...jobsData[jobIndex],
+	return {
 		priority: cells[0].querySelector('select').value,
 		company: cells[1].querySelector('input').value,
 		position: cells[2].querySelector('input').value,
@@ -616,53 +493,84 @@ function saveEditedRow(button, jobId) {
 		location: cells[10].querySelector('input').value,
 		notes: cells[11].querySelector('textarea').value
 	};
+}
+
+function saveRow(button) {
+	const row = button.closest("tr");
+	const cells = row.cells;
+	const formData = extractFormData(cells);
 	
-	// Save to localStorage
+	const newJob = {
+		id: Date.now(),
+		...formData
+	};
+	
+	jobsData.unshift(newJob);
 	saveToLocalStorage();
+	refreshInterface();
+}
+
+function saveEditedRow(button, jobId) {
+	const row = button.closest("tr");
+	const cells = row.cells;
+	const jobIndex = jobsData.findIndex(job => job.id === jobId);
 	
-	// Refresh the interface
-	populateTable(jobsData);
-	generateHeaderFilters();
-	generateDataLists();
-	updateStats();
+	if (jobIndex === -1) return;
+	
+	const formData = extractFormData(cells);
+	jobsData[jobIndex] = { ...jobsData[jobIndex], ...formData };
+	
+	saveToLocalStorage();
+	refreshInterface();
 }
 
 function cancelEdit(button) {
 	const row = button.closest("tr");
 	
-	// Restore original content
 	if (row.dataset.originalContent) {
 		row.innerHTML = row.dataset.originalContent;
 		delete row.dataset.originalContent;
 	}
 }
 
-function filterByStatus(status) {
-	let filteredJobs = jobsData;
-	if (status) {
-		filteredJobs = jobsData.filter((job) => job.status === status);
+function deleteJob(jobId) {
+	const jobToDelete = jobsData.find(job => job.id === jobId);
+	if (!jobToDelete) return;
+	
+	const confirmed = confirm(`Are you sure you want to delete the application for ${jobToDelete.position} at ${jobToDelete.company}?`);
+	
+	if (confirmed) {
+		jobsData = jobsData.filter(job => job.id !== jobId);
+		saveToLocalStorage();
+		refreshInterface();
 	}
+}
+
+// ============================================================================
+// FILTERING FUNCTIONS
+// ============================================================================
+
+function filterByStatus(status) {
+	const filteredJobs = status ? jobsData.filter(job => job.status === status) : jobsData;
 	populateTable(filteredJobs);
 	updateStats(filteredJobs);
 }
 
 function filterByPriority(priority) {
-	let filteredJobs = jobsData;
-	if (priority) {
-		filteredJobs = jobsData.filter((job) => job.priority === priority);
-	}
+	const filteredJobs = priority ? jobsData.filter(job => job.priority === priority) : jobsData;
 	populateTable(filteredJobs);
 	updateStats(filteredJobs);
 }
 
 function filterByPhase(phase) {
-	let filteredJobs = jobsData;
-	if (phase) {
-		filteredJobs = jobsData.filter((job) => job.currentPhase === phase);
-	}
+	const filteredJobs = phase ? jobsData.filter(job => job.currentPhase === phase) : jobsData;
 	populateTable(filteredJobs);
 	updateStats(filteredJobs);
 }
+
+// ============================================================================
+// STATISTICS
+// ============================================================================
 
 function updateStats(filteredJobs = null) {
 	const jobs = filteredJobs || jobsData;
@@ -671,15 +579,15 @@ function updateStats(filteredJobs = null) {
 	let interviews = 0;
 	let offers = 0;
 	let rejections = 0;
-
-	jobs.forEach((job) => {
+	
+	for (const job of jobs) {
 		const status = job.status;
 		if (status !== "Rejected" && status !== "Withdrawn") active++;
 		if (status.includes("Interview") || status === "Final Round") interviews++;
 		if (status === "Offer") offers++;
 		if (status === "Rejected") rejections++;
-	});
-
+	}
+	
 	document.getElementById("totalApps").textContent = total;
 	document.getElementById("activeApps").textContent = active;
 	document.getElementById("interviews").textContent = interviews;
@@ -687,12 +595,16 @@ function updateStats(filteredJobs = null) {
 	document.getElementById("rejections").textContent = rejections;
 }
 
+// ============================================================================
+// EVENT LISTENERS AND INITIALIZATION
+// ============================================================================
+
 // Close dropdowns when clicking outside
 document.addEventListener('click', function(event) {
 	if (!event.target.closest('.header-with-filter')) {
-		document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+		for (const dropdown of document.querySelectorAll('.filter-dropdown')) {
 			dropdown.style.display = 'none';
-		});
+		}
 	}
 });
 
