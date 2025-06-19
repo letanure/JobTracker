@@ -152,6 +152,10 @@ tr:hover {
     white-space: nowrap;
 }
 
+.status-wishlist { 
+    background: var(--status-wishlist-bg); 
+    color: var(--status-wishlist-text); 
+}
 .status-applied { 
     background: var(--status-applied-bg); 
     color: var(--status-applied-text); 

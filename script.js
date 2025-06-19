@@ -556,6 +556,7 @@ I18n.translations = {
 			},
 		},
 		statuses: {
+			wishlist: "Wishlist",
 			applied: "Applied",
 			phoneScreening: "Phone Screening",
 			interview: "Interview",
@@ -660,6 +661,7 @@ I18n.translations = {
 			},
 		},
 		statuses: {
+			wishlist: "Lista de Desejos",
 			applied: "Candidatura Enviada",
 			phoneScreening: "Triagem por Telefone",
 			interview: "Entrevista",
@@ -726,6 +728,7 @@ I18n.translations = {
 // ============================================================================
 
 const STATUSES = [
+	"wishlist",
 	"applied",
 	"phoneScreening",
 	"interview",
@@ -1186,7 +1189,7 @@ function addRow() {
 
 	// Add form controls
 	cells.priority.appendChild(createPrioritySelect("medium", false, "editable"));
-	cells.status.appendChild(createStatusSelect("applied", false, "editable"));
+	cells.status.appendChild(createStatusSelect("wishlist", false, "editable"));
 	cells.currentPhase.appendChild(
 		createPhaseSelect("applicationReview", false, "editable"),
 	);
