@@ -38,6 +38,42 @@ const PHASES = [
 let jobsData = [];
 let originalData = [];
 
+// Demo data for first-time users
+const DEMO_DATA = [
+	{
+		id: 1,
+		priority: "High",
+		company: "TechCorp Inc",
+		position: "Senior Software Engineer",
+		appliedDate: "2025-06-15",
+		status: "Interview",
+		currentPhase: "Technical Interview",
+		nextTask: "Prepare system design",
+		dueDate: "2025-06-22",
+		contactPerson: "Sarah Chen",
+		contactEmail: "sarah@techcorp.com",
+		salaryRange: "$120k - $150k",
+		location: "San Francisco, CA",
+		notes: "Great culture fit. Need to research their microservices architecture."
+	},
+	{
+		id: 2,
+		priority: "Medium",
+		company: "StartupXYZ",
+		position: "Full Stack Developer",
+		appliedDate: "2025-06-12",
+		status: "Phone Screening",
+		currentPhase: "HR Phone Screen",
+		nextTask: "Wait for callback",
+		dueDate: "2025-06-20",
+		contactPerson: "Mike Rodriguez",
+		contactEmail: "hiring@startupxyz.com",
+		salaryRange: "$90k - $110k + equity",
+		location: "Remote",
+		notes: "Early stage startup. High growth potential but risky."
+	}
+];
+
 function createStatusSelect(selectedValue = '', includeEmpty = true, className = 'filter-select', onChange = null) {
 	const select = document.createElement('select');
 	select.className = className;
@@ -284,17 +320,35 @@ function closeDropdown(dropdownId) {
 	document.getElementById(dropdownId).style.display = 'none';
 }
 
-async function loadJobsData() {
+function saveToLocalStorage() {
+	localStorage.setItem('jobTrackerData', JSON.stringify(jobsData));
+}
+
+function loadJobsData() {
 	try {
-		const response = await fetch("data.json");
-		const data = await response.json();
-		jobsData = data.jobs;
+		const savedData = localStorage.getItem('jobTrackerData');
+		
+		if (savedData) {
+			jobsData = JSON.parse(savedData);
+		} else {
+			// First time user - load demo data
+			jobsData = [...DEMO_DATA];
+			saveToLocalStorage();
+		}
+		
 		populateTable(jobsData);
 		generateHeaderFilters();
 		generateDataLists();
 		initializeData();
 	} catch (error) {
 		console.error("Error loading jobs data:", error);
+		// Fallback to demo data if localStorage is corrupted
+		jobsData = [...DEMO_DATA];
+		saveToLocalStorage();
+		populateTable(jobsData);
+		generateHeaderFilters();
+		generateDataLists();
+		initializeData();
 	}
 }
 
@@ -399,11 +453,38 @@ function editRow(button) {
 
 function saveRow(button) {
 	const row = button.closest("tr");
-	// Save functionality would be implemented here
-	button.textContent = "Edit";
-	button.onclick = function () {
-		editRow(this);
+	const cells = row.cells;
+	
+	// Get values from the row
+	const prioritySelect = cells[0].querySelector('select');
+	const statusSelect = cells[4].querySelector('select');
+	const phaseSelect = cells[5].querySelector('select');
+	
+	const newJob = {
+		id: Date.now(), // Simple ID generation
+		priority: prioritySelect ? prioritySelect.value : 'Medium',
+		company: cells[1].querySelector('input').value,
+		position: cells[2].querySelector('input').value,
+		appliedDate: cells[3].querySelector('input').value,
+		status: statusSelect ? statusSelect.value : 'Applied',
+		currentPhase: phaseSelect ? phaseSelect.value : 'Application Review',
+		nextTask: cells[6].querySelector('input').value,
+		dueDate: cells[7].querySelector('input').value,
+		contactPerson: cells[8].querySelector('input').value.split('\\n')[0] || '',
+		contactEmail: cells[8].querySelector('input').value.split('\\n')[1] || '',
+		salaryRange: cells[9].querySelector('input').value,
+		location: cells[10].querySelector('input').value,
+		notes: cells[11].querySelector('input').value
 	};
+	
+	// Add to jobsData and save
+	jobsData.unshift(newJob);
+	saveToLocalStorage();
+	
+	// Refresh the table and filters
+	populateTable(jobsData);
+	generateHeaderFilters();
+	generateDataLists();
 	updateStats();
 }
 
