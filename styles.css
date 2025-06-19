@@ -580,3 +580,194 @@ tr:hover {
     color: var(--text-light);
     font-style: italic;
 }
+
+/* Tasks specific styles */
+.tasks-count {
+    background: var(--primary-color);
+    color: white;
+    padding: 2px 6px;
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-small);
+    cursor: pointer;
+    display: inline-block;
+}
+
+.tasks-count:hover {
+    background: var(--primary-hover);
+}
+
+.tasks-count.zero {
+    background: var(--text-light);
+    cursor: default;
+}
+
+.tasks-count.zero:hover {
+    background: var(--text-light);
+}
+
+.task-count-todo {
+    color: var(--status-applied-text);
+    font-weight: 600;
+}
+
+.task-count-in-progress {
+    color: var(--status-interview-text);
+    font-weight: 600;
+}
+
+.task-count-done {
+    color: var(--status-offer-text);
+    font-weight: 600;
+}
+
+.task-count-separator {
+    color: white;
+    margin: 0 2px;
+}
+
+.task-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-medium);
+    padding: var(--padding-medium);
+    margin-bottom: 10px;
+}
+
+.task-item:last-child {
+    margin-bottom: 0;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+}
+
+.task-date {
+    font-weight: 500;
+}
+
+.task-status {
+    padding: 2px 6px;
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+    text-transform: capitalize;
+}
+
+.task-priority {
+    color: white;
+    padding: 2px 6px;
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+    text-transform: capitalize;
+}
+
+.task-text {
+    font-size: var(--font-size-base);
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.task-due-date, .task-completed-date {
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+    margin-top: 5px;
+}
+
+.tasks-btn {
+    background: var(--warning-color);
+    color: white;
+    padding: 4px 6px;
+}
+
+.tasks-btn:hover {
+    background: var(--warning-light);
+}
+
+/* Add task section in unified modal - styled like task item but darker */
+.add-task-section {
+    margin-top: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-medium);
+    padding: var(--padding-medium);
+    background: #f0f0f0; /* Slightly darker than normal task items */
+}
+
+.add-task-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+}
+
+.task-form-info {
+    display: flex;
+    gap: 20px;
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.task-form-info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.add-task-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    margin-bottom: 10px;
+}
+
+.add-task-textarea:focus {
+    outline: none;
+}
+
+.add-task-textarea::placeholder {
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.task-form-controls {
+    display: flex;
+    gap: 15px;
+    align-items: end;
+}
+
+.task-control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.task-control-group label {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.add-task-status, .add-task-priority {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+    background: white;
+}
+
+.add-task-due-date {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+}
