@@ -1034,10 +1034,10 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		{ "data-job-id": job.id },
 		PriorityCell({ priority: job.priority }),
 		h("td", { className: "company-name" }, job.company),
-		h("td", {}, job.position),
-		h("td", { className: "date" }, job.appliedDate),
+		h("td", { className: "position-name" }, job.position),
+		h("td", { className: "date" }, formatDate(job.appliedDate)),
 		StatusCell({ status: job.status }),
-		h("td", {}, getPhaseText(job.currentPhase)),
+		h("td", { className: "current-phase" }, getPhaseText(job.currentPhase)),
 		h("td", {
 			className: "contact",
 			innerHTML: `${job.contactPerson}<br>${job.contactEmail}`,
@@ -1416,7 +1416,7 @@ const DEMO_DATA = [
 		priority: "high",
 		company: "TechCorp Inc",
 		position: "Senior Software Engineer",
-		appliedDate: "2025-06-15",
+		appliedDate: "2025-06-15T10:00:00.000Z",
 		status: "interview",
 		currentPhase: "technicalInterview",
 		contactPerson: "demo.contactPerson1",
@@ -1450,7 +1450,7 @@ const DEMO_DATA = [
 		priority: "medium",
 		company: "StartupXYZ",
 		position: "Full Stack Developer",
-		appliedDate: "2025-06-12",
+		appliedDate: "2025-06-12T09:00:00.000Z",
 		status: "phoneScreening",
 		currentPhase: "hrPhoneScreen",
 		contactPerson: "demo.contactPerson2",
@@ -1970,7 +1970,7 @@ function editRow(button) {
 	$(cells[3]).html("");
 	cells[3].appendChild(
 		InputField({
-			value: job.appliedDate,
+			value: new Date(job.appliedDate).toISOString().split("T")[0],
 			type: "date",
 		}),
 	);
@@ -2036,7 +2036,7 @@ function extractFormData(cells) {
 		priority: cells[0].querySelector("select").value,
 		company: cells[1].querySelector("input").value,
 		position: cells[2].querySelector("input").value,
-		appliedDate: cells[3].querySelector("input").value,
+		appliedDate: new Date(cells[3].querySelector("input").value).toISOString(),
 		status: cells[4].querySelector("select").value,
 		currentPhase: cells[5].querySelector("select").value,
 		contactPerson: contactLines[0] || "",
