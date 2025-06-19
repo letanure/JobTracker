@@ -122,6 +122,55 @@ function createPhaseSelect(selectedValue = '', includeEmpty = true, className = 
 	return select;
 }
 
+function generateDataLists() {
+	// Get unique values from existing jobs
+	const existingCompanies = [...new Set(jobsData.map(job => job.company))];
+	const existingPositions = [...new Set(jobsData.map(job => job.position))];
+	const existingLocations = [...new Set(jobsData.map(job => job.location))];
+	
+	// Generate company datalist
+	let companyDatalist = document.getElementById('companiesDatalist');
+	if (!companyDatalist) {
+		companyDatalist = document.createElement('datalist');
+		companyDatalist.id = 'companiesDatalist';
+		document.body.appendChild(companyDatalist);
+	}
+	companyDatalist.innerHTML = '';
+	existingCompanies.forEach(company => {
+		const option = document.createElement('option');
+		option.value = company;
+		companyDatalist.appendChild(option);
+	});
+	
+	// Generate position datalist
+	let positionDatalist = document.getElementById('positionsDatalist');
+	if (!positionDatalist) {
+		positionDatalist = document.createElement('datalist');
+		positionDatalist.id = 'positionsDatalist';
+		document.body.appendChild(positionDatalist);
+	}
+	positionDatalist.innerHTML = '';
+	existingPositions.forEach(position => {
+		const option = document.createElement('option');
+		option.value = position;
+		positionDatalist.appendChild(option);
+	});
+	
+	// Generate location datalist
+	let locationDatalist = document.getElementById('locationsDatalist');
+	if (!locationDatalist) {
+		locationDatalist = document.createElement('datalist');
+		locationDatalist.id = 'locationsDatalist';
+		document.body.appendChild(locationDatalist);
+	}
+	locationDatalist.innerHTML = '';
+	existingLocations.forEach(location => {
+		const option = document.createElement('option');
+		option.value = location;
+		locationDatalist.appendChild(option);
+	});
+}
+
 function generateHeaderFilters() {
 	generatePriorityDropdown();
 	generateStatusDropdown();
@@ -242,6 +291,7 @@ async function loadJobsData() {
 		jobsData = data.jobs;
 		populateTable(jobsData);
 		generateHeaderFilters();
+		generateDataLists();
 		initializeData();
 	} catch (error) {
 		console.error("Error loading jobs data:", error);
@@ -323,14 +373,14 @@ function addRow() {
 	currentPhaseCell.appendChild(phaseSelect);
 	
 	// Fill other cells
-	companyCell.innerHTML = '<input class="editable" placeholder="Company Name">';
-	positionCell.innerHTML = '<input class="editable" placeholder="Position Title">';
+	companyCell.innerHTML = '<input class="editable" placeholder="Company Name" list="companiesDatalist">';
+	positionCell.innerHTML = '<input class="editable" placeholder="Position Title" list="positionsDatalist">';
 	appliedDateCell.innerHTML = `<input class="editable" type="date" value="${new Date().toISOString().split("T")[0]}">`;
 	nextTaskCell.innerHTML = '<input class="editable" placeholder="Next Task">';
 	dueDateCell.innerHTML = '<input class="editable" type="date">';
 	contactCell.innerHTML = '<input class="editable" placeholder="Name & Email">';
 	salaryCell.innerHTML = '<input class="editable" placeholder="Salary Range">';
-	locationCell.innerHTML = '<input class="editable" placeholder="Location">';
+	locationCell.innerHTML = '<input class="editable" placeholder="Location" list="locationsDatalist">';
 	notesCell.innerHTML = '<input class="editable" placeholder="Notes">';
 	actionsCell.innerHTML = '<button onclick="saveRow(this)">Save</button>';
 	
