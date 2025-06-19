@@ -14,6 +14,27 @@ const PRIORITIES = [
 	"Low"
 ];
 
+const PHASES = [
+	"Application Review",
+	"Initial Screening",
+	"HR Phone Screen",
+	"Recruiter Call",
+	"Technical Phone Screen",
+	"Coding Challenge",
+	"Take-home Assignment",
+	"Technical Interview",
+	"System Design Interview",
+	"Behavioral Interview",
+	"Team Interview",
+	"Hiring Manager Interview",
+	"Panel Interview",
+	"Final Round",
+	"Reference Check",
+	"Background Check",
+	"Offer Discussion",
+	"Salary Negotiation"
+];
+
 let jobsData = [];
 let originalData = [];
 
@@ -73,9 +94,38 @@ function createPrioritySelect(selectedValue = '', includeEmpty = true, className
 	return select;
 }
 
+function createPhaseSelect(selectedValue = '', includeEmpty = true, className = 'filter-select', onChange = null) {
+	const select = document.createElement('select');
+	select.className = className;
+	
+	if (includeEmpty) {
+		const emptyOption = document.createElement('option');
+		emptyOption.value = '';
+		emptyOption.textContent = 'All Phases';
+		select.appendChild(emptyOption);
+	}
+	
+	PHASES.forEach(phase => {
+		const option = document.createElement('option');
+		option.value = phase;
+		option.textContent = phase;
+		if (phase === selectedValue) {
+			option.selected = true;
+		}
+		select.appendChild(option);
+	});
+	
+	if (onChange) {
+		select.onchange = onChange;
+	}
+	
+	return select;
+}
+
 function generateHeaderFilters() {
 	generatePriorityDropdown();
 	generateStatusDropdown();
+	generatePhaseDropdown();
 }
 
 function generatePriorityDropdown() {
@@ -127,6 +177,33 @@ function generateStatusDropdown() {
 		option.onclick = () => {
 			filterByStatus(status);
 			closeDropdown('statusDropdown');
+		};
+		dropdown.appendChild(option);
+	});
+}
+
+function generatePhaseDropdown() {
+	const dropdown = document.getElementById('phaseDropdown');
+	dropdown.innerHTML = '';
+	
+	// Add "All" option
+	const allOption = document.createElement('div');
+	allOption.className = 'dropdown-option';
+	allOption.textContent = 'All Phases';
+	allOption.onclick = () => {
+		filterByPhase('');
+		closeDropdown('phaseDropdown');
+	};
+	dropdown.appendChild(allOption);
+	
+	// Add phase options
+	PHASES.forEach(phase => {
+		const option = document.createElement('div');
+		option.className = 'dropdown-option';
+		option.textContent = phase;
+		option.onclick = () => {
+			filterByPhase(phase);
+			closeDropdown('phaseDropdown');
 		};
 		dropdown.appendChild(option);
 	});
@@ -232,11 +309,14 @@ function addRow() {
 	const statusSelect = createStatusSelect('Applied', false, 'editable');
 	statusCell.appendChild(statusSelect);
 	
+	// Create phase select
+	const phaseSelect = createPhaseSelect('Application Review', false, 'editable');
+	currentPhaseCell.appendChild(phaseSelect);
+	
 	// Fill other cells
 	companyCell.innerHTML = '<input class="editable" placeholder="Company Name">';
 	positionCell.innerHTML = '<input class="editable" placeholder="Position Title">';
 	appliedDateCell.innerHTML = `<input class="editable" type="date" value="${new Date().toISOString().split("T")[0]}">`;
-	currentPhaseCell.innerHTML = '<input class="editable" placeholder="Current Phase">';
 	nextTaskCell.innerHTML = '<input class="editable" placeholder="Next Task">';
 	dueDateCell.innerHTML = '<input class="editable" type="date">';
 	contactCell.innerHTML = '<input class="editable" placeholder="Name & Email">';
@@ -281,6 +361,15 @@ function filterByPriority(priority) {
 	let filteredJobs = jobsData;
 	if (priority) {
 		filteredJobs = jobsData.filter((job) => job.priority === priority);
+	}
+	populateTable(filteredJobs);
+	updateStats(filteredJobs);
+}
+
+function filterByPhase(phase) {
+	let filteredJobs = jobsData;
+	if (phase) {
+		filteredJobs = jobsData.filter((job) => job.currentPhase === phase);
 	}
 	populateTable(filteredJobs);
 	updateStats(filteredJobs);
