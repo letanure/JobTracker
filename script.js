@@ -71,7 +71,7 @@ class DOMElement {
 
 	// Chainable css method
 	css(property, value) {
-		if (typeof property === 'object') {
+		if (typeof property === "object") {
 			Object.assign(this.element.style, property);
 		} else if (value === undefined) {
 			return getComputedStyle(this.element)[property];
@@ -83,7 +83,7 @@ class DOMElement {
 
 	// Append child
 	append(child) {
-		if (typeof child === 'string') {
+		if (typeof child === "string") {
 			this.element.appendChild(document.createTextNode(child));
 		} else {
 			this.element.appendChild(child);
@@ -99,8 +99,8 @@ class DOMElement {
 
 // Enhanced $ function with jQuery-style API
 const $ = (selector) => {
-	if (typeof selector === 'string') {
-		if (selector.startsWith('#')) {
+	if (typeof selector === "string") {
+		if (selector.startsWith("#")) {
 			// ID selector
 			const element = document.getElementById(selector.slice(1));
 			return element ? new DOMElement(element) : null;
@@ -315,10 +315,18 @@ const StatusCell = ({ status }) =>
 	);
 
 // Actions cell component
-const ActionsCell = ({ jobId, onEdit, onDelete }) =>
+const ActionsCell = ({ jobId, onEdit, onDelete, onNotes }) =>
 	h(
 		"td",
 		{ className: "actions-cell" },
+		h(
+			"button",
+			{
+				className: "action-btn notes-btn",
+				onclick: () => onNotes(jobId),
+			},
+			h("span", { className: "material-symbols-outlined" }, "sticky_note_2"),
+		),
 		h(
 			"button",
 			{
@@ -334,7 +342,7 @@ const ActionsCell = ({ jobId, onEdit, onDelete }) =>
 		h(
 			"button",
 			{
-				className: "action-btn delete-btn",
+				className: "action-btn xdelete-btn",
 				onclick: () => onDelete(jobId),
 			},
 			h("span", { className: "material-symbols-outlined" }, "delete"),
@@ -410,6 +418,300 @@ const ContactTextarea = ({ contactPerson = "", contactEmail = "" }) =>
 		textContent: `${contactPerson}\n${contactEmail}`,
 	});
 
+// ============================================================================
+// NOTES SYSTEM COMPONENTS
+// ============================================================================
+
+// Notes count display component
+const NotesCount = ({ notes = [], onClick }) => {
+	const count = notes.length;
+	const className = count === 0 ? "notes-count zero" : "notes-count";
+
+	return h("span", {
+		className,
+		onclick: count > 0 ? onClick : null,
+		textContent: count.toString(),
+	});
+};
+
+// Individual note item component
+const NoteItem = ({ note }) => {
+	return h(
+		"div",
+		{ className: "note-item" },
+		h(
+			"div",
+			{ className: "note-header" },
+			h("span", { className: "note-date" }, formatDate(note.date)),
+			h("span", { className: "note-phase" }, getPhaseText(note.phase)),
+		),
+		h("div", { className: "note-text" }, note.text),
+	);
+};
+
+// Modal component for viewing notes
+const NotesViewModal = ({ job, onClose }) => {
+	const notes = job.notes || [];
+	const sortedNotes = [...notes].sort(
+		(a, b) => new Date(b.date) - new Date(a.date),
+	);
+
+	return h(
+		"div",
+		{
+			className: "modal-overlay",
+			onclick: (e) => e.target === e.currentTarget && onClose(),
+		},
+		h(
+			"div",
+			{ className: "modal" },
+			h(
+				"div",
+				{ className: "modal-header" },
+				h(
+					"h3",
+					{ className: "modal-title" },
+					`Notes for ${job.position} at ${job.company}`,
+				),
+				h("button", { className: "modal-close", onclick: onClose }, "×"),
+			),
+			h(
+				"div",
+				{ className: "modal-body" },
+				...(sortedNotes.length > 0
+					? sortedNotes.map((note) => NoteItem({ note }))
+					: [h(
+							"p",
+							{ style: { textAlign: "center", color: "var(--text-light)" } },
+							"No notes yet",
+						)]
+				)
+			),
+			h(
+				"div",
+				{ className: "modal-footer" },
+				h(
+					"button",
+					{
+						className: "action-btn edit-btn",
+						onclick: () => openAddNoteModal(job),
+					},
+					"Add Note",
+				),
+				h(
+					"button",
+					{ className: "action-btn cancel-btn", onclick: onClose },
+					"Close",
+				),
+			),
+		),
+	);
+};
+
+// Modal component for adding new notes
+const AddNoteModal = ({ job, onClose, onSave }) => {
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const textarea = e.target.querySelector("textarea");
+		const noteText = textarea.value.trim();
+
+		if (!noteText) {
+			textarea.focus();
+			return;
+		}
+
+		const newNote = {
+			id: Date.now(),
+			date: new Date().toISOString().split("T")[0],
+			phase: job.currentPhase,
+			text: noteText,
+		};
+
+		onSave(newNote);
+		onClose();
+	};
+
+	const handleSaveClick = () => {
+		const form = document.querySelector('.note-form');
+		if (form) {
+			const textarea = form.querySelector("textarea");
+			const noteText = textarea.value.trim();
+
+			if (!noteText) {
+				textarea.focus();
+				return;
+			}
+
+			const newNote = {
+				id: Date.now(),
+				date: new Date().toISOString().split("T")[0],
+				phase: job.currentPhase,
+				text: noteText,
+			};
+
+			onSave(newNote);
+			onClose();
+		}
+	};
+
+	return h(
+		"div",
+		{
+			className: "modal-overlay",
+			onclick: (e) => e.target === e.currentTarget && onClose(),
+		},
+		h(
+			"div",
+			{ className: "modal" },
+			h(
+				"div",
+				{ className: "modal-header" },
+				h(
+					"h3",
+					{ className: "modal-title" },
+					`Add Note - ${job.position} at ${job.company}`,
+				),
+				h("button", { className: "modal-close", onclick: onClose }, "×"),
+			),
+			h(
+				"form",
+				{ className: "note-form", onsubmit: handleSubmit },
+				h(
+					"div",
+					{ className: "modal-body" },
+					h(
+						"div",
+						{ className: "note-form-info" },
+						h(
+							"span",
+							{},
+							h("span", { className: "material-symbols-outlined" }, "calendar_today"),
+							` Date: ${formatDate(new Date().toISOString().split("T")[0])}`,
+						),
+						h(
+							"span", 
+							{},
+							h("span", { className: "material-symbols-outlined" }, "assignment"),
+							` Phase: ${getPhaseText(job.currentPhase)}`
+						),
+					),
+					h("textarea", {
+						placeholder: "Enter your note here...",
+						required: true,
+						autofocus: true,
+					}),
+				),
+				h(
+					"div",
+					{ className: "modal-footer" },
+					h(
+						"button",
+						{ 
+							type: "button", 
+							className: "action-btn edit-btn",
+							onclick: handleSaveClick
+						},
+						"Save Note",
+					),
+					h(
+						"button",
+						{
+							type: "button",
+							className: "action-btn cancel-btn",
+							onclick: onClose,
+						},
+						"Cancel",
+					),
+				),
+			),
+		),
+	);
+};
+
+// ============================================================================
+// NOTES MANAGEMENT FUNCTIONS
+// ============================================================================
+
+// Format date for display
+const formatDate = (dateString) => {
+	const date = new Date(dateString);
+	return date.toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
+};
+
+// Add note to job
+const addNoteToJob = (jobId, note) => {
+	const jobIndex = jobsData.findIndex((job) => job.id === jobId);
+	if (jobIndex === -1) return;
+
+	if (!jobsData[jobIndex].notes) {
+		jobsData[jobIndex].notes = [];
+	}
+
+	jobsData[jobIndex].notes.push(note);
+	saveToLocalStorage();
+	refreshInterface();
+};
+
+// Open add note modal
+const openAddNoteModal = (job) => {
+	const modal = AddNoteModal({
+		job,
+		onClose: closeModal,
+		onSave: (note) => addNoteToJob(job.id, note),
+	});
+
+	document.body.appendChild(modal);
+};
+
+// Open notes view modal
+const openNotesModal = (job) => {
+	const modal = NotesViewModal({
+		job,
+		onClose: closeModal,
+	});
+
+	document.body.appendChild(modal);
+};
+
+// Close modal
+const closeModal = () => {
+	const modals = document.querySelectorAll(".modal-overlay");
+	modals.forEach((modal) => modal.remove());
+};
+
+// Migrate old notes format (string) to new format (array of note objects)
+const migrateNotesData = (jobs) => {
+	return jobs.map((job) => {
+		// If notes is a string, convert it to the new format
+		if (typeof job.notes === "string" && job.notes.trim() !== "") {
+			return {
+				...job,
+				notes: [
+					{
+						id: Date.now(),
+						date: job.appliedDate || new Date().toISOString().split("T")[0],
+						phase: job.currentPhase || "applicationReview",
+						text: job.notes,
+					},
+				],
+			};
+		}
+		// If notes is already an array or empty, keep as is
+		if (Array.isArray(job.notes)) {
+			return job;
+		}
+		// If notes is undefined or empty string, set to empty array
+		return {
+			...job,
+			notes: [],
+		};
+	});
+};
+
 // Job row component
 const JobRow = ({ job, onEdit, onDelete }) => {
 	const row = h(
@@ -429,11 +731,22 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		}),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", {}, job.location),
-		h("td", { className: "notes" }, job.notes),
+		h(
+			"td",
+			{ className: "notes" },
+			NotesCount({
+				notes: job.notes || [],
+				onClick: () => openNotesModal(job),
+			}),
+		),
 		ActionsCell({
 			jobId: job.id,
 			onEdit: (button) => onEdit(button),
 			onDelete: onDelete,
+			onNotes: (jobId) => {
+				const jobToOpen = jobsData.find((j) => j.id === jobId);
+				if (jobToOpen) openAddNoteModal(jobToOpen);
+			},
 		}),
 	);
 
@@ -512,7 +825,7 @@ const I18n = {
 I18n.translations = {
 	en: {
 		app: {
-			title: "Job Search Tracker",
+			title: "JobTracker",
 		},
 		buttons: {
 			addApplication: "+ Add Application",
@@ -599,7 +912,7 @@ I18n.translations = {
 		},
 		messages: {
 			welcome:
-				"Welcome to Job Search Tracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
+				"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
 			errorLoading:
 				"There was an error loading your data.\n\nWould you like to start with 2 example job applications?",
 			confirmDelete:
@@ -617,7 +930,7 @@ I18n.translations = {
 	},
 	pt: {
 		app: {
-			title: "Rastreador de Busca de Emprego",
+			title: "JobTracker",
 		},
 		buttons: {
 			addApplication: "+ Adicionar Candidatura",
@@ -704,7 +1017,7 @@ I18n.translations = {
 		},
 		messages: {
 			welcome:
-				"Bem-vindo ao Rastreador de Busca de Emprego!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
+				"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
 			errorLoading:
 				"Houve um erro ao carregar seus dados.\n\nGostaria de começar com 2 exemplos de candidaturas?",
 			confirmDelete:
@@ -982,6 +1295,8 @@ function loadJobsData() {
 
 		if (savedData) {
 			jobsData = savedData;
+			// Migrate old notes format to new format
+			jobsData = migrateNotesData(jobsData);
 			if (jobsData.length === 0) {
 				shouldShowDemo = true;
 			}
@@ -1017,10 +1332,10 @@ function loadJobsData() {
 // ============================================================================
 
 function createOrUpdateDatalist(id, values) {
-	let datalist = $('#' + id);
+	let datalist = $("#" + id);
 	if (!datalist) {
 		datalist = $(createElement("datalist"));
-		datalist.attr('id', id);
+		datalist.attr("id", id);
 		document.body.appendChild(datalist.get());
 	}
 
@@ -1057,7 +1372,7 @@ function generateDropdown(
 	allLabel,
 	textMapper = null,
 ) {
-	const dropdown = $('#' + dropdownId);
+	const dropdown = $("#" + dropdownId);
 	dropdown.html("");
 
 	// Add "All" option
@@ -1113,8 +1428,8 @@ function generateHeaderFilters() {
 // ============================================================================
 
 function toggleDropdown(dropdownId) {
-	const dropdown = $('#' + dropdownId);
-	const isVisible = dropdown.css('display') === "block";
+	const dropdown = $("#" + dropdownId);
+	const isVisible = dropdown.css("display") === "block";
 
 	// Close all dropdowns first
 	for (const d of $.qsa(".filter-dropdown")) {
@@ -1122,11 +1437,11 @@ function toggleDropdown(dropdownId) {
 	}
 
 	// Toggle the clicked dropdown
-	dropdown.css('display', isVisible ? "none" : "block");
+	dropdown.css("display", isVisible ? "none" : "block");
 }
 
 function closeDropdown(dropdownId) {
-	$('#' + dropdownId).hide();
+	$("#" + dropdownId).hide();
 }
 
 // ============================================================================
@@ -1134,7 +1449,7 @@ function closeDropdown(dropdownId) {
 // ============================================================================
 
 function populateTable(jobs) {
-	const tbody = $('#jobTableBody');
+	const tbody = $("#jobTableBody");
 	tbody.html("");
 
 	for (const job of jobs) {
@@ -1158,7 +1473,7 @@ function initializeData() {
 // ============================================================================
 
 function addRow() {
-	const tbody = $('#jobTableBody').get();
+	const tbody = $("#jobTableBody").get();
 	const newRow = tbody.insertRow(0);
 
 	// Create and configure cells
@@ -1244,12 +1559,8 @@ function addRow() {
 		}),
 	);
 
-	cells.notes.appendChild(
-		TextareaField({
-			placeholder: I18n.t("table.placeholders.notes"),
-			className: "editable notes-textarea",
-		}),
-	);
+	// Notes column shows count (0 for new rows)
+	cells.notes.appendChild(NotesCount({ notes: [], onClick: null }));
 
 	// Add save button
 	const saveButton = h(
@@ -1352,10 +1663,11 @@ function editRow(button) {
 	);
 
 	$(cells[11]).html("");
+	// Notes column shows count and is clickable to view/add notes
 	cells[11].appendChild(
-		TextareaField({
-			value: job.notes,
-			className: "editable notes-textarea",
+		NotesCount({
+			notes: job.notes || [],
+			onClick: () => openNotesModal(job),
 		}),
 	);
 
@@ -1386,7 +1698,8 @@ function extractFormData(cells) {
 		contactEmail: contactLines[1] || "",
 		salaryRange: cells[9].querySelector("input").value,
 		location: cells[10].querySelector("input").value,
-		notes: cells[11].querySelector("textarea").value,
+		// Notes are now handled separately through the notes system
+		notes: [],
 	};
 }
 
@@ -1514,10 +1827,17 @@ $.on(document, "click", (event) => {
 	}
 });
 
-// Cancel edit on ESC key press
+// Cancel edit and close modals on ESC key press
 $.on(document, "keydown", (event) => {
 	if (event.key === "Escape") {
-		// Find any row currently in edit mode (has originalContent stored)
+		// First check if there are any open modals
+		const openModal = document.querySelector(".modal-overlay");
+		if (openModal) {
+			closeModal();
+			return;
+		}
+
+		// Then check for editing rows
 		const editingRow = $.qs("tr[data-original-content]");
 		if (editingRow) {
 			// Find the cancel button in the row and trigger cancel

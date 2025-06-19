@@ -1,4 +1,4 @@
-# Job Search Tracker
+# JobTracker
 
 A super simple, lightweight job application tracking tool that helps you manage your job search process efficiently. No login required, no complex setup - just open and start tracking!
 
