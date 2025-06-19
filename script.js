@@ -132,6 +132,9 @@ function generatePriorityDropdown() {
 	const dropdown = document.getElementById('priorityDropdown');
 	dropdown.innerHTML = '';
 	
+	// Get unique priorities from current data
+	const existingPriorities = [...new Set(jobsData.map(job => job.priority))];
+	
 	// Add "All" option
 	const allOption = document.createElement('div');
 	allOption.className = 'dropdown-option';
@@ -142,8 +145,8 @@ function generatePriorityDropdown() {
 	};
 	dropdown.appendChild(allOption);
 	
-	// Add priority options
-	PRIORITIES.forEach(priority => {
+	// Add only existing priority options
+	existingPriorities.forEach(priority => {
 		const option = document.createElement('div');
 		option.className = 'dropdown-option';
 		option.textContent = priority;
@@ -159,6 +162,9 @@ function generateStatusDropdown() {
 	const dropdown = document.getElementById('statusDropdown');
 	dropdown.innerHTML = '';
 	
+	// Get unique statuses from current data
+	const existingStatuses = [...new Set(jobsData.map(job => job.status))];
+	
 	// Add "All" option
 	const allOption = document.createElement('div');
 	allOption.className = 'dropdown-option';
@@ -169,8 +175,8 @@ function generateStatusDropdown() {
 	};
 	dropdown.appendChild(allOption);
 	
-	// Add status options
-	STATUSES.forEach(status => {
+	// Add only existing status options
+	existingStatuses.forEach(status => {
 		const option = document.createElement('div');
 		option.className = 'dropdown-option';
 		option.textContent = status;
@@ -186,6 +192,9 @@ function generatePhaseDropdown() {
 	const dropdown = document.getElementById('phaseDropdown');
 	dropdown.innerHTML = '';
 	
+	// Get unique phases from current data
+	const existingPhases = [...new Set(jobsData.map(job => job.currentPhase))];
+	
 	// Add "All" option
 	const allOption = document.createElement('div');
 	allOption.className = 'dropdown-option';
@@ -196,8 +205,8 @@ function generatePhaseDropdown() {
 	};
 	dropdown.appendChild(allOption);
 	
-	// Add phase options
-	PHASES.forEach(phase => {
+	// Add only existing phase options
+	existingPhases.forEach(phase => {
 		const option = document.createElement('div');
 		option.className = 'dropdown-option';
 		option.textContent = phase;
