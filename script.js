@@ -408,6 +408,20 @@ function populateTable(jobs) {
                 </button>
             </td>
         `;
+        
+        // Add double-click event listener to the row
+        row.addEventListener('dblclick', function(event) {
+            // Don't trigger edit if clicking on action buttons
+            if (event.target.closest('.actions-cell')) {
+                return;
+            }
+            
+            // Find the edit button and trigger edit
+            const editButton = this.querySelector('.edit-btn');
+            if (editButton) {
+                editRow(editButton);
+            }
+        });
 	});
 }
 
