@@ -1,4 +1,54 @@
+let jobsData = [];
 let originalData = [];
+
+async function loadJobsData() {
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        jobsData = data.jobs;
+        populateTable(jobsData);
+        initializeData();
+    } catch (error) {
+        console.error('Error loading jobs data:', error);
+    }
+}
+
+function populateTable(jobs) {
+    const tbody = document.getElementById('jobTableBody');
+    tbody.innerHTML = '';
+    
+    jobs.forEach(job => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td><span class="priority priority-${job.priority.toLowerCase()}"></span>${job.priority}</td>
+            <td class="company-name">${job.company}</td>
+            <td>${job.position}</td>
+            <td class="date">${job.appliedDate}</td>
+            <td><span class="status status-${getStatusClass(job.status)}">${job.status}</span></td>
+            <td>${job.currentPhase}</td>
+            <td><span class="next-task">${job.nextTask}</span></td>
+            <td class="date">${job.dueDate}</td>
+            <td class="contact">${job.contactPerson}<br>${job.contactEmail}</td>
+            <td class="salary">${job.salaryRange}</td>
+            <td>${job.location}</td>
+            <td class="notes">${job.notes}</td>
+            <td><button onclick="editRow(this)">Edit</button></td>
+        `;
+    });
+}
+
+function getStatusClass(status) {
+    const statusMap = {
+        'Applied': 'applied',
+        'Phone Screening': 'screening',
+        'Interview': 'interview',
+        'Final Round': 'final',
+        'Offer': 'offer',
+        'Rejected': 'rejected',
+        'Withdrawn': 'withdrawn'
+    };
+    return statusMap[status] || 'applied';
+}
 
 function initializeData() {
     const rows = document.querySelectorAll('#jobTableBody tr');
@@ -91,4 +141,4 @@ function updateStats() {
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', initializeData);
+document.addEventListener('DOMContentLoaded', loadJobsData);
