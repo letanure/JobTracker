@@ -73,16 +73,80 @@ function createPrioritySelect(selectedValue = '', includeEmpty = true, className
 	return select;
 }
 
-function generateSelectOptions() {
-	const statusSelect = document.querySelector('.controls select[onchange*="filterByStatus"]');
-	const prioritySelect = document.querySelector('.controls select[onchange*="filterByPriority"]');
+function generateHeaderFilters() {
+	generatePriorityDropdown();
+	generateStatusDropdown();
+}
+
+function generatePriorityDropdown() {
+	const dropdown = document.getElementById('priorityDropdown');
+	dropdown.innerHTML = '';
 	
-	// Replace with new selects
-	const newStatusSelect = createStatusSelect('', true, 'filter-select', function() { filterByStatus(this.value); });
-	const newPrioritySelect = createPrioritySelect('', true, 'filter-select', function() { filterByPriority(this.value); });
+	// Add "All" option
+	const allOption = document.createElement('div');
+	allOption.className = 'dropdown-option';
+	allOption.textContent = 'All Priorities';
+	allOption.onclick = () => {
+		filterByPriority('');
+		closeDropdown('priorityDropdown');
+	};
+	dropdown.appendChild(allOption);
 	
-	statusSelect.parentNode.replaceChild(newStatusSelect, statusSelect);
-	prioritySelect.parentNode.replaceChild(newPrioritySelect, prioritySelect);
+	// Add priority options
+	PRIORITIES.forEach(priority => {
+		const option = document.createElement('div');
+		option.className = 'dropdown-option';
+		option.textContent = priority;
+		option.onclick = () => {
+			filterByPriority(priority);
+			closeDropdown('priorityDropdown');
+		};
+		dropdown.appendChild(option);
+	});
+}
+
+function generateStatusDropdown() {
+	const dropdown = document.getElementById('statusDropdown');
+	dropdown.innerHTML = '';
+	
+	// Add "All" option
+	const allOption = document.createElement('div');
+	allOption.className = 'dropdown-option';
+	allOption.textContent = 'All Statuses';
+	allOption.onclick = () => {
+		filterByStatus('');
+		closeDropdown('statusDropdown');
+	};
+	dropdown.appendChild(allOption);
+	
+	// Add status options
+	STATUSES.forEach(status => {
+		const option = document.createElement('div');
+		option.className = 'dropdown-option';
+		option.textContent = status;
+		option.onclick = () => {
+			filterByStatus(status);
+			closeDropdown('statusDropdown');
+		};
+		dropdown.appendChild(option);
+	});
+}
+
+function toggleDropdown(dropdownId) {
+	const dropdown = document.getElementById(dropdownId);
+	const isVisible = dropdown.style.display === 'block';
+	
+	// Close all dropdowns first
+	document.querySelectorAll('.filter-dropdown').forEach(d => {
+		d.style.display = 'none';
+	});
+	
+	// Toggle the clicked dropdown
+	dropdown.style.display = isVisible ? 'none' : 'block';
+}
+
+function closeDropdown(dropdownId) {
+	document.getElementById(dropdownId).style.display = 'none';
 }
 
 async function loadJobsData() {
@@ -91,7 +155,7 @@ async function loadJobsData() {
 		const data = await response.json();
 		jobsData = data.jobs;
 		populateTable(jobsData);
-		generateSelectOptions();
+		generateHeaderFilters();
 		initializeData();
 	} catch (error) {
 		console.error("Error loading jobs data:", error);
@@ -244,6 +308,15 @@ function updateStats(filteredJobs = null) {
 	document.getElementById("offers").textContent = offers;
 	document.getElementById("rejections").textContent = rejections;
 }
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+	if (!event.target.closest('.header-with-filter')) {
+		document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+			dropdown.style.display = 'none';
+		});
+	}
+});
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", loadJobsData);

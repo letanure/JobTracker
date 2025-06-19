@@ -15,21 +15,29 @@
         
         <div class="controls">
             <button onclick="addRow()">+ Add Application</button>
-            <select class="filter-select" onchange="filterByStatus(this.value)">
-            </select>
-            <select class="filter-select" onchange="filterByPriority(this.value)">
-            </select>
         </div>
         
         <div class="table-container">
             <table id="jobTable">
                 <thead>
                     <tr>
-                        <th>Priority</th>
+                        <th>
+                            <div class="header-with-filter">
+                                Priority
+                                <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
+                                <div class="filter-dropdown" id="priorityDropdown"></div>
+                            </div>
+                        </th>
                         <th>Company</th>
                         <th>Position</th>
                         <th>Applied Date</th>
-                        <th>Status</th>
+                        <th>
+                            <div class="header-with-filter">
+                                Status
+                                <span class="filter-dropdown-icon" onclick="toggleDropdown('statusDropdown')">▼</span>
+                                <div class="filter-dropdown" id="statusDropdown"></div>
+                            </div>
+                        </th>
                         <th>Current Phase</th>
                         <th>Next Task</th>
                         <th>Due Date</th>
