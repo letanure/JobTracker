@@ -273,3 +273,41 @@ tr:hover {
     color: var(--text-light);
     font-size: var(--font-size-medium);
 }
+
+.actions-cell {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.action-btn {
+    padding: 4px 8px;
+    border: none;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    font-size: var(--font-size-small);
+}
+
+.edit-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.edit-btn:hover {
+    background: var(--primary-hover);
+}
+
+.delete-btn {
+    background: var(--error-color);
+    color: white;
+    padding: 4px 6px;
+}
+
+.delete-btn:hover {
+    background: var(--error-light);
+}
+
+.material-symbols-outlined {
+    font-size: 16px !important;
+    vertical-align: middle;
+}

@@ -371,7 +371,14 @@ function populateTable(jobs) {
             <td class="salary">${job.salaryRange}</td>
             <td>${job.location}</td>
             <td class="notes">${job.notes}</td>
-            <td><button onclick="editRow(this)">Edit</button></td>
+            <td class="actions-cell">
+                <button onclick="editRow(this)" class="action-btn edit-btn">
+                    <span class="material-symbols-outlined">edit</span>
+                </button>
+                <button onclick="deleteJob(${job.id})" class="action-btn delete-btn">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+            </td>
         `;
 	});
 }
@@ -436,7 +443,7 @@ function addRow() {
 	salaryCell.innerHTML = '<input class="editable" placeholder="Salary Range">';
 	locationCell.innerHTML = '<input class="editable" placeholder="Location" list="locationsDatalist">';
 	notesCell.innerHTML = '<input class="editable" placeholder="Notes">';
-	actionsCell.innerHTML = '<button onclick="saveRow(this)">Save</button>';
+	actionsCell.innerHTML = '<button onclick="saveRow(this)" class="action-btn edit-btn"><span class="material-symbols-outlined">save</span></button>';
 	
 	updateStats();
 }
@@ -449,6 +456,27 @@ function editRow(button) {
 	alert(
 		"Edit functionality would be implemented here. In a real app, you would make cells editable or open a modal.",
 	);
+}
+
+function deleteJob(jobId) {
+	const jobToDelete = jobsData.find(job => job.id === jobId);
+	if (!jobToDelete) return;
+	
+	const confirmed = confirm(`Are you sure you want to delete the application for ${jobToDelete.position} at ${jobToDelete.company}?`);
+	
+	if (confirmed) {
+		// Remove from jobsData
+		jobsData = jobsData.filter(job => job.id !== jobId);
+		
+		// Save to localStorage
+		saveToLocalStorage();
+		
+		// Refresh the interface
+		populateTable(jobsData);
+		generateHeaderFilters();
+		generateDataLists();
+		updateStats();
+	}
 }
 
 function saveRow(button) {
