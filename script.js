@@ -94,39 +94,33 @@ function saveRow(button) {
 }
 
 function filterByStatus(status) {
-    const rows = document.querySelectorAll('#jobTableBody tr');
-    rows.forEach(row => {
-        const statusCell = row.querySelector('.status');
-        if (!status || statusCell.textContent.trim() === status) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
+    let filteredJobs = jobsData;
+    if (status) {
+        filteredJobs = jobsData.filter(job => job.status === status);
+    }
+    populateTable(filteredJobs);
+    updateStats(filteredJobs);
 }
 
 function filterByPriority(priority) {
-    const rows = document.querySelectorAll('#jobTableBody tr');
-    rows.forEach(row => {
-        const priorityCell = row.cells[0];
-        if (!priority || priorityCell.textContent.trim() === priority) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
+    let filteredJobs = jobsData;
+    if (priority) {
+        filteredJobs = jobsData.filter(job => job.priority === priority);
+    }
+    populateTable(filteredJobs);
+    updateStats(filteredJobs);
 }
 
-function updateStats() {
-    const rows = document.querySelectorAll('#jobTableBody tr:not([style*="display: none"])');
-    let total = rows.length;
+function updateStats(filteredJobs = null) {
+    const jobs = filteredJobs || jobsData;
+    let total = jobs.length;
     let active = 0;
     let interviews = 0;
     let offers = 0;
     let rejections = 0;
     
-    rows.forEach(row => {
-        const status = row.querySelector('.status').textContent.trim();
+    jobs.forEach(job => {
+        const status = job.status;
         if (status !== 'Rejected' && status !== 'Withdrawn') active++;
         if (status.includes('Interview') || status === 'Final Round') interviews++;
         if (status === 'Offer') offers++;
