@@ -1,4 +1,46 @@
 // ============================================================================
+// MINI DOM UTILITY LIBRARY (jQuery-style)
+// ============================================================================
+
+const $ = {
+	// Get element by ID
+	id: (id) => document.getElementById(id),
+	
+	// Query selector (single element)
+	qs: (selector) => document.querySelector(selector),
+	
+	// Query selector all (multiple elements)
+	qsa: (selector) => document.querySelectorAll(selector),
+	
+	// Create element with optional class and text
+	create: (tag, className, textContent) => {
+		const element = document.createElement(tag);
+		if (className) element.className = className;
+		if (textContent) element.textContent = textContent;
+		return element;
+	},
+	
+	// Add event listener
+	on: (element, event, handler) => element.addEventListener(event, handler),
+	
+	// Set innerHTML
+	html: (element, html) => element.innerHTML = html,
+	
+	// Set textContent
+	text: (element, text) => element.textContent = text,
+	
+	// Show/hide element
+	show: (element) => element.style.display = 'block',
+	hide: (element) => element.style.display = 'none',
+	
+	// Toggle display
+	toggle: (element) => {
+		const isVisible = element.style.display === 'block';
+		element.style.display = isVisible ? 'none' : 'block';
+	}
+};
+
+// ============================================================================
 // CONSTANTS AND DATA
 // ============================================================================
 
@@ -91,10 +133,7 @@ function getUniqueValues(array, property) {
 }
 
 function createElement(tag, className, textContent) {
-	const element = document.createElement(tag);
-	if (className) element.className = className;
-	if (textContent) element.textContent = textContent;
-	return element;
+	return $.create(tag, className, textContent);
 }
 
 function createOption(value, text, selected = false) {
@@ -228,14 +267,14 @@ function loadJobsData() {
 // ============================================================================
 
 function createOrUpdateDatalist(id, values) {
-	let datalist = document.getElementById(id);
+	let datalist = $.id(id);
 	if (!datalist) {
 		datalist = createElement('datalist');
 		datalist.id = id;
 		document.body.appendChild(datalist);
 	}
 	
-	datalist.innerHTML = '';
+	$.html(datalist, '');
 	for (const value of values) {
 		datalist.appendChild(createOption(value));
 	}
@@ -262,8 +301,8 @@ function createDropdownOption(text, clickHandler) {
 }
 
 function generateDropdown(dropdownId, values, filterFunction, allLabel) {
-	const dropdown = document.getElementById(dropdownId);
-	dropdown.innerHTML = '';
+	const dropdown = $.id(dropdownId);
+	$.html(dropdown, '');
 	
 	// Add "All" option
 	dropdown.appendChild(createDropdownOption(allLabel, () => {
@@ -295,12 +334,12 @@ function generateHeaderFilters() {
 // ============================================================================
 
 function toggleDropdown(dropdownId) {
-	const dropdown = document.getElementById(dropdownId);
+	const dropdown = $.id(dropdownId);
 	const isVisible = dropdown.style.display === 'block';
 	
 	// Close all dropdowns first
-	for (const d of document.querySelectorAll('.filter-dropdown')) {
-		d.style.display = 'none';
+	for (const d of $.qsa('.filter-dropdown')) {
+		$.hide(d);
 	}
 	
 	// Toggle the clicked dropdown
@@ -308,7 +347,7 @@ function toggleDropdown(dropdownId) {
 }
 
 function closeDropdown(dropdownId) {
-	document.getElementById(dropdownId).style.display = 'none';
+	$.hide($.id(dropdownId));
 }
 
 // ============================================================================
@@ -316,8 +355,8 @@ function closeDropdown(dropdownId) {
 // ============================================================================
 
 function populateTable(jobs) {
-	const tbody = document.getElementById("jobTableBody");
-	tbody.innerHTML = "";
+	const tbody = $.id("jobTableBody");
+	$.html(tbody, "");
 
 	for (const job of jobs) {
 		const row = tbody.insertRow();
@@ -345,7 +384,7 @@ function populateTable(jobs) {
         `;
         
         // Add double-click event listener to the row
-        row.addEventListener('dblclick', function(event) {
+        $.on(row, 'dblclick', function(event) {
             // Don't trigger edit if clicking on action buttons
             if (event.target.closest('.actions-cell')) {
                 return;
@@ -361,7 +400,7 @@ function populateTable(jobs) {
 }
 
 function initializeData() {
-	const rows = document.querySelectorAll("#jobTableBody tr");
+	const rows = $.qsa("#jobTableBody tr");
 	originalData = Array.from(rows).map((row) => row.innerHTML);
 	updateStats();
 }
@@ -371,7 +410,7 @@ function initializeData() {
 // ============================================================================
 
 function addRow() {
-	const tbody = document.getElementById("jobTableBody");
+	const tbody = $.id("jobTableBody");
 	const newRow = tbody.insertRow(0);
 	
 	// Create and configure cells
@@ -588,11 +627,11 @@ function updateStats(filteredJobs = null) {
 		if (status === "Rejected") rejections++;
 	}
 	
-	document.getElementById("totalApps").textContent = total;
-	document.getElementById("activeApps").textContent = active;
-	document.getElementById("interviews").textContent = interviews;
-	document.getElementById("offers").textContent = offers;
-	document.getElementById("rejections").textContent = rejections;
+	$.text($.id("totalApps"), total);
+	$.text($.id("activeApps"), active);
+	$.text($.id("interviews"), interviews);
+	$.text($.id("offers"), offers);
+	$.text($.id("rejections"), rejections);
 }
 
 // ============================================================================
@@ -600,13 +639,13 @@ function updateStats(filteredJobs = null) {
 // ============================================================================
 
 // Close dropdowns when clicking outside
-document.addEventListener('click', function(event) {
+$.on(document, 'click', function(event) {
 	if (!event.target.closest('.header-with-filter')) {
-		for (const dropdown of document.querySelectorAll('.filter-dropdown')) {
-			dropdown.style.display = 'none';
+		for (const dropdown of $.qsa('.filter-dropdown')) {
+			$.hide(dropdown);
 		}
 	}
 });
 
 // Initialize on page load
-document.addEventListener("DOMContentLoaded", loadJobsData);
+$.on(document, "DOMContentLoaded", loadJobsData);
