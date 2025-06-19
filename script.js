@@ -478,12 +478,41 @@ function addRow() {
 
 function editRow(button) {
 	const row = button.closest("tr");
-	const cells = row.querySelectorAll("td");
-
-	// Make cells editable (simplified for demo)
-	alert(
-		"Edit functionality would be implemented here. In a real app, you would make cells editable or open a modal.",
-	);
+	const cells = row.cells;
+	
+	// Get the job ID from the delete button
+	const deleteButton = row.querySelector('[onclick*="deleteJob"]');
+	const jobId = parseInt(deleteButton.getAttribute('onclick').match(/\d+/)[0]);
+	const job = jobsData.find(j => j.id === jobId);
+	
+	if (!job) return;
+	
+	// Store original values for cancel functionality
+	row.dataset.originalContent = row.innerHTML;
+	
+	// Convert row to editable form
+	cells[0].innerHTML = `<div class="priority-cell">${createPrioritySelect(job.priority, false, 'editable').outerHTML}</div>`;
+	cells[1].innerHTML = `<input class="editable" value="${job.company}" list="companiesDatalist">`;
+	cells[2].innerHTML = `<input class="editable" value="${job.position}" list="positionsDatalist">`;
+	cells[3].innerHTML = `<input class="editable" type="date" value="${job.appliedDate}">`;
+	cells[4].innerHTML = `${createStatusSelect(job.status, false, 'editable').outerHTML}`;
+	cells[5].innerHTML = `${createPhaseSelect(job.currentPhase, false, 'editable').outerHTML}`;
+	cells[6].innerHTML = `<input class="editable" value="${job.nextTask}">`;
+	cells[7].innerHTML = `<input class="editable" type="date" value="${job.dueDate}">`;
+	cells[8].innerHTML = `<textarea class="editable contact-textarea" placeholder="Name&#10;Email">${job.contactPerson}&#10;${job.contactEmail}</textarea>`;
+	cells[9].innerHTML = `<input class="editable" value="${job.salaryRange}">`;
+	cells[10].innerHTML = `<input class="editable" value="${job.location}" list="locationsDatalist">`;
+	cells[11].innerHTML = `<textarea class="editable notes-textarea">${job.notes}</textarea>`;
+	cells[12].innerHTML = `
+		<div class="actions-cell">
+			<button onclick="saveEditedRow(this, ${jobId})" class="action-btn edit-btn">
+				<span class="material-symbols-outlined">save</span>
+			</button>
+			<button onclick="cancelEdit(this)" class="action-btn cancel-btn">
+				<span class="material-symbols-outlined">close</span>
+			</button>
+		</div>
+	`;
 }
 
 function deleteJob(jobId) {
@@ -542,6 +571,56 @@ function saveRow(button) {
 	generateHeaderFilters();
 	generateDataLists();
 	updateStats();
+}
+
+function saveEditedRow(button, jobId) {
+	const row = button.closest("tr");
+	const cells = row.cells;
+	
+	// Find the job to update
+	const jobIndex = jobsData.findIndex(job => job.id === jobId);
+	if (jobIndex === -1) return;
+	
+	// Get contact info from textarea
+	const contactText = cells[8].querySelector('textarea').value;
+	const contactLines = contactText.split('\n');
+	
+	// Update the job object
+	jobsData[jobIndex] = {
+		...jobsData[jobIndex],
+		priority: cells[0].querySelector('select').value,
+		company: cells[1].querySelector('input').value,
+		position: cells[2].querySelector('input').value,
+		appliedDate: cells[3].querySelector('input').value,
+		status: cells[4].querySelector('select').value,
+		currentPhase: cells[5].querySelector('select').value,
+		nextTask: cells[6].querySelector('input').value,
+		dueDate: cells[7].querySelector('input').value,
+		contactPerson: contactLines[0] || '',
+		contactEmail: contactLines[1] || '',
+		salaryRange: cells[9].querySelector('input').value,
+		location: cells[10].querySelector('input').value,
+		notes: cells[11].querySelector('textarea').value
+	};
+	
+	// Save to localStorage
+	saveToLocalStorage();
+	
+	// Refresh the interface
+	populateTable(jobsData);
+	generateHeaderFilters();
+	generateDataLists();
+	updateStats();
+}
+
+function cancelEdit(button) {
+	const row = button.closest("tr");
+	
+	// Restore original content
+	if (row.dataset.originalContent) {
+		row.innerHTML = row.dataset.originalContent;
+		delete row.dataset.originalContent;
+	}
 }
 
 function filterByStatus(status) {

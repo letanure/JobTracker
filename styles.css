@@ -311,3 +311,32 @@ tr:hover {
     font-size: 16px !important;
     vertical-align: middle;
 }
+
+.cancel-btn {
+    background: var(--text-light);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: var(--text-lighter);
+}
+
+.contact-textarea {
+    width: 100%;
+    min-height: 40px;
+    resize: vertical;
+    font-size: var(--font-size-medium);
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+}
+
+.notes-textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    font-size: var(--font-size-medium);
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+}
