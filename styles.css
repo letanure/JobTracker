@@ -1,0 +1,219 @@
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: var(--padding-container);
+    background-color: var(--background-color);
+}
+
+.container {
+    max-width: var(--max-width-container);
+    margin: 0 auto;
+    background: var(--container-background);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: white;
+    padding: var(--padding-container);
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: var(--font-size-xlarge);
+    font-weight: 600;
+}
+
+.controls {
+    padding: var(--padding-xxlarge);
+    background: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: var(--padding-medium);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+.filter-select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-base);
+}
+
+.table-container {
+    overflow-x: auto;
+    max-height: var(--max-height-table);
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-normal);
+}
+
+th {
+    background: var(--background-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: var(--padding-xlarge);
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+    white-space: nowrap;
+}
+
+td {
+    padding: var(--padding-large);
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+}
+
+tr:hover {
+    background-color: var(--background-color);
+}
+
+.status {
+    padding: var(--padding-small);
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.status-applied { 
+    background: var(--status-applied-bg); 
+    color: var(--status-applied-text); 
+}
+.status-screening { 
+    background: var(--status-screening-bg); 
+    color: var(--status-screening-text); 
+}
+.status-interview { 
+    background: var(--status-interview-bg); 
+    color: var(--status-interview-text); 
+}
+.status-final { 
+    background: var(--status-final-bg); 
+    color: var(--status-final-text); 
+}
+.status-offer { 
+    background: var(--status-offer-bg); 
+    color: var(--status-offer-text); 
+}
+.status-rejected { 
+    background: var(--status-rejected-bg); 
+    color: var(--status-rejected-text); 
+}
+.status-withdrawn { 
+    background: var(--status-withdrawn-bg); 
+    color: var(--status-withdrawn-text); 
+}
+
+.priority {
+    width: var(--priority-dot-size);
+    height: var(--priority-dot-size);
+    border-radius: var(--border-radius-circle);
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.priority-high { background: var(--priority-high); }
+.priority-medium { background: var(--priority-medium); }
+.priority-low { background: var(--priority-low); }
+
+.company-name {
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.next-task {
+    background: var(--next-task-bg);
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-size: var(--font-size-small);
+    color: var(--next-task-text);
+}
+
+.salary {
+    font-weight: 500;
+    color: var(--success-color);
+}
+
+.notes {
+    max-width: var(--max-width-notes);
+    word-wrap: break-word;
+    font-size: var(--font-size-medium);
+    color: var(--text-light);
+}
+
+.contact {
+    font-size: var(--font-size-medium);
+    color: var(--secondary-color);
+}
+
+.date {
+    white-space: nowrap;
+    font-size: var(--font-size-medium);
+}
+
+.editable {
+    background: transparent;
+    border: none;
+    width: 100%;
+    padding: 2px;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.editable:focus {
+    background: white;
+    border: 1px solid var(--primary-color);
+    outline: none;
+    border-radius: var(--border-radius-small);
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    padding: var(--padding-xxlarge);
+    background: var(--background-color);
+    border-top: 1px solid var(--border-color);
+    font-size: var(--font-size-base);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.stat-label {
+    color: var(--text-light);
+    font-size: var(--font-size-medium);
+}
