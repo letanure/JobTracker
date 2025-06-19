@@ -2,8 +2,123 @@
 // MINI DOM UTILITY LIBRARY (jQuery-style)
 // ============================================================================
 
-const $ = {
-	// Get element by ID
+// jQuery-style DOM wrapper class
+class DOMElement {
+	constructor(element) {
+		this.element = element;
+	}
+
+	// Chainable text method
+	text(content) {
+		if (content === undefined) {
+			return this.element.textContent;
+		}
+		this.element.textContent = content;
+		return this;
+	}
+
+	// Chainable html method
+	html(content) {
+		if (content === undefined) {
+			return this.element.innerHTML;
+		}
+		this.element.innerHTML = content;
+		return this;
+	}
+
+	// Chainable show/hide methods
+	show() {
+		this.element.style.display = "block";
+		return this;
+	}
+
+	hide() {
+		this.element.style.display = "none";
+		return this;
+	}
+
+	toggle() {
+		const isVisible = this.element.style.display === "block";
+		this.element.style.display = isVisible ? "none" : "block";
+		return this;
+	}
+
+	// Chainable event method
+	on(event, handler) {
+		this.element.addEventListener(event, handler);
+		return this;
+	}
+
+	// Chainable addClass/removeClass
+	addClass(className) {
+		this.element.classList.add(className);
+		return this;
+	}
+
+	removeClass(className) {
+		this.element.classList.remove(className);
+		return this;
+	}
+
+	// Chainable attr method
+	attr(name, value) {
+		if (value === undefined) {
+			return this.element.getAttribute(name);
+		}
+		this.element.setAttribute(name, value);
+		return this;
+	}
+
+	// Chainable css method
+	css(property, value) {
+		if (typeof property === 'object') {
+			Object.assign(this.element.style, property);
+		} else if (value === undefined) {
+			return getComputedStyle(this.element)[property];
+		} else {
+			this.element.style[property] = value;
+		}
+		return this;
+	}
+
+	// Append child
+	append(child) {
+		if (typeof child === 'string') {
+			this.element.appendChild(document.createTextNode(child));
+		} else {
+			this.element.appendChild(child);
+		}
+		return this;
+	}
+
+	// Get the raw DOM element
+	get() {
+		return this.element;
+	}
+}
+
+// Enhanced $ function with jQuery-style API
+const $ = (selector) => {
+	if (typeof selector === 'string') {
+		if (selector.startsWith('#')) {
+			// ID selector
+			const element = document.getElementById(selector.slice(1));
+			return element ? new DOMElement(element) : null;
+		} else {
+			// CSS selector
+			const element = document.querySelector(selector);
+			return element ? new DOMElement(element) : null;
+		}
+	} else if (selector instanceof Element) {
+		// Wrap existing element
+		return new DOMElement(selector);
+	}
+	return null;
+};
+
+// Static methods for backwards compatibility and utility
+Object.assign($, {
+	// Get element by ID (returns raw element)
 	id: (id) => document.getElementById(id),
 
 	// Query selector (single element)
@@ -20,25 +135,25 @@ const $ = {
 		return element;
 	},
 
-	// Add event listener
+	// Add event listener (static)
 	on: (element, event, handler) => element.addEventListener(event, handler),
 
-	// Set innerHTML
+	// Set innerHTML (static)
 	html: (element, html) => (element.innerHTML = html),
 
-	// Set textContent
+	// Set textContent (static)
 	text: (element, text) => (element.textContent = text),
 
-	// Show/hide element
+	// Show/hide element (static)
 	show: (element) => (element.style.display = "block"),
 	hide: (element) => (element.style.display = "none"),
 
-	// Toggle display
+	// Toggle display (static)
 	toggle: (element) => {
 		const isVisible = element.style.display === "block";
 		element.style.display = isVisible ? "none" : "block";
 	},
-};
+});
 
 // ============================================================================
 // MINI DATA PERSISTENCE LIBRARY
@@ -108,6 +223,231 @@ const DataStore = {
 			return false;
 		}
 	},
+};
+
+// ============================================================================
+// REACT-LIKE COMPONENT LIBRARY
+// ============================================================================
+
+const Component = {
+	// Create element with props and children
+	createElement: (tag, props = {}, ...children) => {
+		const element = document.createElement(tag);
+
+		// Set attributes and properties
+		for (const [key, value] of Object.entries(props)) {
+			if (key === "className") {
+				element.className = value;
+			} else if (key === "textContent") {
+				element.textContent = value;
+			} else if (key === "innerHTML") {
+				element.innerHTML = value;
+			} else if (key === "onclick" && typeof value === "function") {
+				// Handle onclick specifically
+				element.onclick = value;
+			} else if (key.startsWith("on") && typeof value === "function") {
+				// Event handlers
+				const eventName = key.slice(2).toLowerCase();
+				element.addEventListener(eventName, value);
+			} else if (key === "style" && typeof value === "object") {
+				Object.assign(element.style, value);
+			} else {
+				element.setAttribute(key, value);
+			}
+		}
+
+		// Append children
+		for (const child of children) {
+			if (child) {
+				if (typeof child === "string") {
+					element.appendChild(document.createTextNode(child));
+				} else {
+					element.appendChild(child);
+				}
+			}
+		}
+
+		return element;
+	},
+
+	// Fragment-like container
+	Fragment: (...children) => {
+		const fragment = document.createDocumentFragment();
+		for (const child of children) {
+			if (child) {
+				if (typeof child === "string") {
+					fragment.appendChild(document.createTextNode(child));
+				} else {
+					fragment.appendChild(child);
+				}
+			}
+		}
+		return fragment;
+	},
+};
+
+// Shorthand for createElement
+const h = Component.createElement;
+
+// ============================================================================
+// COMPONENT DEFINITIONS
+// ============================================================================
+
+// Priority cell component
+const PriorityCell = ({ priority }) =>
+	h(
+		"td",
+		{ className: "priority-cell" },
+		h("span", { className: `priority priority-${priority.toLowerCase()}` }),
+		getPriorityText(priority),
+	);
+
+// Status cell component
+const StatusCell = ({ status }) =>
+	h(
+		"td",
+		{},
+		h(
+			"span",
+			{ className: `status status-${getStatusClass(status)}` },
+			getStatusText(status),
+		),
+	);
+
+// Actions cell component
+const ActionsCell = ({ jobId, onEdit, onDelete }) =>
+	h(
+		"td",
+		{ className: "actions-cell" },
+		h(
+			"button",
+			{
+				className: "action-btn edit-btn",
+				onclick: (event) => {
+					// Make sure we get the button element, not the icon
+					const button = event.target.closest("button");
+					onEdit(button);
+				},
+			},
+			h("span", { className: "material-symbols-outlined" }, "edit"),
+		),
+		h(
+			"button",
+			{
+				className: "action-btn delete-btn",
+				onclick: () => onDelete(jobId),
+			},
+			h("span", { className: "material-symbols-outlined" }, "delete"),
+		),
+	);
+
+// Edit actions cell component
+const EditActionsCell = ({ jobId, onSave, onCancel }) =>
+	h(
+		"td",
+		{ className: "actions-cell" },
+		h(
+			"div",
+			{ className: "actions-cell" },
+			h(
+				"button",
+				{
+					className: "action-btn edit-btn",
+					onclick: () => onSave(jobId),
+				},
+				h("span", { className: "material-symbols-outlined" }, "save"),
+			),
+			h(
+				"button",
+				{
+					className: "action-btn cancel-btn",
+					onclick: onCancel,
+				},
+				h("span", { className: "material-symbols-outlined" }, "close"),
+			),
+		),
+	);
+
+// Input field component
+const InputField = ({
+	value = "",
+	type = "text",
+	className = "editable",
+	placeholder = "",
+	list = null,
+}) => {
+	const props = {
+		className,
+		type,
+		value,
+		placeholder,
+	};
+	if (list) props.list = list;
+	return h("input", props);
+};
+
+// Textarea component
+const TextareaField = ({
+	value = "",
+	className = "editable",
+	placeholder = "",
+	rows = null,
+}) => {
+	const props = {
+		className,
+		placeholder,
+		textContent: value,
+	};
+	if (rows) props.rows = rows;
+	return h("textarea", props);
+};
+
+// Contact textarea component
+const ContactTextarea = ({ contactPerson = "", contactEmail = "" }) =>
+	h("textarea", {
+		className: "editable contact-textarea",
+		placeholder: "Name\nEmail",
+		textContent: `${contactPerson}\n${contactEmail}`,
+	});
+
+// Job row component
+const JobRow = ({ job, onEdit, onDelete }) => {
+	const row = h(
+		"tr",
+		{ "data-job-id": job.id },
+		PriorityCell({ priority: job.priority }),
+		h("td", { className: "company-name" }, job.company),
+		h("td", {}, job.position),
+		h("td", { className: "date" }, job.appliedDate),
+		StatusCell({ status: job.status }),
+		h("td", {}, getPhaseText(job.currentPhase)),
+		h("td", {}, h("span", { className: "next-task" }, job.nextTask)),
+		h("td", { className: "date" }, job.dueDate),
+		h("td", {
+			className: "contact",
+			innerHTML: `${job.contactPerson}<br>${job.contactEmail}`,
+		}),
+		h("td", { className: "salary" }, job.salaryRange),
+		h("td", {}, job.location),
+		h("td", { className: "notes" }, job.notes),
+		ActionsCell({
+			jobId: job.id,
+			onEdit: (button) => onEdit(button),
+			onDelete: onDelete,
+		}),
+	);
+
+	// Add double-click event listener
+	row.addEventListener("dblclick", (event) => {
+		if (!event.target.closest(".actions-cell")) {
+			const editButton = row.querySelector(".edit-btn");
+			if (editButton) {
+				onEdit(editButton);
+			}
+		}
+	});
+
+	return row;
 };
 
 // ============================================================================
@@ -502,33 +842,33 @@ function createOption(value, text, selected = false) {
 
 function updateStaticTexts() {
 	// Update page title and header
-	$.text($.id("pageTitle"), I18n.t("app.title"));
-	$.text($.id("appTitle"), I18n.t("app.title"));
+	$("#pageTitle").text(I18n.t("app.title"));
+	$("#appTitle").text(I18n.t("app.title"));
 
 	// Update button
-	$.text($.id("addAppBtn"), I18n.t("buttons.addApplication"));
+	$("#addAppBtn").text(I18n.t("buttons.addApplication"));
 
 	// Update table headers
-	$.text($.id("priorityHeader"), I18n.t("table.headers.priority"));
-	$.text($.id("companyHeader"), I18n.t("table.headers.company"));
-	$.text($.id("positionHeader"), I18n.t("table.headers.position"));
-	$.text($.id("appliedDateHeader"), I18n.t("table.headers.appliedDate"));
-	$.text($.id("statusHeader"), I18n.t("table.headers.status"));
-	$.text($.id("currentPhaseHeader"), I18n.t("table.headers.currentPhase"));
-	$.text($.id("nextTaskHeader"), I18n.t("table.headers.nextTask"));
-	$.text($.id("dueDateHeader"), I18n.t("table.headers.dueDate"));
-	$.text($.id("contactPersonHeader"), I18n.t("table.headers.contactPerson"));
-	$.text($.id("salaryRangeHeader"), I18n.t("table.headers.salaryRange"));
-	$.text($.id("locationHeader"), I18n.t("table.headers.location"));
-	$.text($.id("notesHeader"), I18n.t("table.headers.notes"));
-	$.text($.id("actionsHeader"), I18n.t("table.headers.actions"));
+	$("#priorityHeader").text(I18n.t("table.headers.priority"));
+	$("#companyHeader").text(I18n.t("table.headers.company"));
+	$("#positionHeader").text(I18n.t("table.headers.position"));
+	$("#appliedDateHeader").text(I18n.t("table.headers.appliedDate"));
+	$("#statusHeader").text(I18n.t("table.headers.status"));
+	$("#currentPhaseHeader").text(I18n.t("table.headers.currentPhase"));
+	$("#nextTaskHeader").text(I18n.t("table.headers.nextTask"));
+	$("#dueDateHeader").text(I18n.t("table.headers.dueDate"));
+	$("#contactPersonHeader").text(I18n.t("table.headers.contactPerson"));
+	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
+	$("#locationHeader").text(I18n.t("table.headers.location"));
+	$("#notesHeader").text(I18n.t("table.headers.notes"));
+	$("#actionsHeader").text(I18n.t("table.headers.actions"));
 
 	// Update stats labels
-	$.text($.id("totalAppsLabel"), I18n.t("stats.totalApplications"));
-	$.text($.id("activeAppsLabel"), I18n.t("stats.active"));
-	$.text($.id("interviewsLabel"), I18n.t("stats.interviews"));
-	$.text($.id("offersLabel"), I18n.t("stats.offers"));
-	$.text($.id("rejectionsLabel"), I18n.t("stats.rejections"));
+	$("#totalAppsLabel").text(I18n.t("stats.totalApplications"));
+	$("#activeAppsLabel").text(I18n.t("stats.active"));
+	$("#interviewsLabel").text(I18n.t("stats.interviews"));
+	$("#offersLabel").text(I18n.t("stats.offers"));
+	$("#rejectionsLabel").text(I18n.t("stats.rejections"));
 }
 
 function refreshInterface() {
@@ -674,16 +1014,16 @@ function loadJobsData() {
 // ============================================================================
 
 function createOrUpdateDatalist(id, values) {
-	let datalist = $.id(id);
+	let datalist = $('#' + id);
 	if (!datalist) {
-		datalist = createElement("datalist");
-		datalist.id = id;
-		document.body.appendChild(datalist);
+		datalist = $(createElement("datalist"));
+		datalist.attr('id', id);
+		document.body.appendChild(datalist.get());
 	}
 
-	$.html(datalist, "");
+	datalist.html("");
 	for (const value of values) {
-		datalist.appendChild(createOption(value));
+		datalist.get().appendChild(createOption(value));
 	}
 }
 
@@ -714,11 +1054,11 @@ function generateDropdown(
 	allLabel,
 	textMapper = null,
 ) {
-	const dropdown = $.id(dropdownId);
-	$.html(dropdown, "");
+	const dropdown = $('#' + dropdownId);
+	dropdown.html("");
 
 	// Add "All" option
-	dropdown.appendChild(
+	dropdown.append(
 		createDropdownOption(allLabel, () => {
 			filterFunction("");
 			closeDropdown(dropdownId);
@@ -728,7 +1068,7 @@ function generateDropdown(
 	// Add value options
 	for (const value of values) {
 		const displayText = textMapper ? textMapper(value) : value;
-		dropdown.appendChild(
+		dropdown.append(
 			createDropdownOption(displayText, () => {
 				filterFunction(value);
 				closeDropdown(dropdownId);
@@ -770,8 +1110,8 @@ function generateHeaderFilters() {
 // ============================================================================
 
 function toggleDropdown(dropdownId) {
-	const dropdown = $.id(dropdownId);
-	const isVisible = dropdown.style.display === "block";
+	const dropdown = $('#' + dropdownId);
+	const isVisible = dropdown.css('display') === "block";
 
 	// Close all dropdowns first
 	for (const d of $.qsa(".filter-dropdown")) {
@@ -779,11 +1119,11 @@ function toggleDropdown(dropdownId) {
 	}
 
 	// Toggle the clicked dropdown
-	dropdown.style.display = isVisible ? "none" : "block";
+	dropdown.css('display', isVisible ? "none" : "block");
 }
 
 function closeDropdown(dropdownId) {
-	$.hide($.id(dropdownId));
+	$('#' + dropdownId).hide();
 }
 
 // ============================================================================
@@ -791,47 +1131,16 @@ function closeDropdown(dropdownId) {
 // ============================================================================
 
 function populateTable(jobs) {
-	const tbody = $.id("jobTableBody");
-	$.html(tbody, "");
+	const tbody = $('#jobTableBody');
+	tbody.html("");
 
 	for (const job of jobs) {
-		const row = tbody.insertRow();
-		row.innerHTML = `
-            <td class="priority-cell"><span class="priority priority-${job.priority.toLowerCase()}"></span>${getPriorityText(job.priority)}</td>
-            <td class="company-name">${job.company}</td>
-            <td>${job.position}</td>
-            <td class="date">${job.appliedDate}</td>
-            <td><span class="status status-${getStatusClass(job.status)}">${getStatusText(job.status)}</span></td>
-            <td>${getPhaseText(job.currentPhase)}</td>
-            <td><span class="next-task">${job.nextTask}</span></td>
-            <td class="date">${job.dueDate}</td>
-            <td class="contact">${job.contactPerson}<br>${job.contactEmail}</td>
-            <td class="salary">${job.salaryRange}</td>
-            <td>${job.location}</td>
-            <td class="notes">${job.notes}</td>
-            <td class="actions-cell">
-                <button onclick="editRow(this)" class="action-btn edit-btn">
-                    <span class="material-symbols-outlined">edit</span>
-                </button>
-                <button onclick="deleteJob(${job.id})" class="action-btn delete-btn">
-                    <span class="material-symbols-outlined">delete</span>
-                </button>
-            </td>
-        `;
-
-		// Add double-click event listener to the row
-		$.on(row, "dblclick", function (event) {
-			// Don't trigger edit if clicking on action buttons
-			if (event.target.closest(".actions-cell")) {
-				return;
-			}
-
-			// Find the edit button and trigger edit
-			const editButton = this.querySelector(".edit-btn");
-			if (editButton) {
-				editRow(editButton);
-			}
+		const jobRow = JobRow({
+			job,
+			onEdit: (button) => editRow(button),
+			onDelete: deleteJob,
 		});
+		tbody.append(jobRow);
 	}
 }
 
@@ -846,7 +1155,7 @@ function initializeData() {
 // ============================================================================
 
 function addRow() {
-	const tbody = $.id("jobTableBody");
+	const tbody = $('#jobTableBody').get();
 	const newRow = tbody.insertRow(0);
 
 	// Create and configure cells
@@ -882,65 +1191,80 @@ function addRow() {
 		createPhaseSelect("applicationReview", false, "editable"),
 	);
 
-	// Add input fields
-	const inputFields = [
-		{
-			cell: cells.company,
+	// Add input fields using components
+	cells.company.appendChild(
+		InputField({
 			placeholder: I18n.t("table.placeholders.companyName"),
 			list: "companiesDatalist",
-		},
-		{
-			cell: cells.position,
+		}),
+	);
+
+	cells.position.appendChild(
+		InputField({
 			placeholder: I18n.t("table.placeholders.positionTitle"),
 			list: "positionsDatalist",
-		},
-		{
-			cell: cells.appliedDate,
+		}),
+	);
+
+	cells.appliedDate.appendChild(
+		InputField({
 			type: "date",
 			value: new Date().toISOString().split("T")[0],
-		},
-		{
-			cell: cells.nextTask,
+		}),
+	);
+
+	cells.nextTask.appendChild(
+		InputField({
 			placeholder: I18n.t("table.placeholders.nextTask"),
-		},
-		{ cell: cells.dueDate, type: "date" },
-		{
-			cell: cells.contact,
+		}),
+	);
+
+	cells.dueDate.appendChild(InputField({ type: "date" }));
+
+	cells.contact.appendChild(
+		TextareaField({
 			placeholder: I18n.t("table.placeholders.nameEmail"),
-		},
-		{
-			cell: cells.salary,
+			className: "editable contact-textarea",
+		}),
+	);
+
+	cells.salary.appendChild(
+		InputField({
 			placeholder: I18n.t("table.placeholders.salaryRange"),
-		},
-		{
-			cell: cells.location,
+		}),
+	);
+
+	cells.location.appendChild(
+		InputField({
 			placeholder: I18n.t("table.placeholders.location"),
 			list: "locationsDatalist",
-		},
-		{ cell: cells.notes, placeholder: I18n.t("table.placeholders.notes") },
-	];
+		}),
+	);
 
-	for (const field of inputFields) {
-		const input = createElement("input", "editable");
-		input.placeholder = field.placeholder || "";
-		if (field.type) input.type = field.type;
-		if (field.value) input.value = field.value;
-		if (field.list) input.setAttribute("list", field.list);
-		field.cell.appendChild(input);
-	}
+	cells.notes.appendChild(
+		TextareaField({
+			placeholder: I18n.t("table.placeholders.notes"),
+			className: "editable notes-textarea",
+		}),
+	);
 
 	// Add save button
-	cells.actions.innerHTML =
-		'<button onclick="saveRow(this)" class="action-btn edit-btn"><span class="material-symbols-outlined">save</span></button>';
+	const saveButton = h(
+		"button",
+		{
+			className: "action-btn edit-btn",
+			onclick: () => saveRow(cells.actions.querySelector("button")),
+		},
+		h("span", { className: "material-symbols-outlined" }, "save"),
+	);
+	cells.actions.appendChild(saveButton);
 
 	updateStats();
 }
 
 function getJobIdFromRow(row) {
-	const deleteButton = row.querySelector('[onclick*="deleteJob"]');
-	return deleteButton
-		? parseInt(deleteButton.getAttribute("onclick").match(/\d+/)[0])
-		: null;
+	const jobId = row.getAttribute("data-job-id");
+	return jobId ? Number.parseInt(jobId) : null;
 }
 
 function editRow(button) {
@@ -955,28 +1279,91 @@ function editRow(button) {
 	row.dataset.originalContent = row.innerHTML;
 
 	// Convert row to editable form
-	cells[0].innerHTML = `<div class="priority-cell">${createPrioritySelect(job.priority, false, "editable").outerHTML}</div>`;
-	cells[1].innerHTML = `<input class="editable" value="${job.company}" list="companiesDatalist">`;
-	cells[2].innerHTML = `<input class="editable" value="${job.position}" list="positionsDatalist">`;
-	cells[3].innerHTML = `<input class="editable" type="date" value="${job.appliedDate}">`;
-	cells[4].innerHTML = `${createStatusSelect(job.status, false, "editable").outerHTML}`;
-	cells[5].innerHTML = `${createPhaseSelect(job.currentPhase, false, "editable").outerHTML}`;
-	cells[6].innerHTML = `<input class="editable" value="${job.nextTask}">`;
-	cells[7].innerHTML = `<input class="editable" type="date" value="${job.dueDate}">`;
-	cells[8].innerHTML = `<textarea class="editable contact-textarea" placeholder="Name&#10;Email">${job.contactPerson}&#10;${job.contactEmail}</textarea>`;
-	cells[9].innerHTML = `<input class="editable" value="${job.salaryRange}">`;
-	cells[10].innerHTML = `<input class="editable" value="${job.location}" list="locationsDatalist">`;
-	cells[11].innerHTML = `<textarea class="editable notes-textarea">${job.notes}</textarea>`;
-	cells[12].innerHTML = `
-		<div class="actions-cell">
-			<button onclick="saveEditedRow(this, ${jobId})" class="action-btn edit-btn">
-				<span class="material-symbols-outlined">save</span>
-			</button>
-			<button onclick="cancelEdit(this)" class="action-btn cancel-btn">
-				<span class="material-symbols-outlined">close</span>
-			</button>
-		</div>
-	`;
+	$(cells[0]).html("");
+	cells[0].appendChild(
+		h(
+			"div",
+			{ className: "priority-cell" },
+			createPrioritySelect(job.priority, false, "editable"),
+		),
+	);
+
+	$(cells[1]).html("");
+	cells[1].appendChild(
+		InputField({
+			value: job.company,
+			list: "companiesDatalist",
+		}),
+	);
+
+	$(cells[2]).html("");
+	cells[2].appendChild(
+		InputField({
+			value: job.position,
+			list: "positionsDatalist",
+		}),
+	);
+
+	$(cells[3]).html("");
+	cells[3].appendChild(
+		InputField({
+			value: job.appliedDate,
+			type: "date",
+		}),
+	);
+
+	$(cells[4]).html("");
+	cells[4].appendChild(createStatusSelect(job.status, false, "editable"));
+
+	$(cells[5]).html("");
+	cells[5].appendChild(createPhaseSelect(job.currentPhase, false, "editable"));
+
+	$(cells[6]).html("");
+	cells[6].appendChild(InputField({ value: job.nextTask }));
+
+	$(cells[7]).html("");
+	cells[7].appendChild(
+		InputField({
+			value: job.dueDate,
+			type: "date",
+		}),
+	);
+
+	$(cells[8]).html("");
+	cells[8].appendChild(
+		ContactTextarea({
+			contactPerson: job.contactPerson,
+			contactEmail: job.contactEmail,
+		}),
+	);
+
+	$(cells[9]).html("");
+	cells[9].appendChild(InputField({ value: job.salaryRange }));
+
+	$(cells[10]).html("");
+	cells[10].appendChild(
+		InputField({
+			value: job.location,
+			list: "locationsDatalist",
+		}),
+	);
+
+	$(cells[11]).html("");
+	cells[11].appendChild(
+		TextareaField({
+			value: job.notes,
+			className: "editable notes-textarea",
+		}),
+	);
+
+	$(cells[12]).html("");
+	cells[12].appendChild(
+		EditActionsCell({
+			jobId: jobId,
+			onSave: (id) => saveEditedRow(cells[12].querySelector("button"), id),
+			onCancel: () => cancelEdit(cells[12].querySelector(".cancel-btn")),
+		}),
+	);
 }
 
 function extractFormData(cells) {
@@ -1104,11 +1491,11 @@ function updateStats(filteredJobs = null) {
 		if (status === "Rejected") rejections++;
 	}
 
-	$.text($.id("totalApps"), total);
-	$.text($.id("activeApps"), active);
-	$.text($.id("interviews"), interviews);
-	$.text($.id("offers"), offers);
-	$.text($.id("rejections"), rejections);
+	$("#totalApps").text(total);
+	$("#activeApps").text(active);
+	$("#interviews").text(interviews);
+	$("#offers").text(offers);
+	$("#rejections").text(rejections);
 }
 
 // ============================================================================
@@ -1116,7 +1503,7 @@ function updateStats(filteredJobs = null) {
 // ============================================================================
 
 // Close dropdowns when clicking outside
-$.on(document, "click", function (event) {
+$.on(document, "click", (event) => {
 	if (!event.target.closest(".header-with-filter")) {
 		for (const dropdown of $.qsa(".filter-dropdown")) {
 			$.hide(dropdown);
