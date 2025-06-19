@@ -1,5 +1,46 @@
+const STATUSES = [
+	"Applied",
+	"Phone Screening", 
+	"Interview",
+	"Final Round",
+	"Offer",
+	"Rejected",
+	"Withdrawn"
+];
+
+const PRIORITIES = [
+	"High",
+	"Medium", 
+	"Low"
+];
+
 let jobsData = [];
 let originalData = [];
+
+function generateSelectOptions() {
+	const statusSelect = document.querySelector('.controls select[onchange*="filterByStatus"]');
+	const prioritySelect = document.querySelector('.controls select[onchange*="filterByPriority"]');
+	
+	// Clear existing options except first
+	statusSelect.innerHTML = '<option value="">All Statuses</option>';
+	prioritySelect.innerHTML = '<option value="">All Priorities</option>';
+	
+	// Generate status options
+	STATUSES.forEach(status => {
+		const option = document.createElement('option');
+		option.value = status;
+		option.textContent = status;
+		statusSelect.appendChild(option);
+	});
+	
+	// Generate priority options
+	PRIORITIES.forEach(priority => {
+		const option = document.createElement('option');
+		option.value = priority;
+		option.textContent = `${priority} Priority`;
+		prioritySelect.appendChild(option);
+	});
+}
 
 async function loadJobsData() {
 	try {
@@ -7,6 +48,7 @@ async function loadJobsData() {
 		const data = await response.json();
 		jobsData = data.jobs;
 		populateTable(jobsData);
+		generateSelectOptions();
 		initializeData();
 	} catch (error) {
 		console.error("Error loading jobs data:", error);
