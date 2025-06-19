@@ -41,6 +41,76 @@ const $ = {
 };
 
 // ============================================================================
+// MINI DATA PERSISTENCE LIBRARY
+// ============================================================================
+
+const DataStore = {
+	// Storage key for job tracker data
+	STORAGE_KEY: 'jobTrackerData',
+	
+	// Save data to storage
+	save: (data) => {
+		try {
+			localStorage.setItem(DataStore.STORAGE_KEY, JSON.stringify(data));
+			return true;
+		} catch (error) {
+			console.error('Error saving data:', error);
+			return false;
+		}
+	},
+	
+	// Load data from storage
+	load: () => {
+		try {
+			const savedData = localStorage.getItem(DataStore.STORAGE_KEY);
+			return savedData ? JSON.parse(savedData) : null;
+		} catch (error) {
+			console.error('Error loading data:', error);
+			return null;
+		}
+	},
+	
+	// Check if data exists in storage
+	exists: () => {
+		return localStorage.getItem(DataStore.STORAGE_KEY) !== null;
+	},
+	
+	// Clear all data from storage
+	clear: () => {
+		try {
+			localStorage.removeItem(DataStore.STORAGE_KEY);
+			return true;
+		} catch (error) {
+			console.error('Error clearing data:', error);
+			return false;
+		}
+	},
+	
+	// Get storage size (in characters)
+	getSize: () => {
+		const data = localStorage.getItem(DataStore.STORAGE_KEY);
+		return data ? data.length : 0;
+	},
+	
+	// Export data as JSON string (for backup/export features)
+	export: () => {
+		const data = DataStore.load();
+		return data ? JSON.stringify(data, null, 2) : null;
+	},
+	
+	// Import data from JSON string (for restore/import features)
+	import: (jsonString) => {
+		try {
+			const data = JSON.parse(jsonString);
+			return DataStore.save(data);
+		} catch (error) {
+			console.error('Error importing data:', error);
+			return false;
+		}
+	}
+};
+
+// ============================================================================
 // CONSTANTS AND DATA
 // ============================================================================
 
@@ -215,16 +285,16 @@ function createPhaseSelect(selectedValue = '', includeEmpty = true, className = 
 // ============================================================================
 
 function saveToLocalStorage() {
-	localStorage.setItem('jobTrackerData', JSON.stringify(jobsData));
+	DataStore.save(jobsData);
 }
 
 function loadJobsData() {
 	try {
-		const savedData = localStorage.getItem('jobTrackerData');
+		const savedData = DataStore.load();
 		let shouldShowDemo = false;
 		
 		if (savedData) {
-			jobsData = JSON.parse(savedData);
+			jobsData = savedData;
 			if (jobsData.length === 0) {
 				shouldShowDemo = true;
 			}
