@@ -528,3 +528,55 @@ tr:hover {
 .notes-btn:hover {
     background: var(--primary-hover);
 }
+
+/* Add note section in unified modal - styled like note item but darker */
+.add-note-section {
+    margin-top: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-medium);
+    padding: var(--padding-medium);
+    background: #f0f0f0; /* Slightly darker than normal note items */
+}
+
+.add-note-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+}
+
+.note-form-info {
+    display: flex;
+    gap: 20px;
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.note-form-info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.add-note-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.add-note-textarea:focus {
+    outline: none;
+}
+
+.add-note-textarea::placeholder {
+    color: var(--text-light);
+    font-style: italic;
+}

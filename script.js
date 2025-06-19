@@ -449,12 +449,73 @@ const NoteItem = ({ note }) => {
 	);
 };
 
-// Modal component for viewing notes
-const NotesViewModal = ({ job, onClose }) => {
+// Unified modal component for viewing and adding notes
+const NotesModal = ({ job, onClose }) => {
 	const notes = job.notes || [];
 	const sortedNotes = [...notes].sort(
-		(a, b) => new Date(b.date) - new Date(a.date),
+		(a, b) => new Date(a.date) - new Date(b.date),
 	);
+
+	const handleAddNote = () => {
+		const textarea = document.querySelector('.add-note-textarea');
+		const noteText = textarea.value.trim();
+
+		if (!noteText) {
+			textarea.focus();
+			return;
+		}
+
+		const newNote = {
+			id: Date.now(),
+			date: new Date().toISOString(),
+			phase: job.currentPhase,
+			text: noteText,
+		};
+
+		// Add note to job data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		if (!jobsData[jobIndex].notes) {
+			jobsData[jobIndex].notes = [];
+		}
+		
+		jobsData[jobIndex].notes.push(newNote);
+		saveToLocalStorage();
+		
+		// Update the job object for this modal
+		job.notes = jobsData[jobIndex].notes;
+		
+		// Add the new note to the existing modal without reopening
+		const modalBody = document.querySelector('.modal-body');
+		const addNoteSection = modalBody.querySelector('.add-note-section');
+		
+		// Create and insert the new note before the add note section
+		const newNoteElement = NoteItem({ note: newNote });
+		modalBody.insertBefore(newNoteElement, addNoteSection);
+		
+		// Clear the textarea
+		textarea.value = '';
+		
+		// Update the notes count in the table (refresh interface for count update)
+		updateStats();
+		const tableRow = document.querySelector(`tr[data-job-id="${job.id}"]`);
+		if (tableRow) {
+			const notesCell = tableRow.querySelector('.notes');
+			if (notesCell) {
+				notesCell.innerHTML = '';
+				notesCell.appendChild(NotesCount({ 
+					notes: job.notes || [], 
+					onClick: () => openNotesModal(job) 
+				}));
+			}
+		}
+		
+		// Scroll to bottom to show the new note and keep form visible
+		setTimeout(() => {
+			modalBody.scrollTop = modalBody.scrollHeight;
+		}, 100);
+	};
 
 	return h(
 		"div",
@@ -478,13 +539,39 @@ const NotesViewModal = ({ job, onClose }) => {
 			h(
 				"div",
 				{ className: "modal-body" },
+				// Existing notes list
 				...(sortedNotes.length > 0
 					? sortedNotes.map((note) => NoteItem({ note }))
 					: [h(
 							"p",
-							{ style: { textAlign: "center", color: "var(--text-light)" } },
-							"No notes yet",
+							{ style: { textAlign: "center", color: "var(--text-light)", marginBottom: "20px" } },
+							"No notes yet. Add your first note below.",
 						)]
+				),
+				// Add note form section
+				h("div", { className: "add-note-section" },
+					h("h4", { className: "add-note-title" }, "Add New Note"),
+					h(
+						"div",
+						{ className: "note-form-info" },
+						h(
+							"span", 
+							{},
+							h("span", { className: "material-symbols-outlined" }, "assignment"),
+							` Phase: ${getPhaseText(job.currentPhase)}`
+						),
+					),
+					h("textarea", {
+						className: "add-note-textarea",
+						placeholder: "Enter your note here...",
+						rows: 3,
+						onkeydown: (e) => {
+							if (e.key === 'Enter' && e.shiftKey) {
+								e.preventDefault();
+								handleAddNote();
+							}
+						}
+					})
 				)
 			),
 			h(
@@ -494,7 +581,7 @@ const NotesViewModal = ({ job, onClose }) => {
 					"button",
 					{
 						className: "action-btn edit-btn",
-						onclick: () => openAddNoteModal(job),
+						onclick: handleAddNote
 					},
 					"Add Note",
 				),
@@ -508,125 +595,6 @@ const NotesViewModal = ({ job, onClose }) => {
 	);
 };
 
-// Modal component for adding new notes
-const AddNoteModal = ({ job, onClose, onSave }) => {
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		const textarea = e.target.querySelector("textarea");
-		const noteText = textarea.value.trim();
-
-		if (!noteText) {
-			textarea.focus();
-			return;
-		}
-
-		const newNote = {
-			id: Date.now(),
-			date: new Date().toISOString().split("T")[0],
-			phase: job.currentPhase,
-			text: noteText,
-		};
-
-		onSave(newNote);
-		onClose();
-	};
-
-	const handleSaveClick = () => {
-		const form = document.querySelector('.note-form');
-		if (form) {
-			const textarea = form.querySelector("textarea");
-			const noteText = textarea.value.trim();
-
-			if (!noteText) {
-				textarea.focus();
-				return;
-			}
-
-			const newNote = {
-				id: Date.now(),
-				date: new Date().toISOString().split("T")[0],
-				phase: job.currentPhase,
-				text: noteText,
-			};
-
-			onSave(newNote);
-			onClose();
-		}
-	};
-
-	return h(
-		"div",
-		{
-			className: "modal-overlay",
-			onclick: (e) => e.target === e.currentTarget && onClose(),
-		},
-		h(
-			"div",
-			{ className: "modal" },
-			h(
-				"div",
-				{ className: "modal-header" },
-				h(
-					"h3",
-					{ className: "modal-title" },
-					`Add Note - ${job.position} at ${job.company}`,
-				),
-				h("button", { className: "modal-close", onclick: onClose }, "×"),
-			),
-			h(
-				"form",
-				{ className: "note-form", onsubmit: handleSubmit },
-				h(
-					"div",
-					{ className: "modal-body" },
-					h(
-						"div",
-						{ className: "note-form-info" },
-						h(
-							"span",
-							{},
-							h("span", { className: "material-symbols-outlined" }, "calendar_today"),
-							` Date: ${formatDate(new Date().toISOString().split("T")[0])}`,
-						),
-						h(
-							"span", 
-							{},
-							h("span", { className: "material-symbols-outlined" }, "assignment"),
-							` Phase: ${getPhaseText(job.currentPhase)}`
-						),
-					),
-					h("textarea", {
-						placeholder: "Enter your note here...",
-						required: true,
-						autofocus: true,
-					}),
-				),
-				h(
-					"div",
-					{ className: "modal-footer" },
-					h(
-						"button",
-						{ 
-							type: "button", 
-							className: "action-btn edit-btn",
-							onclick: handleSaveClick
-						},
-						"Save Note",
-					),
-					h(
-						"button",
-						{
-							type: "button",
-							className: "action-btn cancel-btn",
-							onclick: onClose,
-						},
-						"Cancel",
-					),
-				),
-			),
-		),
-	);
-};
 
 // ============================================================================
 // NOTES MANAGEMENT FUNCTIONS
@@ -635,11 +603,41 @@ const AddNoteModal = ({ job, onClose, onSave }) => {
 // Format date for display
 const formatDate = (dateString) => {
 	const date = new Date(dateString);
-	return date.toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "short",
-		day: "numeric",
-	});
+	
+	// Use CONFIG.dateFormat to determine format
+	switch (CONFIG.dateFormat) {
+		case 'DD/MM/YY':
+			return date.toLocaleDateString("en-GB", {
+				year: "2-digit",
+				month: "2-digit", 
+				day: "2-digit"
+			});
+		case 'MM/DD/YY':
+			return date.toLocaleDateString("en-US", {
+				year: "2-digit",
+				month: "2-digit",
+				day: "2-digit"
+			});
+		case 'YYYY-MM-DD':
+			return date.toISOString().split('T')[0];
+		case 'DD/MM/YY HH:MM':
+			return date.toLocaleDateString("en-GB", {
+				year: "2-digit",
+				month: "2-digit",
+				day: "2-digit"
+			}) + ' ' + date.toLocaleTimeString("en-GB", {
+				hour: "2-digit",
+				minute: "2-digit",
+				hour12: false
+			});
+		default:
+			// Default to DD/MM/YY format
+			return date.toLocaleDateString("en-GB", {
+				year: "2-digit",
+				month: "2-digit",
+				day: "2-digit"
+			});
+	}
 };
 
 // Add note to job
@@ -656,26 +654,26 @@ const addNoteToJob = (jobId, note) => {
 	refreshInterface();
 };
 
-// Open add note modal
-const openAddNoteModal = (job) => {
-	const modal = AddNoteModal({
-		job,
-		onClose: closeModal,
-		onSave: (note) => addNoteToJob(job.id, note),
-	});
-
-	document.body.appendChild(modal);
-};
-
-// Open notes view modal
+// Open unified notes modal (for both viewing and adding notes)
 const openNotesModal = (job) => {
-	const modal = NotesViewModal({
+	const modal = NotesModal({
 		job,
 		onClose: closeModal,
 	});
 
 	document.body.appendChild(modal);
+	
+	// Scroll to bottom to show the add note form
+	setTimeout(() => {
+		const modalBody = modal.querySelector('.modal-body');
+		if (modalBody) {
+			modalBody.scrollTop = modalBody.scrollHeight;
+		}
+	}, 50);
 };
+
+// Alias for backward compatibility
+const openAddNoteModal = openNotesModal;
 
 // Close modal
 const closeModal = () => {
@@ -1034,6 +1032,15 @@ I18n.translations = {
 				"Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
 		},
 	},
+};
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+
+const CONFIG = {
+	dateFormat: 'DD/MM/YY HH:MM', // Options: 'DD/MM/YY', 'MM/DD/YY', 'YYYY-MM-DD', 'DD/MM/YY HH:MM'
+	showTimeInNotes: true, // Set to true to include time in notes
 };
 
 // ============================================================================
