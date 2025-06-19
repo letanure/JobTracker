@@ -17,29 +17,72 @@ const PRIORITIES = [
 let jobsData = [];
 let originalData = [];
 
-function generateSelectOptions() {
-	const statusSelect = document.querySelector('.controls select[onchange*="filterByStatus"]');
-	const prioritySelect = document.querySelector('.controls select[onchange*="filterByPriority"]');
+function createStatusSelect(selectedValue = '', includeEmpty = true, className = 'filter-select', onChange = null) {
+	const select = document.createElement('select');
+	select.className = className;
 	
-	// Clear existing options except first
-	statusSelect.innerHTML = '<option value="">All Statuses</option>';
-	prioritySelect.innerHTML = '<option value="">All Priorities</option>';
+	if (includeEmpty) {
+		const emptyOption = document.createElement('option');
+		emptyOption.value = '';
+		emptyOption.textContent = 'All Statuses';
+		select.appendChild(emptyOption);
+	}
 	
-	// Generate status options
 	STATUSES.forEach(status => {
 		const option = document.createElement('option');
 		option.value = status;
 		option.textContent = status;
-		statusSelect.appendChild(option);
+		if (status === selectedValue) {
+			option.selected = true;
+		}
+		select.appendChild(option);
 	});
 	
-	// Generate priority options
+	if (onChange) {
+		select.onchange = onChange;
+	}
+	
+	return select;
+}
+
+function createPrioritySelect(selectedValue = '', includeEmpty = true, className = 'filter-select', onChange = null) {
+	const select = document.createElement('select');
+	select.className = className;
+	
+	if (includeEmpty) {
+		const emptyOption = document.createElement('option');
+		emptyOption.value = '';
+		emptyOption.textContent = 'All Priorities';
+		select.appendChild(emptyOption);
+	}
+	
 	PRIORITIES.forEach(priority => {
 		const option = document.createElement('option');
 		option.value = priority;
-		option.textContent = `${priority} Priority`;
-		prioritySelect.appendChild(option);
+		option.textContent = includeEmpty ? `${priority} Priority` : priority;
+		if (priority === selectedValue) {
+			option.selected = true;
+		}
+		select.appendChild(option);
 	});
+	
+	if (onChange) {
+		select.onchange = onChange;
+	}
+	
+	return select;
+}
+
+function generateSelectOptions() {
+	const statusSelect = document.querySelector('.controls select[onchange*="filterByStatus"]');
+	const prioritySelect = document.querySelector('.controls select[onchange*="filterByPriority"]');
+	
+	// Replace with new selects
+	const newStatusSelect = createStatusSelect('', true, 'filter-select', function() { filterByStatus(this.value); });
+	const newPrioritySelect = createPrioritySelect('', true, 'filter-select', function() { filterByPriority(this.value); });
+	
+	statusSelect.parentNode.replaceChild(newStatusSelect, statusSelect);
+	prioritySelect.parentNode.replaceChild(newPrioritySelect, prioritySelect);
 }
 
 async function loadJobsData() {
@@ -92,21 +135,52 @@ function initializeData() {
 function addRow() {
 	const tbody = document.getElementById("jobTableBody");
 	const newRow = tbody.insertRow(0);
-	newRow.innerHTML = `
-        <td><span class="priority priority-medium"></span>Medium</td>
-        <td class="company-name"><input class="editable" placeholder="Company Name"></td>
-        <td><input class="editable" placeholder="Position Title"></td>
-        <td class="date"><input class="editable" type="date" value="${new Date().toISOString().split("T")[0]}"></td>
-        <td><span class="status status-applied">Applied</span></td>
-        <td><input class="editable" placeholder="Current Phase"></td>
-        <td><span class="next-task"><input class="editable" placeholder="Next Task"></span></td>
-        <td class="date"><input class="editable" type="date"></td>
-        <td class="contact"><input class="editable" placeholder="Name & Email"></td>
-        <td class="salary"><input class="editable" placeholder="Salary Range"></td>
-        <td><input class="editable" placeholder="Location"></td>
-        <td class="notes"><input class="editable" placeholder="Notes"></td>
-        <td><button onclick="saveRow(this)">Save</button></td>
-    `;
+	
+	// Create cells
+	const priorityCell = newRow.insertCell();
+	const companyCell = newRow.insertCell();
+	const positionCell = newRow.insertCell();
+	const appliedDateCell = newRow.insertCell();
+	const statusCell = newRow.insertCell();
+	const currentPhaseCell = newRow.insertCell();
+	const nextTaskCell = newRow.insertCell();
+	const dueDateCell = newRow.insertCell();
+	const contactCell = newRow.insertCell();
+	const salaryCell = newRow.insertCell();
+	const locationCell = newRow.insertCell();
+	const notesCell = newRow.insertCell();
+	const actionsCell = newRow.insertCell();
+	
+	// Add classes
+	priorityCell.className = 'priority-cell';
+	companyCell.className = 'company-name';
+	appliedDateCell.className = 'date';
+	dueDateCell.className = 'date';
+	contactCell.className = 'contact';
+	salaryCell.className = 'salary';
+	notesCell.className = 'notes';
+	
+	// Create priority select
+	const prioritySelect = createPrioritySelect('Medium', false, 'editable');
+	priorityCell.appendChild(prioritySelect);
+	
+	// Create status select  
+	const statusSelect = createStatusSelect('Applied', false, 'editable');
+	statusCell.appendChild(statusSelect);
+	
+	// Fill other cells
+	companyCell.innerHTML = '<input class="editable" placeholder="Company Name">';
+	positionCell.innerHTML = '<input class="editable" placeholder="Position Title">';
+	appliedDateCell.innerHTML = `<input class="editable" type="date" value="${new Date().toISOString().split("T")[0]}">`;
+	currentPhaseCell.innerHTML = '<input class="editable" placeholder="Current Phase">';
+	nextTaskCell.innerHTML = '<input class="editable" placeholder="Next Task">';
+	dueDateCell.innerHTML = '<input class="editable" type="date">';
+	contactCell.innerHTML = '<input class="editable" placeholder="Name & Email">';
+	salaryCell.innerHTML = '<input class="editable" placeholder="Salary Range">';
+	locationCell.innerHTML = '<input class="editable" placeholder="Location">';
+	notesCell.innerHTML = '<input class="editable" placeholder="Notes">';
+	actionsCell.innerHTML = '<button onclick="saveRow(this)">Save</button>';
+	
 	updateStats();
 }
 
