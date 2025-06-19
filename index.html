@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Tracker</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .controls {
+            padding: 15px 20px;
+            background: #f1f3f4;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #3367d6;
+        }
+        
+        .filter-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: #f8f9fa;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e8eaed;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .status-applied { background: #e3f2fd; color: #1976d2; }
+        .status-screening { background: #fff3e0; color: #f57c00; }
+        .status-interview { background: #f3e5f5; color: #7b1fa2; }
+        .status-final { background: #e8f5e8; color: #388e3c; }
+        .status-offer { background: #e8f5e8; color: #2e7d32; }
+        .status-rejected { background: #ffebee; color: #d32f2f; }
+        .status-withdrawn { background: #f5f5f5; color: #616161; }
+        
+        .priority {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .priority-high { background: #f44336; }
+        .priority-medium { background: #ff9800; }
+        .priority-low { background: #4caf50; }
+        
+        .company-name {
+            font-weight: 600;
+            color: #1976d2;
+        }
+        
+        .next-task {
+            background: #fff9c4;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            color: #f57f17;
+        }
+        
+        .salary {
+            font-weight: 500;
+            color: #388e3c;
+        }
+        
+        .notes {
+            max-width: 200px;
+            word-wrap: break-word;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .contact {
+            font-size: 12px;
+            color: #1976d2;
+        }
+        
+        .date {
+            white-space: nowrap;
+            font-size: 12px;
+        }
+        
+        .editable {
+            background: transparent;
+            border: none;
+            width: 100%;
+            padding: 2px;
+            font-size: inherit;
+            font-family: inherit;
+        }
+        
+        .editable:focus {
+            background: white;
+            border: 1px solid #4285f4;
+            outline: none;
+            border-radius: 2px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1976d2;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Job Search Tracker</h1>
+        </div>
+        
+        <div class="controls">
+            <button onclick="addRow()">+ Add Application</button>
+            <select class="filter-select" onchange="filterByStatus(this.value)">
+                <option value="">All Statuses</option>
+                <option value="Applied">Applied</option>
+                <option value="Phone Screening">Phone Screening</option>
+                <option value="Interview">Interview</option>
+                <option value="Final Round">Final Round</option>
+                <option value="Offer">Offer</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Withdrawn">Withdrawn</option>
+            </select>
+            <select class="filter-select" onchange="filterByPriority(this.value)">
+                <option value="">All Priorities</option>
+                <option value="High">High Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="Low">Low Priority</option>
+            </select>
+        </div>
+        
+        <div class="table-container">
+            <table id="jobTable">
+                <thead>
+                    <tr>
+                        <th>Priority</th>
+                        <th>Company</th>
+                        <th>Position</th>
+                        <th>Applied Date</th>
+                        <th>Status</th>
+                        <th>Current Phase</th>
+                        <th>Next Task</th>
+                        <th>Due Date</th>
+                        <th>Contact Person</th>
+                        <th>Salary Range</th>
+                        <th>Location</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="jobTableBody">
+                    <tr>
+                        <td><span class="priority priority-high"></span>High</td>
+                        <td class="company-name">TechCorp Inc</td>
+                        <td>Senior Software Engineer</td>
+                        <td class="date">2025-06-15</td>
+                        <td><span class="status status-interview">Interview</span></td>
+                        <td>Technical Interview</td>
+                        <td><span class="next-task">Prepare system design</span></td>
+                        <td class="date">2025-06-22</td>
+                        <td class="contact">Sarah Chen<br>sarah@techcorp.com</td>
+                        <td class="salary">$120k - $150k</td>
+                        <td>San Francisco, CA</td>
+                        <td class="notes">Great culture fit. Need to research their microservices architecture.</td>
+                        <td><button onclick="editRow(this)">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td><span class="priority priority-medium"></span>Medium</td>
+                        <td class="company-name">StartupXYZ</td>
+                        <td>Full Stack Developer</td>
+                        <td class="date">2025-06-12</td>
+                        <td><span class="status status-screening">Phone Screening</span></td>
+                        <td>HR Phone Screen</td>
+                        <td><span class="next-task">Wait for callback</span></td>
+                        <td class="date">2025-06-20</td>
+                        <td class="contact">Mike Rodriguez<br>hiring@startupxyz.com</td>
+                        <td class="salary">$90k - $110k + equity</td>
+                        <td>Remote</td>
+                        <td class="notes">Early stage startup. High growth potential but risky.</td>
+                        <td><button onclick="editRow(this)">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td><span class="priority priority-high"></span>High</td>
+                        <td class="company-name">BigTech Solutions</td>
+                        <td>Product Manager</td>
+                        <td class="date">2025-06-10</td>
+                        <td><span class="status status-final">Final Round</span></td>
+                        <td>Final Panel Interview</td>
+                        <td><span class="next-task">Prepare case study presentation</span></td>
+                        <td class="date">2025-06-25</td>
+                        <td class="contact">Jennifer Wu<br>jennifer.wu@bigtech.com</td>
+                        <td class="salary">$140k - $180k</td>
+                        <td>New York, NY</td>
+                        <td class="notes">Dream job! 5 rounds total. Need to nail the product strategy case.</td>
+                        <td><button onclick="editRow(this)">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td><span class="priority priority-low"></span>Low</td>
+                        <td class="company-name">Local Agency</td>
+                        <td>Web Developer</td>
+                        <td class="date">2025-06-08</td>
+                        <td><span class="status status-applied">Applied</span></td>
+                        <td>Application Review</td>
+                        <td><span class="next-task">Follow up email</span></td>
+                        <td class="date">2025-06-21</td>
+                        <td class="contact">Tom Smith<br>careers@localagency.com</td>
+                        <td class="salary">$60k - $75k</td>
+                        <td>Austin, TX</td>
+                        <td class="notes">Backup option. Small team, good work-life balance.</td>
+                        <td><button onclick="editRow(this)">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td><span class="priority priority-medium"></span>Medium</td>
+                        <td class="company-name">InnovateCo</td>
+                        <td>Data Scientist</td>
+                        <td class="date">2025-06-05</td>
+                        <td><span class="status status-rejected">Rejected</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="contact">Lisa Park<br>lisa@innovateco.com</td>
+                        <td class="salary">$100k - $130k</td>
+                        <td>Seattle, WA</td>
+                        <td class="notes">Rejected after technical test. Need to improve ML skills.</td>
+                        <td><button onclick="editRow(this)">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalApps">5</div>
+                <div class="stat-label">Total Applications</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="activeApps">4</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="interviews">2</div>
+                <div class="stat-label">Interviews</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="offers">0</div>
+                <div class="stat-label">Offers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="rejections">1</div>
+                <div class="stat-label">Rejections</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let originalData = [];
+        
+        function initializeData() {
+            const rows = document.querySelectorAll('#jobTableBody tr');
+            originalData = Array.from(rows).map(row => row.innerHTML);
+            updateStats();
+        }
+        
+        function addRow() {
+            const tbody = document.getElementById('jobTableBody');
+            const newRow = tbody.insertRow(0);
+            newRow.innerHTML = `
+                <td><span class="priority priority-medium"></span>Medium</td>
+                <td class="company-name"><input class="editable" placeholder="Company Name"></td>
+                <td><input class="editable" placeholder="Position Title"></td>
+                <td class="date"><input class="editable" type="date" value="${new Date().toISOString().split('T')[0]}"></td>
+                <td><span class="status status-applied">Applied</span></td>
+                <td><input class="editable" placeholder="Current Phase"></td>
+                <td><span class="next-task"><input class="editable" placeholder="Next Task"></span></td>
+                <td class="date"><input class="editable" type="date"></td>
+                <td class="contact"><input class="editable" placeholder="Name & Email"></td>
+                <td class="salary"><input class="editable" placeholder="Salary Range"></td>
+                <td><input class="editable" placeholder="Location"></td>
+                <td class="notes"><input class="editable" placeholder="Notes"></td>
+                <td><button onclick="saveRow(this)">Save</button></td>
+            `;
+            updateStats();
+        }
+        
+        function editRow(button) {
+            const row = button.closest('tr');
+            const cells = row.querySelectorAll('td');
+            
+            // Make cells editable (simplified for demo)
+            alert('Edit functionality would be implemented here. In a real app, you would make cells editable or open a modal.');
+        }
+        
+        function saveRow(button) {
+            const row = button.closest('tr');
+            // Save functionality would be implemented here
+            button.textContent = 'Edit';
+            button.onclick = function() { editRow(this); };
+            updateStats();
+        }
+        
+        function filterByStatus(status) {
+            const rows = document.querySelectorAll('#jobTableBody tr');
+            rows.forEach(row => {
+                const statusCell = row.querySelector('.status');
+                if (!status || statusCell.textContent.trim() === status) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function filterByPriority(priority) {
+            const rows = document.querySelectorAll('#jobTableBody tr');
+            rows.forEach(row => {
+                const priorityCell = row.cells[0];
+                if (!priority || priorityCell.textContent.trim() === priority) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function updateStats() {
+            const rows = document.querySelectorAll('#jobTableBody tr:not([style*="display: none"])');
+            let total = rows.length;
+            let active = 0;
+            let interviews = 0;
+            let offers = 0;
+            let rejections = 0;
+            
+            rows.forEach(row => {
+                const status = row.querySelector('.status').textContent.trim();
+                if (status !== 'Rejected' && status !== 'Withdrawn') active++;
+                if (status.includes('Interview') || status === 'Final Round') interviews++;
+                if (status === 'Offer') offers++;
+                if (status === 'Rejected') rejections++;
+            });
+            
+            document.getElementById('totalApps').textContent = total;
+            document.getElementById('activeApps').textContent = active;
+            document.getElementById('interviews').textContent = interviews;
+            document.getElementById('offers').textContent = offers;
+            document.getElementById('rejections').textContent = rejections;
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeData);
+    </script>
+</body>
+</html>
