@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Search Tracker</title>
+    <title id="pageTitle">Job Search Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="constants.css">
     <link rel="stylesheet" href="styles.css">
@@ -11,11 +11,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Job Search Tracker</h1>
+            <h1 id="appTitle">Job Search Tracker</h1>
         </div>
         
         <div class="controls">
-            <button onclick="addRow()">+ Add Application</button>
+            <button id="addAppBtn" onclick="addRow()">+ Add Application</button>
         </div>
         
         <div class="table-container">
@@ -24,35 +24,35 @@
                     <tr>
                         <th>
                             <div class="header-with-filter">
-                                Priority
+                                <span id="priorityHeader">Priority</span>
                                 <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
                                 <div class="filter-dropdown" id="priorityDropdown"></div>
                             </div>
                         </th>
-                        <th>Company</th>
-                        <th>Position</th>
-                        <th>Applied Date</th>
+                        <th id="companyHeader">Company</th>
+                        <th id="positionHeader">Position</th>
+                        <th id="appliedDateHeader">Applied Date</th>
                         <th>
                             <div class="header-with-filter">
-                                Status
+                                <span id="statusHeader">Status</span>
                                 <span class="filter-dropdown-icon" onclick="toggleDropdown('statusDropdown')">▼</span>
                                 <div class="filter-dropdown" id="statusDropdown"></div>
                             </div>
                         </th>
                         <th>
                             <div class="header-with-filter">
-                                Current Phase
+                                <span id="currentPhaseHeader">Current Phase</span>
                                 <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
                                 <div class="filter-dropdown" id="phaseDropdown"></div>
                             </div>
                         </th>
-                        <th>Next Task</th>
-                        <th>Due Date</th>
-                        <th>Contact Person</th>
-                        <th>Salary Range</th>
-                        <th>Location</th>
-                        <th>Notes</th>
-                        <th>Actions</th>
+                        <th id="nextTaskHeader">Next Task</th>
+                        <th id="dueDateHeader">Due Date</th>
+                        <th id="contactPersonHeader">Contact Person</th>
+                        <th id="salaryRangeHeader">Salary Range</th>
+                        <th id="locationHeader">Location</th>
+                        <th id="notesHeader">Notes</th>
+                        <th id="actionsHeader">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="jobTableBody">
@@ -63,23 +63,23 @@
         <div class="stats">
             <div class="stat-item">
                 <div class="stat-number" id="totalApps">0</div>
-                <div class="stat-label">Total Applications</div>
+                <div class="stat-label" id="totalAppsLabel">Total Applications</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="activeApps">0</div>
-                <div class="stat-label">Active</div>
+                <div class="stat-label" id="activeAppsLabel">Active</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="interviews">0</div>
-                <div class="stat-label">Interviews</div>
+                <div class="stat-label" id="interviewsLabel">Interviews</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="offers">0</div>
-                <div class="stat-label">Offers</div>
+                <div class="stat-label" id="offersLabel">Offers</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="rejections">0</div>
-                <div class="stat-label">Rejections</div>
+                <div class="stat-label" id="rejectionsLabel">Rejections</div>
             </div>
         </div>
     </div>
