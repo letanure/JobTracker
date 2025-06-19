@@ -137,6 +137,10 @@ tr:hover {
     margin-right: 5px;
 }
 
+.priority-cell {
+    white-space: nowrap;
+}
+
 .priority-high { background: var(--priority-high); }
 .priority-medium { background: var(--priority-medium); }
 .priority-low { background: var(--priority-low); }

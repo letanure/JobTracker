@@ -20,7 +20,7 @@ function populateTable(jobs) {
 	jobs.forEach((job) => {
 		const row = tbody.insertRow();
 		row.innerHTML = `
-            <td><span class="priority priority-${job.priority.toLowerCase()}"></span>${job.priority}</td>
+            <td class="priority-cell"><span class="priority priority-${job.priority.toLowerCase()}"></span>${job.priority}</td>
             <td class="company-name">${job.company}</td>
             <td>${job.position}</td>
             <td class="date">${job.appliedDate}</td>
