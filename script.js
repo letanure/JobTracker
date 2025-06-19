@@ -327,13 +327,31 @@ function saveToLocalStorage() {
 function loadJobsData() {
 	try {
 		const savedData = localStorage.getItem('jobTrackerData');
+		let shouldShowDemo = false;
 		
 		if (savedData) {
 			jobsData = JSON.parse(savedData);
+			// Check if data is empty array
+			if (jobsData.length === 0) {
+				shouldShowDemo = true;
+			}
 		} else {
-			// First time user - load demo data
-			jobsData = [...DEMO_DATA];
-			saveToLocalStorage();
+			// No localStorage data exists
+			shouldShowDemo = true;
+			jobsData = [];
+		}
+		
+		if (shouldShowDemo) {
+			const userWantsDemoData = confirm(
+				"Welcome to Job Search Tracker!\n\n" +
+				"Would you like to see 2 example job applications to understand how the tracker works?\n\n" +
+				"Click OK to add examples, or Cancel to start with an empty tracker."
+			);
+			
+			if (userWantsDemoData) {
+				jobsData = [...DEMO_DATA];
+				saveToLocalStorage();
+			}
 		}
 		
 		populateTable(jobsData);
@@ -342,8 +360,18 @@ function loadJobsData() {
 		initializeData();
 	} catch (error) {
 		console.error("Error loading jobs data:", error);
-		// Fallback to demo data if localStorage is corrupted
-		jobsData = [...DEMO_DATA];
+		// Fallback - ask user about demo data
+		const userWantsDemoData = confirm(
+			"There was an error loading your data.\n\n" +
+			"Would you like to start with 2 example job applications?"
+		);
+		
+		if (userWantsDemoData) {
+			jobsData = [...DEMO_DATA];
+		} else {
+			jobsData = [];
+		}
+		
 		saveToLocalStorage();
 		populateTable(jobsData);
 		generateHeaderFilters();
