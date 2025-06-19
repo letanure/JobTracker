@@ -1514,5 +1514,20 @@ $.on(document, "click", (event) => {
 	}
 });
 
+// Cancel edit on ESC key press
+$.on(document, "keydown", (event) => {
+	if (event.key === "Escape") {
+		// Find any row currently in edit mode (has originalContent stored)
+		const editingRow = $.qs("tr[data-original-content]");
+		if (editingRow) {
+			// Find the cancel button in the row and trigger cancel
+			const cancelButton = editingRow.querySelector(".cancel-btn");
+			if (cancelButton) {
+				cancelEdit(cancelButton);
+			}
+		}
+	}
+});
+
 // Initialize on page load
 $.on(document, "DOMContentLoaded", loadJobsData);
