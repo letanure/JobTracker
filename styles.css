@@ -678,6 +678,18 @@ tbody tr {
     color: var(--primary-hover);
 }
 
+/* Inline action buttons for notes and tasks */
+.edit-note-btn:hover,
+.edit-task-btn:hover {
+    background: var(--background-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.archive-btn:hover {
+    background: var(--background-color) !important;
+    color: var(--text-color) !important;
+}
+
 /* Modern Add Note/Task Section */
 .add-note-section {
     margin-top: var(--space-4);

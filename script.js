@@ -421,35 +421,196 @@ const ContactTextarea = ({ contactPerson = "", contactEmail = "" }) =>
 
 // Notes count display component
 const NotesCount = ({ notes = [], onClick }) => {
-	const count = notes.length;
+	const activeNotes = notes.filter(note => !note.archived);
+	const count = activeNotes.length;
 	const className = count === 0 ? "notes-count zero" : "notes-count";
 
 	return h("span", {
 		className,
 		onclick: count > 0 ? onClick : null,
 		textContent: count.toString(),
+		title: `${count} active note${count !== 1 ? 's' : ''}${notes.length !== count ? ` (${notes.length - count} archived)` : ''}`
 	});
 };
 
 // Individual note item component
-const NoteItem = ({ note }) => {
+const NoteItem = ({ note, job }) => {
+	const isArchived = note.archived || false;
+	
+	const handleArchiveToggle = () => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+		if (noteIndex === -1) return;
+		
+		jobsData[jobIndex].notes[noteIndex].archived = !isArchived;
+		saveToLocalStorage();
+		
+		// Update the note element in place
+		const noteElement = document.querySelector(`[data-note-id="${note.id}"]`);
+		if (noteElement) {
+			const newArchiveStatus = !isArchived;
+			noteElement.style.opacity = newArchiveStatus ? "0.6" : "1";
+			noteElement.style.filter = newArchiveStatus ? "grayscale(0.5)" : "none";
+			noteElement.className = `note-item ${newArchiveStatus ? 'archived' : ''}`;
+			
+			// Update archive button
+			const archiveBtn = noteElement.querySelector('.archive-btn');
+			if (archiveBtn) {
+				archiveBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
+			}
+		}
+		
+		// Update interface
+		updateStats();
+	};
+	
+	const handleEdit = () => {
+		const noteTextElement = document.querySelector(`[data-note-id="${note.id}"] .note-text`);
+		if (!noteTextElement) return;
+		
+		const currentText = note.text;
+		const textarea = h("textarea", {
+			className: "note-edit-textarea",
+			style: { 
+				width: "100%", 
+				minHeight: "60px", 
+				padding: "8px", 
+				border: "1px solid var(--border-color)", 
+				borderRadius: "4px",
+				fontFamily: "inherit",
+				fontSize: "inherit",
+				resize: "vertical"
+			},
+			textContent: currentText
+		});
+		
+		const saveBtn = h("button", {
+			className: "action-btn edit-btn",
+			style: { marginRight: "8px", marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Save",
+			onclick: () => {
+				const newText = textarea.value.trim();
+				if (!newText) return;
+				
+				const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+				if (jobIndex === -1) return;
+				
+				const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+				if (noteIndex === -1) return;
+				
+				jobsData[jobIndex].notes[noteIndex].text = newText;
+				saveToLocalStorage();
+				
+				// Update in place - replace textarea with new text
+				noteTextElement.innerHTML = "";
+				noteTextElement.textContent = newText;
+				
+				// Update interface
+				updateStats();
+			}
+		});
+		
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn",
+			style: { marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Cancel",
+			onclick: () => {
+				// Cancel editing - restore original text
+				noteTextElement.innerHTML = "";
+				noteTextElement.textContent = note.text;
+			}
+		});
+		
+		noteTextElement.innerHTML = "";
+		noteTextElement.appendChild(textarea);
+		noteTextElement.appendChild(h("div", {}, saveBtn, cancelBtn));
+		textarea.focus();
+	};
+	
 	return h(
 		"div",
-		{ className: "note-item" },
+		{ 
+			className: `note-item ${isArchived ? 'archived' : ''}`,
+			"data-note-id": note.id,
+			style: isArchived ? { opacity: "0.6", filter: "grayscale(0.5)" } : {}
+		},
 		h(
 			"div",
-			{ className: "note-header" },
-			h("span", { className: "note-date" }, formatDate(note.date)),
-			h("span", { className: "note-phase" }, getPhaseText(note.phase)),
+			{ 
+				className: "note-header",
+				style: { 
+					display: "flex", 
+					justifyContent: "space-between", 
+					alignItems: "center",
+					marginBottom: "8px",
+					fontSize: "12px",
+					color: "var(--text-light)"
+				}
+			},
+			h(
+				"div",
+				{ style: { display: "flex", gap: "12px", alignItems: "center" } },
+				h("span", { className: "note-phase" }, getPhaseText(note.phase)),
+				h("span", { className: "note-date" }, formatDate(note.date))
+			),
+			h(
+				"div",
+				{ className: "note-actions", style: { display: "flex", gap: "4px" } },
+				h("button", {
+					className: "action-btn edit-note-btn",
+					title: "Edit note",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: '<span class="material-symbols-outlined" style="font-size: 14px;">edit</span>',
+					onclick: handleEdit
+				}),
+				h("button", {
+					className: "action-btn archive-btn",
+					title: isArchived ? "Unarchive note" : "Archive note",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: `<span class="material-symbols-outlined" style="font-size: 14px;">${isArchived ? "unarchive" : "archive"}</span>`,
+					onclick: handleArchiveToggle
+				})
+			)
 		),
-		h("div", { className: "note-text" }, note.text),
+		h("div", { 
+			className: "note-text",
+			style: {
+				fontSize: "14px",
+				lineHeight: "1.5",
+				whiteSpace: "pre-wrap",
+				color: "var(--text-color)"
+			}
+		}, note.text),
 	);
 };
 
 // Unified modal component for viewing and adding notes
 const NotesModal = ({ job, onClose }) => {
 	const notes = job.notes || [];
-	const sortedNotes = [...notes].sort(
+	const activeNotes = notes.filter(note => !note.archived);
+	const archivedNotes = notes.filter(note => note.archived);
+	const sortedActiveNotes = [...activeNotes].sort(
+		(a, b) => new Date(a.date) - new Date(b.date),
+	);
+	const sortedArchivedNotes = [...archivedNotes].sort(
 		(a, b) => new Date(a.date) - new Date(b.date),
 	);
 
@@ -488,7 +649,7 @@ const NotesModal = ({ job, onClose }) => {
 		const addNoteSection = modalBody.querySelector(".add-note-section");
 
 		// Create and insert the new note before the add note section
-		const newNoteElement = NoteItem({ note: newNote });
+		const newNoteElement = NoteItem({ note: newNote, job });
 		modalBody.insertBefore(newNoteElement, addNoteSection);
 
 		// Clear the textarea
@@ -496,24 +657,6 @@ const NotesModal = ({ job, onClose }) => {
 
 		// Update the notes count in the table (refresh interface for count update)
 		updateStats();
-		const tableRow = document.querySelector(`tr[data-job-id="${job.id}"]`);
-		if (tableRow) {
-			const notesCell = tableRow.querySelector(".notes");
-			if (notesCell) {
-				notesCell.innerHTML = "";
-				notesCell.appendChild(
-					NotesCount({
-						notes: job.notes || [],
-						onClick: () => openNotesModal(job),
-					}),
-				);
-			}
-		}
-
-		// Scroll to bottom to show the new note and keep form visible
-		setTimeout(() => {
-			modalBody.scrollTop = modalBody.scrollHeight;
-		}, 100);
 	};
 
 	return h(
@@ -538,9 +681,20 @@ const NotesModal = ({ job, onClose }) => {
 			h(
 				"div",
 				{ className: "modal-body" },
-				// Existing notes list
-				...(sortedNotes.length > 0
-					? sortedNotes.map((note) => NoteItem({ note }))
+				// Active notes section
+				...(sortedActiveNotes.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginBottom: "12px", 
+								color: "var(--text-color)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px"
+							} 
+						}, "Active Notes"),
+						...sortedActiveNotes.map((note) => NoteItem({ note, job }))
+					]
 					: [
 							h(
 								"p",
@@ -554,6 +708,42 @@ const NotesModal = ({ job, onClose }) => {
 								"No notes yet. Add your first note below.",
 							),
 						]),
+				// Archived notes section
+				...(sortedArchivedNotes.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginTop: "24px",
+								marginBottom: "12px", 
+								color: "var(--text-light)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px"
+							},
+							onclick: () => {
+								const archivedSection = document.getElementById('archived-notes-content');
+								const expandIcon = document.getElementById('archived-notes-icon');
+								if (archivedSection.style.display === 'none') {
+									archivedSection.style.display = 'block';
+									expandIcon.textContent = 'expand_less';
+								} else {
+									archivedSection.style.display = 'none';
+									expandIcon.textContent = 'expand_more';
+								}
+							}
+						}, 
+							h('span', { className: 'material-symbols-outlined', id: 'archived-notes-icon', style: { fontSize: '16px' } }, 'expand_less'),
+							`Archived Notes (${sortedArchivedNotes.length})`
+						),
+						h("div", { 
+							id: "archived-notes-content"
+						}, ...sortedArchivedNotes.map((note) => NoteItem({ note, job })))
+					]
+					: []),
 				// Add note form section
 				h(
 					"div",
@@ -613,20 +803,23 @@ const NotesModal = ({ job, onClose }) => {
 
 // Tasks count display component with colored counters
 const TasksCount = ({ tasks = [], onClick }) => {
-	const todoCount = tasks.filter((task) => task.status === "todo").length;
-	const inProgressCount = tasks.filter(
+	const activeTasks = tasks.filter(task => !task.archived);
+	const todoCount = activeTasks.filter((task) => task.status === "todo").length;
+	const inProgressCount = activeTasks.filter(
 		(task) => task.status === "in-progress",
 	).length;
-	const doneCount = tasks.filter((task) => task.status === "done").length;
-	const totalCount = tasks.length;
+	const doneCount = activeTasks.filter((task) => task.status === "done").length;
+	const totalActiveCount = activeTasks.length;
+	const archivedCount = tasks.length - totalActiveCount;
 
-	const className = totalCount === 0 ? "tasks-count zero" : "tasks-count";
+	const className = totalActiveCount === 0 ? "tasks-count zero" : "tasks-count";
 
 	return h(
 		"span",
 		{
 			className,
-			onclick: totalCount > 0 ? onClick : null,
+			onclick: totalActiveCount > 0 ? onClick : null,
+			title: `${totalActiveCount} active task${totalActiveCount !== 1 ? 's' : ''} (${todoCount} todo, ${inProgressCount} in progress, ${doneCount} done)${archivedCount > 0 ? ` + ${archivedCount} archived` : ''}`
 		},
 		h("span", { className: "task-count-todo" }, todoCount.toString()),
 		h("span", { className: "task-count-separator" }, "/"),
@@ -641,7 +834,9 @@ const TasksCount = ({ tasks = [], onClick }) => {
 };
 
 // Individual task item component
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, job }) => {
+	const isArchived = task.archived || false;
+	
 	const statusColors = {
 		todo: "var(--status-applied-bg)",
 		"in-progress": "var(--status-interview-bg)",
@@ -654,41 +849,293 @@ const TaskItem = ({ task }) => {
 		high: "var(--priority-high)",
 	};
 
+	const handleArchiveToggle = () => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].archived = !isArchived;
+		saveToLocalStorage();
+		
+		// Update the task element in place
+		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
+		if (taskElement) {
+			const newArchiveStatus = !isArchived;
+			taskElement.style.opacity = newArchiveStatus ? "0.6" : "1";
+			taskElement.style.filter = newArchiveStatus ? "grayscale(0.5)" : "none";
+			taskElement.className = `task-item ${newArchiveStatus ? 'archived' : ''}`;
+			
+			// Update archive button
+			const archiveBtn = taskElement.querySelector('.archive-btn');
+			if (archiveBtn) {
+				archiveBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
+			}
+		}
+		
+		// Update interface
+		updateStats();
+	};
+
+	const handleStatusChange = (newStatus) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].status = newStatus;
+		if (newStatus === "done" && !task.completedAt) {
+			jobsData[jobIndex].tasks[taskIndex].completedAt = new Date().toISOString();
+		} else if (newStatus !== "done") {
+			jobsData[jobIndex].tasks[taskIndex].completedAt = null;
+		}
+		saveToLocalStorage();
+		
+		// Update interface
+		updateStats();
+	};
+
+	const handlePriorityChange = (newPriority) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].priority = newPriority;
+		saveToLocalStorage();
+		
+		// Update interface
+		updateStats();
+	};
+
+	const handleDueDateChange = (newDueDate) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].dueDate = newDueDate ? new Date(newDueDate).toISOString() : null;
+		saveToLocalStorage();
+		
+		// Update interface
+		updateStats();
+	};
+
+	const handleTextEdit = () => {
+		const taskTextElement = document.querySelector(`[data-task-id="${task.id}"] .task-text`);
+		if (!taskTextElement) return;
+		
+		const currentText = task.text;
+		const textarea = h("textarea", {
+			className: "task-edit-textarea",
+			style: { 
+				width: "100%", 
+				minHeight: "60px", 
+				padding: "8px", 
+				border: "1px solid var(--border-color)", 
+				borderRadius: "4px",
+				fontFamily: "inherit",
+				fontSize: "inherit",
+				resize: "vertical"
+			},
+			textContent: currentText
+		});
+		
+		const saveBtn = h("button", {
+			className: "action-btn edit-btn",
+			style: { marginRight: "8px", marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Save",
+			onclick: () => {
+				const newText = textarea.value.trim();
+				if (!newText) return;
+				
+				const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+				if (jobIndex === -1) return;
+				
+				const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+				if (taskIndex === -1) return;
+				
+				jobsData[jobIndex].tasks[taskIndex].text = newText;
+				saveToLocalStorage();
+				
+				// Update in place - replace textarea with new text
+				taskTextElement.innerHTML = "";
+				taskTextElement.textContent = newText;
+				
+				// Update interface
+				updateStats();
+			}
+		});
+		
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn",
+			style: { marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Cancel",
+			onclick: () => {
+				// Cancel editing - restore original text
+				taskTextElement.innerHTML = "";
+				taskTextElement.textContent = task.text;
+			}
+		});
+		
+		taskTextElement.innerHTML = "";
+		taskTextElement.appendChild(textarea);
+		taskTextElement.appendChild(h("div", {}, saveBtn, cancelBtn));
+		textarea.focus();
+	};
+
+	const statusSelect = h("select", {
+		value: task.status,
+		title: "Change task status",
+		style: { 
+			fontSize: "12px", 
+			padding: "4px 6px", 
+			border: "1px solid var(--border-color)",
+			borderRadius: "3px",
+			background: statusColors[task.status],
+			minWidth: "80px"
+		},
+		onchange: (e) => handleStatusChange(e.target.value)
+	}, 
+		h("option", { value: "todo" }, "To Do"),
+		h("option", { value: "in-progress" }, "In Progress"), 
+		h("option", { value: "done" }, "Done")
+	);
+
+	const prioritySelect = h("select", {
+		value: task.priority,
+		title: "Change task priority",
+		style: { 
+			fontSize: "12px", 
+			padding: "4px 6px", 
+			border: "1px solid var(--border-color)",
+			borderRadius: "3px",
+			background: priorityColors[task.priority],
+			color: "white",
+			minWidth: "70px"
+		},
+		onchange: (e) => handlePriorityChange(e.target.value)
+	}, 
+		h("option", { value: "low" }, "Low"),
+		h("option", { value: "medium" }, "Medium"), 
+		h("option", { value: "high" }, "High")
+	);
+
+	const dueDateInput = h("input", {
+		type: "date",
+		value: task.dueDate ? task.dueDate.split('T')[0] : "",
+		title: "Change due date",
+		style: { 
+			fontSize: "12px", 
+			padding: "4px 6px", 
+			border: "1px solid var(--border-color)",
+			borderRadius: "3px"
+		},
+		onchange: (e) => handleDueDateChange(e.target.value)
+	});
+
 	return h(
 		"div",
-		{ className: "task-item" },
+		{ 
+			className: `task-item ${isArchived ? 'archived' : ''}`,
+			"data-task-id": task.id,
+			style: isArchived ? { opacity: "0.6", filter: "grayscale(0.5)" } : {}
+		},
 		h(
 			"div",
-			{ className: "task-header" },
-			h("span", { className: "task-date" }, formatDate(task.createdAt)),
-			h(
-				"span",
-				{
-					className: "task-status",
-					style: { background: statusColors[task.status] },
-				},
-				task.status.replace("-", " "),
-			),
-			h(
-				"span",
-				{
-					className: "task-priority",
-					style: { background: priorityColors[task.priority] },
-				},
-				task.priority,
-			),
-		),
-		h("div", { className: "task-text" }, task.text),
-		task.dueDate &&
+			{ 
+				className: "task-header",
+				style: { 
+					display: "flex", 
+					justifyContent: "space-between", 
+					alignItems: "center",
+					marginBottom: "8px",
+					fontSize: "12px",
+					color: "var(--text-light)"
+				}
+			},
 			h(
 				"div",
-				{ className: "task-due-date" },
-				`Due: ${formatDate(task.dueDate)}`,
+				{ style: { display: "flex", gap: "12px", alignItems: "center" } },
+				statusSelect,
+				prioritySelect,
+				h("span", { className: "task-date" }, formatDate(task.createdAt))
 			),
+			h(
+				"div",
+				{ className: "task-actions", style: { display: "flex", gap: "4px" } },
+				h("button", {
+					className: "action-btn edit-task-btn",
+					title: "Edit task",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: '<span class="material-symbols-outlined" style="font-size: 14px;">edit</span>',
+					onclick: handleTextEdit
+				}),
+				h("button", {
+					className: "action-btn archive-btn",
+					title: isArchived ? "Unarchive task" : "Archive task",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: `<span class="material-symbols-outlined" style="font-size: 14px;">${isArchived ? "unarchive" : "archive"}</span>`,
+					onclick: handleArchiveToggle
+				})
+			)
+		),
+		h("div", { 
+			className: "task-text",
+			style: {
+				fontSize: "14px",
+				lineHeight: "1.5",
+				whiteSpace: "pre-wrap",
+				color: "var(--text-color)",
+				marginBottom: "8px"
+			}
+		}, task.text),
+		h(
+			"div",
+			{ 
+				className: "task-due-date", 
+				style: { 
+					display: "flex", 
+					alignItems: "center", 
+					gap: "8px",
+					fontSize: "12px",
+					color: "var(--text-light)"
+				} 
+			},
+			h("span", {}, "Due:"),
+			dueDateInput
+		),
 		task.completedAt &&
 			h(
 				"div",
-				{ className: "task-completed-date" },
+				{ 
+					className: "task-completed-date",
+					style: {
+						fontSize: "12px",
+						color: "var(--text-light)",
+						marginTop: "4px"
+					}
+				},
 				`Completed: ${formatDate(task.completedAt)}`,
 			),
 	);
@@ -697,7 +1144,12 @@ const TaskItem = ({ task }) => {
 // Unified modal component for viewing and adding tasks
 const TasksModal = ({ job, onClose }) => {
 	const tasks = job.tasks || [];
-	const sortedTasks = [...tasks].sort(
+	const activeTasks = tasks.filter(task => !task.archived);
+	const archivedTasks = tasks.filter(task => task.archived);
+	const sortedActiveTasks = [...activeTasks].sort(
+		(a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+	);
+	const sortedArchivedTasks = [...archivedTasks].sort(
 		(a, b) => new Date(a.createdAt) - new Date(b.createdAt),
 	);
 
@@ -746,7 +1198,7 @@ const TasksModal = ({ job, onClose }) => {
 		const addTaskSection = modalBody.querySelector(".add-task-section");
 
 		// Create and insert the new task before the add task section
-		const newTaskElement = TaskItem({ task: newTask });
+		const newTaskElement = TaskItem({ task: newTask, job });
 		modalBody.insertBefore(newTaskElement, addTaskSection);
 
 		// Clear the form
@@ -757,24 +1209,6 @@ const TasksModal = ({ job, onClose }) => {
 
 		// Update the tasks count in the table (refresh interface for count update)
 		updateStats();
-		const tableRow = document.querySelector(`tr[data-job-id="${job.id}"]`);
-		if (tableRow) {
-			const tasksCell = tableRow.querySelector(".tasks");
-			if (tasksCell) {
-				tasksCell.innerHTML = "";
-				tasksCell.appendChild(
-					TasksCount({
-						tasks: job.tasks || [],
-						onClick: () => openTasksModal(job),
-					}),
-				);
-			}
-		}
-
-		// Scroll to bottom to show the new task and keep form visible
-		setTimeout(() => {
-			modalBody.scrollTop = modalBody.scrollHeight;
-		}, 100);
 	};
 
 	return h(
@@ -799,9 +1233,20 @@ const TasksModal = ({ job, onClose }) => {
 			h(
 				"div",
 				{ className: "modal-body" },
-				// Existing tasks list
-				...(sortedTasks.length > 0
-					? sortedTasks.map((task) => TaskItem({ task }))
+				// Active tasks section
+				...(sortedActiveTasks.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginBottom: "12px", 
+								color: "var(--text-color)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px"
+							} 
+						}, "Active Tasks"),
+						...sortedActiveTasks.map((task) => TaskItem({ task, job }))
+					]
 					: [
 							h(
 								"p",
@@ -815,6 +1260,42 @@ const TasksModal = ({ job, onClose }) => {
 								"No tasks yet. Add your first task below.",
 							),
 						]),
+				// Archived tasks section
+				...(sortedArchivedTasks.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginTop: "24px",
+								marginBottom: "12px", 
+								color: "var(--text-light)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px"
+							},
+							onclick: () => {
+								const archivedSection = document.getElementById('archived-tasks-content');
+								const expandIcon = document.getElementById('archived-tasks-icon');
+								if (archivedSection.style.display === 'none') {
+									archivedSection.style.display = 'block';
+									expandIcon.textContent = 'expand_less';
+								} else {
+									archivedSection.style.display = 'none';
+									expandIcon.textContent = 'expand_more';
+								}
+							}
+						}, 
+							h('span', { className: 'material-symbols-outlined', id: 'archived-tasks-icon', style: { fontSize: '16px' } }, 'expand_less'),
+							`Archived Tasks (${sortedArchivedTasks.length})`
+						),
+						h("div", { 
+							id: "archived-tasks-content"
+						}, ...sortedArchivedTasks.map((task) => TaskItem({ task, job })))
+					]
+					: []),
 				// Add task form section
 				h(
 					"div",
