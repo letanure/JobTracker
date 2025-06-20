@@ -5,6 +5,7 @@
   "main": "dist/script.js",
   "scripts": {
     "build": "node build.js",
+    "build:minify": "node build.js --minify",
     "build:separate": "node build.js --separate",
     "watch": "node build.js --watch",
     "watch:separate": "node build.js --watch --separate",

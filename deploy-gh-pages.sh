@@ -11,10 +11,10 @@ if [ ! -d ".git" ]; then
     exit 1
 fi
 
-# Check if dist/index.html exists
-if [ ! -f "dist/index.html" ]; then
-    echo "📦 Building project first..."
-    if ! node build.js; then
+# Check if dist/index.min.html exists, if not build with minification
+if [ ! -f "dist/index.min.html" ]; then
+    echo "📦 Building project with minification..."
+    if ! node build.js --minify; then
         echo "❌ Build failed!"
         exit 1
     fi
@@ -24,8 +24,9 @@ fi
 TEMP_DIR=$(mktemp -d)
 echo "📁 Using temp directory: $TEMP_DIR"
 
-# Copy dist/index.html to temp directory
-cp dist/index.html "$TEMP_DIR/index.html"
+# Copy dist/index.min.html to temp directory as index.html
+cp dist/index.min.html "$TEMP_DIR/index.html"
+echo "📦 Using minified version for deployment"
 
 # Get the current commit hash for reference
 COMMIT_HASH=$(git rev-parse --short HEAD)
