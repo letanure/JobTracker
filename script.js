@@ -302,17 +302,6 @@ const PriorityCell = ({ priority }) =>
 		getPriorityText(priority),
 	);
 
-// Status cell component
-const StatusCell = ({ status }) =>
-	h(
-		"td",
-		{},
-		h(
-			"span",
-			{ className: `status status-${getStatusClass(status)}` },
-			getStatusText(status),
-		),
-	);
 
 // Actions cell component
 const ActionsCell = ({ jobId, onEdit, onDelete, onNotes, onTasks }) =>
@@ -465,7 +454,7 @@ const NotesModal = ({ job, onClose }) => {
 	);
 
 	const handleAddNote = () => {
-		const textarea = document.querySelector('.add-note-textarea');
+		const textarea = document.querySelector(".add-note-textarea");
 		const noteText = textarea.value.trim();
 
 		if (!noteText) {
@@ -483,42 +472,44 @@ const NotesModal = ({ job, onClose }) => {
 		// Add note to job data
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		if (!jobsData[jobIndex].notes) {
 			jobsData[jobIndex].notes = [];
 		}
-		
+
 		jobsData[jobIndex].notes.push(newNote);
 		saveToLocalStorage();
-		
+
 		// Update the job object for this modal
 		job.notes = jobsData[jobIndex].notes;
-		
+
 		// Add the new note to the existing modal without reopening
-		const modalBody = document.querySelector('.modal-body');
-		const addNoteSection = modalBody.querySelector('.add-note-section');
-		
+		const modalBody = document.querySelector(".modal-body");
+		const addNoteSection = modalBody.querySelector(".add-note-section");
+
 		// Create and insert the new note before the add note section
 		const newNoteElement = NoteItem({ note: newNote });
 		modalBody.insertBefore(newNoteElement, addNoteSection);
-		
+
 		// Clear the textarea
-		textarea.value = '';
-		
+		textarea.value = "";
+
 		// Update the notes count in the table (refresh interface for count update)
 		updateStats();
 		const tableRow = document.querySelector(`tr[data-job-id="${job.id}"]`);
 		if (tableRow) {
-			const notesCell = tableRow.querySelector('.notes');
+			const notesCell = tableRow.querySelector(".notes");
 			if (notesCell) {
-				notesCell.innerHTML = '';
-				notesCell.appendChild(NotesCount({ 
-					notes: job.notes || [], 
-					onClick: () => openNotesModal(job) 
-				}));
+				notesCell.innerHTML = "";
+				notesCell.appendChild(
+					NotesCount({
+						notes: job.notes || [],
+						onClick: () => openNotesModal(job),
+					}),
+				);
 			}
 		}
-		
+
 		// Scroll to bottom to show the new note and keep form visible
 		setTimeout(() => {
 			modalBody.scrollTop = modalBody.scrollHeight;
@@ -550,23 +541,36 @@ const NotesModal = ({ job, onClose }) => {
 				// Existing notes list
 				...(sortedNotes.length > 0
 					? sortedNotes.map((note) => NoteItem({ note }))
-					: [h(
-							"p",
-							{ style: { textAlign: "center", color: "var(--text-light)", marginBottom: "20px" } },
-							"No notes yet. Add your first note below.",
-						)]
-				),
+					: [
+							h(
+								"p",
+								{
+									style: {
+										textAlign: "center",
+										color: "var(--text-light)",
+										marginBottom: "20px",
+									},
+								},
+								"No notes yet. Add your first note below.",
+							),
+						]),
 				// Add note form section
-				h("div", { className: "add-note-section" },
+				h(
+					"div",
+					{ className: "add-note-section" },
 					h("h4", { className: "add-note-title" }, "Add New Note"),
 					h(
 						"div",
 						{ className: "note-form-info" },
 						h(
-							"span", 
+							"span",
 							{},
-							h("span", { className: "material-symbols-outlined" }, "assignment"),
-							` Phase: ${getPhaseText(job.currentPhase)}`
+							h(
+								"span",
+								{ className: "material-symbols-outlined" },
+								"assignment",
+							),
+							` Phase: ${getPhaseText(job.currentPhase)}`,
 						),
 					),
 					h("textarea", {
@@ -574,13 +578,13 @@ const NotesModal = ({ job, onClose }) => {
 						placeholder: "Enter your note here...",
 						rows: 3,
 						onkeydown: (e) => {
-							if (e.key === 'Enter' && e.shiftKey) {
+							if (e.key === "Enter" && e.shiftKey) {
 								e.preventDefault();
 								handleAddNote();
 							}
-						}
-					})
-				)
+						},
+					}),
+				),
 			),
 			h(
 				"div",
@@ -589,7 +593,7 @@ const NotesModal = ({ job, onClose }) => {
 					"button",
 					{
 						className: "action-btn edit-btn",
-						onclick: handleAddNote
+						onclick: handleAddNote,
 					},
 					"Add Note",
 				),
@@ -609,37 +613,45 @@ const NotesModal = ({ job, onClose }) => {
 
 // Tasks count display component with colored counters
 const TasksCount = ({ tasks = [], onClick }) => {
-	const todoCount = tasks.filter(task => task.status === 'todo').length;
-	const inProgressCount = tasks.filter(task => task.status === 'in-progress').length;
-	const doneCount = tasks.filter(task => task.status === 'done').length;
+	const todoCount = tasks.filter((task) => task.status === "todo").length;
+	const inProgressCount = tasks.filter(
+		(task) => task.status === "in-progress",
+	).length;
+	const doneCount = tasks.filter((task) => task.status === "done").length;
 	const totalCount = tasks.length;
 
 	const className = totalCount === 0 ? "tasks-count zero" : "tasks-count";
 
-	return h("span", {
-		className,
-		onclick: totalCount > 0 ? onClick : null,
-	}, 
+	return h(
+		"span",
+		{
+			className,
+			onclick: totalCount > 0 ? onClick : null,
+		},
 		h("span", { className: "task-count-todo" }, todoCount.toString()),
 		h("span", { className: "task-count-separator" }, "/"),
-		h("span", { className: "task-count-in-progress" }, inProgressCount.toString()),
+		h(
+			"span",
+			{ className: "task-count-in-progress" },
+			inProgressCount.toString(),
+		),
 		h("span", { className: "task-count-separator" }, "/"),
-		h("span", { className: "task-count-done" }, doneCount.toString())
+		h("span", { className: "task-count-done" }, doneCount.toString()),
 	);
 };
 
 // Individual task item component
 const TaskItem = ({ task }) => {
 	const statusColors = {
-		'todo': 'var(--status-applied-bg)',
-		'in-progress': 'var(--status-interview-bg)', 
-		'done': 'var(--status-offer-bg)'
+		todo: "var(--status-applied-bg)",
+		"in-progress": "var(--status-interview-bg)",
+		done: "var(--status-offer-bg)",
 	};
-	
+
 	const priorityColors = {
-		'low': 'var(--priority-low)',
-		'medium': 'var(--priority-medium)',
-		'high': 'var(--priority-high)'
+		low: "var(--priority-low)",
+		medium: "var(--priority-medium)",
+		high: "var(--priority-high)",
 	};
 
 	return h(
@@ -649,18 +661,36 @@ const TaskItem = ({ task }) => {
 			"div",
 			{ className: "task-header" },
 			h("span", { className: "task-date" }, formatDate(task.createdAt)),
-			h("span", { 
-				className: "task-status",
-				style: { background: statusColors[task.status] }
-			}, task.status.replace('-', ' ')),
-			h("span", { 
-				className: "task-priority",
-				style: { background: priorityColors[task.priority] }
-			}, task.priority)
+			h(
+				"span",
+				{
+					className: "task-status",
+					style: { background: statusColors[task.status] },
+				},
+				task.status.replace("-", " "),
+			),
+			h(
+				"span",
+				{
+					className: "task-priority",
+					style: { background: priorityColors[task.priority] },
+				},
+				task.priority,
+			),
 		),
 		h("div", { className: "task-text" }, task.text),
-		task.dueDate && h("div", { className: "task-due-date" }, `Due: ${formatDate(task.dueDate)}`),
-		task.completedAt && h("div", { className: "task-completed-date" }, `Completed: ${formatDate(task.completedAt)}`)
+		task.dueDate &&
+			h(
+				"div",
+				{ className: "task-due-date" },
+				`Due: ${formatDate(task.dueDate)}`,
+			),
+		task.completedAt &&
+			h(
+				"div",
+				{ className: "task-completed-date" },
+				`Completed: ${formatDate(task.completedAt)}`,
+			),
 	);
 };
 
@@ -672,11 +702,11 @@ const TasksModal = ({ job, onClose }) => {
 	);
 
 	const handleAddTask = () => {
-		const textarea = document.querySelector('.add-task-textarea');
-		const statusSelect = document.querySelector('.add-task-status');
-		const prioritySelect = document.querySelector('.add-task-priority');
-		const dueDateInput = document.querySelector('.add-task-due-date');
-		
+		const textarea = document.querySelector(".add-task-textarea");
+		const statusSelect = document.querySelector(".add-task-status");
+		const prioritySelect = document.querySelector(".add-task-priority");
+		const dueDateInput = document.querySelector(".add-task-due-date");
+
 		const taskText = textarea.value.trim();
 		const status = statusSelect.value;
 		const priority = prioritySelect.value;
@@ -693,52 +723,54 @@ const TasksModal = ({ job, onClose }) => {
 			status: status,
 			priority: priority,
 			createdAt: new Date().toISOString(),
-			completedAt: status === 'done' ? new Date().toISOString() : null,
+			completedAt: status === "done" ? new Date().toISOString() : null,
 			dueDate: dueDate ? new Date(dueDate).toISOString() : null,
 		};
 
 		// Add task to job data
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		if (!jobsData[jobIndex].tasks) {
 			jobsData[jobIndex].tasks = [];
 		}
-		
+
 		jobsData[jobIndex].tasks.push(newTask);
 		saveToLocalStorage();
-		
+
 		// Update the job object for this modal
 		job.tasks = jobsData[jobIndex].tasks;
-		
+
 		// Add the new task to the existing modal without reopening
-		const modalBody = document.querySelector('.modal-body');
-		const addTaskSection = modalBody.querySelector('.add-task-section');
-		
+		const modalBody = document.querySelector(".modal-body");
+		const addTaskSection = modalBody.querySelector(".add-task-section");
+
 		// Create and insert the new task before the add task section
 		const newTaskElement = TaskItem({ task: newTask });
 		modalBody.insertBefore(newTaskElement, addTaskSection);
-		
+
 		// Clear the form
-		textarea.value = '';
-		statusSelect.value = 'todo';
-		prioritySelect.value = 'medium';
-		dueDateInput.value = '';
-		
+		textarea.value = "";
+		statusSelect.value = "todo";
+		prioritySelect.value = "medium";
+		dueDateInput.value = "";
+
 		// Update the tasks count in the table (refresh interface for count update)
 		updateStats();
 		const tableRow = document.querySelector(`tr[data-job-id="${job.id}"]`);
 		if (tableRow) {
-			const tasksCell = tableRow.querySelector('.tasks');
+			const tasksCell = tableRow.querySelector(".tasks");
 			if (tasksCell) {
-				tasksCell.innerHTML = '';
-				tasksCell.appendChild(TasksCount({ 
-					tasks: job.tasks || [], 
-					onClick: () => openTasksModal(job) 
-				}));
+				tasksCell.innerHTML = "";
+				tasksCell.appendChild(
+					TasksCount({
+						tasks: job.tasks || [],
+						onClick: () => openTasksModal(job),
+					}),
+				);
 			}
 		}
-		
+
 		// Scroll to bottom to show the new task and keep form visible
 		setTimeout(() => {
 			modalBody.scrollTop = modalBody.scrollHeight;
@@ -770,23 +802,36 @@ const TasksModal = ({ job, onClose }) => {
 				// Existing tasks list
 				...(sortedTasks.length > 0
 					? sortedTasks.map((task) => TaskItem({ task }))
-					: [h(
-							"p",
-							{ style: { textAlign: "center", color: "var(--text-light)", marginBottom: "20px" } },
-							"No tasks yet. Add your first task below.",
-						)]
-				),
+					: [
+							h(
+								"p",
+								{
+									style: {
+										textAlign: "center",
+										color: "var(--text-light)",
+										marginBottom: "20px",
+									},
+								},
+								"No tasks yet. Add your first task below.",
+							),
+						]),
 				// Add task form section
-				h("div", { className: "add-task-section" },
+				h(
+					"div",
+					{ className: "add-task-section" },
 					h("h4", { className: "add-task-title" }, "Add New Task"),
 					h(
 						"div",
 						{ className: "task-form-info" },
 						h(
-							"span", 
+							"span",
 							{},
-							h("span", { className: "material-symbols-outlined" }, "assignment"),
-							` Phase: ${getPhaseText(job.currentPhase)}`
+							h(
+								"span",
+								{ className: "material-symbols-outlined" },
+								"assignment",
+							),
+							` Phase: ${getPhaseText(job.currentPhase)}`,
 						),
 					),
 					h("textarea", {
@@ -794,38 +839,50 @@ const TasksModal = ({ job, onClose }) => {
 						placeholder: "Enter your task here...",
 						rows: 3,
 						onkeydown: (e) => {
-							if (e.key === 'Enter' && e.shiftKey) {
+							if (e.key === "Enter" && e.shiftKey) {
 								e.preventDefault();
 								handleAddTask();
 							}
-						}
+						},
 					}),
-					h("div", { className: "task-form-controls" },
-						h("div", { className: "task-control-group" },
+					h(
+						"div",
+						{ className: "task-form-controls" },
+						h(
+							"div",
+							{ className: "task-control-group" },
 							h("label", {}, "Status:"),
-							h("select", { className: "add-task-status" },
+							h(
+								"select",
+								{ className: "add-task-status" },
 								h("option", { value: "todo" }, "To Do"),
 								h("option", { value: "in-progress" }, "In Progress"),
-								h("option", { value: "done" }, "Done")
-							)
+								h("option", { value: "done" }, "Done"),
+							),
 						),
-						h("div", { className: "task-control-group" },
+						h(
+							"div",
+							{ className: "task-control-group" },
 							h("label", {}, "Priority:"),
-							h("select", { className: "add-task-priority" },
+							h(
+								"select",
+								{ className: "add-task-priority" },
 								h("option", { value: "low" }, "Low"),
 								h("option", { value: "medium", selected: true }, "Medium"),
-								h("option", { value: "high" }, "High")
-							)
+								h("option", { value: "high" }, "High"),
+							),
 						),
-						h("div", { className: "task-control-group" },
+						h(
+							"div",
+							{ className: "task-control-group" },
 							h("label", {}, "Due Date:"),
-							h("input", { 
+							h("input", {
 								type: "date",
-								className: "add-task-due-date"
-							})
-						)
-					)
-				)
+								className: "add-task-due-date",
+							}),
+						),
+					),
+				),
 			),
 			h(
 				"div",
@@ -834,7 +891,7 @@ const TasksModal = ({ job, onClose }) => {
 					"button",
 					{
 						className: "action-btn edit-btn",
-						onclick: handleAddTask
+						onclick: handleAddTask,
 					},
 					"Add Task",
 				),
@@ -848,7 +905,6 @@ const TasksModal = ({ job, onClose }) => {
 	);
 };
 
-
 // ============================================================================
 // NOTES MANAGEMENT FUNCTIONS
 // ============================================================================
@@ -856,39 +912,43 @@ const TasksModal = ({ job, onClose }) => {
 // Format date for display
 const formatDate = (dateString) => {
 	const date = new Date(dateString);
-	
+
 	// Use CONFIG.dateFormat to determine format
 	switch (CONFIG.dateFormat) {
-		case 'DD/MM/YY':
+		case "DD/MM/YY":
 			return date.toLocaleDateString("en-GB", {
 				year: "2-digit",
-				month: "2-digit", 
-				day: "2-digit"
+				month: "2-digit",
+				day: "2-digit",
 			});
-		case 'MM/DD/YY':
+		case "MM/DD/YY":
 			return date.toLocaleDateString("en-US", {
 				year: "2-digit",
 				month: "2-digit",
-				day: "2-digit"
+				day: "2-digit",
 			});
-		case 'YYYY-MM-DD':
-			return date.toISOString().split('T')[0];
-		case 'DD/MM/YY HH:MM':
-			return date.toLocaleDateString("en-GB", {
-				year: "2-digit",
-				month: "2-digit",
-				day: "2-digit"
-			}) + ' ' + date.toLocaleTimeString("en-GB", {
-				hour: "2-digit",
-				minute: "2-digit",
-				hour12: false
-			});
+		case "YYYY-MM-DD":
+			return date.toISOString().split("T")[0];
+		case "DD/MM/YY HH:MM":
+			return (
+				date.toLocaleDateString("en-GB", {
+					year: "2-digit",
+					month: "2-digit",
+					day: "2-digit",
+				}) +
+				" " +
+				date.toLocaleTimeString("en-GB", {
+					hour: "2-digit",
+					minute: "2-digit",
+					hour12: false,
+				})
+			);
 		default:
 			// Default to DD/MM/YY format
 			return date.toLocaleDateString("en-GB", {
 				year: "2-digit",
 				month: "2-digit",
-				day: "2-digit"
+				day: "2-digit",
 			});
 	}
 };
@@ -915,10 +975,10 @@ const openNotesModal = (job) => {
 	});
 
 	document.body.appendChild(modal);
-	
+
 	// Scroll to bottom to show the add note form
 	setTimeout(() => {
-		const modalBody = modal.querySelector('.modal-body');
+		const modalBody = modal.querySelector(".modal-body");
 		if (modalBody) {
 			modalBody.scrollTop = modalBody.scrollHeight;
 		}
@@ -940,10 +1000,10 @@ const openTasksModal = (job) => {
 	});
 
 	document.body.appendChild(modal);
-	
+
 	// Scroll to bottom to show the add task form
 	setTimeout(() => {
-		const modalBody = modal.querySelector('.modal-body');
+		const modalBody = modal.querySelector(".modal-body");
 		if (modalBody) {
 			modalBody.scrollTop = modalBody.scrollHeight;
 		}
@@ -994,31 +1054,35 @@ const migrateTasksData = (jobs) => {
 		// If job has nextTask or dueDate, migrate them to tasks array
 		if ((job.nextTask && job.nextTask.trim() !== "") || job.dueDate) {
 			const existingTasks = Array.isArray(job.tasks) ? job.tasks : [];
-			
+
 			// Only add migration task if there's actual content and no tasks exist yet
-			if (existingTasks.length === 0 && (job.nextTask && job.nextTask.trim() !== "")) {
+			if (
+				existingTasks.length === 0 &&
+				job.nextTask &&
+				job.nextTask.trim() !== ""
+			) {
 				const migrationTask = {
 					id: Date.now().toString(),
 					text: job.nextTask,
-					status: 'todo',
-					priority: 'medium',
+					status: "todo",
+					priority: "medium",
 					createdAt: job.appliedDate || new Date().toISOString(),
 					completedAt: null,
 					dueDate: job.dueDate ? new Date(job.dueDate).toISOString() : null,
 				};
-				
+
 				return {
 					...job,
 					tasks: [migrationTask],
 				};
 			}
 		}
-		
+
 		// If tasks is already an array, keep as is
 		if (Array.isArray(job.tasks)) {
 			return job;
 		}
-		
+
 		// If tasks is undefined, set to empty array
 		return {
 			...job,
@@ -1035,8 +1099,6 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		PriorityCell({ priority: job.priority }),
 		h("td", { className: "company-name" }, job.company),
 		h("td", { className: "position-name" }, job.position),
-		h("td", { className: "date" }, formatDate(job.appliedDate)),
-		StatusCell({ status: job.status }),
 		h("td", { className: "current-phase" }, getPhaseText(job.currentPhase)),
 		h("td", {
 			className: "contact",
@@ -1164,8 +1226,6 @@ I18n.translations = {
 				priority: "Priority",
 				company: "Company",
 				position: "Position",
-				appliedDate: "Applied Date",
-				status: "Status",
 				currentPhase: "Current Phase",
 				contactPerson: "Contact Person",
 				salaryRange: "Salary Range",
@@ -1176,7 +1236,6 @@ I18n.translations = {
 			},
 			filters: {
 				allPriorities: "All Priorities",
-				allStatuses: "All Statuses",
 				allPhases: "All Phases",
 				highPriority: "High Priority",
 				mediumPriority: "Medium Priority",
@@ -1191,22 +1250,22 @@ I18n.translations = {
 				notes: "Notes",
 			},
 		},
-		statuses: {
-			wishlist: "Wishlist",
-			applied: "Applied",
-			phoneScreening: "Phone Screening",
-			interview: "Interview",
-			finalRound: "Final Round",
-			offer: "Offer",
-			rejected: "Rejected",
-			withdrawn: "Withdrawn",
-		},
 		priorities: {
 			high: "High",
 			medium: "Medium",
 			low: "Low",
 		},
 		phases: {
+			// PHASES array values
+			wishlist: "Wishlist",
+			applied: "Applied",
+			phone_screening: "Phone Screening",
+			interview: "Interview",
+			final_round: "Final Round",
+			offer: "Offer",
+			rejected: "Rejected",
+			withdrawn: "Withdrawn",
+			// Extended phase values
 			applicationReview: "Application Review",
 			initialScreening: "Initial Screening",
 			hrPhoneScreen: "HR Phone Screen",
@@ -1267,8 +1326,6 @@ I18n.translations = {
 				priority: "Prioridade",
 				company: "Empresa",
 				position: "Cargo",
-				appliedDate: "Data da Candidatura",
-				status: "Status",
 				currentPhase: "Fase Atual",
 				contactPerson: "Pessoa de Contato",
 				salaryRange: "Faixa Salarial",
@@ -1279,7 +1336,6 @@ I18n.translations = {
 			},
 			filters: {
 				allPriorities: "Todas as Prioridades",
-				allStatuses: "Todos os Status",
 				allPhases: "Todas as Fases",
 				highPriority: "Prioridade Alta",
 				mediumPriority: "Prioridade Média",
@@ -1294,22 +1350,22 @@ I18n.translations = {
 				notes: "Notas",
 			},
 		},
-		statuses: {
-			wishlist: "Lista de Desejos",
-			applied: "Candidatura Enviada",
-			phoneScreening: "Triagem por Telefone",
-			interview: "Entrevista",
-			finalRound: "Etapa Final",
-			offer: "Oferta",
-			rejected: "Rejeitado",
-			withdrawn: "Retirado",
-		},
 		priorities: {
 			high: "Alta",
 			medium: "Média",
 			low: "Baixa",
 		},
 		phases: {
+			// PHASES array values
+			wishlist: "Lista de Desejos",
+			applied: "Candidatura Enviada",
+			phone_screening: "Triagem por Telefone",
+			interview: "Entrevista",
+			final_round: "Etapa Final",
+			offer: "Oferta",
+			rejected: "Rejeitado",
+			withdrawn: "Retirado",
+			// Extended phase values
 			applicationReview: "Análise da Candidatura",
 			initialScreening: "Triagem Inicial",
 			hrPhoneScreen: "Triagem por Telefone - RH",
@@ -1362,7 +1418,7 @@ I18n.translations = {
 // ============================================================================
 
 const CONFIG = {
-	dateFormat: 'DD/MM/YY HH:MM', // Options: 'DD/MM/YY', 'MM/DD/YY', 'YYYY-MM-DD', 'DD/MM/YY HH:MM'
+	dateFormat: "DD/MM/YY HH:MM", // Options: 'DD/MM/YY', 'MM/DD/YY', 'YYYY-MM-DD', 'DD/MM/YY HH:MM'
 	showTimeInNotes: true, // Set to true to include time in notes
 };
 
@@ -1370,42 +1426,20 @@ const CONFIG = {
 // CONSTANTS AND DATA
 // ============================================================================
 
-const STATUSES = [
+const PRIORITIES = ["high", "medium", "low"];
+
+const PHASES = [
 	"wishlist",
 	"applied",
-	"phoneScreening",
+	"phone_screening",
 	"interview",
-	"finalRound",
+	"final_round",
 	"offer",
 	"rejected",
 	"withdrawn",
 ];
 
-const PRIORITIES = ["high", "medium", "low"];
-
-const PHASES = [
-	"applicationReview",
-	"initialScreening",
-	"hrPhoneScreen",
-	"recruiterCall",
-	"technicalPhoneScreen",
-	"codingChallenge",
-	"takeHomeAssignment",
-	"technicalInterview",
-	"systemDesignInterview",
-	"behavioralInterview",
-	"teamInterview",
-	"hiringManagerInterview",
-	"panelInterview",
-	"finalRound",
-	"referenceCheck",
-	"backgroundCheck",
-	"offerDiscussion",
-	"salaryNegotiation",
-];
-
 // Helper functions to get translated values
-const getStatusText = (statusKey) => I18n.t(`statuses.${statusKey}`);
 const getPriorityText = (priorityKey) => I18n.t(`priorities.${priorityKey}`);
 const getPhaseText = (phaseKey) => I18n.t(`phases.${phaseKey}`);
 
@@ -1417,8 +1451,7 @@ const DEMO_DATA = [
 		company: "TechCorp Inc",
 		position: "Senior Software Engineer",
 		appliedDate: "2025-06-15T10:00:00.000Z",
-		status: "interview",
-		currentPhase: "technicalInterview",
+		currentPhase: "interview",
 		contactPerson: "demo.contactPerson1",
 		contactEmail: "sarah@techcorp.com",
 		salaryRange: "$120k - $150k",
@@ -1432,18 +1465,18 @@ const DEMO_DATA = [
 				priority: "high",
 				createdAt: "2025-06-15T10:00:00.000Z",
 				completedAt: null,
-				dueDate: "2025-06-22T10:00:00.000Z"
+				dueDate: "2025-06-22T10:00:00.000Z",
 			},
 			{
-				id: "2", 
+				id: "2",
 				text: "Review company tech stack",
 				status: "done",
 				priority: "medium",
 				createdAt: "2025-06-14T09:00:00.000Z",
 				completedAt: "2025-06-16T14:30:00.000Z",
-				dueDate: null
-			}
-		]
+				dueDate: null,
+			},
+		],
 	},
 	{
 		id: 2,
@@ -1451,8 +1484,7 @@ const DEMO_DATA = [
 		company: "StartupXYZ",
 		position: "Full Stack Developer",
 		appliedDate: "2025-06-12T09:00:00.000Z",
-		status: "phoneScreening",
-		currentPhase: "hrPhoneScreen",
+		currentPhase: "phone_screening",
 		contactPerson: "demo.contactPerson2",
 		contactEmail: "hiring@startupxyz.com",
 		salaryRange: "$90k - $110k + equity",
@@ -1462,13 +1494,13 @@ const DEMO_DATA = [
 			{
 				id: "3",
 				text: "Wait for callback",
-				status: "in-progress", 
+				status: "in-progress",
 				priority: "medium",
 				createdAt: "2025-06-12T15:00:00.000Z",
 				completedAt: null,
-				dueDate: "2025-06-20T17:00:00.000Z"
-			}
-		]
+				dueDate: "2025-06-20T17:00:00.000Z",
+			},
+		],
 	},
 ];
 
@@ -1490,8 +1522,8 @@ let originalData = [];
 // UTILITY FUNCTIONS
 // ============================================================================
 
-function getStatusClass(status) {
-	return status.toLowerCase().replace(/\s+/g, "_");
+function getPhaseClass(phase) {
+	return phase.toLowerCase().replace(/\s+/g, "_");
 }
 
 function getUniqueValues(array, property) {
@@ -1522,8 +1554,6 @@ function updateStaticTexts() {
 	$("#priorityHeader").text(I18n.t("table.headers.priority"));
 	$("#companyHeader").text(I18n.t("table.headers.company"));
 	$("#positionHeader").text(I18n.t("table.headers.position"));
-	$("#appliedDateHeader").text(I18n.t("table.headers.appliedDate"));
-	$("#statusHeader").text(I18n.t("table.headers.status"));
 	$("#currentPhaseHeader").text(I18n.t("table.headers.currentPhase"));
 	$("#contactPersonHeader").text(I18n.t("table.headers.contactPerson"));
 	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
@@ -1551,31 +1581,6 @@ function refreshInterface() {
 // ============================================================================
 // SELECT COMPONENT CREATORS
 // ============================================================================
-
-function createStatusSelect(
-	selectedValue = "",
-	includeEmpty = true,
-	className = "filter-select",
-	onChange = null,
-) {
-	const select = createElement("select", className);
-
-	if (includeEmpty) {
-		select.appendChild(createOption("", I18n.t("table.filters.allStatuses")));
-	}
-
-	for (const status of STATUSES) {
-		select.appendChild(
-			createOption(status, getStatusText(status), status === selectedValue),
-		);
-	}
-
-	if (onChange) {
-		select.onchange = onChange;
-	}
-
-	return select;
-}
 
 function createPrioritySelect(
 	selectedValue = "",
@@ -1752,7 +1757,6 @@ function generateDropdown(
 
 function generateHeaderFilters() {
 	const existingPriorities = getUniqueValues(jobsData, "priority");
-	const existingStatuses = getUniqueValues(jobsData, "status");
 	const existingPhases = getUniqueValues(jobsData, "currentPhase");
 
 	generateDropdown(
@@ -1761,13 +1765,6 @@ function generateHeaderFilters() {
 		filterByPriority,
 		I18n.t("table.filters.allPriorities"),
 		getPriorityText,
-	);
-	generateDropdown(
-		"statusDropdown",
-		existingStatuses,
-		filterByStatus,
-		I18n.t("table.filters.allStatuses"),
-		getStatusText,
 	);
 	generateDropdown(
 		"phaseDropdown",
@@ -1836,8 +1833,6 @@ function addRow() {
 		priority: newRow.insertCell(),
 		company: newRow.insertCell(),
 		position: newRow.insertCell(),
-		appliedDate: newRow.insertCell(),
-		status: newRow.insertCell(),
 		currentPhase: newRow.insertCell(),
 		contact: newRow.insertCell(),
 		salary: newRow.insertCell(),
@@ -1850,7 +1845,7 @@ function addRow() {
 	// Add CSS classes
 	cells.priority.className = "priority-cell";
 	cells.company.className = "company-name";
-	cells.appliedDate.className = "date";
+	cells.currentPhase.className = "current-phase";
 	cells.contact.className = "contact";
 	cells.salary.className = "salary";
 	cells.notes.className = "notes";
@@ -1858,9 +1853,8 @@ function addRow() {
 
 	// Add form controls
 	cells.priority.appendChild(createPrioritySelect("medium", false, "editable"));
-	cells.status.appendChild(createStatusSelect("wishlist", false, "editable"));
 	cells.currentPhase.appendChild(
-		createPhaseSelect("applicationReview", false, "editable"),
+		createPhaseSelect("wishlist", false, "editable"),
 	);
 
 	// Add input fields using components
@@ -1875,13 +1869,6 @@ function addRow() {
 		InputField({
 			placeholder: I18n.t("table.placeholders.positionTitle"),
 			list: "positionsDatalist",
-		}),
-	);
-
-	cells.appliedDate.appendChild(
-		InputField({
-			type: "date",
-			value: new Date().toISOString().split("T")[0],
 		}),
 	);
 
@@ -1968,81 +1955,68 @@ function editRow(button) {
 	);
 
 	$(cells[3]).html("");
-	cells[3].appendChild(
-		InputField({
-			value: new Date(job.appliedDate).toISOString().split("T")[0],
-			type: "date",
-		}),
-	);
+	cells[3].appendChild(createPhaseSelect(job.currentPhase, false, "editable"));
 
 	$(cells[4]).html("");
-	cells[4].appendChild(createStatusSelect(job.status, false, "editable"));
-
-	$(cells[5]).html("");
-	cells[5].appendChild(createPhaseSelect(job.currentPhase, false, "editable"));
-
-	$(cells[6]).html("");
-	cells[6].appendChild(
+	cells[4].appendChild(
 		ContactTextarea({
 			contactPerson: job.contactPerson,
 			contactEmail: job.contactEmail,
 		}),
 	);
 
-	$(cells[7]).html("");
-	cells[7].appendChild(InputField({ value: job.salaryRange }));
+	$(cells[5]).html("");
+	cells[5].appendChild(InputField({ value: job.salaryRange }));
 
-	$(cells[8]).html("");
-	cells[8].appendChild(
+	$(cells[6]).html("");
+	cells[6].appendChild(
 		InputField({
 			value: job.location,
 			list: "locationsDatalist",
 		}),
 	);
 
-	$(cells[9]).html("");
+	$(cells[7]).html("");
 	// Notes column shows count and is clickable to view/add notes
-	cells[9].appendChild(
+	cells[7].appendChild(
 		NotesCount({
 			notes: job.notes || [],
 			onClick: () => openNotesModal(job),
 		}),
 	);
 
-	$(cells[10]).html("");
+	$(cells[8]).html("");
 	// Tasks column shows count and is clickable to view/add tasks
-	cells[10].appendChild(
+	cells[8].appendChild(
 		TasksCount({
 			tasks: job.tasks || [],
 			onClick: () => openTasksModal(job),
 		}),
 	);
 
-	$(cells[11]).html("");
-	cells[11].appendChild(
+	$(cells[9]).html("");
+	cells[9].appendChild(
 		EditActionsCell({
 			jobId: jobId,
-			onSave: (id) => saveEditedRow(cells[11].querySelector("button"), id),
-			onCancel: () => cancelEdit(cells[11].querySelector(".cancel-btn")),
+			onSave: (id) => saveEditedRow(cells[9].querySelector("button"), id),
+			onCancel: () => cancelEdit(cells[9].querySelector(".cancel-btn")),
 		}),
 	);
 }
 
 function extractFormData(cells) {
-	const contactText = cells[6].querySelector("textarea").value;
+	const contactText = cells[4].querySelector("textarea").value;
 	const contactLines = contactText.split("\n");
 
 	return {
 		priority: cells[0].querySelector("select").value,
 		company: cells[1].querySelector("input").value,
 		position: cells[2].querySelector("input").value,
-		appliedDate: new Date(cells[3].querySelector("input").value).toISOString(),
-		status: cells[4].querySelector("select").value,
-		currentPhase: cells[5].querySelector("select").value,
+		currentPhase: cells[3].querySelector("select").value,
 		contactPerson: contactLines[0] || "",
 		contactEmail: contactLines[1] || "",
-		salaryRange: cells[7].querySelector("input").value,
-		location: cells[8].querySelector("input").value,
+		salaryRange: cells[5].querySelector("input").value,
+		location: cells[6].querySelector("input").value,
 		// Notes and tasks are handled separately through their respective systems
 		notes: [],
 		tasks: [],
@@ -2109,13 +2083,6 @@ function deleteJob(jobId) {
 // FILTERING FUNCTIONS
 // ============================================================================
 
-function filterByStatus(status) {
-	const filteredJobs = status
-		? jobsData.filter((job) => job.status === status)
-		: jobsData;
-	populateTable(filteredJobs);
-	updateStats(filteredJobs);
-}
 
 function filterByPriority(priority) {
 	const filteredJobs = priority
@@ -2146,11 +2113,11 @@ function updateStats(filteredJobs = null) {
 	let rejections = 0;
 
 	for (const job of jobs) {
-		const status = job.status;
-		if (status !== "Rejected" && status !== "Withdrawn") active++;
-		if (status.includes("Interview") || status === "Final Round") interviews++;
-		if (status === "Offer") offers++;
-		if (status === "Rejected") rejections++;
+		const phase = job.currentPhase;
+		if (phase !== "rejected" && phase !== "withdrawn") active++;
+		if (phase === "interview" || phase === "final_round") interviews++;
+		if (phase === "offer") offers++;
+		if (phase === "rejected") rejections++;
 	}
 
 	$("#totalApps").text(total);
