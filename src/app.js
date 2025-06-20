@@ -168,18 +168,27 @@ function refreshInterface() {
 // Render job table
 function renderJobTable() {
 	const tableBody = $("#jobTableBody");
-	if (!tableBody) return;
+	if (!tableBody) {
+		console.warn("Table body not found - cannot render jobs");
+		return;
+	}
 	
 	const tbody = tableBody.get();
 	tbody.innerHTML = "";
 	
+	console.log("Rendering jobs:", jobsData.length);
+	
 	for (const job of jobsData) {
-		const row = JobRow({
-			job,
-			onEdit: editJob,
-			onDelete: deleteJob
-		});
-		tbody.appendChild(row);
+		try {
+			const row = JobRow({
+				job,
+				onEdit: editJob,
+				onDelete: deleteJob
+			});
+			tbody.appendChild(row);
+		} catch (error) {
+			console.error("Error rendering job row:", error, job);
+		}
 	}
 }
 

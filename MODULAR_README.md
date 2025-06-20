@@ -21,7 +21,9 @@ job-tracker-plain/
 │   ├── styles.css          # Main styles
 │   └── constants.css       # CSS variables
 ├── dist/                   # Built output files (auto-generated)
-│   ├── index.html          # Built HTML file
+│   └── index.html          # Single HTML file with everything inlined (default)
+│   # OR (when using --separate flag):
+│   ├── index.html          # HTML file with external references
 │   ├── styles.css          # Built CSS file
 │   ├── constants.css       # Built CSS variables
 │   └── script.js           # Built JavaScript file
@@ -33,11 +35,17 @@ job-tracker-plain/
 
 ### Option 1: Using NPM Scripts (recommended)
 ```bash
-# Build once
+# Build single HTML file (default - everything inlined)
 npm run build
 
-# Build and watch for changes
+# Build separate HTML, CSS, and JS files
+npm run build:separate
+
+# Build and watch for changes (single file mode)
 npm run dev
+
+# Build and watch for changes (separate files mode)
+npm run dev:separate
 
 # Serve the built files on localhost:8000
 npm run serve
@@ -48,11 +56,17 @@ npm run clean
 
 ### Option 2: Direct Node.js
 ```bash
-# Build once
+# Build single HTML file (default)
 node build.js
 
-# Build and watch for changes
+# Build separate files
+node build.js --separate
+
+# Build and watch for changes (single file)
 node build.js --watch
+
+# Build and watch for changes (separate files)
+node build.js --watch --separate
 
 # Help
 node build.js --help
@@ -62,11 +76,14 @@ node build.js --help
 
 ### Build Process
 1. **Zero Dependencies**: The build script uses only Node.js built-ins
-2. **JavaScript Concatenation**: Combines all JS source files in the correct order
-3. **File Copying**: Copies HTML and CSS files from src/ to dist/
-4. **File Headers**: Adds clear section markers for debugging JavaScript
-5. **Missing File Handling**: Gracefully skips missing files with warnings
-6. **File Watching**: Optional watch mode for development (watches all file types)
+2. **Two Build Modes**: 
+   - **Single File** (default): Creates one HTML file with all CSS and JS inlined
+   - **Separate Files**: Creates individual HTML, CSS, and JS files
+3. **JavaScript Concatenation**: Combines all JS source files in the correct order
+4. **CSS Inlining**: Combines and inlines CSS files into `<style>` tags
+5. **File Headers**: Adds clear section markers for debugging
+6. **Missing File Handling**: Gracefully skips missing files with warnings
+7. **File Watching**: Optional watch mode for development (watches all file types)
 
 ### File Loading Order
 ```javascript

@@ -96,7 +96,12 @@ const getDemoData = () => {
 		contactPerson: job.contactPerson.startsWith("demo.")
 			? I18n.t(job.contactPerson)
 			: job.contactPerson,
-		notes: job.notes.startsWith("demo.") ? I18n.t(job.notes) : job.notes,
+		notes: job.notes.startsWith("demo.") ? [{
+			id: Date.now() + Math.random(),
+			date: job.appliedDate || new Date().toISOString(),
+			phase: job.currentPhase || "applied",
+			text: I18n.t(job.notes)
+		}] : (Array.isArray(job.notes) ? job.notes : []),
 	}));
 };
 

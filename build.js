@@ -10,8 +10,9 @@ const path = require('path');
 
 // Build configuration
 const BUILD_CONFIG = {
-  // Output file
+  // Output files
   outputFile: 'dist/script.js',
+  singleFileOutput: 'dist/index.html',
   
   // File order for concatenation (order matters!)
   files: [
@@ -34,7 +35,16 @@ const BUILD_CONFIG = {
     'src/app.js'
   ],
   
-  // Files to copy directly to dist
+  // CSS files to inline
+  cssFiles: [
+    'src/constants.css',
+    'src/styles.css'
+  ],
+  
+  // HTML template
+  htmlTemplate: 'src/index.html',
+  
+  // Files to copy directly to dist (for separate file mode)
   copyFiles: [
     { src: 'src/index.html', dest: 'dist/index.html' },
     { src: 'src/styles.css', dest: 'dist/styles.css' },
@@ -106,17 +116,202 @@ function copyFile(srcPath, destPath) {
 }
 
 /**
- * Main build function
+ * Build JavaScript content from source files
  */
-function build() {
+function buildJavaScript() {
+  const contents = [];
+  let successCount = 0;
+  let missingFiles = [];
+  
+  // Add header
+  contents.push(BUILD_CONFIG.header);
+  
+  // Process each JavaScript file
+  for (const file of BUILD_CONFIG.files) {
+    if (!fileExists(file)) {
+      missingFiles.push(file);
+      continue;
+    }
+    
+    const content = readFile(file);
+    if (content === null) {
+      continue;
+    }
+    
+    // Add file separator comment
+    contents.push(`
+// ============================================================================
+// ${file.toUpperCase()}
+// ============================================================================
+
+`);
+    
+    // Add file content
+    contents.push(content);
+    contents.push('\n');
+    
+    successCount++;
+  }
+  
+  return {
+    content: contents.join(''),
+    successCount,
+    missingFiles
+  };
+}
+
+/**
+ * Build CSS content from source files
+ */
+function buildCSS() {
+  const contents = [];
+  let successCount = 0;
+  let missingFiles = [];
+  
+  // Process each CSS file
+  for (const file of BUILD_CONFIG.cssFiles) {
+    if (!fileExists(file)) {
+      missingFiles.push(file);
+      continue;
+    }
+    
+    const content = readFile(file);
+    if (content === null) {
+      continue;
+    }
+    
+    // Add file separator comment
+    contents.push(`
+/* ============================================================================ */
+/* ${file.toUpperCase()} */
+/* ============================================================================ */
+
+`);
+    
+    // Add file content
+    contents.push(content);
+    contents.push('\n');
+    
+    successCount++;
+  }
+  
+  return {
+    content: contents.join(''),
+    successCount,
+    missingFiles
+  };
+}
+
+/**
+ * Build single HTML file with inlined CSS and JavaScript
+ */
+function buildSingleFile() {
+  console.log('🔧 Building single HTML file...\n');
+  
+  // Read HTML template
+  if (!fileExists(BUILD_CONFIG.htmlTemplate)) {
+    console.error(`❌ HTML template not found: ${BUILD_CONFIG.htmlTemplate}`);
+    return false;
+  }
+  
+  let htmlContent = readFile(BUILD_CONFIG.htmlTemplate);
+  if (htmlContent === null) {
+    return false;
+  }
+  
+  // Build JavaScript
+  console.log('📦 Building JavaScript...');
+  const jsResult = buildJavaScript();
+  console.log(`   ✅ JS files processed: ${jsResult.successCount}/${BUILD_CONFIG.files.length}`);
+  
+  // Build CSS
+  console.log('🎨 Building CSS...');
+  const cssResult = buildCSS();
+  console.log(`   ✅ CSS files processed: ${cssResult.successCount}/${BUILD_CONFIG.cssFiles.length}`);
+  
+  // Remove external CSS links and replace with inline styles
+  htmlContent = htmlContent.replace(
+    /<link rel="stylesheet" href="[^"]*">/g,
+    ''
+  );
+  
+  // Remove external script tag and replace with inline script
+  htmlContent = htmlContent.replace(
+    /<script src="[^"]*"><\/script>/g,
+    ''
+  );
+  
+  // Add build comment
+  const buildComment = `<!-- 
+============================================================================
+JobTracker - Single File Build
+Generated: ${new Date().toISOString()}
+============================================================================
+-->
+`;
+  
+  // Insert CSS into head
+  const cssBlock = `    <style>
+${cssResult.content}    </style>`;
+  
+  htmlContent = htmlContent.replace('</head>', `${cssBlock}\n</head>`);
+  
+  // Insert JavaScript before closing body tag
+  const jsBlock = `    <script>
+${jsResult.content}    </script>`;
+  
+  htmlContent = htmlContent.replace('</body>', `${jsBlock}\n</body>`);
+  
+  // Add build comment at the top
+  htmlContent = buildComment + htmlContent;
+  
+  // Write the single file
+  if (writeFile(BUILD_CONFIG.singleFileOutput, htmlContent)) {
+    console.log(`\n🎉 Single file build complete!`);
+    console.log(`📦 Output: ${BUILD_CONFIG.singleFileOutput}`);
+    
+    // Show any missing files
+    const allMissingFiles = [...jsResult.missingFiles, ...cssResult.missingFiles];
+    if (allMissingFiles.length > 0) {
+      console.log(`⚠️  Missing files: ${allMissingFiles.join(', ')}`);
+    }
+    
+    // Show file size
+    const stats = fs.statSync(BUILD_CONFIG.singleFileOutput);
+    const sizeKB = (stats.size / 1024).toFixed(2);
+    console.log(`📏 Size: ${sizeKB} KB`);
+    
+    return true;
+  }
+  
+  return false;
+}
+
+/**
+ * Main build function - builds single HTML file by default
+ */
+function build(separateFiles = false) {
   console.log('🏗️  Building JobTracker...\n');
   
   // Ensure dist directory exists
-  const distDir = path.dirname(BUILD_CONFIG.outputFile);
+  const distDir = path.dirname(BUILD_CONFIG.singleFileOutput);
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });
     console.log(`📁 Created directory: ${distDir}`);
   }
+  
+  if (separateFiles) {
+    return buildSeparateFiles();
+  } else {
+    return buildSingleFile();
+  }
+}
+
+/**
+ * Build separate files (original behavior)
+ */
+function buildSeparateFiles() {
+  console.log('📦 Building separate files...\n');
   
   const contents = [];
   let successCount = 0;
@@ -183,7 +378,7 @@ function build() {
       }
     }
     
-    console.log(`\n🎉 Build complete!`);
+    console.log(`\n🎉 Separate files build complete!`);
     console.log(`📦 JavaScript: ${BUILD_CONFIG.outputFile}`);
     console.log(`📊 JS files processed: ${successCount}/${BUILD_CONFIG.files.length}`);
     console.log(`📋 Files copied: ${copySuccessCount}/${BUILD_CONFIG.copyFiles.length}`);
@@ -202,63 +397,64 @@ function build() {
     const sizeKB = (stats.size / 1024).toFixed(2);
     console.log(`📏 JS Size: ${sizeKB} KB`);
     
+    return true;
   } else {
     console.log('\n❌ Build failed!');
-    process.exit(1);
+    return false;
   }
 }
 
 /**
  * Watch mode (simple file watching)
  */
-function watch() {
+function watch(separateFiles = false) {
   console.log('👀 Watching for changes...\n');
   
   const watchedJSFiles = BUILD_CONFIG.files.filter(file => fileExists(file));
-  const watchedCopyFiles = BUILD_CONFIG.copyFiles
-    .map(item => item.src)
-    .filter(file => fileExists(file));
+  const watchedCSSFiles = BUILD_CONFIG.cssFiles.filter(file => fileExists(file));
+  const watchedHTMLFiles = [BUILD_CONFIG.htmlTemplate].filter(file => fileExists(file));
   
-  const allWatchedFiles = [...watchedJSFiles, ...watchedCopyFiles];
+  const allWatchedFiles = [...watchedJSFiles, ...watchedCSSFiles, ...watchedHTMLFiles];
   
   // Initial build
-  build();
+  build(separateFiles);
   
-  // Watch JS files for changes
-  watchedJSFiles.forEach(file => {
+  // Watch all files for changes
+  allWatchedFiles.forEach(file => {
     fs.watchFile(file, { interval: 1000 }, () => {
       console.log(`\n📝 ${file} changed - rebuilding...`);
-      build();
-    });
-  });
-  
-  // Watch copy files for changes
-  watchedCopyFiles.forEach(file => {
-    fs.watchFile(file, { interval: 1000 }, () => {
-      console.log(`\n📝 ${file} changed - rebuilding...`);
-      build();
+      build(separateFiles);
     });
   });
   
   console.log(`\nWatching ${allWatchedFiles.length} files. Press Ctrl+C to stop.`);
+  console.log(`Mode: ${separateFiles ? 'Separate files' : 'Single HTML file'}`);
 }
 
 // CLI handling
 const args = process.argv.slice(2);
 
-if (args.includes('--watch') || args.includes('-w')) {
-  watch();
-} else if (args.includes('--help') || args.includes('-h')) {
+const separateFiles = args.includes('--separate') || args.includes('-s');
+const watchMode = args.includes('--watch') || args.includes('-w');
+const showHelp = args.includes('--help') || args.includes('-h');
+
+if (showHelp) {
   console.log(`
 JobTracker Build Script
 
 Usage:
-  node build.js              Build once
-  node build.js --watch      Build and watch for changes
-  node build.js --help       Show this help
+  node build.js                    Build single HTML file (default)
+  node build.js --separate         Build separate HTML, CSS, and JS files
+  node build.js --watch            Build and watch for changes (single file mode)
+  node build.js --watch --separate Build and watch for changes (separate files mode)
+  node build.js --help             Show this help
 
-Output: ${BUILD_CONFIG.outputFile}
+Outputs:
+  Single file:    ${BUILD_CONFIG.singleFileOutput}
+  Separate files: ${BUILD_CONFIG.outputFile} + HTML/CSS files
 `);
+} else if (watchMode) {
+  watch(separateFiles);
 } else {
-  build();
+  build(separateFiles);
 }
