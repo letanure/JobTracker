@@ -59,7 +59,7 @@ const TaskItem = ({ task, job }) => {
 			// Update archive button
 			const archiveBtn = taskElement.querySelector('.archive-btn');
 			if (archiveBtn) {
-				archiveBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
+				archiveBtn.innerHTML = `<span class="material-symbols-outlined icon-14">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
 			}
 		}
 		
@@ -136,22 +136,11 @@ const TaskItem = ({ task, job }) => {
 		const currentText = task.text;
 		const textarea = h("textarea", {
 			className: "task-edit-textarea",
-			style: { 
-				width: "100%", 
-				minHeight: "60px", 
-				padding: "8px", 
-				border: "1px solid var(--border-color)", 
-				borderRadius: "4px",
-				fontFamily: "inherit",
-				fontSize: "inherit",
-				resize: "vertical"
-			},
 			textContent: currentText
 		});
 		
 		const saveBtn = h("button", {
-			className: "action-btn edit-btn",
-			style: { marginRight: "8px", marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			className: "action-btn edit-btn edit-save-btn",
 			textContent: "Save",
 			onclick: () => {
 				const newText = textarea.value.trim();
@@ -176,8 +165,7 @@ const TaskItem = ({ task, job }) => {
 		});
 		
 		const cancelBtn = h("button", {
-			className: "action-btn cancel-btn",
-			style: { marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			className: "action-btn cancel-btn edit-cancel-btn",
 			textContent: "Cancel",
 			onclick: () => {
 				// Cancel editing - restore original text
@@ -196,25 +184,16 @@ const TaskItem = ({ task, job }) => {
 		"div",
 		{ 
 			className: `task-item ${isArchived ? 'archived' : ''}`,
-			"data-task-id": task.id,
-			style: isArchived ? { opacity: "0.6", filter: "grayscale(0.5)" } : {}
+			"data-task-id": task.id
 		},
 		h(
 			"div",
 			{ 
-				className: "task-header",
-				style: { 
-					display: "flex", 
-					justifyContent: "space-between", 
-					alignItems: "flex-start",
-					marginBottom: "8px",
-					fontSize: "12px",
-					color: "var(--text-light)"
-				}
+				className: "task-header task-header-layout"
 			},
 			h(
 				"div",
-				{ style: { display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" } },
+				{ className: "task-controls-row" },
 				h("select", {
 					className: "task-status inline-select",
 					value: task.status,
@@ -242,47 +221,23 @@ const TaskItem = ({ task, job }) => {
 			),
 			h(
 				"div",
-				{ className: "task-actions", style: { display: "flex", gap: "4px" } },
+				{ className: "task-actions modal-actions-row" },
 				h("button", {
-					className: "action-btn edit-task-btn",
+					className: "action-btn edit-task-btn icon-btn-transparent",
 					title: "Edit task",
-					style: { 
-						padding: "4px", 
-						fontSize: "14px",
-						background: "transparent",
-						border: "none",
-						cursor: "pointer",
-						color: "var(--text-light)",
-						borderRadius: "3px"
-					},
-					innerHTML: '<span class="material-symbols-outlined" style="font-size: 14px;">edit</span>',
+					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
-					className: "action-btn archive-btn",
+					className: "action-btn archive-btn icon-btn-transparent",
 					title: isArchived ? "Unarchive task" : "Archive task",
-					style: { 
-						padding: "4px", 
-						fontSize: "14px",
-						background: "transparent",
-						border: "none",
-						cursor: "pointer",
-						color: "var(--text-light)",
-						borderRadius: "3px"
-					},
-					innerHTML: `<span class="material-symbols-outlined" style="font-size: 14px;">${isArchived ? "unarchive" : "archive"}</span>`,
+					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
 			)
 		),
 		h("div", { 
-			className: "task-text",
-			style: {
-				fontSize: "14px",
-				lineHeight: "1.5",
-				whiteSpace: "pre-wrap",
-				color: "var(--text-color)"
-			}
+			className: "task-text"
 		}, task.text),
 	);
 };
@@ -372,13 +327,7 @@ const TasksModal = ({ job, onClose }) => {
 				...(sortedActiveTasks.length > 0
 					? [
 						h("h4", { 
-							style: { 
-								marginBottom: "12px", 
-								color: "var(--text-color)", 
-								fontSize: "14px",
-								borderBottom: "1px solid var(--border-color)",
-								paddingBottom: "8px"
-							} 
+							className: "modal-section-header"
 						}, "Active Tasks"),
 						...sortedActiveTasks.map((task) => TaskItem({ task, job }))
 					]
@@ -386,11 +335,7 @@ const TasksModal = ({ job, onClose }) => {
 							h(
 								"p",
 								{
-									style: {
-										textAlign: "center",
-										color: "var(--text-light)",
-										marginBottom: "20px",
-									},
+									className: "modal-empty-message"
 								},
 								"No tasks yet. Add your first task below.",
 							),
@@ -399,18 +344,7 @@ const TasksModal = ({ job, onClose }) => {
 				...(sortedArchivedTasks.length > 0
 					? [
 						h("h4", { 
-							style: { 
-								marginTop: "24px",
-								marginBottom: "12px", 
-								color: "var(--text-light)", 
-								fontSize: "14px",
-								borderBottom: "1px solid var(--border-color)",
-								paddingBottom: "8px",
-								cursor: "pointer",
-								display: "flex",
-								alignItems: "center",
-								gap: "8px"
-							},
+							className: "modal-archived-header",
 							onclick: () => {
 								const archivedSection = document.getElementById('archived-tasks-content');
 								const expandIcon = document.getElementById('archived-tasks-icon');
@@ -423,7 +357,7 @@ const TasksModal = ({ job, onClose }) => {
 								}
 							}
 						}, 
-							h('span', { className: 'material-symbols-outlined', id: 'archived-tasks-icon', style: { fontSize: '16px' } }, 'expand_less'),
+							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_less'),
 							`Archived Tasks (${sortedArchivedTasks.length})`
 						),
 						h("div", { 
