@@ -37,7 +37,6 @@ const BUILD_CONFIG = {
   
   // CSS files to inline
   cssFiles: [
-    'src/constants.css',
     'src/styles.css'
   ],
   
@@ -47,8 +46,7 @@ const BUILD_CONFIG = {
   // Files to copy directly to dist (for separate file mode)
   copyFiles: [
     { src: 'src/index.html', dest: 'dist/index.html' },
-    { src: 'src/styles.css', dest: 'dist/styles.css' },
-    { src: 'src/constants.css', dest: 'dist/constants.css' }
+    { src: 'src/styles.css', dest: 'dist/styles.css' }
   ],
   
   // Header comment for the built file
