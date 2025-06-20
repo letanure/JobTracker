@@ -53,9 +53,9 @@ if [ ! -f "dist/index.html" ]; then
     exit 1
 fi
 
-# Add the built file to the staging area
+# Add the built file to the staging area (force add to override .gitignore)
 echo "📋 Adding dist/index.html to commit..."
-git add dist/index.html
+git add -f dist/index.html
 
 # Check if there are any other dist files and add them too
 if [ -f "dist/script.js" ]; then
