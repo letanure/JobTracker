@@ -1,0 +1,3307 @@
+<!-- 
+============================================================================
+JobTracker - Single File Build
+Generated: 2025-06-20T08:15:21.063Z
+============================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">JobTracker - Job Search Tracker</title>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    
+    <style>
+
+/* ============================================================================ */
+/* SRC/CONSTANTS.CSS */
+/* ============================================================================ */
+
+:root {
+    /* Modern neutral color palette inspired by Notion */
+    --primary-color: #2383e2;
+    --primary-hover: #1a6bc9;
+    --secondary-color: #37352f;
+    --background-color: #fafafa;
+    --container-background: #ffffff;
+    --border-color: #e9e9e7;
+    --border-light: #f1f1ef;
+    --text-color: #37352f;
+    --text-light: #787774;
+    --text-lighter: #9b9a97;
+    
+    /* Modern gradient */
+    --gradient-start: #2383e2;
+    --gradient-end: #1a6bc9;
+    
+    /* Semantic colors */
+    --success-color: #0f7b0f;
+    --success-light: #0d6f0d;
+    --warning-color: #ff6b35;
+    --warning-light: #e85a2e;
+    --error-color: #e03e3e;
+    --error-light: #d13a3a;
+    --info-color: #2383e2;
+    
+    /* Modern status colors */
+    --status-wishlist-bg: #f7f6f3;
+    --status-wishlist-text: #787774;
+    --status-applied-bg: #ebedf0;
+    --status-applied-text: #2383e2;
+    --status-screening-bg: #fef3e2;
+    --status-screening-text: #ff6b35;
+    --status-interview-bg: #f1f3ff;
+    --status-interview-text: #6366f1;
+    --status-final-bg: #f0fdf4;
+    --status-final-text: #0f7b0f;
+    --status-offer-bg: #ecfdf5;
+    --status-offer-text: #059669;
+    --status-rejected-bg: #fef2f2;
+    --status-rejected-text: #e03e3e;
+    --status-withdrawn-bg: #f9fafb;
+    --status-withdrawn-text: #6b7280;
+    
+    /* Modern priority colors */
+    --priority-high: #e03e3e;
+    --priority-medium: #ff6b35;
+    --priority-low: #0f7b0f;
+    
+    --next-task-bg: #fef3e2;
+    --next-task-text: #ff6b35;
+    
+    /* Modern typography */
+    --font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-size-xs: 11px;
+    --font-size-sm: 12px;
+    --font-size-base: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 18px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 30px;
+    
+    /* Modern spacing system */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    
+    --padding-xs: 4px 8px;
+    --padding-sm: 6px 12px;
+    --padding-md: 8px 16px;
+    --padding-lg: 12px 20px;
+    --padding-xl: 16px 24px;
+    
+    /* Modern border radius */
+    --radius-xs: 2px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-full: 9999px;
+    
+    /* Modern shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Layout constraints */
+    --max-width-container: 1200px;
+    --max-width-notes: 240px;
+    --max-height-table: 75vh;
+    
+    --priority-dot-size: 8px;
+}
+
+/* ============================================================================ */
+/* SRC/STYLES.CSS */
+/* ============================================================================ */
+
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: var(--space-6);
+    background-color: var(--background-color);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.container {
+    max-width: var(--max-width-container);
+    margin: 0 auto;
+    background: var(--container-background);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+.header {
+    background: var(--container-background);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-color);
+    letter-spacing: -0.025em;
+}
+
+.controls {
+    padding: var(--space-6);
+    background: var(--container-background);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+}
+
+button {
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: var(--padding-sm);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: all 0.15s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+button:hover {
+    background: var(--container-background);
+    border-color: var(--text-light);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-select {
+    padding: var(--padding-xs);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    background: var(--container-background);
+    color: var(--text-color);
+}
+
+.table-container {
+    overflow-x: auto;
+    max-height: var(--max-height-table);
+    overflow-y: auto;
+    background: var(--container-background);
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--font-size-base);
+}
+
+th {
+    background: var(--background-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: var(--space-4) var(--space-3);
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.header-with-filter {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-dropdown-icon {
+    cursor: pointer;
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+    user-select: none;
+}
+
+.filter-dropdown-icon:hover {
+    color: var(--primary-color);
+}
+
+.filter-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--box-shadow);
+    z-index: 1000;
+    min-width: 150px;
+}
+
+.dropdown-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    font-weight: normal;
+}
+
+.dropdown-option:hover {
+    background: var(--background-color);
+}
+
+.dropdown-option:first-child {
+    border-top-left-radius: var(--border-radius-medium);
+    border-top-right-radius: var(--border-radius-medium);
+}
+
+.dropdown-option:last-child {
+    border-bottom-left-radius: var(--border-radius-medium);
+    border-bottom-right-radius: var(--border-radius-medium);
+}
+
+td {
+    padding: var(--space-4) var(--space-3);
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+    background: var(--container-background);
+}
+
+tr {
+    transition: all 0.15s ease;
+}
+
+tr:hover {
+    background-color: var(--background-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+tbody tr {
+    border-radius: var(--radius-md);
+}
+
+.status {
+    padding: var(--padding-xs);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    text-transform: capitalize;
+    letter-spacing: 0.025em;
+}
+
+.status-wishlist { 
+    background: var(--status-wishlist-bg); 
+    color: var(--status-wishlist-text); 
+}
+.status-applied { 
+    background: var(--status-applied-bg); 
+    color: var(--status-applied-text); 
+}
+.status-phone_screening { 
+    background: var(--status-screening-bg); 
+    color: var(--status-screening-text); 
+}
+.status-interview { 
+    background: var(--status-interview-bg); 
+    color: var(--status-interview-text); 
+}
+.status-final_round { 
+    background: var(--status-final-bg); 
+    color: var(--status-final-text); 
+}
+.status-offer { 
+    background: var(--status-offer-bg); 
+    color: var(--status-offer-text); 
+}
+.status-rejected { 
+    background: var(--status-rejected-bg); 
+    color: var(--status-rejected-text); 
+}
+.status-withdrawn { 
+    background: var(--status-withdrawn-bg); 
+    color: var(--status-withdrawn-text); 
+}
+
+.priority {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    margin-right: var(--space-2);
+    box-shadow: var(--shadow-sm);
+}
+
+.priority-cell {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    min-height: 48px;
+}
+
+.priority-high { background: var(--priority-high); }
+.priority-medium { background: var(--priority-medium); }
+.priority-low { background: var(--priority-low); }
+
+.company-name {
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.position-name {
+    font-weight: 500;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.current-phase {
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    font-size: var(--font-size-sm);
+}
+
+.next-task {
+    background: var(--next-task-bg);
+    padding: var(--padding-xs);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    color: var(--next-task-text);
+    font-weight: 500;
+}
+
+.salary {
+    font-weight: 600;
+    color: var(--success-color);
+}
+
+.notes {
+    max-width: var(--max-width-notes);
+    word-wrap: break-word;
+    font-size: var(--font-size-base);
+    color: var(--text-light);
+}
+
+.contact {
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+.date {
+    white-space: nowrap;
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+    font-variant-numeric: tabular-nums;
+}
+
+.editable {
+    background: transparent;
+    border: 1px solid transparent;
+    width: 100%;
+    padding: var(--space-2);
+    font-size: inherit;
+    font-family: inherit;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+}
+
+.editable:focus {
+    background: var(--container-background);
+    border: 1px solid var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(35, 131, 226, 0.1);
+}
+
+.stats {
+    display: flex;
+    gap: var(--space-8);
+    padding: var(--space-6);
+    background: var(--background-color);
+    border-top: 1px solid var(--border-color);
+    font-size: var(--font-size-base);
+    justify-content: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.stat-number {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: var(--space-1);
+}
+
+.stat-label {
+    color: var(--text-light);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-align: center;
+}
+
+.actions-cell {
+    display: flex;
+    gap: var(--space-1);
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    padding: var(--space-2);
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    min-width: 32px;
+    height: 32px;
+    color: var(--text-light);
+}
+
+.action-btn:hover {
+    background: var(--container-background);
+    border-color: var(--text-light);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.edit-btn .material-symbols-outlined {
+    color: var(--primary-color);
+}
+
+.edit-btn:hover .material-symbols-outlined {
+    color: var(--primary-hover);
+}
+
+.delete-btn .material-symbols-outlined {
+    color: var(--error-color);
+}
+
+.delete-btn:hover .material-symbols-outlined {
+    color: var(--error-light);
+}
+
+.material-symbols-outlined {
+    font-size: 16px !important;
+    vertical-align: middle;
+}
+
+.cancel-btn {
+    background: var(--text-light);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: var(--text-lighter);
+}
+
+.contact-textarea {
+    width: 100%;
+    min-height: 40px;
+    resize: vertical;
+    font-size: var(--font-size-medium);
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+}
+
+.notes-textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    font-size: var(--font-size-medium);
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+}
+
+/* Modern Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(55, 53, 47, 0.15);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal {
+    background: var(--container-background);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    max-width: 640px;
+    width: 90%;
+    max-height: 85vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.15s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    padding: var(--space-6) var(--space-6) var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--container-background);
+}
+
+.modal-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-color);
+    letter-spacing: -0.025em;
+}
+
+.modal-close {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    color: var(--text-light);
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.modal-close:hover {
+    background: var(--border-color);
+    transform: scale(1.05);
+}
+
+.modal-body {
+    padding: var(--space-4) var(--space-6);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    padding: var(--space-4) var(--space-6) var(--space-6);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: var(--space-3);
+    justify-content: flex-end;
+    background: var(--container-background);
+}
+
+.modal-footer .action-btn {
+    padding: var(--padding-sm);
+    font-size: var(--font-size-base);
+    min-width: 100px;
+    font-weight: 600;
+}
+
+/* Modern Notes and Tasks Counters */
+.notes-count {
+    background: var(--primary-color);
+    color: white;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 20px;
+    transition: all 0.15s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.notes-count:hover {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.notes-count.zero {
+    background: var(--text-lighter);
+    cursor: default;
+    color: white;
+}
+
+.notes-count.zero:hover {
+    background: var(--text-lighter);
+    transform: none;
+}
+
+.note-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    margin-bottom: var(--space-3);
+    background: var(--container-background);
+    transition: all 0.15s ease;
+}
+
+.note-item:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border-color);
+}
+
+.note-item:last-child {
+    margin-bottom: 0;
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: var(--text-light);
+}
+
+.note-date {
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.note-phase {
+    background: var(--status-interview-bg);
+    color: var(--status-interview-text);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.note-text {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    color: var(--text-color);
+}
+
+.note-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.note-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.15s ease;
+    background: var(--container-background);
+}
+
+.note-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(35, 131, 226, 0.1);
+}
+
+.note-form-info {
+    display: flex;
+    gap: 20px;
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+}
+
+.note-form-info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.notes-btn .material-symbols-outlined {
+    color: var(--primary-color);
+}
+
+.notes-btn:hover .material-symbols-outlined {
+    color: var(--primary-hover);
+}
+
+/* Inline action buttons for notes and tasks */
+.edit-note-btn:hover,
+.edit-task-btn:hover {
+    background: var(--background-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.archive-btn:hover {
+    background: var(--background-color) !important;
+    color: var(--text-color) !important;
+}
+
+/* Modern Add Note/Task Section */
+.add-note-section {
+    margin-top: var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    background: var(--background-color);
+    transition: all 0.15s ease;
+}
+
+.add-note-section:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px rgba(35, 131, 226, 0.1);
+}
+
+.add-note-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin: 0 0 var(--space-3) 0;
+    color: var(--text-color);
+}
+
+.note-form-info {
+    display: flex;
+    gap: var(--space-5);
+    font-size: var(--font-size-xs);
+    color: var(--text-light);
+    margin-bottom: var(--space-3);
+}
+
+.note-form-info span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-weight: 500;
+}
+
+.add-note-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--container-background);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    transition: all 0.15s ease;
+}
+
+.add-note-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(35, 131, 226, 0.1);
+}
+
+.add-note-textarea::placeholder {
+    color: var(--text-lighter);
+    font-style: normal;
+}
+
+/* Modern Tasks Counter */
+.tasks-count {
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    transition: all 0.15s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.tasks-count:hover {
+    background: var(--container-background);
+    border-color: var(--text-light);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.tasks-count.zero {
+    background: var(--text-lighter);
+    cursor: default;
+    color: white;
+}
+
+.tasks-count.zero:hover {
+    background: var(--text-lighter);
+    transform: none;
+}
+
+.task-count-todo {
+    color: var(--status-applied-text);
+    font-weight: 700;
+    background: var(--status-applied-bg);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    min-width: 16px;
+    text-align: center;
+}
+
+.task-count-in-progress {
+    color: var(--status-interview-text);
+    font-weight: 700;
+    background: var(--status-interview-bg);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    min-width: 16px;
+    text-align: center;
+}
+
+.task-count-done {
+    color: var(--status-offer-text);
+    font-weight: 700;
+    background: var(--status-offer-bg);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    min-width: 16px;
+    text-align: center;
+}
+
+.task-count-separator {
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+.task-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    margin-bottom: var(--space-3);
+    background: var(--container-background);
+    transition: all 0.15s ease;
+}
+
+.task-item:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border-color);
+}
+
+.task-item:last-child {
+    margin-bottom: 0;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+}
+
+.task-date {
+    font-weight: 500;
+}
+
+.task-status {
+    padding: 2px 6px;
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+    text-transform: capitalize;
+}
+
+.task-priority {
+    color: white;
+    padding: 2px 6px;
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+    text-transform: capitalize;
+}
+
+.task-text {
+    font-size: var(--font-size-base);
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.task-due-date, .task-completed-date {
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+    margin-top: 5px;
+}
+
+.tasks-btn .material-symbols-outlined {
+    color: var(--warning-color);
+}
+
+.tasks-btn:hover .material-symbols-outlined {
+    color: var(--warning-light);
+}
+
+/* Modern Add Task Section */
+.add-task-section {
+    margin-top: var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    background: var(--background-color);
+    transition: all 0.15s ease;
+}
+
+.add-task-section:hover {
+    border-color: var(--warning-color);
+    box-shadow: 0 0 0 1px rgba(255, 107, 53, 0.1);
+}
+
+.add-task-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin: 0 0 var(--space-3) 0;
+    color: var(--text-color);
+}
+
+.task-form-info {
+    display: flex;
+    gap: 20px;
+    font-size: var(--font-size-small);
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.task-form-info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.add-task-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    margin-bottom: 10px;
+}
+
+.add-task-textarea:focus {
+    outline: none;
+}
+
+.add-task-textarea::placeholder {
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.task-form-controls {
+    display: flex;
+    gap: 15px;
+    align-items: end;
+}
+
+.task-control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.task-control-group label {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.add-task-status, .add-task-priority {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+    background: white;
+}
+
+.add-task-due-date {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="appTitle">JobTracker</h1>
+        </div>
+        
+        <div class="controls">
+            <button id="addAppBtn" onclick="addRow()">+ Add Application</button>
+        </div>
+        
+        <div class="table-container">
+            <table id="jobTable">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="header-with-filter">
+                                <span id="priorityHeader">Priority</span>
+                                <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
+                                <div class="filter-dropdown" id="priorityDropdown"></div>
+                            </div>
+                        </th>
+                        <th id="companyHeader">Company</th>
+                        <th id="positionHeader">Position</th>
+                        <th>
+                            <div class="header-with-filter">
+                                <span id="currentPhaseHeader">Current Phase</span>
+                                <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
+                                <div class="filter-dropdown" id="phaseDropdown"></div>
+                            </div>
+                        </th>
+                        <th id="contactPersonHeader">Contact Person</th>
+                        <th id="salaryRangeHeader">Salary Range</th>
+                        <th id="locationHeader">Location</th>
+                        <th id="notesHeader">Notes</th>
+                        <th id="tasksHeader">Tasks</th>
+                        <th id="actionsHeader">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="jobTableBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalApps">0</div>
+                <div class="stat-label" id="totalAppsLabel">Total Applications</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="activeApps">0</div>
+                <div class="stat-label" id="activeAppsLabel">Active</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="interviews">0</div>
+                <div class="stat-label" id="interviewsLabel">Interviews</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="offers">0</div>
+                <div class="stat-label" id="offersLabel">Offers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="rejections">0</div>
+                <div class="stat-label" id="rejectionsLabel">Rejections</div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+// ============================================================================
+// JobTracker - Built from modular source files
+// Generated: 2025-06-20T08:15:21.057Z
+// ============================================================================
+
+
+// ============================================================================
+// SRC/LIB/DOM.JS
+// ============================================================================
+
+// ============================================================================
+// MINI DOM UTILITY LIBRARY (jQuery-style)
+// ============================================================================
+
+// jQuery-style DOM wrapper class
+class DOMElement {
+	constructor(element) {
+		this.element = element;
+	}
+
+	// Chainable text method
+	text(content) {
+		if (content === undefined) {
+			return this.element.textContent;
+		}
+		this.element.textContent = content;
+		return this;
+	}
+
+	// Chainable html method
+	html(content) {
+		if (content === undefined) {
+			return this.element.innerHTML;
+		}
+		this.element.innerHTML = content;
+		return this;
+	}
+
+	// Chainable show/hide methods
+	show() {
+		this.element.style.display = "block";
+		return this;
+	}
+
+	hide() {
+		this.element.style.display = "none";
+		return this;
+	}
+
+	toggle() {
+		const isVisible = this.element.style.display === "block";
+		this.element.style.display = isVisible ? "none" : "block";
+		return this;
+	}
+
+	// Chainable event method
+	on(event, handler) {
+		this.element.addEventListener(event, handler);
+		return this;
+	}
+
+	// Chainable addClass/removeClass
+	addClass(className) {
+		this.element.classList.add(className);
+		return this;
+	}
+
+	removeClass(className) {
+		this.element.classList.remove(className);
+		return this;
+	}
+
+	// Chainable attr method
+	attr(name, value) {
+		if (value === undefined) {
+			return this.element.getAttribute(name);
+		}
+		this.element.setAttribute(name, value);
+		return this;
+	}
+
+	// Chainable css method
+	css(property, value) {
+		if (typeof property === "object") {
+			Object.assign(this.element.style, property);
+		} else if (value === undefined) {
+			return getComputedStyle(this.element)[property];
+		} else {
+			this.element.style[property] = value;
+		}
+		return this;
+	}
+
+	// Append child
+	append(child) {
+		if (typeof child === "string") {
+			this.element.appendChild(document.createTextNode(child));
+		} else {
+			this.element.appendChild(child);
+		}
+		return this;
+	}
+
+	// Get the raw DOM element
+	get() {
+		return this.element;
+	}
+}
+
+// Enhanced $ function with jQuery-style API
+const $ = (selector) => {
+	if (typeof selector === "string") {
+		if (selector.startsWith("#")) {
+			// ID selector
+			const element = document.getElementById(selector.slice(1));
+			return element ? new DOMElement(element) : null;
+		} else {
+			// CSS selector
+			const element = document.querySelector(selector);
+			return element ? new DOMElement(element) : null;
+		}
+	} else if (selector instanceof Element) {
+		// Wrap existing element
+		return new DOMElement(selector);
+	}
+	return null;
+};
+
+// Static methods for backwards compatibility and utility
+Object.assign($, {
+	// Get element by ID (returns raw element)
+	id: (id) => document.getElementById(id),
+
+	// Query selector (single element)
+	qs: (selector) => document.querySelector(selector),
+
+	// Query selector all (multiple elements)
+	qsa: (selector) => document.querySelectorAll(selector),
+
+	// Create element with optional class and text
+	create: (tag, className, textContent) => {
+		const element = document.createElement(tag);
+		if (className) element.className = className;
+		if (textContent) element.textContent = textContent;
+		return element;
+	},
+
+	// Add event listener (static)
+	on: (element, event, handler) => element.addEventListener(event, handler),
+
+	// Set innerHTML (static)
+	html: (element, html) => (element.innerHTML = html),
+
+	// Set textContent (static)
+	text: (element, text) => (element.textContent = text),
+
+	// Show/hide element (static)
+	show: (element) => (element.style.display = "block"),
+	hide: (element) => (element.style.display = "none"),
+
+	// Toggle display (static)
+	toggle: (element) => {
+		const isVisible = element.style.display === "block";
+		element.style.display = isVisible ? "none" : "block";
+	},
+});
+
+// React-like h function for creating elements
+const h = (tag, props = {}, ...children) => {
+	const element = document.createElement(tag);
+
+	// Set properties
+	for (const [key, value] of Object.entries(props)) {
+		if (key === "className") {
+			element.className = value;
+		} else if (key === "style" && typeof value === "object") {
+			Object.assign(element.style, value);
+		} else if (key === "innerHTML") {
+			element.innerHTML = value;
+		} else if (key === "textContent") {
+			element.textContent = value;
+		} else if (key.startsWith("on") && typeof value === "function") {
+			const eventType = key.slice(2).toLowerCase();
+			element.addEventListener(eventType, value);
+		} else if (key.startsWith("data-")) {
+			element.setAttribute(key, value);
+		} else {
+			element.setAttribute(key, value);
+		}
+	}
+
+	// Add children
+	for (const child of children) {
+		if (child !== null && child !== undefined) {
+			if (typeof child === "string" || typeof child === "number") {
+				element.appendChild(document.createTextNode(child.toString()));
+			} else if (child instanceof Node) {
+				element.appendChild(child);
+			}
+		}
+	}
+
+	return element;
+};
+
+// ============================================================================
+// SRC/LIB/STORAGE.JS
+// ============================================================================
+
+// ============================================================================
+// MINI DATA PERSISTENCE LIBRARY
+// ============================================================================
+
+const DataStore = {
+	// Storage key for job tracker data
+	STORAGE_KEY: "jobTrackerData",
+
+	// Save data to storage
+	save: (data) => {
+		try {
+			localStorage.setItem(DataStore.STORAGE_KEY, JSON.stringify(data));
+			return true;
+		} catch (error) {
+			console.error("Error saving data:", error);
+			return false;
+		}
+	},
+
+	// Load data from storage
+	load: () => {
+		try {
+			const savedData = localStorage.getItem(DataStore.STORAGE_KEY);
+			return savedData ? JSON.parse(savedData) : null;
+		} catch (error) {
+			console.error("Error loading data:", error);
+			return null;
+		}
+	},
+
+	// Check if data exists in storage
+	exists: () => {
+		return localStorage.getItem(DataStore.STORAGE_KEY) !== null;
+	},
+
+	// Clear all data from storage
+	clear: () => {
+		try {
+			localStorage.removeItem(DataStore.STORAGE_KEY);
+			return true;
+		} catch (error) {
+			console.error("Error clearing data:", error);
+			return false;
+		}
+	}
+};
+
+// ============================================================================
+// SRC/LIB/I18N.JS
+// ============================================================================
+
+// ============================================================================
+// MINI I18N LIBRARY
+// ============================================================================
+
+const I18n = {
+	// Current language
+	currentLanguage: "en",
+
+	// Language detection from browser
+	detectLanguage: () => {
+		const browserLang = navigator.language || navigator.userLanguage;
+		const langCode = browserLang.split("-")[0];
+		return I18n.translations[langCode] ? langCode : "en";
+	},
+
+	// Set current language
+	setLanguage: (lang) => {
+		if (I18n.translations[lang]) {
+			I18n.currentLanguage = lang;
+			DataStore.save({ ...DataStore.load(), language: lang });
+			return true;
+		}
+		return false;
+	},
+
+	// Get translated text
+	t: (key, params = {}) => {
+		const keys = key.split(".");
+		let translation = I18n.translations[I18n.currentLanguage];
+
+		for (const k of keys) {
+			translation = translation?.[k];
+		}
+
+		if (!translation) {
+			console.warn(
+				`Translation missing for key: ${key} in language: ${I18n.currentLanguage}`,
+			);
+			return key;
+		}
+
+		// Replace parameters in translation
+		return translation.replace(/\{(\w+)\}/g, (match, param) => {
+			return params[param] !== undefined ? params[param] : match;
+		});
+	},
+
+	// Get available languages
+	getLanguages: () => Object.keys(I18n.translations),
+
+	// Initialize language from storage or browser
+	init: () => {
+		const savedData = DataStore.load();
+		const savedLanguage = savedData?.language;
+		I18n.currentLanguage = savedLanguage || I18n.detectLanguage();
+	},
+};
+
+// Translation constants
+I18n.translations = {
+	en: {
+		app: {
+			title: "JobTracker",
+		},
+		buttons: {
+			addApplication: "+ Add Application",
+			save: "Save",
+			edit: "Edit",
+			delete: "Delete",
+			cancel: "Cancel",
+		},
+		table: {
+			headers: {
+				priority: "Priority",
+				company: "Company",
+				position: "Position",
+				currentPhase: "Current Phase",
+				contactPerson: "Contact Person",
+				salaryRange: "Salary Range",
+				location: "Location",
+				notes: "Notes",
+				tasks: "Tasks",
+				actions: "Actions",
+			},
+			filters: {
+				allPriorities: "All Priorities",
+				allPhases: "All Phases",
+				highPriority: "High Priority",
+				mediumPriority: "Medium Priority",
+				lowPriority: "Low Priority",
+			},
+			placeholders: {
+				companyName: "Company Name",
+				positionTitle: "Position Title",
+				nameEmail: "Name & Email",
+				salaryRange: "Salary Range",
+				location: "Location",
+				notes: "Notes",
+			},
+		},
+		priorities: {
+			high: "High",
+			medium: "Medium",
+			low: "Low",
+		},
+		phases: {
+			// PHASES array values
+			wishlist: "Wishlist",
+			applied: "Applied",
+			phone_screening: "Phone Screening",
+			interview: "Interview",
+			final_round: "Final Round",
+			offer: "Offer",
+			rejected: "Rejected",
+			withdrawn: "Withdrawn",
+			// Extended phase values
+			applicationReview: "Application Review",
+			initialScreening: "Initial Screening",
+			hrPhoneScreen: "HR Phone Screen",
+			recruiterCall: "Recruiter Call",
+			technicalPhoneScreen: "Technical Phone Screen",
+			codingChallenge: "Coding Challenge",
+			takeHomeAssignment: "Take-home Assignment",
+			technicalInterview: "Technical Interview",
+			systemDesignInterview: "System Design Interview",
+			behavioralInterview: "Behavioral Interview",
+			teamInterview: "Team Interview",
+			hiringManagerInterview: "Hiring Manager Interview",
+			panelInterview: "Panel Interview",
+			finalRound: "Final Round",
+			referenceCheck: "Reference Check",
+			backgroundCheck: "Background Check",
+			offerDiscussion: "Offer Discussion",
+			salaryNegotiation: "Salary Negotiation",
+		},
+		stats: {
+			totalApplications: "Total Applications",
+			active: "Active",
+			interviews: "Interviews",
+			offers: "Offers",
+			rejections: "Rejections",
+		},
+		messages: {
+			welcome:
+				"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
+			errorLoading:
+				"There was an error loading your data.\n\nWould you like to start with 2 example job applications?",
+			confirmDelete:
+				"Are you sure you want to delete the application for {position} at {company}?",
+		},
+		demo: {
+			nextTask1: "Prepare system design",
+			nextTask2: "Wait for callback",
+			contactPerson1: "Sarah Chen",
+			contactPerson2: "Mike Rodriguez",
+			notes1:
+				"Great culture fit. Need to research their microservices architecture.",
+			notes2: "Early stage startup. High growth potential but risky.",
+		},
+	},
+	pt: {
+		app: {
+			title: "JobTracker",
+		},
+		buttons: {
+			addApplication: "+ Adicionar Candidatura",
+			save: "Salvar",
+			edit: "Editar",
+			delete: "Excluir",
+			cancel: "Cancelar",
+		},
+		table: {
+			headers: {
+				priority: "Prioridade",
+				company: "Empresa",
+				position: "Cargo",
+				currentPhase: "Fase Atual",
+				contactPerson: "Pessoa de Contato",
+				salaryRange: "Faixa Salarial",
+				location: "Localização",
+				notes: "Notas",
+				tasks: "Tarefas",
+				actions: "Ações",
+			},
+			filters: {
+				allPriorities: "Todas as Prioridades",
+				allPhases: "Todas as Fases",
+				highPriority: "Prioridade Alta",
+				mediumPriority: "Prioridade Média",
+				lowPriority: "Prioridade Baixa",
+			},
+			placeholders: {
+				companyName: "Nome da Empresa",
+				positionTitle: "Título do Cargo",
+				nameEmail: "Nome e Email",
+				salaryRange: "Faixa Salarial",
+				location: "Localização",
+				notes: "Notas",
+			},
+		},
+		priorities: {
+			high: "Alta",
+			medium: "Média",
+			low: "Baixa",
+		},
+		phases: {
+			// PHASES array values
+			wishlist: "Lista de Desejos",
+			applied: "Candidatura Enviada",
+			phone_screening: "Triagem por Telefone",
+			interview: "Entrevista",
+			final_round: "Etapa Final",
+			offer: "Oferta",
+			rejected: "Rejeitado",
+			withdrawn: "Retirado",
+			// Extended phase values
+			applicationReview: "Análise da Candidatura",
+			initialScreening: "Triagem Inicial",
+			hrPhoneScreen: "Triagem por Telefone - RH",
+			recruiterCall: "Ligação do Recrutador",
+			technicalPhoneScreen: "Triagem Técnica por Telefone",
+			codingChallenge: "Desafio de Programação",
+			takeHomeAssignment: "Tarefa para Casa",
+			technicalInterview: "Entrevista Técnica",
+			systemDesignInterview: "Entrevista de Design de Sistema",
+			behavioralInterview: "Entrevista Comportamental",
+			teamInterview: "Entrevista com a Equipe",
+			hiringManagerInterview: "Entrevista com Gerente de Contratação",
+			panelInterview: "Entrevista em Painel",
+			finalRound: "Etapa Final",
+			referenceCheck: "Verificação de Referências",
+			backgroundCheck: "Verificação de Antecedentes",
+			offerDiscussion: "Discussão da Oferta",
+			salaryNegotiation: "Negociação Salarial",
+		},
+		stats: {
+			totalApplications: "Total de Candidaturas",
+			active: "Ativas",
+			interviews: "Entrevistas",
+			offers: "Ofertas",
+			rejections: "Rejeições",
+		},
+		messages: {
+			welcome:
+				"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
+			errorLoading:
+				"Houve um erro ao carregar seus dados.\n\nGostaria de começar com 2 exemplos de candidaturas?",
+			confirmDelete:
+				"Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
+		},
+		demo: {
+			nextTask1: "Preparar design de sistema",
+			nextTask2: "Aguardar retorno",
+			contactPerson1: "Sarah Chen",
+			contactPerson2: "Mike Rodriguez",
+			notes1:
+				"Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
+			notes2:
+				"Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
+		},
+	},
+};
+
+// ============================================================================
+// SRC/UTILS/CONSTANTS.JS
+// ============================================================================
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+
+const CONFIG = {
+	dateFormat: "DD/MM/YY HH:MM", // Options: 'DD/MM/YY', 'MM/DD/YY', 'YYYY-MM-DD', 'DD/MM/YY HH:MM'
+	showTimeInNotes: true, // Set to true to include time in notes
+};
+
+// ============================================================================
+// CONSTANTS AND DATA
+// ============================================================================
+
+const PRIORITIES = ["high", "medium", "low"];
+
+const PHASES = [
+	"wishlist",
+	"applied",
+	"phone_screening",
+	"interview",
+	"final_round",
+	"offer",
+	"rejected",
+	"withdrawn",
+];
+
+// Helper functions to get translated values
+const getPriorityText = (priorityKey) => I18n.t(`priorities.${priorityKey}`);
+const getPhaseText = (phaseKey) => I18n.t(`phases.${phaseKey}`);
+
+// Demo data for first-time users
+const DEMO_DATA = [
+	{
+		id: 1,
+		priority: "high",
+		company: "TechCorp Inc",
+		position: "Senior Software Engineer",
+		appliedDate: "2025-06-15T10:00:00.000Z",
+		currentPhase: "interview",
+		contactPerson: "demo.contactPerson1",
+		contactEmail: "sarah@techcorp.com",
+		salaryRange: "$120k - $150k",
+		location: "San Francisco, CA",
+		notes: "demo.notes1",
+		tasks: [
+			{
+				id: "1",
+				text: "Prepare system design presentation",
+				status: "todo",
+				priority: "high",
+				createdAt: "2025-06-15T10:00:00.000Z",
+				completedAt: null,
+				dueDate: "2025-06-22T10:00:00.000Z",
+			},
+			{
+				id: "2",
+				text: "Review company tech stack",
+				status: "done",
+				priority: "medium",
+				createdAt: "2025-06-14T09:00:00.000Z",
+				completedAt: "2025-06-16T14:30:00.000Z",
+				dueDate: null,
+			},
+		],
+	},
+	{
+		id: 2,
+		priority: "medium",
+		company: "StartupXYZ",
+		position: "Full Stack Developer",
+		appliedDate: "2025-06-12T09:00:00.000Z",
+		currentPhase: "phone_screening",
+		contactPerson: "demo.contactPerson2",
+		contactEmail: "hiring@startupxyz.com",
+		salaryRange: "$90k - $110k + equity",
+		location: "Remote",
+		notes: "demo.notes2",
+		tasks: [
+			{
+				id: "3",
+				text: "Wait for callback",
+				status: "in-progress",
+				priority: "medium",
+				createdAt: "2025-06-12T15:00:00.000Z",
+				completedAt: null,
+				dueDate: "2025-06-20T17:00:00.000Z",
+			},
+		],
+	},
+];
+
+// Helper function to get demo data with translations
+const getDemoData = () => {
+	return DEMO_DATA.map((job) => ({
+		...job,
+		contactPerson: job.contactPerson.startsWith("demo.")
+			? I18n.t(job.contactPerson)
+			: job.contactPerson,
+		notes: job.notes.startsWith("demo.") ? [{
+			id: Date.now() + Math.random(),
+			date: job.appliedDate || new Date().toISOString(),
+			phase: job.currentPhase || "applied",
+			text: I18n.t(job.notes)
+		}] : (Array.isArray(job.notes) ? job.notes : []),
+	}));
+};
+
+// Global state variables
+let jobsData = [];
+let originalData = [];
+
+// ============================================================================
+// SRC/UTILS/HELPERS.JS
+// ============================================================================
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+// Format date for display
+const formatDate = (dateString) => {
+	const date = new Date(dateString);
+
+	// Use CONFIG.dateFormat to determine format
+	switch (CONFIG.dateFormat) {
+		case "DD/MM/YY":
+			return date.toLocaleDateString("en-GB", {
+				year: "2-digit",
+				month: "2-digit",
+				day: "2-digit",
+			});
+		case "MM/DD/YY":
+			return date.toLocaleDateString("en-US", {
+				year: "2-digit",
+				month: "2-digit",
+				day: "2-digit",
+			});
+		case "YYYY-MM-DD":
+			return date.toISOString().split("T")[0];
+		case "DD/MM/YY HH:MM":
+			return (
+				date.toLocaleDateString("en-GB", {
+					year: "2-digit",
+					month: "2-digit",
+					day: "2-digit",
+				}) +
+				" " +
+				date.toLocaleTimeString("en-GB", {
+					hour: "2-digit",
+					minute: "2-digit",
+					hour12: false,
+				})
+			);
+		default:
+			// Default to DD/MM/YY format
+			return date.toLocaleDateString("en-GB", {
+				year: "2-digit",
+				month: "2-digit",
+				day: "2-digit",
+			});
+	}
+};
+
+function getPhaseClass(phase) {
+	return phase.toLowerCase().replace(/\s+/g, "_");
+}
+
+function getUniqueValues(array, property) {
+	return [...new Set(array.map((item) => item[property]))];
+}
+
+function createElement(tag, className, textContent) {
+	return $.create(tag, className, textContent);
+}
+
+function createOption(value, text, selected = false) {
+	const option = createElement("option");
+	option.value = value;
+	option.textContent = text;
+	if (selected) option.selected = true;
+	return option;
+}
+
+// Helper function for task status text
+const getTaskStatusText = (statusKey) => {
+	const statusMap = {
+		'todo': 'To Do',
+		'in-progress': 'In Progress', 
+		'done': 'Done'
+	};
+	return statusMap[statusKey] || statusKey;
+};
+
+function updateStaticTexts() {
+	// Update page title and header
+	$("#pageTitle").text(I18n.t("app.title"));
+	$("#appTitle").text(I18n.t("app.title"));
+
+	// Update button
+	$("#addAppBtn").text(I18n.t("buttons.addApplication"));
+
+	// Update table headers
+	$("#priorityHeader").text(I18n.t("table.headers.priority"));
+	$("#companyHeader").text(I18n.t("table.headers.company"));
+	$("#positionHeader").text(I18n.t("table.headers.position"));
+	$("#currentPhaseHeader").text(I18n.t("table.headers.currentPhase"));
+	$("#contactPersonHeader").text(I18n.t("table.headers.contactPerson"));
+	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
+	$("#locationHeader").text(I18n.t("table.headers.location"));
+	$("#notesHeader").text(I18n.t("table.headers.notes"));
+	$("#tasksHeader").text(I18n.t("table.headers.tasks"));
+	$("#actionsHeader").text(I18n.t("table.headers.actions"));
+
+	// Update stats labels
+	$("#totalAppsLabel").text(I18n.t("stats.totalApplications"));
+	$("#activeAppsLabel").text(I18n.t("stats.active"));
+	$("#interviewsLabel").text(I18n.t("stats.interviews"));
+	$("#offersLabel").text(I18n.t("stats.offers"));
+	$("#rejectionsLabel").text(I18n.t("stats.rejections"));
+}
+
+// ============================================================================
+// SRC/UTILS/DATA.JS
+// ============================================================================
+
+// ============================================================================
+// DATA MIGRATION AND PERSISTENCE
+// ============================================================================
+
+// Migrate old notes format (string) to new format (array of note objects)
+const migrateNotesData = (jobs) => {
+	return jobs.map((job) => {
+		// If notes is a string, convert it to the new format
+		if (typeof job.notes === "string" && job.notes.trim() !== "") {
+			return {
+				...job,
+				notes: [
+					{
+						id: Date.now(),
+						date: job.appliedDate || new Date().toISOString().split("T")[0],
+						phase: job.currentPhase || "applicationReview",
+						text: job.notes,
+					},
+				],
+			};
+		}
+		// If notes is already an array or empty, keep as is
+		if (Array.isArray(job.notes)) {
+			return job;
+		}
+		// If notes is undefined or empty string, set to empty array
+		return {
+			...job,
+			notes: [],
+		};
+	});
+};
+
+// Migrate old task format and create tasks array for jobs that don't have it
+const migrateTasksData = (jobs) => {
+	return jobs.map((job) => {
+		// If job has nextTask or dueDate, migrate them to tasks array
+		if ((job.nextTask && job.nextTask.trim() !== "") || job.dueDate) {
+			const existingTasks = Array.isArray(job.tasks) ? job.tasks : [];
+
+			// Only add migration task if there's actual content and no tasks exist yet
+			if (
+				existingTasks.length === 0 &&
+				job.nextTask &&
+				job.nextTask.trim() !== ""
+			) {
+				const migrationTask = {
+					id: Date.now().toString(),
+					text: job.nextTask,
+					status: "todo",
+					priority: "medium",
+					createdAt: job.appliedDate || new Date().toISOString(),
+					completedAt: null,
+					dueDate: job.dueDate ? new Date(job.dueDate).toISOString() : null,
+				};
+
+				return {
+					...job,
+					tasks: [migrationTask],
+				};
+			}
+		}
+
+		// If tasks is already an array, keep as is
+		if (Array.isArray(job.tasks)) {
+			return job;
+		}
+
+		// If tasks is undefined, set to empty array
+		return {
+			...job,
+			tasks: [],
+		};
+	});
+};
+
+// Save to localStorage
+const saveToLocalStorage = () => {
+	DataStore.save({
+		jobs: jobsData,
+		language: I18n.currentLanguage,
+	});
+};
+
+// Load from localStorage
+const loadFromLocalStorage = () => {
+	const savedData = DataStore.load();
+	
+	if (savedData) {
+		// Set language first
+		if (savedData.language) {
+			I18n.setLanguage(savedData.language);
+		}
+		
+		// Migrate and load jobs data
+		if (savedData.jobs && Array.isArray(savedData.jobs)) {
+			let migratedJobs = migrateNotesData(savedData.jobs);
+			migratedJobs = migrateTasksData(migratedJobs);
+			return migratedJobs;
+		}
+	}
+	
+	return null;
+};
+
+// ============================================================================
+// SRC/COMPONENTS/NOTES.JS
+// ============================================================================
+
+// ============================================================================
+// NOTES SYSTEM COMPONENTS
+// ============================================================================
+
+// Notes count display component
+const NotesCount = ({ notes = [], onClick }) => {
+	const activeNotes = notes.filter(note => !note.archived);
+	const count = activeNotes.length;
+	const className = count === 0 ? "notes-count zero" : "notes-count";
+
+	return h("span", {
+		className,
+		onclick: count > 0 ? onClick : null,
+		textContent: count.toString(),
+		title: `${count} active note${count !== 1 ? 's' : ''}${notes.length !== count ? ` (${notes.length - count} archived)` : ''}`
+	});
+};
+
+// Individual note item component
+const NoteItem = ({ note, job }) => {
+	const isArchived = note.archived || false;
+	
+	const handleArchiveToggle = () => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+		if (noteIndex === -1) return;
+		
+		jobsData[jobIndex].notes[noteIndex].archived = !isArchived;
+		saveToLocalStorage();
+		
+		// Update the note element in place
+		const noteElement = document.querySelector(`[data-note-id="${note.id}"]`);
+		if (noteElement) {
+			const newArchiveStatus = !isArchived;
+			noteElement.style.opacity = newArchiveStatus ? "0.6" : "1";
+			noteElement.style.filter = newArchiveStatus ? "grayscale(0.5)" : "none";
+			noteElement.className = `note-item ${newArchiveStatus ? 'archived' : ''}`;
+			
+			// Update archive button
+			const archiveBtn = noteElement.querySelector('.archive-btn');
+			if (archiveBtn) {
+				archiveBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
+			}
+		}
+		
+		// Update interface
+		updateStats();
+	};
+	
+	const handleEdit = () => {
+		const noteTextElement = document.querySelector(`[data-note-id="${note.id}"] .note-text`);
+		if (!noteTextElement) return;
+		
+		const currentText = note.text;
+		const textarea = h("textarea", {
+			className: "note-edit-textarea",
+			style: { 
+				width: "100%", 
+				minHeight: "60px", 
+				padding: "8px", 
+				border: "1px solid var(--border-color)", 
+				borderRadius: "4px",
+				fontFamily: "inherit",
+				fontSize: "inherit",
+				resize: "vertical"
+			},
+			textContent: currentText
+		});
+		
+		const saveBtn = h("button", {
+			className: "action-btn edit-btn",
+			style: { marginRight: "8px", marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Save",
+			onclick: () => {
+				const newText = textarea.value.trim();
+				if (!newText) return;
+				
+				const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+				if (jobIndex === -1) return;
+				
+				const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+				if (noteIndex === -1) return;
+				
+				jobsData[jobIndex].notes[noteIndex].text = newText;
+				saveToLocalStorage();
+				
+				// Update in place - replace textarea with new text
+				noteTextElement.innerHTML = "";
+				noteTextElement.textContent = newText;
+				
+				// Update interface
+				updateStats();
+			}
+		});
+		
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn",
+			style: { marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Cancel",
+			onclick: () => {
+				// Cancel editing - restore original text
+				noteTextElement.innerHTML = "";
+				noteTextElement.textContent = note.text;
+			}
+		});
+		
+		noteTextElement.innerHTML = "";
+		noteTextElement.appendChild(textarea);
+		noteTextElement.appendChild(h("div", {}, saveBtn, cancelBtn));
+		textarea.focus();
+	};
+	
+	return h(
+		"div",
+		{ 
+			className: `note-item ${isArchived ? 'archived' : ''}`,
+			"data-note-id": note.id,
+			style: isArchived ? { opacity: "0.6", filter: "grayscale(0.5)" } : {}
+		},
+		h(
+			"div",
+			{ 
+				className: "note-header",
+				style: { 
+					display: "flex", 
+					justifyContent: "space-between", 
+					alignItems: "center",
+					marginBottom: "8px",
+					fontSize: "12px",
+					color: "var(--text-light)"
+				}
+			},
+			h(
+				"div",
+				{ style: { display: "flex", gap: "12px", alignItems: "center" } },
+				h("span", { className: "note-phase" }, getPhaseText(note.phase)),
+				h("span", { className: "note-date" }, formatDate(note.date))
+			),
+			h(
+				"div",
+				{ className: "note-actions", style: { display: "flex", gap: "4px" } },
+				h("button", {
+					className: "action-btn edit-note-btn",
+					title: "Edit note",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: '<span class="material-symbols-outlined" style="font-size: 14px;">edit</span>',
+					onclick: handleEdit
+				}),
+				h("button", {
+					className: "action-btn archive-btn",
+					title: isArchived ? "Unarchive note" : "Archive note",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: `<span class="material-symbols-outlined" style="font-size: 14px;">${isArchived ? "unarchive" : "archive"}</span>`,
+					onclick: handleArchiveToggle
+				})
+			)
+		),
+		h("div", { 
+			className: "note-text",
+			style: {
+				fontSize: "14px",
+				lineHeight: "1.5",
+				whiteSpace: "pre-wrap",
+				color: "var(--text-color)"
+			}
+		}, note.text),
+	);
+};
+
+// Unified modal component for viewing and adding notes
+const NotesModal = ({ job, onClose }) => {
+	const notes = job.notes || [];
+	const activeNotes = notes.filter(note => !note.archived);
+	const archivedNotes = notes.filter(note => note.archived);
+	const sortedActiveNotes = [...activeNotes].sort(
+		(a, b) => new Date(a.date) - new Date(b.date),
+	);
+	const sortedArchivedNotes = [...archivedNotes].sort(
+		(a, b) => new Date(a.date) - new Date(b.date),
+	);
+
+	const handleAddNote = () => {
+		const textarea = document.querySelector(".add-note-textarea");
+		const noteText = textarea.value.trim();
+
+		if (!noteText) {
+			textarea.focus();
+			return;
+		}
+
+		const newNote = {
+			id: Date.now(),
+			date: new Date().toISOString(),
+			phase: job.currentPhase,
+			text: noteText,
+		};
+
+		// Add note to job data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+
+		if (!jobsData[jobIndex].notes) {
+			jobsData[jobIndex].notes = [];
+		}
+
+		jobsData[jobIndex].notes.push(newNote);
+		saveToLocalStorage();
+
+		// Update the job object for this modal
+		job.notes = jobsData[jobIndex].notes;
+
+		// Add the new note to the existing modal without reopening
+		const modalBody = document.querySelector(".modal-body");
+		const addNoteSection = modalBody.querySelector(".add-note-section");
+
+		// Create and insert the new note before the add note section
+		const newNoteElement = NoteItem({ note: newNote, job });
+		modalBody.insertBefore(newNoteElement, addNoteSection);
+
+		// Clear the textarea
+		textarea.value = "";
+
+		// Update the notes count in the table (refresh interface for count update)
+		updateStats();
+	};
+
+	return h(
+		"div",
+		{
+			className: "modal-overlay",
+			onclick: (e) => e.target === e.currentTarget && onClose(),
+		},
+		h(
+			"div",
+			{ className: "modal" },
+			h(
+				"div",
+				{ className: "modal-header" },
+				h(
+					"h3",
+					{ className: "modal-title" },
+					`Notes for ${job.position} at ${job.company}`,
+				),
+				h("button", { className: "modal-close", onclick: onClose }, "×"),
+			),
+			h(
+				"div",
+				{ className: "modal-body" },
+				// Active notes section
+				...(sortedActiveNotes.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginBottom: "12px", 
+								color: "var(--text-color)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px"
+							} 
+						}, "Active Notes"),
+						...sortedActiveNotes.map((note) => NoteItem({ note, job }))
+					]
+					: [
+							h(
+								"p",
+								{
+									style: {
+										textAlign: "center",
+										color: "var(--text-light)",
+										marginBottom: "20px",
+									},
+								},
+								"No notes yet. Add your first note below.",
+							),
+						]),
+				// Archived notes section
+				...(sortedArchivedNotes.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginTop: "24px",
+								marginBottom: "12px", 
+								color: "var(--text-light)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px"
+							},
+							onclick: () => {
+								const archivedSection = document.getElementById('archived-notes-content');
+								const expandIcon = document.getElementById('archived-notes-icon');
+								if (archivedSection.style.display === 'none') {
+									archivedSection.style.display = 'block';
+									expandIcon.textContent = 'expand_less';
+								} else {
+									archivedSection.style.display = 'none';
+									expandIcon.textContent = 'expand_more';
+								}
+							}
+						}, 
+							h('span', { className: 'material-symbols-outlined', id: 'archived-notes-icon', style: { fontSize: '16px' } }, 'expand_less'),
+							`Archived Notes (${sortedArchivedNotes.length})`
+						),
+						h("div", { 
+							id: "archived-notes-content"
+						}, ...sortedArchivedNotes.map((note) => NoteItem({ note, job })))
+					]
+					: []),
+				// Add note form section
+				h(
+					"div",
+					{ className: "add-note-section" },
+					h("h4", { className: "add-note-title" }, "Add New Note"),
+					h(
+						"div",
+						{ className: "note-form-info" },
+						h(
+							"span",
+							{},
+							h(
+								"span",
+								{ className: "material-symbols-outlined" },
+								"assignment",
+							),
+							` Phase: ${getPhaseText(job.currentPhase)}`,
+						),
+					),
+					h("textarea", {
+						className: "add-note-textarea",
+						placeholder: "Enter your note here...",
+						rows: 3,
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.shiftKey) {
+								e.preventDefault();
+								handleAddNote();
+							}
+						},
+					}),
+				),
+			),
+			h(
+				"div",
+				{ className: "modal-footer" },
+				h(
+					"button",
+					{
+						className: "action-btn edit-btn",
+						onclick: handleAddNote,
+					},
+					"Add Note",
+				),
+				h(
+					"button",
+					{ className: "action-btn cancel-btn", onclick: onClose },
+					"Close",
+				),
+			),
+		),
+	);
+};
+
+// ============================================================================
+// NOTES MANAGEMENT FUNCTIONS
+// ============================================================================
+
+// Open unified notes modal (for both viewing and adding notes)
+const openNotesModal = (job) => {
+	const modal = NotesModal({
+		job,
+		onClose: closeModal,
+	});
+
+	document.body.appendChild(modal);
+
+	// Scroll to bottom to show the add note form
+	setTimeout(() => {
+		const modalBody = modal.querySelector(".modal-body");
+		if (modalBody) {
+			modalBody.scrollTop = modalBody.scrollHeight;
+		}
+	}, 50);
+};
+
+// Alias for backward compatibility
+const openAddNoteModal = openNotesModal;
+
+// ============================================================================
+// SRC/COMPONENTS/TASKS.JS
+// ============================================================================
+
+// ============================================================================
+// TASKS SYSTEM COMPONENTS
+// ============================================================================
+
+// Tasks count display component with colored counters
+const TasksCount = ({ tasks = [], onClick }) => {
+	const activeTasks = tasks.filter(task => !task.archived);
+	const todoCount = activeTasks.filter((task) => task.status === "todo").length;
+	const inProgressCount = activeTasks.filter(
+		(task) => task.status === "in-progress",
+	).length;
+	const doneCount = activeTasks.filter((task) => task.status === "done").length;
+	const totalActiveCount = activeTasks.length;
+	const archivedCount = tasks.length - totalActiveCount;
+
+	const className = totalActiveCount === 0 ? "tasks-count zero" : "tasks-count";
+
+	return h(
+		"span",
+		{
+			className,
+			onclick: totalActiveCount > 0 ? onClick : null,
+			title: `${totalActiveCount} active task${totalActiveCount !== 1 ? 's' : ''} (${todoCount} todo, ${inProgressCount} in progress, ${doneCount} done)${archivedCount > 0 ? ` + ${archivedCount} archived` : ''}`
+		},
+		h("span", { className: "task-count-todo" }, todoCount.toString()),
+		h("span", { className: "task-count-separator" }, "/"),
+		h(
+			"span",
+			{ className: "task-count-in-progress" },
+			inProgressCount.toString(),
+		),
+		h("span", { className: "task-count-separator" }, "/"),
+		h("span", { className: "task-count-done" }, doneCount.toString()),
+	);
+};
+
+// Individual task item component
+const TaskItem = ({ task, job }) => {
+	const isArchived = task.archived || false;
+	
+	const handleArchiveToggle = () => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].archived = !isArchived;
+		saveToLocalStorage();
+		
+		// Update the task element in place
+		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
+		if (taskElement) {
+			const newArchiveStatus = !isArchived;
+			taskElement.style.opacity = newArchiveStatus ? "0.6" : "1";
+			taskElement.style.filter = newArchiveStatus ? "grayscale(0.5)" : "none";
+			taskElement.className = `task-item ${newArchiveStatus ? 'archived' : ''}`;
+			
+			// Update archive button
+			const archiveBtn = taskElement.querySelector('.archive-btn');
+			if (archiveBtn) {
+				archiveBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
+			}
+		}
+		
+		// Update interface
+		updateStats();
+	};
+	
+	const handleStatusChange = (newStatus) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].status = newStatus;
+		saveToLocalStorage();
+		
+		// Update status element in place
+		const statusElement = document.querySelector(`[data-task-id="${task.id}"] .task-status`);
+		if (statusElement) {
+			statusElement.className = `task-status status-${newStatus}`;
+			statusElement.textContent = getTaskStatusText(newStatus);
+		}
+		
+		// Update interface
+		updateStats();
+	};
+	
+	const handlePriorityChange = (newPriority) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].priority = newPriority;
+		saveToLocalStorage();
+		
+		// Update priority element in place
+		const priorityElement = document.querySelector(`[data-task-id="${task.id}"] .task-priority`);
+		if (priorityElement) {
+			priorityElement.className = `task-priority priority-${newPriority}`;
+			priorityElement.textContent = getPriorityText(newPriority);
+		}
+		
+		// Update interface
+		updateStats();
+	};
+	
+	const handleDueDateChange = (newDueDate) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		jobsData[jobIndex].tasks[taskIndex].dueDate = newDueDate;
+		saveToLocalStorage();
+		
+		// Update due date element in place
+		const dueDateElement = document.querySelector(`[data-task-id="${task.id}"] .task-due-date`);
+		if (dueDateElement) {
+			dueDateElement.textContent = newDueDate ? formatDate(newDueDate) : "No due date";
+		}
+		
+		// Update interface
+		updateStats();
+	};
+	
+	const handleEdit = () => {
+		const taskTextElement = document.querySelector(`[data-task-id="${task.id}"] .task-text`);
+		if (!taskTextElement) return;
+		
+		const currentText = task.text;
+		const textarea = h("textarea", {
+			className: "task-edit-textarea",
+			style: { 
+				width: "100%", 
+				minHeight: "60px", 
+				padding: "8px", 
+				border: "1px solid var(--border-color)", 
+				borderRadius: "4px",
+				fontFamily: "inherit",
+				fontSize: "inherit",
+				resize: "vertical"
+			},
+			textContent: currentText
+		});
+		
+		const saveBtn = h("button", {
+			className: "action-btn edit-btn",
+			style: { marginRight: "8px", marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Save",
+			onclick: () => {
+				const newText = textarea.value.trim();
+				if (!newText) return;
+				
+				const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+				if (jobIndex === -1) return;
+				
+				const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+				if (taskIndex === -1) return;
+				
+				jobsData[jobIndex].tasks[taskIndex].text = newText;
+				saveToLocalStorage();
+				
+				// Update in place - replace textarea with new text
+				taskTextElement.innerHTML = "";
+				taskTextElement.textContent = newText;
+				
+				// Update interface
+				updateStats();
+			}
+		});
+		
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn",
+			style: { marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			textContent: "Cancel",
+			onclick: () => {
+				// Cancel editing - restore original text
+				taskTextElement.innerHTML = "";
+				taskTextElement.textContent = task.text;
+			}
+		});
+		
+		taskTextElement.innerHTML = "";
+		taskTextElement.appendChild(textarea);
+		taskTextElement.appendChild(h("div", {}, saveBtn, cancelBtn));
+		textarea.focus();
+	};
+	
+	return h(
+		"div",
+		{ 
+			className: `task-item ${isArchived ? 'archived' : ''}`,
+			"data-task-id": task.id,
+			style: isArchived ? { opacity: "0.6", filter: "grayscale(0.5)" } : {}
+		},
+		h(
+			"div",
+			{ 
+				className: "task-header",
+				style: { 
+					display: "flex", 
+					justifyContent: "space-between", 
+					alignItems: "flex-start",
+					marginBottom: "8px",
+					fontSize: "12px",
+					color: "var(--text-light)"
+				}
+			},
+			h(
+				"div",
+				{ style: { display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" } },
+				h("select", {
+					className: "task-status inline-select",
+					value: task.status,
+					onchange: (e) => handleStatusChange(e.target.value)
+				}, 
+					h("option", { value: "todo" }, "To Do"),
+					h("option", { value: "in-progress" }, "In Progress"),
+					h("option", { value: "done" }, "Done")
+				),
+				h("select", {
+					className: "task-priority inline-select",
+					value: task.priority,
+					onchange: (e) => handlePriorityChange(e.target.value)
+				}, 
+					h("option", { value: "low" }, "Low"),
+					h("option", { value: "medium" }, "Medium"),
+					h("option", { value: "high" }, "High")
+				),
+				h("input", {
+					type: "date",
+					className: "task-due-date inline-input",
+					value: task.dueDate ? task.dueDate.split('T')[0] : "",
+					onchange: (e) => handleDueDateChange(e.target.value ? e.target.value + 'T00:00:00.000Z' : null)
+				})
+			),
+			h(
+				"div",
+				{ className: "task-actions", style: { display: "flex", gap: "4px" } },
+				h("button", {
+					className: "action-btn edit-task-btn",
+					title: "Edit task",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: '<span class="material-symbols-outlined" style="font-size: 14px;">edit</span>',
+					onclick: handleEdit
+				}),
+				h("button", {
+					className: "action-btn archive-btn",
+					title: isArchived ? "Unarchive task" : "Archive task",
+					style: { 
+						padding: "4px", 
+						fontSize: "14px",
+						background: "transparent",
+						border: "none",
+						cursor: "pointer",
+						color: "var(--text-light)",
+						borderRadius: "3px"
+					},
+					innerHTML: `<span class="material-symbols-outlined" style="font-size: 14px;">${isArchived ? "unarchive" : "archive"}</span>`,
+					onclick: handleArchiveToggle
+				})
+			)
+		),
+		h("div", { 
+			className: "task-text",
+			style: {
+				fontSize: "14px",
+				lineHeight: "1.5",
+				whiteSpace: "pre-wrap",
+				color: "var(--text-color)"
+			}
+		}, task.text),
+	);
+};
+
+// Unified modal component for viewing and adding tasks
+const TasksModal = ({ job, onClose }) => {
+	const tasks = job.tasks || [];
+	const activeTasks = tasks.filter(task => !task.archived);
+	const archivedTasks = tasks.filter(task => task.archived);
+	const sortedActiveTasks = [...activeTasks].sort(
+		(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date),
+	);
+	const sortedArchivedTasks = [...archivedTasks].sort(
+		(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date),
+	);
+
+	const handleAddTask = () => {
+		const textarea = document.querySelector(".add-task-textarea");
+		const taskText = textarea.value.trim();
+
+		if (!taskText) {
+			textarea.focus();
+			return;
+		}
+
+		const newTask = {
+			id: Date.now(),
+			createdDate: new Date().toISOString(),
+			text: taskText,
+			status: "todo",
+			priority: "medium",
+			dueDate: null
+		};
+
+		// Add task to job data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+
+		if (!jobsData[jobIndex].tasks) {
+			jobsData[jobIndex].tasks = [];
+		}
+
+		jobsData[jobIndex].tasks.push(newTask);
+		saveToLocalStorage();
+
+		// Update the job object for this modal
+		job.tasks = jobsData[jobIndex].tasks;
+
+		// Add the new task to the existing modal without reopening
+		const modalBody = document.querySelector(".modal-body");
+		const addTaskSection = modalBody.querySelector(".add-task-section");
+
+		// Create and insert the new task before the add task section
+		const newTaskElement = TaskItem({ task: newTask, job });
+		modalBody.insertBefore(newTaskElement, addTaskSection);
+
+		// Clear the textarea
+		textarea.value = "";
+
+		// Update the tasks count in the table (refresh interface for count update)
+		updateStats();
+	};
+
+	return h(
+		"div",
+		{
+			className: "modal-overlay",
+			onclick: (e) => e.target === e.currentTarget && onClose(),
+		},
+		h(
+			"div",
+			{ className: "modal" },
+			h(
+				"div",
+				{ className: "modal-header" },
+				h(
+					"h3",
+					{ className: "modal-title" },
+					`Tasks for ${job.position} at ${job.company}`,
+				),
+				h("button", { className: "modal-close", onclick: onClose }, "×"),
+			),
+			h(
+				"div",
+				{ className: "modal-body" },
+				// Active tasks section
+				...(sortedActiveTasks.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginBottom: "12px", 
+								color: "var(--text-color)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px"
+							} 
+						}, "Active Tasks"),
+						...sortedActiveTasks.map((task) => TaskItem({ task, job }))
+					]
+					: [
+							h(
+								"p",
+								{
+									style: {
+										textAlign: "center",
+										color: "var(--text-light)",
+										marginBottom: "20px",
+									},
+								},
+								"No tasks yet. Add your first task below.",
+							),
+						]),
+				// Archived tasks section
+				...(sortedArchivedTasks.length > 0
+					? [
+						h("h4", { 
+							style: { 
+								marginTop: "24px",
+								marginBottom: "12px", 
+								color: "var(--text-light)", 
+								fontSize: "14px",
+								borderBottom: "1px solid var(--border-color)",
+								paddingBottom: "8px",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px"
+							},
+							onclick: () => {
+								const archivedSection = document.getElementById('archived-tasks-content');
+								const expandIcon = document.getElementById('archived-tasks-icon');
+								if (archivedSection.style.display === 'none') {
+									archivedSection.style.display = 'block';
+									expandIcon.textContent = 'expand_less';
+								} else {
+									archivedSection.style.display = 'none';
+									expandIcon.textContent = 'expand_more';
+								}
+							}
+						}, 
+							h('span', { className: 'material-symbols-outlined', id: 'archived-tasks-icon', style: { fontSize: '16px' } }, 'expand_less'),
+							`Archived Tasks (${sortedArchivedTasks.length})`
+						),
+						h("div", { 
+							id: "archived-tasks-content"
+						}, ...sortedArchivedTasks.map((task) => TaskItem({ task, job })))
+					]
+					: []),
+				// Add task form section
+				h(
+					"div",
+					{ className: "add-task-section" },
+					h("h4", { className: "add-task-title" }, "Add New Task"),
+					h("textarea", {
+						className: "add-task-textarea",
+						placeholder: "Enter your task here...",
+						rows: 3,
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.shiftKey) {
+								e.preventDefault();
+								handleAddTask();
+							}
+						},
+					}),
+				),
+			),
+			h(
+				"div",
+				{ className: "modal-footer" },
+				h(
+					"button",
+					{
+						className: "action-btn edit-btn",
+						onclick: handleAddTask,
+					},
+					"Add Task",
+				),
+				h(
+					"button",
+					{ className: "action-btn cancel-btn", onclick: onClose },
+					"Close",
+				),
+			),
+		),
+	);
+};
+
+// Open unified tasks modal
+const openTasksModal = (job) => {
+	const modal = TasksModal({
+		job,
+		onClose: closeModal,
+	});
+	document.body.appendChild(modal);
+};
+
+// Alias for backward compatibility
+const openAddTaskModal = openTasksModal;
+
+// ============================================================================
+// SRC/COMPONENTS/TABLE.JS
+// ============================================================================
+
+// ============================================================================
+// TABLE AND JOB ROW COMPONENTS
+// ============================================================================
+
+// Priority cell component
+const PriorityCell = ({ priority }) => {
+	return h(
+		"td",
+		{ className: "priority-cell" },
+		h("span", { className: `priority priority-${priority}` }),
+		getPriorityText(priority)
+	);
+};
+
+// Job row component
+const JobRow = ({ job, onEdit, onDelete }) => {
+	const row = h(
+		"tr",
+		{ "data-job-id": job.id },
+		PriorityCell({ priority: job.priority }),
+		h("td", { className: "company-name" }, job.company),
+		h("td", { className: "position-name" }, job.position),
+		h("td", { className: "current-phase" }, getPhaseText(job.currentPhase)),
+		h("td", { className: "contact", innerHTML: `${job.contactPerson}<br>${job.contactEmail}` }),
+		h("td", { className: "salary" }, job.salaryRange),
+		h("td", { className: "location" }, job.location),
+		h(
+			"td",
+			{ className: "notes" },
+			NotesCount({
+				notes: job.notes || [],
+				onClick: () => openNotesModal(job),
+			})
+		),
+		h(
+			"td",
+			{ className: "tasks" },
+			TasksCount({
+				tasks: job.tasks || [],
+				onClick: () => openTasksModal(job),
+			})
+		),
+		h(
+			"td",
+			{ className: "actions-cell" },
+			h("button", {
+				className: "action-btn edit-btn",
+				onclick: () => onEdit(job),
+				innerHTML: '<span class="material-symbols-outlined">edit</span>'
+			}),
+			h("button", {
+				className: "action-btn delete-btn",
+				onclick: () => onDelete(job),
+				innerHTML: '<span class="material-symbols-outlined">delete</span>'
+			})
+		)
+	);
+
+	// Double-click to edit
+	row.addEventListener("dblclick", () => onEdit(job));
+
+	return row;
+};
+
+// Modal close function
+const closeModal = () => {
+	const modals = document.querySelectorAll(".modal-overlay");
+	modals.forEach((modal) => modal.remove());
+};
+
+// ============================================================================
+// SRC/APP.JS
+// ============================================================================
+
+// ============================================================================
+// MAIN APPLICATION LOGIC
+// ============================================================================
+
+// Main application initialization
+function initializeApp() {
+	// Initialize i18n
+	I18n.init();
+	
+	// Load data from localStorage
+	const savedJobs = loadFromLocalStorage();
+	
+	if (savedJobs && savedJobs.length > 0) {
+		jobsData = savedJobs;
+		originalData = [...jobsData];
+		refreshInterface();
+		updateStaticTexts();
+	} else {
+		// Show welcome message for new users
+		const showDemo = confirm(I18n.t("messages.welcome"));
+		if (showDemo) {
+			jobsData = getDemoData();
+			originalData = [...jobsData];
+			saveToLocalStorage();
+		}
+		refreshInterface();
+		updateStaticTexts();
+	}
+	
+	setupEventListeners();
+	setupFilters();
+}
+
+// Setup event listeners
+function setupEventListeners() {
+	// ESC key to close modals
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			closeModal();
+		}
+	});
+}
+
+// Setup filter dropdowns
+function setupFilters() {
+	// Priority filter
+	const priorityDropdown = $("#priorityDropdown");
+	if (priorityDropdown) {
+		populatePriorityFilter();
+	}
+	
+	// Phase filter
+	const phaseDropdown = $("#phaseDropdown");
+	if (phaseDropdown) {
+		populatePhaseFilter();
+	}
+}
+
+// Populate priority filter
+function populatePriorityFilter() {
+	const dropdown = $("#priorityDropdown").get();
+	if (!dropdown) return;
+	
+	dropdown.innerHTML = "";
+	
+	// Add "All Priorities" option
+	const allOption = h("div", {
+		className: "dropdown-option",
+		onclick: () => {
+			filterByPriority(null);
+			toggleDropdown('priorityDropdown');
+		}
+	}, I18n.t("table.filters.allPriorities"));
+	dropdown.appendChild(allOption);
+	
+	// Add priority options
+	for (const priority of PRIORITIES) {
+		const option = h("div", {
+			className: "dropdown-option",
+			onclick: () => {
+				filterByPriority(priority);
+				toggleDropdown('priorityDropdown');
+			}
+		}, getPriorityText(priority));
+		dropdown.appendChild(option);
+	}
+}
+
+// Populate phase filter
+function populatePhaseFilter() {
+	const dropdown = $("#phaseDropdown").get();
+	if (!dropdown) return;
+	
+	dropdown.innerHTML = "";
+	
+	// Add "All Phases" option
+	const allOption = h("div", {
+		className: "dropdown-option",
+		onclick: () => {
+			filterByPhase(null);
+			toggleDropdown('phaseDropdown');
+		}
+	}, I18n.t("table.filters.allPhases"));
+	dropdown.appendChild(allOption);
+	
+	// Add phase options
+	for (const phase of PHASES) {
+		const option = h("div", {
+			className: "dropdown-option",
+			onclick: () => {
+				filterByPhase(phase);
+				toggleDropdown('phaseDropdown');
+			}
+		}, getPhaseText(phase));
+		dropdown.appendChild(option);
+	}
+}
+
+// Filter functions
+function filterByPriority(priority) {
+	if (priority === null) {
+		jobsData = [...originalData];
+	} else {
+		jobsData = originalData.filter(job => job.priority === priority);
+	}
+	refreshInterface();
+}
+
+function filterByPhase(phase) {
+	if (phase === null) {
+		jobsData = [...originalData];
+	} else {
+		jobsData = originalData.filter(job => job.currentPhase === phase);
+	}
+	refreshInterface();
+}
+
+// Update statistics
+function updateStats(filteredJobs = null) {
+	const jobs = filteredJobs || jobsData;
+	let total = jobs.length;
+	let active = 0;
+	let interviews = 0;
+	let offers = 0;
+	let rejections = 0;
+
+	for (const job of jobs) {
+		const phase = job.currentPhase;
+		if (phase !== "rejected" && phase !== "withdrawn") active++;
+		if (phase === "interview" || phase === "final_round") interviews++;
+		if (phase === "offer") offers++;
+		if (phase === "rejected") rejections++;
+	}
+
+	$("#totalApps").text(total.toString());
+	$("#activeApps").text(active.toString());
+	$("#interviews").text(interviews.toString());
+	$("#offers").text(offers.toString());
+	$("#rejections").text(rejections.toString());
+}
+
+// Refresh the interface
+function refreshInterface() {
+	updateStats();
+	renderJobTable();
+}
+
+// Render job table
+function renderJobTable() {
+	const tableBody = $("#jobTableBody");
+	if (!tableBody) {
+		console.warn("Table body not found - cannot render jobs");
+		return;
+	}
+	
+	const tbody = tableBody.get();
+	tbody.innerHTML = "";
+	
+	console.log("Rendering jobs:", jobsData.length);
+	
+	for (const job of jobsData) {
+		try {
+			const row = JobRow({
+				job,
+				onEdit: editJob,
+				onDelete: deleteJob
+			});
+			tbody.appendChild(row);
+		} catch (error) {
+			console.error("Error rendering job row:", error, job);
+		}
+	}
+}
+
+// Edit job function
+function editJob(job) {
+	// For now, just log - full implementation would open edit modal
+	console.log("Edit job:", job);
+}
+
+// Delete job function  
+function deleteJob(job) {
+	const confirmed = confirm(
+		I18n.t("messages.confirmDelete", {
+			position: job.position,
+			company: job.company
+		})
+	);
+	
+	if (confirmed) {
+		const index = jobsData.findIndex(j => j.id === job.id);
+		if (index !== -1) {
+			jobsData.splice(index, 1);
+			originalData = [...jobsData];
+			saveToLocalStorage();
+			refreshInterface();
+		}
+	}
+}
+
+// Global functions for HTML onclick handlers
+function addRow() {
+	// Create new job with unique ID
+	const newJob = {
+		id: Date.now(),
+		priority: "medium",
+		company: "",
+		position: "",
+		appliedDate: new Date().toISOString(),
+		currentPhase: "wishlist",
+		contactPerson: "",
+		contactEmail: "",
+		salaryRange: "",
+		location: "",
+		notes: [],
+		tasks: []
+	};
+	
+	jobsData.push(newJob);
+	originalData = [...jobsData];
+	saveToLocalStorage();
+	refreshInterface();
+	
+	// Auto-edit the new row
+	setTimeout(() => editJob(newJob), 100);
+}
+
+function toggleDropdown(dropdownId) {
+	const dropdown = document.getElementById(dropdownId);
+	if (!dropdown) return;
+	
+	// Close all other dropdowns
+	document.querySelectorAll('.filter-dropdown').forEach(d => {
+		if (d.id !== dropdownId) {
+			d.style.display = 'none';
+		}
+	});
+	
+	// Toggle this dropdown
+	dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+function switchTab(tabName) {
+	document.querySelectorAll('.tab-button').forEach(btn => {
+		btn.classList.remove('active');
+	});
+	document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+	
+	document.querySelectorAll('.tab-content').forEach(content => {
+		content.classList.remove('active');
+	});
+	document.getElementById(`${tabName}Tab`).classList.add('active');
+	
+	if (tabName === 'kanban') {
+		populateKanbanBoard();
+	}
+}
+
+// Kanban board population (placeholder)
+function populateKanbanBoard() {
+	// This would populate the kanban board
+	console.log("Populating kanban board");
+}
+
+// Initialize app when DOM is ready
+if (document.readyState === "loading") {
+	document.addEventListener("DOMContentLoaded", initializeApp);
+} else {
+	initializeApp();
+}
+    </script>
+</body>
+</html>
