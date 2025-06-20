@@ -981,3 +981,122 @@ tbody tr {
     border-radius: var(--border-radius-small);
     font-size: var(--font-size-small);
 }
+
+/* Inline Edit Components */
+.note-edit-textarea,
+.task-edit-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+    resize: vertical;
+}
+
+.edit-save-btn {
+    margin-right: 8px;
+    margin-top: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.edit-cancel-btn {
+    margin-top: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* Archive State */
+.archived {
+    opacity: 0.6;
+    filter: grayscale(0.5);
+}
+
+/* Modal Content Layout */
+.modal-header-content {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.modal-content-info {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.modal-actions-row {
+    display: flex;
+    gap: 4px;
+}
+
+.modal-section-header {
+    margin-bottom: 12px;
+    color: var(--text-color);
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.modal-empty-message {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.modal-archived-header {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    color: var(--text-light);
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.expand-icon {
+    font-size: 16px;
+}
+
+/* Task Controls Layout */
+.task-controls-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.task-header-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+/* Icon Buttons */
+.icon-btn-transparent {
+    padding: 4px;
+    font-size: 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    border-radius: 3px;
+}
+
+/* Material Icons Sizing */
+.icon-14 {
+    font-size: 14px;
+}
+
+.icon-16 {
+    font-size: 16px;
+}

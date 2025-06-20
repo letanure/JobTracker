@@ -41,7 +41,7 @@ const NoteItem = ({ note, job }) => {
 			// Update archive button
 			const archiveBtn = noteElement.querySelector('.archive-btn');
 			if (archiveBtn) {
-				archiveBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
+				archiveBtn.innerHTML = `<span class="material-symbols-outlined icon-14">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
 			}
 		}
 		
@@ -56,22 +56,11 @@ const NoteItem = ({ note, job }) => {
 		const currentText = note.text;
 		const textarea = h("textarea", {
 			className: "note-edit-textarea",
-			style: { 
-				width: "100%", 
-				minHeight: "60px", 
-				padding: "8px", 
-				border: "1px solid var(--border-color)", 
-				borderRadius: "4px",
-				fontFamily: "inherit",
-				fontSize: "inherit",
-				resize: "vertical"
-			},
 			textContent: currentText
 		});
 		
 		const saveBtn = h("button", {
-			className: "action-btn edit-btn",
-			style: { marginRight: "8px", marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			className: "action-btn edit-btn edit-save-btn",
 			textContent: "Save",
 			onclick: () => {
 				const newText = textarea.value.trim();
@@ -96,8 +85,7 @@ const NoteItem = ({ note, job }) => {
 		});
 		
 		const cancelBtn = h("button", {
-			className: "action-btn cancel-btn",
-			style: { marginTop: "8px", padding: "4px 8px", fontSize: "12px" },
+			className: "action-btn cancel-btn edit-cancel-btn",
 			textContent: "Cancel",
 			onclick: () => {
 				// Cancel editing - restore original text
@@ -116,71 +104,38 @@ const NoteItem = ({ note, job }) => {
 		"div",
 		{ 
 			className: `note-item ${isArchived ? 'archived' : ''}`,
-			"data-note-id": note.id,
-			style: isArchived ? { opacity: "0.6", filter: "grayscale(0.5)" } : {}
+			"data-note-id": note.id
 		},
 		h(
 			"div",
 			{ 
-				className: "note-header",
-				style: { 
-					display: "flex", 
-					justifyContent: "space-between", 
-					alignItems: "center",
-					marginBottom: "8px",
-					fontSize: "12px",
-					color: "var(--text-light)"
-				}
+				className: "note-header"
 			},
 			h(
 				"div",
-				{ style: { display: "flex", gap: "12px", alignItems: "center" } },
+				{ className: "modal-header-content" },
 				h("span", { className: "note-phase" }, getPhaseText(note.phase)),
 				h("span", { className: "note-date" }, formatDate(note.date))
 			),
 			h(
 				"div",
-				{ className: "note-actions", style: { display: "flex", gap: "4px" } },
+				{ className: "note-actions modal-actions-row" },
 				h("button", {
-					className: "action-btn edit-note-btn",
+					className: "action-btn edit-note-btn icon-btn-transparent",
 					title: "Edit note",
-					style: { 
-						padding: "4px", 
-						fontSize: "14px",
-						background: "transparent",
-						border: "none",
-						cursor: "pointer",
-						color: "var(--text-light)",
-						borderRadius: "3px"
-					},
-					innerHTML: '<span class="material-symbols-outlined" style="font-size: 14px;">edit</span>',
+					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
-					className: "action-btn archive-btn",
+					className: "action-btn archive-btn icon-btn-transparent",
 					title: isArchived ? "Unarchive note" : "Archive note",
-					style: { 
-						padding: "4px", 
-						fontSize: "14px",
-						background: "transparent",
-						border: "none",
-						cursor: "pointer",
-						color: "var(--text-light)",
-						borderRadius: "3px"
-					},
-					innerHTML: `<span class="material-symbols-outlined" style="font-size: 14px;">${isArchived ? "unarchive" : "archive"}</span>`,
+					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
 			)
 		),
 		h("div", { 
-			className: "note-text",
-			style: {
-				fontSize: "14px",
-				lineHeight: "1.5",
-				whiteSpace: "pre-wrap",
-				color: "var(--text-color)"
-			}
+			className: "note-text"
 		}, note.text),
 	);
 };
@@ -268,13 +223,7 @@ const NotesModal = ({ job, onClose }) => {
 				...(sortedActiveNotes.length > 0
 					? [
 						h("h4", { 
-							style: { 
-								marginBottom: "12px", 
-								color: "var(--text-color)", 
-								fontSize: "14px",
-								borderBottom: "1px solid var(--border-color)",
-								paddingBottom: "8px"
-							} 
+							className: "modal-section-header"
 						}, "Active Notes"),
 						...sortedActiveNotes.map((note) => NoteItem({ note, job }))
 					]
@@ -282,11 +231,7 @@ const NotesModal = ({ job, onClose }) => {
 							h(
 								"p",
 								{
-									style: {
-										textAlign: "center",
-										color: "var(--text-light)",
-										marginBottom: "20px",
-									},
+									className: "modal-empty-message"
 								},
 								"No notes yet. Add your first note below.",
 							),
@@ -295,18 +240,7 @@ const NotesModal = ({ job, onClose }) => {
 				...(sortedArchivedNotes.length > 0
 					? [
 						h("h4", { 
-							style: { 
-								marginTop: "24px",
-								marginBottom: "12px", 
-								color: "var(--text-light)", 
-								fontSize: "14px",
-								borderBottom: "1px solid var(--border-color)",
-								paddingBottom: "8px",
-								cursor: "pointer",
-								display: "flex",
-								alignItems: "center",
-								gap: "8px"
-							},
+							className: "modal-archived-header",
 							onclick: () => {
 								const archivedSection = document.getElementById('archived-notes-content');
 								const expandIcon = document.getElementById('archived-notes-icon');
@@ -319,7 +253,7 @@ const NotesModal = ({ job, onClose }) => {
 								}
 							}
 						}, 
-							h('span', { className: 'material-symbols-outlined', id: 'archived-notes-icon', style: { fontSize: '16px' } }, 'expand_less'),
+							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-notes-icon' }, 'expand_less'),
 							`Archived Notes (${sortedArchivedNotes.length})`
 						),
 						h("div", { 
