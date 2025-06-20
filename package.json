@@ -5,8 +5,11 @@
   "main": "dist/script.js",
   "scripts": {
     "build": "node build.js",
+    "build:separate": "node build.js --separate",
     "watch": "node build.js --watch",
+    "watch:separate": "node build.js --watch --separate",
     "dev": "node build.js --watch",
+    "dev:separate": "node build.js --watch --separate",
     "clean": "rm -rf dist",
     "serve": "cd dist && python3 -m http.server 8000 || python -m http.server 8000 || echo 'No Python found - open dist/index.html manually'"
   },
