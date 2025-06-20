@@ -205,6 +205,40 @@ npm run setup-hooks
 4. ✅ Shows build size information
 5. ❌ Prevents commit if build fails
 
+## 🌐 GitHub Pages Deployment
+
+### Automatic Deployment (Recommended)
+GitHub Actions automatically deploys to GitHub Pages on every push to `main`:
+
+1. **Enable GitHub Pages** in your repository settings
+2. **Set source** to "GitHub Actions" 
+3. **Push to main** - automatic deployment via `.github/workflows/deploy.yml`
+4. **Site URL**: `https://username.github.io/repository-name/`
+
+### Manual Deployment
+```bash
+# Deploy current build to gh-pages branch
+npm run deploy
+
+# Or run the script directly
+./deploy-gh-pages.sh
+```
+
+### Setup GitHub Pages
+1. Go to repository **Settings** → **Pages**
+2. Under **Source**, select:
+   - **GitHub Actions** (for automatic deployment)
+   - OR **Deploy from a branch** → `gh-pages` (for manual deployment)
+3. Your site will be available at the provided URL
+
+### Deployment Options
+| Method | URL Structure | Auto-Deploy | Best For |
+|--------|---------------|-------------|----------|
+| **GitHub Actions** | `username.github.io/repo/` | ✅ Yes | Production |
+| **gh-pages branch** | `username.github.io/repo/` | ❌ Manual | Testing |
+| **docs folder** | `username.github.io/repo/` | ❌ Manual | Documentation |
+| **root + /dist** | `username.github.io/repo/dist/` | ❌ Manual | Simple setup |
+
 ## 🔍 Debugging
 
 ### Finding Code
