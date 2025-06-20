@@ -1,0 +1,15 @@
+{
+  "name": "job-tracker-plain",
+  "version": "1.0.0",
+  "description": "A simple job application tracker with no dependencies",
+  "main": "dist/script.js",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "dev": "node build.js --watch",
+    "clean": "rm -rf dist",
+    "serve": "cd dist && python3 -m http.server 8000 || python -m http.server 8000 || echo 'No Python found - open dist/index.html manually'"
+  },
+  "keywords": ["job-tracker", "plain-js", "no-dependencies"],
+  "license": "MIT"
+}

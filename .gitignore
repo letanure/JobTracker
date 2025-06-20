@@ -1,0 +1,27 @@
+# Build output
+dist/
+
+# Don't ignore gitignore itself
+!.gitignore
+
+# Node modules (if using npm install)
+node_modules/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
