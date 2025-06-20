@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-20T08:28:24.909Z
+Generated: 2025-06-20T08:40:02.171Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -9,7 +9,39 @@ Generated: 2025-06-20T08:28:24.909Z
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">JobTracker - Job Search Tracker</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>JobTracker - Free Job Application Tracker & Manager</title>
+    <meta name="description" content="Track your job applications, interviews, and career progress with JobTracker. A free, open-source tool to organize your job search with notes, tasks, and timeline tracking.">
+    <meta name="keywords" content="job tracker, job application, job search, career management, interview tracker, application organizer, job hunting tool, career progress">
+    <meta name="author" content="JobTracker Team">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="en">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="JobTracker - Free Job Application Tracker">
+    <meta property="og:description" content="Organize your job search with our free, easy-to-use job application tracker. Track applications, interviews, and tasks in one place.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://letanure.github.io/job-tracker-plain/">
+    <meta property="og:site_name" content="JobTracker">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JobTracker - Free Job Application Tracker">
+    <meta name="twitter:description" content="Free job application tracker to organize your job search. Track applications, interviews, and career progress.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://letanure.github.io/job-tracker-plain/">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="theme-color" content="#2383e2">
+    <meta name="application-name" content="JobTracker">
+    <meta name="apple-mobile-web-app-title" content="JobTracker">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- External Resources -->
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
@@ -1180,7 +1212,7 @@ tbody tr {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-20T08:28:24.902Z
+// Generated: 2025-06-20T08:40:02.165Z
 // ============================================================================
 
 
@@ -1597,6 +1629,16 @@ I18n.translations = {
 				"Great culture fit. Need to research their microservices architecture.",
 			notes2: "Early stage startup. High growth potential but risky.",
 		},
+		seo: {
+			title: "JobTracker - Free Job Application Tracker & Manager",
+			description: "Track your job applications, interviews, and career progress with JobTracker. A free, open-source tool to organize your job search with notes, tasks, and timeline tracking.",
+			keywords: "job tracker, job application, job search, career management, interview tracker, application organizer, job hunting tool, career progress",
+			author: "JobTracker Team",
+			ogTitle: "JobTracker - Free Job Application Tracker",
+			ogDescription: "Organize your job search with our free, easy-to-use job application tracker. Track applications, interviews, and tasks in one place.",
+			twitterTitle: "JobTracker - Free Job Application Tracker",
+			twitterDescription: "Free job application tracker to organize your job search. Track applications, interviews, and career progress.",
+		},
 	},
 	pt: {
 		app: {
@@ -1697,6 +1739,16 @@ I18n.translations = {
 				"Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
 			notes2:
 				"Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
+		},
+		seo: {
+			title: "JobTracker - Rastreador Gratuito de Candidaturas de Emprego",
+			description: "Acompanhe suas candidaturas de emprego, entrevistas e progresso na carreira com o JobTracker. Uma ferramenta gratuita e de código aberto para organizar sua busca por emprego com notas, tarefas e acompanhamento de cronograma.",
+			keywords: "rastreador de empregos, candidatura de emprego, busca de emprego, gestão de carreira, rastreador de entrevistas, organizador de candidaturas, ferramenta de busca de emprego, progresso na carreira",
+			author: "Equipe JobTracker",
+			ogTitle: "JobTracker - Rastreador Gratuito de Candidaturas",
+			ogDescription: "Organize sua busca por emprego com nosso rastreador de candidaturas gratuito e fácil de usar. Acompanhe candidaturas, entrevistas e tarefas em um só lugar.",
+			twitterTitle: "JobTracker - Rastreador Gratuito de Candidaturas",
+			twitterDescription: "Rastreador gratuito de candidaturas para organizar sua busca por emprego. Acompanhe candidaturas, entrevistas e progresso na carreira.",
 		},
 	},
 };
@@ -1899,8 +1951,7 @@ const getTaskStatusText = (statusKey) => {
 };
 
 function updateStaticTexts() {
-	// Update page title and header
-	$("#pageTitle").text(I18n.t("app.title"));
+	// Update header
 	$("#appTitle").text(I18n.t("app.title"));
 
 	// Update button

@@ -133,6 +133,61 @@ function minifyHTML(html) {
 }
 
 /**
+ * Replace SEO placeholders with translated content
+ * Uses translations from i18n.js file
+ */
+function replaceSEOPlaceholders(html, language = 'en') {
+  // Load i18n module to access translations
+  const i18nPath = path.join(__dirname, 'src/lib/i18n.js');
+  const i18nContent = readFile(i18nPath);
+  
+  if (!i18nContent) {
+    console.error('❌ Could not load i18n translations for SEO');
+    return html;
+  }
+  
+  // Extract translations object from i18n.js
+  // This is a simple regex-based extraction since we can't require the module directly
+  const translationsMatch = i18nContent.match(/I18n\.translations\s*=\s*(\{[\s\S]*\});/);
+  if (!translationsMatch) {
+    console.error('❌ Could not parse translations from i18n.js');
+    return html;
+  }
+  
+  let translations;
+  try {
+    // Evaluate the translations object
+    eval(`translations = ${translationsMatch[1]}`);
+  } catch (error) {
+    console.error('❌ Error parsing translations:', error.message);
+    return html;
+  }
+  
+  const langTranslations = translations[language] || translations.en;
+  if (!langTranslations || !langTranslations.seo) {
+    console.error(`❌ SEO translations not found for language: ${language}`);
+    return html;
+  }
+  
+  const seo = langTranslations.seo;
+  const ogLocale = language === 'pt' ? 'pt_BR' : 'en_US';
+  const canonicalUrl = 'https://letanure.github.io/job-tracker-plain/';
+
+  return html
+    .replace(/\{\{LANG\}\}/g, language)
+    .replace(/\{\{SEO_TITLE\}\}/g, seo.title)
+    .replace(/\{\{SEO_DESCRIPTION\}\}/g, seo.description)
+    .replace(/\{\{SEO_KEYWORDS\}\}/g, seo.keywords)
+    .replace(/\{\{SEO_AUTHOR\}\}/g, seo.author)
+    .replace(/\{\{SEO_OG_TITLE\}\}/g, seo.ogTitle)
+    .replace(/\{\{SEO_OG_DESCRIPTION\}\}/g, seo.ogDescription)
+    .replace(/\{\{SEO_TWITTER_TITLE\}\}/g, seo.twitterTitle)
+    .replace(/\{\{SEO_TWITTER_DESCRIPTION\}\}/g, seo.twitterDescription)
+    .replace(/\{\{OG_LOCALE\}\}/g, ogLocale)
+    .replace(/\{\{CANONICAL_URL\}\}/g, canonicalUrl);
+}
+
+/**
  * Build minified version for deployment
  */
 function buildMinified() {
@@ -152,6 +207,9 @@ function buildMinified() {
   if (htmlContent === null) {
     return false;
   }
+  
+  // Replace SEO placeholders with English content (default)
+  htmlContent = replaceSEOPlaceholders(htmlContent, 'en');
   
   // Remove external CSS links and script tags
   htmlContent = htmlContent.replace(/<link rel="stylesheet" href="[^"]*">/g, '');
@@ -323,6 +381,9 @@ function buildSingleFile() {
   console.log('🎨 Building CSS...');
   const cssResult = buildCSS();
   console.log(`   ✅ CSS files processed: ${cssResult.successCount}/${BUILD_CONFIG.cssFiles.length}`);
+  
+  // Replace SEO placeholders with English content (default)
+  htmlContent = replaceSEOPlaceholders(htmlContent, 'en');
   
   // Remove external CSS links and replace with inline styles
   htmlContent = htmlContent.replace(
