@@ -1,5 +1,6 @@
-# Build output
+# Build output (allow dist/index.html for deployment)
 dist/
+!dist/index.html
 
 # Don't ignore gitignore itself
 !.gitignore

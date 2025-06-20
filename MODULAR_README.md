@@ -33,6 +33,8 @@ job-tracker-plain/
 
 ## 🚀 Quick Start
 
+> **Note**: Git hooks are automatically set up to build dist/index.html on every commit!
+
 ### Option 1: Using NPM Scripts (recommended)
 ```bash
 # Build single HTML file (default - everything inlined)
@@ -176,6 +178,32 @@ npm run serve # Serve on localhost:8000 (in another terminal)
 1. Edit `build.js`
 2. Modify `BUILD_CONFIG` object
 3. Add new build steps as needed
+
+## 🔄 Git Hooks Integration
+
+### Automatic Building
+- **Pre-commit hook** automatically runs `node build.js` before each commit
+- **Built files** are automatically added to the commit
+- **Ensures** `dist/index.html` is always up-to-date in the repository
+
+### Setup Git Hooks
+```bash
+# Automatic setup (runs on npm install)
+npm install
+
+# Manual setup
+npm run setup-hooks
+
+# Or run the script directly
+./setup-hooks.sh
+```
+
+### What the Hook Does
+1. ✅ Runs build script before commit
+2. ✅ Validates build succeeded  
+3. ✅ Adds `dist/index.html` to the commit
+4. ✅ Shows build size information
+5. ❌ Prevents commit if build fails
 
 ## 🔍 Debugging
 
