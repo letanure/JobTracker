@@ -157,6 +157,16 @@ I18n.translations = {
 				"Great culture fit. Need to research their microservices architecture.",
 			notes2: "Early stage startup. High growth potential but risky.",
 		},
+		seo: {
+			title: "JobTracker - Free Job Application Tracker & Manager",
+			description: "Track your job applications, interviews, and career progress with JobTracker. A free, open-source tool to organize your job search with notes, tasks, and timeline tracking.",
+			keywords: "job tracker, job application, job search, career management, interview tracker, application organizer, job hunting tool, career progress",
+			author: "JobTracker Team",
+			ogTitle: "JobTracker - Free Job Application Tracker",
+			ogDescription: "Organize your job search with our free, easy-to-use job application tracker. Track applications, interviews, and tasks in one place.",
+			twitterTitle: "JobTracker - Free Job Application Tracker",
+			twitterDescription: "Free job application tracker to organize your job search. Track applications, interviews, and career progress.",
+		},
 	},
 	pt: {
 		app: {
@@ -257,6 +267,16 @@ I18n.translations = {
 				"Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
 			notes2:
 				"Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
+		},
+		seo: {
+			title: "JobTracker - Rastreador Gratuito de Candidaturas de Emprego",
+			description: "Acompanhe suas candidaturas de emprego, entrevistas e progresso na carreira com o JobTracker. Uma ferramenta gratuita e de código aberto para organizar sua busca por emprego com notas, tarefas e acompanhamento de cronograma.",
+			keywords: "rastreador de empregos, candidatura de emprego, busca de emprego, gestão de carreira, rastreador de entrevistas, organizador de candidaturas, ferramenta de busca de emprego, progresso na carreira",
+			author: "Equipe JobTracker",
+			ogTitle: "JobTracker - Rastreador Gratuito de Candidaturas",
+			ogDescription: "Organize sua busca por emprego com nosso rastreador de candidaturas gratuito e fácil de usar. Acompanhe candidaturas, entrevistas e tarefas em um só lugar.",
+			twitterTitle: "JobTracker - Rastreador Gratuito de Candidaturas",
+			twitterDescription: "Rastreador gratuito de candidaturas para organizar sua busca por emprego. Acompanhe candidaturas, entrevistas e progresso na carreira.",
 		},
 	},
 };
