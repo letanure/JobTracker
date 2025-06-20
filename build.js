@@ -116,6 +116,101 @@ function copyFile(srcPath, destPath) {
 }
 
 /**
+ * Simple HTML minification
+ */
+function minifyHTML(html) {
+  return html
+    // Remove comments (but keep the build comment at the top)
+    .replace(/<!--(?!.*JobTracker)[\s\S]*?-->/g, '')
+    // Remove extra whitespace between tags (but preserve content)
+    .replace(/>\s+</g, '><')
+    // Remove leading/trailing whitespace from lines
+    .replace(/^\s+/gm, '')
+    .replace(/\s+$/gm, '')
+    // Remove empty lines
+    .replace(/\n\s*\n/g, '\n')
+    .trim();
+}
+
+/**
+ * Build minified version for deployment
+ */
+function buildMinified() {
+  console.log('🗜️  Building minified version for deployment...\n');
+  
+  // First build the regular version
+  const jsResult = buildJavaScript();
+  const cssResult = buildCSS();
+  
+  // Read HTML template
+  if (!fileExists(BUILD_CONFIG.htmlTemplate)) {
+    console.error(`❌ HTML template not found: ${BUILD_CONFIG.htmlTemplate}`);
+    return false;
+  }
+  
+  let htmlContent = readFile(BUILD_CONFIG.htmlTemplate);
+  if (htmlContent === null) {
+    return false;
+  }
+  
+  // Remove external CSS links and script tags
+  htmlContent = htmlContent.replace(/<link rel="stylesheet" href="[^"]*">/g, '');
+  htmlContent = htmlContent.replace(/<script src="[^"]*"><\/script>/g, '');
+  
+  // Add minified build comment
+  const buildComment = `<!-- JobTracker v${new Date().toISOString().split('T')[0]} - Minified for deployment -->`;
+  
+  // Insert minified CSS (basic minification)
+  const minifiedCSS = cssResult.content
+    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
+    .replace(/\s+/g, ' ') // Compress whitespace
+    .replace(/;\s+/g, ';') // Remove space after semicolons
+    .replace(/\{\s+/g, '{') // Remove space after opening braces
+    .replace(/\s+\}/g, '}') // Remove space before closing braces
+    .trim();
+  const cssBlock = `<style>${minifiedCSS}</style>`;
+  htmlContent = htmlContent.replace('</head>', `${cssBlock}</head>`);
+  
+  // Insert minified JavaScript (basic minification)
+  const minifiedJS = jsResult.content
+    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove block comments
+    .replace(/\/\/.*$/gm, '') // Remove line comments
+    .replace(/\s+/g, ' ') // Compress whitespace
+    .replace(/;\s+/g, ';') // Remove space after semicolons
+    .replace(/\{\s+/g, '{') // Remove space after opening braces
+    .replace(/\s+\}/g, '}') // Remove space before closing braces
+    .trim();
+  const jsBlock = `<script>${minifiedJS}</script>`;
+  htmlContent = htmlContent.replace('</body>', `${jsBlock}</body>`);
+  
+  // Add build comment and minify
+  htmlContent = buildComment + htmlContent;
+  htmlContent = minifyHTML(htmlContent);
+  
+  const minifiedOutput = 'dist/index.min.html';
+  
+  if (writeFile(minifiedOutput, htmlContent)) {
+    console.log(`🎉 Minified build complete!`);
+    console.log(`📦 Output: ${minifiedOutput}`);
+    
+    // Show file sizes comparison
+    const originalStats = fs.statSync(BUILD_CONFIG.singleFileOutput);
+    const minifiedStats = fs.statSync(minifiedOutput);
+    const originalSizeKB = (originalStats.size / 1024).toFixed(2);
+    const minifiedSizeKB = (minifiedStats.size / 1024).toFixed(2);
+    const savings = (((originalStats.size - minifiedStats.size) / originalStats.size) * 100).toFixed(1);
+    
+    console.log(`📏 Original size: ${originalSizeKB} KB`);
+    console.log(`📏 Minified size: ${minifiedSizeKB} KB`);
+    console.log(`💾 Space saved: ${savings}%`);
+    
+    return true;
+  }
+  
+  return false;
+}
+
+/**
  * Build JavaScript content from source files
  */
 function buildJavaScript() {
@@ -436,6 +531,7 @@ const args = process.argv.slice(2);
 
 const separateFiles = args.includes('--separate') || args.includes('-s');
 const watchMode = args.includes('--watch') || args.includes('-w');
+const minified = args.includes('--minify') || args.includes('-m');
 const showHelp = args.includes('--help') || args.includes('-h');
 
 if (showHelp) {
@@ -445,16 +541,22 @@ JobTracker Build Script
 Usage:
   node build.js                    Build single HTML file (default)
   node build.js --separate         Build separate HTML, CSS, and JS files
+  node build.js --minify           Build regular + minified version
   node build.js --watch            Build and watch for changes (single file mode)
   node build.js --watch --separate Build and watch for changes (separate files mode)
   node build.js --help             Show this help
 
 Outputs:
   Single file:    ${BUILD_CONFIG.singleFileOutput}
+  Minified file:  dist/index.min.html
   Separate files: ${BUILD_CONFIG.outputFile} + HTML/CSS files
 `);
 } else if (watchMode) {
   watch(separateFiles);
+} else if (minified) {
+  // Build both regular and minified versions
+  build(separateFiles);
+  buildMinified();
 } else {
   build(separateFiles);
 }

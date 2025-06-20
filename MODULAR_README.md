@@ -21,7 +21,8 @@ job-tracker-plain/
 │   ├── styles.css          # Main styles
 │   └── constants.css       # CSS variables
 ├── dist/                   # Built output files (auto-generated)
-│   └── index.html          # Single HTML file with everything inlined (default)
+│   ├── index.html          # Single HTML file (readable, committed to git)
+│   └── index.min.html      # Minified version (for deployment only)
 │   # OR (when using --separate flag):
 │   ├── index.html          # HTML file with external references
 │   ├── styles.css          # Built CSS file
@@ -39,6 +40,9 @@ job-tracker-plain/
 ```bash
 # Build single HTML file (default - everything inlined)
 npm run build
+
+# Build regular + minified version (for deployment)
+npm run build:minify
 
 # Build separate HTML, CSS, and JS files
 npm run build:separate
@@ -61,6 +65,9 @@ npm run clean
 # Build single HTML file (default)
 node build.js
 
+# Build regular + minified version
+node build.js --minify
+
 # Build separate files
 node build.js --separate
 
@@ -78,14 +85,16 @@ node build.js --help
 
 ### Build Process
 1. **Zero Dependencies**: The build script uses only Node.js built-ins
-2. **Two Build Modes**: 
+2. **Multiple Build Modes**: 
    - **Single File** (default): Creates one HTML file with all CSS and JS inlined
+   - **Minified**: Creates both regular and minified versions
    - **Separate Files**: Creates individual HTML, CSS, and JS files
 3. **JavaScript Concatenation**: Combines all JS source files in the correct order
 4. **CSS Inlining**: Combines and inlines CSS files into `<style>` tags
-5. **File Headers**: Adds clear section markers for debugging
-6. **Missing File Handling**: Gracefully skips missing files with warnings
-7. **File Watching**: Optional watch mode for development (watches all file types)
+5. **Minification**: Removes comments, whitespace, and optimizes for size (~25% reduction)
+6. **File Headers**: Adds clear section markers for debugging
+7. **Missing File Handling**: Gracefully skips missing files with warnings
+8. **File Watching**: Optional watch mode for development (watches all file types)
 
 ### File Loading Order
 ```javascript

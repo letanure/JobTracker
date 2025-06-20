@@ -30,8 +30,14 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Build project
-        run: node build.js
+      - name: Build project (with minification)
+        run: node build.js --minify
+
+      - name: Prepare deployment files
+        run: |
+          mkdir -p deploy
+          cp dist/index.min.html deploy/index.html
+          echo "Deployed minified version as index.html"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -39,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './deploy'
 
   # Deployment job
   deploy:
