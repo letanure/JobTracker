@@ -11,7 +11,9 @@
     "dev": "node build.js --watch",
     "dev:separate": "node build.js --watch --separate",
     "clean": "rm -rf dist",
-    "serve": "cd dist && python3 -m http.server 8000 || python -m http.server 8000 || echo 'No Python found - open dist/index.html manually'"
+    "serve": "cd dist && python3 -m http.server 8000 || python -m http.server 8000 || echo 'No Python found - open dist/index.html manually'",
+    "setup-hooks": "./setup-hooks.sh",
+    "postinstall": "[ -f setup-hooks.sh ] && ./setup-hooks.sh || echo 'Git hooks setup skipped'"
   },
   "keywords": ["job-tracker", "plain-js", "no-dependencies"],
   "license": "MIT"
