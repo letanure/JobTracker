@@ -2,6 +2,8 @@
 
 A super simple, lightweight job application tracking tool that helps you manage your job search process efficiently. No login required, no complex setup - just open and start tracking!
 
+Why do this, in one file, no bundlers, no TS? just for fun =).
+
 ## 🎯 Project Concept
 
 This is a **minimalist job tracker** designed for simplicity and ease of use:
