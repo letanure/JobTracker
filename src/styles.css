@@ -134,6 +134,10 @@
     --error-light: var(--red-400);
     --error-bg: var(--red-50);
     
+    --danger-color: var(--red-500);
+    --danger-dark: var(--red-600);
+    --success-dark: var(--green-600);
+    
     --info-color: var(--primary-color);
     --info-hover: var(--primary-hover);
     --info-light: var(--primary-light);
@@ -1355,4 +1359,93 @@ tbody tr {
 
 .icon-16 {
     font-size: var(--icon-md) !important;
+}
+
+/* ============================================================================
+   INLINE EDITING STYLES
+   ============================================================================ */
+
+/* Row in editing mode */
+tr.editing {
+    background: var(--background-color) !important;
+}
+
+tr.editing td {
+    padding: var(--space-2);
+    vertical-align: middle;
+}
+
+/* Inline edit inputs */
+.inline-edit {
+    width: 100%;
+    padding: var(--space-2);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--container-background);
+    font-size: var(--font-size-sm);
+    font-family: inherit;
+    transition: var(--transition-fast);
+}
+
+.inline-edit:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: var(--focus-ring);
+}
+
+/* Inline edit selects */
+select.inline-edit {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-2) center;
+    padding-right: var(--space-6);
+}
+
+/* Priority select specific styling */
+.priority-select {
+    min-width: 100px;
+}
+
+/* Phase select specific styling */
+.phase-select {
+    min-width: 140px;
+}
+
+/* Save and Cancel buttons */
+.save-btn, .cancel-btn {
+    padding: var(--space-1);
+    min-width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.save-btn {
+    background: var(--success-color);
+    color: white;
+}
+
+.save-btn:hover {
+    background: var(--success-dark);
+}
+
+.cancel-btn {
+    background: var(--danger-color);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: var(--danger-dark);
+}
+
+/* Actions cell in edit mode */
+tr.editing .actions-cell {
+    white-space: nowrap;
+}
+
+tr.editing .actions-cell button {
+    margin: 0 var(--space-1);
 }
