@@ -28,7 +28,9 @@ const BUILD_CONFIG = {
     
     // Components
     'src/components/notes.js',
-    'src/components/tasks.js', 
+    'src/components/tasks.js',
+    'src/components/contacts.js',
+    'src/components/form-fields.js',
     'src/components/table.js',
     
     // Main application
@@ -274,8 +276,18 @@ function buildJavaScript() {
   let successCount = 0;
   let missingFiles = [];
   
-  // Add header
-  contents.push(BUILD_CONFIG.header);
+  // Add header with build timestamp
+  const buildTimestamp = new Date().toISOString();
+  const header = `// ============================================================================
+// JobTracker - Built from modular source files
+// Generated: ${buildTimestamp}
+// ============================================================================
+
+// Show build info in console
+console.log("JobTracker - Built at: ${buildTimestamp}");
+
+`;
+  contents.push(header);
   
   // Process each JavaScript file
   for (const file of BUILD_CONFIG.files) {
