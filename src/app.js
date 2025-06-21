@@ -192,10 +192,135 @@ function renderJobTable() {
 	}
 }
 
-// Edit job function
+// Edit job function - transforms row into inline edit mode
 function editJob(job) {
-	// For now, just log - full implementation would open edit modal
-	console.log("Edit job:", job);
+	const row = document.querySelector(`tr[data-job-id="${job.id}"]`);
+	if (!row || row.classList.contains("editing")) return;
+	
+	// Mark row as editing
+	row.classList.add("editing");
+	
+	// Store original HTML to restore on cancel
+	const originalHTML = row.innerHTML;
+	
+	// Get unique values for autocomplete
+	const companies = [...new Set(jobsData.map(j => j.company).filter(Boolean))];
+	const positions = [...new Set(jobsData.map(j => j.position).filter(Boolean))];
+	const locations = [...new Set(jobsData.map(j => j.location).filter(Boolean))];
+	
+	// Build inline edit row
+	row.innerHTML = `
+		<td class="priority-cell">
+			<select class="inline-edit priority-select" data-field="priority">
+				<option value="high" ${job.priority === "high" ? "selected" : ""}>${I18n.t("priorities.high")}</option>
+				<option value="medium" ${job.priority === "medium" ? "selected" : ""}>${I18n.t("priorities.medium")}</option>
+				<option value="low" ${job.priority === "low" ? "selected" : ""}>${I18n.t("priorities.low")}</option>
+			</select>
+		</td>
+		<td>
+			<input type="text" class="inline-edit" data-field="company" value="${job.company || ""}" 
+				list="company-list-${job.id}" placeholder="${I18n.t("placeholders.company")}">
+			<datalist id="company-list-${job.id}">
+				${companies.map(c => `<option value="${c}">`).join("")}
+			</datalist>
+		</td>
+		<td>
+			<input type="text" class="inline-edit" data-field="position" value="${job.position || ""}" 
+				list="position-list-${job.id}" placeholder="${I18n.t("placeholders.position")}">
+			<datalist id="position-list-${job.id}">
+				${positions.map(p => `<option value="${p}">`).join("")}
+			</datalist>
+		</td>
+		<td>
+			<select class="inline-edit phase-select" data-field="currentPhase">
+				${Object.keys(PHASES).map(phase => 
+					`<option value="${phase}" ${job.currentPhase === phase ? "selected" : ""}>${getPhaseText(phase)}</option>`
+				).join("")}
+			</select>
+		</td>
+		<td>
+			<input type="text" class="inline-edit" data-field="contactPerson" value="${job.contactPerson || ""}" 
+				placeholder="${I18n.t("placeholders.contactPerson")}">
+			<input type="email" class="inline-edit" data-field="contactEmail" value="${job.contactEmail || ""}" 
+				placeholder="${I18n.t("placeholders.contactEmail")}" style="margin-top: 4px;">
+		</td>
+		<td>
+			<input type="text" class="inline-edit" data-field="salaryRange" value="${job.salaryRange || ""}" 
+				placeholder="${I18n.t("placeholders.salaryRange")}">
+		</td>
+		<td>
+			<input type="text" class="inline-edit" data-field="location" value="${job.location || ""}" 
+				list="location-list-${job.id}" placeholder="${I18n.t("placeholders.location")}">
+			<datalist id="location-list-${job.id}">
+				${locations.map(l => `<option value="${l}">`).join("")}
+			</datalist>
+		</td>
+		<td class="notes">
+			${NotesCount({
+				notes: job.notes || [],
+				onClick: () => openNotesModal(job),
+			}).outerHTML}
+		</td>
+		<td class="tasks">
+			${TasksCount({
+				tasks: job.tasks || [],
+				onClick: () => openTasksModal(job),
+			}).outerHTML}
+		</td>
+		<td class="actions-cell">
+			<button class="action-btn save-btn" onclick="saveInlineEdit(${job.id})">
+				<span class="material-symbols-outlined">check</span>
+			</button>
+			<button class="action-btn cancel-btn" onclick="cancelInlineEdit(${job.id}, '${btoa(originalHTML)}')">
+				<span class="material-symbols-outlined">close</span>
+			</button>
+		</td>
+	`;
+	
+	// Focus first input
+	const firstInput = row.querySelector('input[data-field="company"]');
+	if (firstInput) firstInput.focus();
+	
+	// Handle Enter key to save, Escape to cancel
+	row.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+			saveInlineEdit(job.id);
+		} else if (e.key === "Escape") {
+			e.preventDefault();
+			cancelInlineEdit(job.id, btoa(originalHTML));
+		}
+	});
+}
+
+// Save inline edit
+function saveInlineEdit(jobId) {
+	const row = document.querySelector(`tr[data-job-id="${jobId}"]`);
+	if (!row) return;
+	
+	const job = jobsData.find(j => j.id === jobId);
+	if (!job) return;
+	
+	// Collect all edited values
+	row.querySelectorAll(".inline-edit").forEach(input => {
+		const field = input.dataset.field;
+		const value = input.value.trim();
+		job[field] = value;
+	});
+	
+	// Save and refresh
+	saveToLocalStorage();
+	refreshInterface();
+}
+
+// Cancel inline edit
+function cancelInlineEdit(jobId, originalHTMLBase64) {
+	const row = document.querySelector(`tr[data-job-id="${jobId}"]`);
+	if (!row) return;
+	
+	// Restore original HTML
+	row.innerHTML = atob(originalHTMLBase64);
+	row.classList.remove("editing");
 }
 
 // Delete job function  
