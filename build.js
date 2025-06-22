@@ -25,6 +25,7 @@ const BUILD_CONFIG = {
     
     // Utilities and constants
     'src/utils/constants.js',
+    'src/utils/seed-data.js',
     'src/utils/helpers.js',
     'src/utils/data.js',
     

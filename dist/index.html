@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T17:22:28.125Z
+Generated: 2025-06-22T17:25:48.614Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1786,11 +1786,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T17:22:28.122Z
+// Generated: 2025-06-22T17:25:48.610Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T17:22:28.122Z");
+console.log("JobTracker - Built at: 2025-06-22T17:25:48.610Z");
 
 
 // ============================================================================
@@ -2557,6 +2557,19 @@ const getSubstepText = (substepKey) => I18n.t(`substeps.${substepKey}`);
 // Helper function to get all substeps for a phase
 const getSubstepsForPhase = (phaseKey) => PHASE_SUBSTEPS[phaseKey] || [];
 
+
+// Global state variables
+let jobsData = [];
+let originalData = [];
+
+// ============================================================================
+// SRC/UTILS/SEED-DATA.JS
+// ============================================================================
+
+// ============================================================================
+// SEED DATA - DEMO DATA FOR FIRST-TIME USERS
+// ============================================================================
+
 // Demo data for first-time users
 const DEMO_DATA = [
 	{
@@ -2593,6 +2606,7 @@ const DEMO_DATA = [
 				dueDate: null,
 			},
 		],
+		contacts: []
 	},
 	{
 		id: 2,
@@ -2619,6 +2633,7 @@ const DEMO_DATA = [
 				dueDate: "2025-06-20T17:00:00.000Z",
 			},
 		],
+		contacts: []
 	},
 ];
 
@@ -2637,10 +2652,6 @@ const getDemoData = () => {
 		}] : (Array.isArray(job.notes) ? job.notes : []),
 	}));
 };
-
-// Global state variables
-let jobsData = [];
-let originalData = [];
 
 // ============================================================================
 // SRC/UTILS/HELPERS.JS
