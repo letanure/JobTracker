@@ -96,34 +96,47 @@ const KanbanBoard = {
 		const metadataRow = metadata.length > 0 ? 
 			h("div", { className: "kanban-job-metadata" }, ...metadata) : null;
 		
-		// Action icons (notes, tasks, contacts)
+		// Action icons with counts (notes, tasks, contacts)
+		const notesCount = job.notes ? job.notes.length : 0;
+		const tasksCount = job.tasks ? job.tasks.length : 0;
+		const contactsCount = job.contacts ? job.contacts.length : 0;
+		
 		const actionIcons = h("div", { className: "kanban-action-icons" },
 			h("button", {
 				className: "kanban-icon-btn",
-				title: "Notes",
+				title: `Notes (${notesCount})`,
 				onclick: (e) => {
 					e.stopPropagation();
 					openNotesModal(job);
 				}
-			}, h("span", { className: "material-symbols-outlined" }, "note")),
+			}, 
+				h("span", { className: "material-symbols-outlined" }, "note"),
+				notesCount > 0 && h("span", { className: "kanban-count-badge" }, notesCount.toString())
+			),
 			
 			h("button", {
 				className: "kanban-icon-btn",
-				title: "Tasks", 
+				title: `Tasks (${tasksCount})`, 
 				onclick: (e) => {
 					e.stopPropagation();
 					openTasksModal(job);
 				}
-			}, h("span", { className: "material-symbols-outlined" }, "task_alt")),
+			}, 
+				h("span", { className: "material-symbols-outlined" }, "task_alt"),
+				tasksCount > 0 && h("span", { className: "kanban-count-badge" }, tasksCount.toString())
+			),
 			
 			h("button", {
 				className: "kanban-icon-btn",
-				title: "Contacts",
+				title: `Contacts (${contactsCount})`,
 				onclick: (e) => {
 					e.stopPropagation();
 					openContactsModal(job);
 				}
-			}, h("span", { className: "material-symbols-outlined" }, "person"))
+			}, 
+				h("span", { className: "material-symbols-outlined" }, "person"),
+				contactsCount > 0 && h("span", { className: "kanban-count-badge" }, contactsCount.toString())
+			)
 		);
 		
 		// Card click handler to view/edit job
