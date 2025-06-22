@@ -10,7 +10,7 @@ const NotesCount = ({ notes = [], onClick }) => {
 
 	return h("span", {
 		className,
-		onclick: count > 0 ? onClick : null,
+		onclick: onClick, // Always allow clicks to open modal
 		textContent: count.toString(),
 		title: `${count} active note${count !== 1 ? 's' : ''}${notes.length !== count ? ` (${notes.length - count} archived)` : ''}`
 	});

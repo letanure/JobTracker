@@ -19,7 +19,7 @@ const TasksCount = ({ tasks = [], onClick }) => {
 		"span",
 		{
 			className,
-			onclick: totalActiveCount > 0 ? onClick : null,
+			onclick: onClick, // Always allow clicks to open modal
 			title: `${totalActiveCount} active task${totalActiveCount !== 1 ? 's' : ''} (${todoCount} todo, ${inProgressCount} in progress, ${doneCount} done)${archivedCount > 0 ? ` + ${archivedCount} archived` : ''}`
 		},
 		h("span", { className: "task-count-todo" }, todoCount.toString()),
