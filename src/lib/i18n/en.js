@@ -14,6 +14,7 @@ const EN_TRANSLATIONS = {
 		applications: "Applications Board",
 		tasks: "Tasks Board",
 		calendar: "Calendar",
+		contacts: "Contacts",
 		profile: "Profile"
 	},
 	kanban: {
@@ -209,5 +210,31 @@ const EN_TRANSLATIONS = {
 		],
 		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	},
+	contactsView: {
+		title: "All Contacts",
+		totalContacts: "{count} total contacts",
+		emptyState: "No contacts found. Add contacts to your jobs to see them here.",
+		nameHeader: "Name",
+		emailHeader: "Email",
+		phoneHeader: "Phone",
+		roleHeader: "Role",
+		companyHeader: "Company",
+		jobHeader: "Position",
+		actionsHeader: "Actions",
+		namePlaceholder: "Contact name",
+		emailPlaceholder: "email@example.com",
+		phonePlaceholder: "+1 (555) 123-4567",
+		rolePlaceholder: "Role/Title",
+		addContact: "Add Contact",
+		addContactTitle: "Add New Contact",
+		selectJob: "Select a job...",
+		noJobsAvailable: "No jobs available. Please create a job first.",
+		deleteTitle: "Delete contact",
+		deleteConfirmation: "Are you sure you want to delete {name}?",
+		validation: {
+			nameRequired: "Name is required",
+			jobRequired: "Please select a job"
+		}
 	}
 };

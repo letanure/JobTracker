@@ -14,6 +14,7 @@ const PT_TRANSLATIONS = {
 		applications: "Quadro de Candidaturas",
 		tasks: "Quadro de Tarefas",
 		calendar: "Calendário",
+		contacts: "Contatos",
 		profile: "Perfil"
 	},
 	kanban: {
@@ -209,5 +210,31 @@ const PT_TRANSLATIONS = {
 		],
 		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
 		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
+	},
+	contactsView: {
+		title: "Todos os Contatos",
+		totalContacts: "{count} contatos no total",
+		emptyState: "Nenhum contato encontrado. Adicione contatos às suas vagas para vê-los aqui.",
+		nameHeader: "Nome",
+		emailHeader: "Email",
+		phoneHeader: "Telefone",
+		roleHeader: "Cargo",
+		companyHeader: "Empresa",
+		jobHeader: "Posição",
+		actionsHeader: "Ações",
+		namePlaceholder: "Nome do contato",
+		emailPlaceholder: "email@exemplo.com",
+		phonePlaceholder: "+55 (11) 99999-9999",
+		rolePlaceholder: "Cargo/Título",
+		addContact: "Adicionar Contato",
+		addContactTitle: "Adicionar Novo Contato",
+		selectJob: "Selecione uma vaga...",
+		noJobsAvailable: "Nenhuma vaga disponível. Crie uma vaga primeiro.",
+		deleteTitle: "Deletar contato",
+		deleteConfirmation: "Tem certeza que deseja deletar {name}?",
+		validation: {
+			nameRequired: "Nome é obrigatório",
+			jobRequired: "Por favor selecione uma vaga"
+		}
 	}
 };

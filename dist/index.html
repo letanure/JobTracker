@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T22:14:55.438Z
+Generated: 2025-06-22T22:29:12.739Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1210,6 +1210,290 @@ textarea {
 
 .inline-edit-duration {
 	font-family: var(--font-mono);
+}
+
+/* ============================================================================ */
+/* CONTACTS VIEW */
+/* ============================================================================ */
+
+.contacts-container {
+	padding: 20px;
+	max-width: 100%;
+}
+
+.contacts-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.contacts-title {
+	margin: 0;
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.contacts-stats {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.contacts-count {
+	font-size: 14px;
+	color: var(--gray-600);
+	background: var(--gray-100);
+	padding: 4px 12px;
+	border-radius: 12px;
+	font-weight: 500;
+}
+
+.contacts-table-container {
+	background: var(--white);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	overflow-x: auto;
+	margin-bottom: 16px;
+}
+
+.contacts-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+	min-width: 800px;
+}
+
+.contacts-table th {
+	background: var(--gray-50);
+	padding: 8px 12px;
+	text-align: left;
+	font-weight: 600;
+	color: var(--gray-700);
+	border-bottom: 1px solid var(--border-color);
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+.contacts-table td {
+	padding: 0;
+	border-bottom: 1px solid var(--border-color);
+	vertical-align: middle;
+}
+
+.contacts-table tbody tr:hover {
+	background: var(--gray-50);
+}
+
+.contact-cell {
+	position: relative;
+}
+
+.contact-field-input {
+	width: 100%;
+	padding: 8px 12px;
+	border: none;
+	background: transparent;
+	font-size: 14px;
+	color: var(--text-color);
+	transition: all 0.2s ease;
+	outline: none;
+	font-family: inherit;
+	border-radius: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.contact-field-input:focus {
+	background: var(--blue-50);
+	box-shadow: inset 2px 0 0 var(--blue-500);
+}
+
+.contact-field-input:not(:focus)::placeholder {
+	color: transparent;
+}
+
+.contact-field-input:focus::placeholder {
+	color: var(--gray-400);
+	font-style: italic;
+}
+
+.contact-company-display,
+.contact-job-display {
+	display: block;
+	padding: 8px 12px;
+	color: var(--gray-600);
+	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.contact-actions-cell {
+	width: 50px;
+	text-align: center;
+	padding: 4px;
+}
+
+.contact-delete-btn {
+	padding: 4px;
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	background: transparent;
+	border: 1px solid transparent;
+	color: var(--gray-500);
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.contact-delete-btn:hover {
+	background: var(--red-50);
+	color: var(--red-600);
+	border-color: var(--red-200);
+}
+
+.contact-delete-btn .material-symbols-outlined {
+	font-size: 14px;
+}
+
+/* Field validation */
+.contact-cell.has-error .contact-field-input {
+	background: var(--red-50);
+	box-shadow: inset 2px 0 0 var(--red-500);
+}
+
+.field-error {
+	position: absolute;
+	bottom: -20px;
+	left: 12px;
+	font-size: 12px;
+	color: var(--red-600);
+	background: var(--white);
+	padding: 2px 6px;
+	border-radius: 4px;
+	border: 1px solid var(--red-200);
+	z-index: 10;
+	white-space: nowrap;
+}
+
+/* Table actions */
+.contacts-actions {
+	margin-top: 16px;
+}
+
+.add-contact-btn {
+	background: var(--green-500);
+	color: var(--white);
+	border: 1px solid var(--green-500);
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.add-contact-btn:hover {
+	background: var(--green-600);
+	border-color: var(--green-600);
+}
+
+.add-contact-btn .material-symbols-outlined {
+	font-size: 18px;
+}
+
+/* Empty state */
+.contacts-empty {
+	padding: 40px 20px;
+	text-align: center;
+}
+
+.contacts-empty-message {
+	color: var(--gray-500);
+	font-size: 16px;
+	margin: 0;
+}
+
+/* Add contact form */
+.add-contact-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.contact-form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.contact-form-field.full-width {
+	grid-column: span 2;
+}
+
+.contact-form-field label {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.contact-form-field input,
+.contact-form-field select {
+	width: 100%;
+	padding: 8px 12px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	background: var(--white);
+	color: var(--text-color);
+	font-family: inherit;
+}
+
+.contact-form-field input:focus,
+.contact-form-field select:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.contacts-container {
+		padding: 16px;
+	}
+	
+	.contacts-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+	}
+	
+	.contacts-title {
+		font-size: 18px;
+	}
+	
+	.contact-form-row {
+		grid-template-columns: 1fr;
+	}
+	
+	.contact-form-field.full-width {
+		grid-column: span 1;
+	}
 }
 
 @media (max-width: 640px) {
@@ -3569,6 +3853,11 @@ tr.editing .actions-cell button {
             <div class="tab-content" data-tab="calendar">
                 <!-- Content will be dynamically generated -->
             </div>
+            
+            <!-- Contacts View Tab -->
+            <div class="tab-content" data-tab="contacts">
+                <!-- Content will be dynamically generated -->
+            </div>
         </div>
     </div>
 
@@ -3593,11 +3882,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T22:14:55.435Z
+// Generated: 2025-06-22T22:29:12.733Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T22:14:55.435Z");
+console.log("JobTracker - Built at: 2025-06-22T22:29:12.733Z");
 
 
 // ============================================================================
@@ -3870,6 +4159,7 @@ const EN_TRANSLATIONS = {
 		applications: "Applications Board",
 		tasks: "Tasks Board",
 		calendar: "Calendar",
+		contacts: "Contacts",
 		profile: "Profile"
 	},
 	kanban: {
@@ -4065,6 +4355,32 @@ const EN_TRANSLATIONS = {
 		],
 		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	},
+	contactsView: {
+		title: "All Contacts",
+		totalContacts: "{count} total contacts",
+		emptyState: "No contacts found. Add contacts to your jobs to see them here.",
+		nameHeader: "Name",
+		emailHeader: "Email",
+		phoneHeader: "Phone",
+		roleHeader: "Role",
+		companyHeader: "Company",
+		jobHeader: "Position",
+		actionsHeader: "Actions",
+		namePlaceholder: "Contact name",
+		emailPlaceholder: "email@example.com",
+		phonePlaceholder: "+1 (555) 123-4567",
+		rolePlaceholder: "Role/Title",
+		addContact: "Add Contact",
+		addContactTitle: "Add New Contact",
+		selectJob: "Select a job...",
+		noJobsAvailable: "No jobs available. Please create a job first.",
+		deleteTitle: "Delete contact",
+		deleteConfirmation: "Are you sure you want to delete {name}?",
+		validation: {
+			nameRequired: "Name is required",
+			jobRequired: "Please select a job"
+		}
 	}
 };
 
@@ -4088,6 +4404,7 @@ const PT_TRANSLATIONS = {
 		applications: "Quadro de Candidaturas",
 		tasks: "Quadro de Tarefas",
 		calendar: "Calendário",
+		contacts: "Contatos",
 		profile: "Perfil"
 	},
 	kanban: {
@@ -4283,6 +4600,32 @@ const PT_TRANSLATIONS = {
 		],
 		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
 		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
+	},
+	contactsView: {
+		title: "Todos os Contatos",
+		totalContacts: "{count} contatos no total",
+		emptyState: "Nenhum contato encontrado. Adicione contatos às suas vagas para vê-los aqui.",
+		nameHeader: "Nome",
+		emailHeader: "Email",
+		phoneHeader: "Telefone",
+		roleHeader: "Cargo",
+		companyHeader: "Empresa",
+		jobHeader: "Posição",
+		actionsHeader: "Ações",
+		namePlaceholder: "Nome do contato",
+		emailPlaceholder: "email@exemplo.com",
+		phonePlaceholder: "+55 (11) 99999-9999",
+		rolePlaceholder: "Cargo/Título",
+		addContact: "Adicionar Contato",
+		addContactTitle: "Adicionar Novo Contato",
+		selectJob: "Selecione uma vaga...",
+		noJobsAvailable: "Nenhuma vaga disponível. Crie uma vaga primeiro.",
+		deleteTitle: "Deletar contato",
+		deleteConfirmation: "Tem certeza que deseja deletar {name}?",
+		validation: {
+			nameRequired: "Nome é obrigatório",
+			jobRequired: "Por favor selecione uma vaga"
+		}
 	}
 };
 
@@ -7404,6 +7747,10 @@ const TabNavigation = {
 				// Initialize calendar view if needed
 				TabNavigation.initializeCalendarView();
 				break;
+			case 'contacts':
+				// Initialize contacts view if needed
+				TabNavigation.initializeContactsView();
+				break;
 		}
 	},
 
@@ -7425,6 +7772,13 @@ const TabNavigation = {
 	initializeCalendarView: () => {
 		if (typeof CalendarView !== 'undefined') {
 			CalendarView.init();
+		}
+	},
+
+	// Initialize contacts view
+	initializeContactsView: () => {
+		if (typeof ContactsView !== 'undefined') {
+			ContactsView.init();
 		}
 	},
 
@@ -9246,6 +9600,464 @@ const CalendarView = {
 
 // Make CalendarView available globally
 window.CalendarView = CalendarView;
+
+// ============================================================================
+// SRC/COMPONENTS/CONTACTS-VIEW.JS
+// ============================================================================
+
+// ============================================================================
+// CONTACTS VIEW COMPONENT
+// ============================================================================
+
+const ContactsView = {
+	// Initialize contacts view
+	init: () => {
+		const contactsTab = document.querySelector('.tab-content[data-tab="contacts"]');
+		
+		if (contactsTab) {
+			// Only clear and initialize if not already initialized
+			if (!contactsTab.querySelector('.contacts-container')) {
+				// Clear existing content
+				contactsTab.innerHTML = '';
+				
+				// Create contacts container
+				const container = ContactsView.create();
+				contactsTab.appendChild(container);
+			} else {
+				// If already initialized, just update the view
+				ContactsView.updateView();
+			}
+		}
+	},
+
+	// Create the main contacts structure
+	create: () => {
+		const container = h("div", { className: "contacts-container" },
+			// Header
+			h("div", { className: "contacts-header" },
+				h("h2", { className: "contacts-title" }, I18n.t("contactsView.title")),
+				h("div", { className: "contacts-stats" },
+					h("span", { className: "contacts-count" }, ContactsView.getTotalContactsText())
+				)
+			),
+			
+			// Contacts table
+			h("div", { className: "contacts-table-container" },
+				ContactsView.renderContactsTable()
+			),
+			
+			// Table actions
+			h("div", { className: "contacts-actions" },
+				h("button", {
+					className: "add-contact-btn",
+					onclick: () => ContactsView.showAddContactModal()
+				},
+					h("span", { className: "material-symbols-outlined" }, "person_add"),
+					I18n.t("contactsView.addContact")
+				)
+			)
+		);
+		
+		return container;
+	},
+
+	// Get all contacts from all jobs
+	getAllContacts: () => {
+		const allContacts = [];
+		
+		jobsData.forEach(job => {
+			if (job.contacts && job.contacts.length > 0) {
+				job.contacts.forEach(contact => {
+					// Skip archived contacts
+					if (!contact.archived) {
+						allContacts.push({
+							...contact,
+							jobId: job.id,
+							jobCompany: job.company,
+							jobPosition: job.position
+						});
+					}
+				});
+			}
+		});
+		
+		// Sort by name
+		return allContacts.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+	},
+
+	// Get total contacts count text
+	getTotalContactsText: () => {
+		const total = ContactsView.getAllContacts().length;
+		return I18n.t("contactsView.totalContacts", { count: total });
+	},
+
+	// Render contacts table
+	renderContactsTable: () => {
+		const contacts = ContactsView.getAllContacts();
+		
+		if (contacts.length === 0) {
+			return h("div", { className: "contacts-empty" },
+				h("p", { className: "contacts-empty-message" }, I18n.t("contactsView.emptyState"))
+			);
+		}
+		
+		return h("table", { className: "contacts-table" },
+			h("thead", {},
+				h("tr", {},
+					h("th", {}, I18n.t("contactsView.nameHeader")),
+					h("th", {}, I18n.t("contactsView.emailHeader")),
+					h("th", {}, I18n.t("contactsView.phoneHeader")),
+					h("th", {}, I18n.t("contactsView.roleHeader")),
+					h("th", {}, I18n.t("contactsView.companyHeader")),
+					h("th", {}, I18n.t("contactsView.jobHeader")),
+					h("th", {}, I18n.t("contactsView.actionsHeader"))
+				)
+			),
+			h("tbody", {},
+				...contacts.map(contact => ContactsView.renderContactRow(contact))
+			)
+		);
+	},
+
+	// Render contact row
+	renderContactRow: (contact) => {
+		return h("tr", { 
+			className: "contact-row",
+			"data-contact-id": contact.id,
+			"data-job-id": contact.jobId
+		},
+			h("td", { className: "contact-cell contact-name-cell" },
+				h("input", {
+					type: "text",
+					value: contact.name || "",
+					className: "contact-field-input",
+					placeholder: I18n.t("contactsView.namePlaceholder"),
+					onchange: (e) => ContactsView.updateContactField(contact, 'name', e.target.value),
+					onblur: (e) => ContactsView.validateAndSave(contact, 'name', e.target.value)
+				})
+			),
+			h("td", { className: "contact-cell contact-email-cell" },
+				h("input", {
+					type: "email",
+					value: contact.email || "",
+					className: "contact-field-input",
+					placeholder: I18n.t("contactsView.emailPlaceholder"),
+					onchange: (e) => ContactsView.updateContactField(contact, 'email', e.target.value)
+				})
+			),
+			h("td", { className: "contact-cell contact-phone-cell" },
+				h("input", {
+					type: "tel",
+					value: contact.phone || "",
+					className: "contact-field-input",
+					placeholder: I18n.t("contactsView.phonePlaceholder"),
+					onchange: (e) => ContactsView.updateContactField(contact, 'phone', e.target.value)
+				})
+			),
+			h("td", { className: "contact-cell contact-role-cell" },
+				h("input", {
+					type: "text",
+					value: contact.role || "",
+					className: "contact-field-input",
+					placeholder: I18n.t("contactsView.rolePlaceholder"),
+					onchange: (e) => ContactsView.updateContactField(contact, 'role', e.target.value)
+				})
+			),
+			h("td", { className: "contact-cell contact-company-cell" },
+				h("span", { className: "contact-company-display" }, contact.jobCompany)
+			),
+			h("td", { className: "contact-cell contact-job-cell" },
+				h("span", { className: "contact-job-display" }, contact.jobPosition)
+			),
+			h("td", { className: "contact-cell contact-actions-cell" },
+				h("button", {
+					className: "contact-delete-btn action-btn delete-btn",
+					title: I18n.t("contactsView.deleteTitle"),
+					onclick: () => ContactsView.deleteContact(contact),
+					innerHTML: '<span class="material-symbols-outlined icon-14">delete</span>'
+				})
+			)
+		);
+	},
+
+	// Update contact field
+	updateContactField: (contact, field, value) => {
+		const jobIndex = jobsData.findIndex(j => j.id === contact.jobId);
+		if (jobIndex === -1) return;
+
+		const contactIndex = jobsData[jobIndex].contacts.findIndex(c => c.id === contact.id);
+		if (contactIndex === -1) return;
+
+		// Update the field
+		jobsData[jobIndex].contacts[contactIndex][field] = value;
+		
+		// Save to localStorage
+		saveToLocalStorage();
+		
+		// Update interface if needed
+		if (typeof refreshInterface === 'function') {
+			refreshInterface();
+		}
+	},
+
+	// Validate and save (for required fields)
+	validateAndSave: (contact, field, value) => {
+		if (field === 'name' && !value.trim()) {
+			// Show validation error
+			ContactsView.showValidationError(contact, field, I18n.t("contactsView.validation.nameRequired"));
+			return;
+		}
+		
+		// Clear any existing validation errors
+		ContactsView.clearValidationError(contact, field);
+	},
+
+	// Delete contact with confirmation
+	deleteContact: (contact) => {
+		const confirmMessage = I18n.t("contactsView.deleteConfirmation", { name: contact.name || "this contact" });
+		
+		if (confirm(confirmMessage)) {
+			const jobIndex = jobsData.findIndex(j => j.id === contact.jobId);
+			if (jobIndex === -1) return;
+
+			const contactIndex = jobsData[jobIndex].contacts.findIndex(c => c.id === contact.id);
+			if (contactIndex === -1) return;
+
+			// Remove the contact
+			jobsData[jobIndex].contacts.splice(contactIndex, 1);
+			
+			// Save to localStorage
+			saveToLocalStorage();
+			
+			// Update the view
+			ContactsView.updateView();
+			
+			// Update interface
+			if (typeof refreshInterface === 'function') {
+				refreshInterface();
+			}
+		}
+	},
+
+	// Show validation error
+	showValidationError: (contact, field, message) => {
+		const contactRow = document.querySelector(`[data-contact-id="${contact.id}"][data-job-id="${contact.jobId}"]`);
+		if (!contactRow) return;
+		
+		const fieldCell = contactRow.querySelector(`.contact-${field}-cell`);
+		if (!fieldCell) return;
+		
+		// Remove existing error
+		ContactsView.clearValidationError(contact, field);
+		
+		// Add error class and message
+		fieldCell.classList.add('has-error');
+		const errorElement = h("div", { className: "field-error" }, message);
+		fieldCell.appendChild(errorElement);
+		
+		// Remove error after 3 seconds
+		setTimeout(() => {
+			ContactsView.clearValidationError(contact, field);
+		}, 3000);
+	},
+
+	// Clear validation error
+	clearValidationError: (contact, field) => {
+		const contactRow = document.querySelector(`[data-contact-id="${contact.id}"][data-job-id="${contact.jobId}"]`);
+		if (!contactRow) return;
+		
+		const fieldCell = contactRow.querySelector(`.contact-${field}-cell`);
+		if (!fieldCell) return;
+		
+		fieldCell.classList.remove('has-error');
+		const errorElement = fieldCell.querySelector('.field-error');
+		if (errorElement) {
+			errorElement.remove();
+		}
+	},
+
+	// Show add contact modal
+	showAddContactModal: () => {
+		// Get all jobs for the dropdown
+		const jobOptions = jobsData.map(job => ({
+			id: job.id,
+			text: `${job.company} - ${job.position}`
+		}));
+
+		if (jobOptions.length === 0) {
+			alert(I18n.t("contactsView.noJobsAvailable"));
+			return;
+		}
+
+		const modal = h("div", { 
+			className: "modal-overlay",
+			onclick: (e) => {
+				if (e.target.className === "modal-overlay") e.target.remove();
+			}
+		},
+			h("div", { className: "modal" },
+				h("div", { className: "modal-header" },
+					h("h3", { className: "modal-title" }, I18n.t("contactsView.addContactTitle")),
+					h("button", {
+						className: "modal-close",
+						onclick: (e) => e.target.closest('.modal-overlay').remove()
+					}, "×")
+				),
+				h("div", { className: "modal-body" },
+					h("div", { className: "add-contact-form" },
+						h("div", { className: "contact-form-row" },
+							h("div", { className: "contact-form-field" },
+								h("label", {}, I18n.t("contactsView.nameHeader")),
+								h("input", {
+									type: "text",
+									className: "add-contact-name",
+									placeholder: I18n.t("contactsView.namePlaceholder")
+								})
+							),
+							h("div", { className: "contact-form-field" },
+								h("label", {}, I18n.t("contactsView.emailHeader")),
+								h("input", {
+									type: "email",
+									className: "add-contact-email",
+									placeholder: I18n.t("contactsView.emailPlaceholder")
+								})
+							)
+						),
+						h("div", { className: "contact-form-row" },
+							h("div", { className: "contact-form-field" },
+								h("label", {}, I18n.t("contactsView.phoneHeader")),
+								h("input", {
+									type: "tel",
+									className: "add-contact-phone",
+									placeholder: I18n.t("contactsView.phonePlaceholder")
+								})
+							),
+							h("div", { className: "contact-form-field" },
+								h("label", {}, I18n.t("contactsView.roleHeader")),
+								h("input", {
+									type: "text",
+									className: "add-contact-role",
+									placeholder: I18n.t("contactsView.rolePlaceholder")
+								})
+							)
+						),
+						h("div", { className: "contact-form-row" },
+							h("div", { className: "contact-form-field full-width" },
+								h("label", {}, I18n.t("contactsView.jobHeader")),
+								h("select", { className: "add-contact-job" },
+									h("option", { value: "" }, I18n.t("contactsView.selectJob")),
+									...jobOptions.map(job => 
+										h("option", { value: job.id }, job.text)
+									)
+								)
+							)
+						)
+					)
+				),
+				h("div", { className: "modal-footer" },
+					h("button", {
+						className: "btn-secondary",
+						onclick: (e) => e.target.closest('.modal-overlay').remove()
+					}, I18n.t("modals.common.cancel")),
+					h("button", {
+						className: "btn-primary",
+						onclick: () => ContactsView.addContact()
+					}, I18n.t("contactsView.addContact"))
+				)
+			)
+		);
+
+		document.body.appendChild(modal);
+		
+		// Focus the name field
+		setTimeout(() => {
+			const nameInput = modal.querySelector('.add-contact-name');
+			if (nameInput) nameInput.focus();
+		}, 100);
+	},
+
+	// Add new contact
+	addContact: () => {
+		const nameInput = document.querySelector('.add-contact-name');
+		const emailInput = document.querySelector('.add-contact-email');
+		const phoneInput = document.querySelector('.add-contact-phone');
+		const roleInput = document.querySelector('.add-contact-role');
+		const jobSelect = document.querySelector('.add-contact-job');
+
+		const name = nameInput.value.trim();
+		const email = emailInput.value.trim();
+		const phone = phoneInput.value.trim();
+		const role = roleInput.value.trim();
+		const jobId = parseInt(jobSelect.value);
+
+		// Validation
+		if (!name) {
+			alert(I18n.t("contactsView.validation.nameRequired"));
+			nameInput.focus();
+			return;
+		}
+
+		if (!jobId) {
+			alert(I18n.t("contactsView.validation.jobRequired"));
+			jobSelect.focus();
+			return;
+		}
+
+		// Find the job
+		const jobIndex = jobsData.findIndex(j => j.id === jobId);
+		if (jobIndex === -1) return;
+
+		// Create new contact
+		const newContact = {
+			id: Date.now().toString(),
+			name: name,
+			email: email || null,
+			phone: phone || null,
+			role: role || null,
+			company: jobsData[jobIndex].company,
+			createdAt: new Date().toISOString(),
+			archived: false
+		};
+
+		// Add to job
+		if (!jobsData[jobIndex].contacts) {
+			jobsData[jobIndex].contacts = [];
+		}
+		jobsData[jobIndex].contacts.push(newContact);
+
+		// Save to localStorage
+		saveToLocalStorage();
+
+		// Close modal
+		document.querySelector('.modal-overlay').remove();
+
+		// Update view
+		ContactsView.updateView();
+
+		// Update interface
+		if (typeof refreshInterface === 'function') {
+			refreshInterface();
+		}
+	},
+
+	// Update contacts view
+	updateView: () => {
+		const tableContainer = document.querySelector('.contacts-table-container');
+		if (tableContainer) {
+			tableContainer.innerHTML = '';
+			tableContainer.appendChild(ContactsView.renderContactsTable());
+		}
+		
+		// Update contacts count
+		const statsElement = document.querySelector('.contacts-count');
+		if (statsElement) {
+			statsElement.textContent = ContactsView.getTotalContactsText();
+		}
+	}
+};
+
+// Make ContactsView available globally
+window.ContactsView = ContactsView;
 
 // ============================================================================
 // SRC/COMPONENTS/TABLE.JS
