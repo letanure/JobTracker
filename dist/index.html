@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T19:11:55.881Z
+Generated: 2025-06-22T19:15:33.581Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -2524,11 +2524,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T19:11:55.874Z
+// Generated: 2025-06-22T19:15:33.576Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T19:11:55.874Z");
+console.log("JobTracker - Built at: 2025-06-22T19:15:33.576Z");
 
 
 // ============================================================================
@@ -6122,7 +6122,7 @@ const KanbanBoard = {
 		// Assemble card
 		card.appendChild(priorityDot);
 		card.appendChild(header);
-		card.appendChild(phaseSection);
+		if (phaseSection) card.appendChild(phaseSection);
 		if (metadataRow) card.appendChild(metadataRow);
 		card.appendChild(actionIcons);
 		
@@ -6132,6 +6132,12 @@ const KanbanBoard = {
 	// Create phase section with substep progression
 	createPhaseSection: (job) => {
 		const currentPhase = job.currentPhase;
+		
+		// Don't show phase section for wishlist and rejected_withdrawn items
+		if (currentPhase === 'wishlist' || currentPhase === 'rejected_withdrawn') {
+			return null;
+		}
+		
 		const currentSubstep = job.currentSubstep || currentPhase;
 		const completedSubsteps = job.completedSubsteps || [];
 		const availableSubsteps = getSubstepsForPhase(currentPhase);

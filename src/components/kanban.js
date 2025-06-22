@@ -152,7 +152,7 @@ const KanbanBoard = {
 		// Assemble card
 		card.appendChild(priorityDot);
 		card.appendChild(header);
-		card.appendChild(phaseSection);
+		if (phaseSection) card.appendChild(phaseSection);
 		if (metadataRow) card.appendChild(metadataRow);
 		card.appendChild(actionIcons);
 		
@@ -162,6 +162,12 @@ const KanbanBoard = {
 	// Create phase section with substep progression
 	createPhaseSection: (job) => {
 		const currentPhase = job.currentPhase;
+		
+		// Don't show phase section for wishlist and rejected_withdrawn items
+		if (currentPhase === 'wishlist' || currentPhase === 'rejected_withdrawn') {
+			return null;
+		}
+		
 		const currentSubstep = job.currentSubstep || currentPhase;
 		const completedSubsteps = job.completedSubsteps || [];
 		const availableSubsteps = getSubstepsForPhase(currentPhase);
