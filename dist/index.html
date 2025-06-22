@@ -1,41 +1,39 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T17:09:46.674Z
+Generated: 2025-06-22T17:15:33.859Z
 ============================================================================
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{LANG}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <title>JobTracker - Free Local Job Tracker | No Login, No Tracking, Your Data Stays Private</title>
-    <meta name="description" content="100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.">
-    <meta name="keywords" content="free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search">
-    <meta name="author" content="JobTracker Team">
+    <title>{{SEO_TITLE}}</title>
+    <meta name="description" content="{{SEO_DESCRIPTION}}">
+    <meta name="keywords" content="{{SEO_KEYWORDS}}">
+    <meta name="author" content="{{SEO_AUTHOR}}">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="en">
+    <meta name="language" content="{{LANG}}">
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="JobTracker - Free Local Job Tracker (No Login Required)">
-    <meta property="og:description" content="Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.">
+    <meta property="og:title" content="{{SEO_OG_TITLE}}">
+    <meta property="og:description" content="{{SEO_OG_DESCRIPTION}}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://letanure.github.io/job-tracker-plain/">
+    <meta property="og:url" content="{{CANONICAL_URL}}">
     <meta property="og:site_name" content="JobTracker">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="{{OG_LOCALE}}">
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="JobTracker - Private Job Application Tracker">
-    <meta name="twitter:description" content="Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device.">
+    <meta name="twitter:title" content="{{SEO_TWITTER_TITLE}}">
+    <meta name="twitter:description" content="{{SEO_TWITTER_DESCRIPTION}}">
     
     <!-- Canonical URL and Alternate Language Links -->
-    <link rel="canonical" href="https://letanure.github.io/job-tracker-plain/">
-        <link rel="alternate" hreflang="en" href="https://letanure.github.io/job-tracker-plain/">
-    <link rel="alternate" hreflang="pt" href="https://letanure.github.io/job-tracker-plain/?lang=pt">
-    <link rel="alternate" hreflang="x-default" href="https://letanure.github.io/job-tracker-plain/">
+    <link rel="canonical" href="{{CANONICAL_URL}}">
+    {{HREFLANG_LINKS}}
     
     <!-- Additional Meta Tags -->
     <meta name="theme-color" content="#2383e2">
@@ -2620,11 +2618,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T17:09:46.670Z
+// Generated: 2025-06-22T17:15:33.855Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T17:09:46.670Z");
+console.log("JobTracker - Built at: 2025-06-22T17:15:33.855Z");
 
 
 // ============================================================================
@@ -2878,6 +2876,356 @@ const DataStore = {
 };
 
 // ============================================================================
+// SRC/LIB/I18N/EN.JS
+// ============================================================================
+
+// ============================================================================
+// ENGLISH TRANSLATIONS
+// ============================================================================
+
+const EN_TRANSLATIONS = {
+	app: {
+		title: "JobTracker"
+	},
+	buttons: {
+		addApplication: "+ Add Application"
+	},
+	tabs: {
+		jobs: "Jobs",
+		applications: "Applications Board"
+	},
+	table: {
+		headers: {
+			priority: "Priority",
+			company: "Company",
+			position: "Position",
+			currentPhase: "Stage",
+			contactPerson: "Contact",
+			salaryRange: "Salary Range",
+			location: "Location",
+			sourceUrl: "Source",
+			notes: "Notes",
+			tasks: "Tasks",
+			actions: "Actions"
+		},
+		filters: {
+			allPriorities: "All Priorities",
+			allPhases: "All Phases"
+		},
+		placeholders: {
+			company: "Company Name",
+			position: "Position Title",
+			contactPerson: "Contact Name",
+			contactEmail: "Contact Email",
+			salaryRange: "Salary Range",
+			location: "Location",
+			sourceUrl: "Job Posting URL"
+		}
+	},
+	priorities: {
+		high: "High",
+		medium: "Medium",
+		low: "Low"
+	},
+	phases: {
+		wishlist: "Wishlist",
+		applied: "Applied",
+		interview: "Interview",
+		offer: "Offer",
+		rejected_withdrawn: "Rejected / Withdrawn"
+	},
+	substeps: {
+		none: "No substep",
+		application_review: "Application Review",
+		initial_screening: "Initial Screening",
+		hr_phone_screen: "HR Phone Screen",
+		recruiter_call: "Recruiter Call",
+		phone_screening: "Phone Screening",
+		technical_phone_screen: "Technical Phone Screen",
+		coding_challenge: "Coding Challenge",
+		take_home_assignment: "Take-home Assignment",
+		technical_interview: "Technical Interview",
+		system_design_interview: "System Design Interview",
+		behavioral_interview: "Behavioral Interview",
+		team_interview: "Team Interview",
+		hiring_manager_interview: "Hiring Manager Interview",
+		panel_interview: "Panel Interview",
+		final_round: "Final Round",
+		reference_check: "Reference Check",
+		background_check: "Background Check",
+		offer_discussion: "Offer Discussion",
+		salary_negotiation: "Salary Negotiation"
+	},
+	stats: {
+		totalApplications: "Total Applications",
+		active: "Active",
+		interviews: "Interviews",
+		offers: "Offers",
+		rejections: "Rejections"
+	},
+	messages: {
+		welcome: "Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
+		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?"
+	},
+	demo: {
+		contactPerson1: "Sarah Chen",
+		contactPerson2: "Mike Rodriguez",
+		notes1: "Great culture fit. Need to research their microservices architecture.",
+		notes2: "Early stage startup. High growth potential but risky."
+	},
+	seo: {
+		title: "JobTracker - Free Local Job Tracker | No Login, No Tracking, Your Data Stays Private",
+		description: "100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.",
+		keywords: "free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search",
+		author: "JobTracker Team",
+		ogTitle: "JobTracker - Free Local Job Tracker (No Login Required)",
+		ogDescription: "Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.",
+		twitterTitle: "JobTracker - Private Job Application Tracker",
+		twitterDescription: "Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device."
+	},
+	modals: {
+		notes: {
+			title: "Notes for {position} at {company}",
+			activeSection: "Active Notes",
+			archivedSection: "Archived Notes ({count})",
+			emptyState: "No notes yet. Add your first note below.",
+			addSection: "Add New Note",
+			phaseLabelPrefix: " Phase: ",
+			placeholder: "Enter your note here...",
+			editTitle: "Edit note",
+			archiveTitle: "Archive note",
+			unarchiveTitle: "Unarchive note",
+			addButton: "Add Note"
+		},
+		tasks: {
+			title: "Tasks for {position} at {company}",
+			activeSection: "Active Tasks",
+			archivedSection: "Archived Tasks ({count})",
+			emptyState: "No tasks yet. Add your first task below.",
+			addSection: "Add New Task",
+			placeholder: "Enter your task here...",
+			editTitle: "Edit task",
+			archiveTitle: "Archive task",
+			unarchiveTitle: "Unarchive task",
+			addButton: "Add Task",
+			statusTodo: "To Do",
+			statusInProgress: "In Progress",
+			statusDone: "Done",
+			priorityLow: "Low",
+			priorityMedium: "Medium",
+			priorityHigh: "High"
+		},
+		contacts: {
+			title: "Contacts for {position} at {company}",
+			activeSection: "Active Contacts",
+			archivedSection: "Archived Contacts ({count})",
+			emptyState: "No contacts yet. Add your first contact below.",
+			addSection: "Add New Contact",
+			editTitle: "Edit contact",
+			archiveTitle: "Archive contact",
+			unarchiveTitle: "Unarchive contact",
+			addButton: "Add Contact",
+			placeholderName: "Name",
+			placeholderEmail: "Email",
+			placeholderPhone: "Phone",
+			placeholderCompany: "Company",
+			noContacts: "No contacts",
+			defaultContact: "Contact"
+		},
+		common: {
+			save: "Save",
+			cancel: "Cancel",
+			close: "Close"
+		}
+	},
+	forms: {
+		saveChangesTitle: "Save changes",
+		cancelEditingTitle: "Cancel editing",
+		noDueDate: "No due date",
+		placeholderNameEmail: "Name\nEmail"
+	},
+	footer: {
+		madeWith: "Made with",
+		by: "by"
+	}
+};
+
+// ============================================================================
+// SRC/LIB/I18N/PT.JS
+// ============================================================================
+
+// ============================================================================
+// PORTUGUESE TRANSLATIONS
+// ============================================================================
+
+const PT_TRANSLATIONS = {
+	app: {
+		title: "JobTracker"
+	},
+	buttons: {
+		addApplication: "+ Adicionar Candidatura"
+	},
+	tabs: {
+		jobs: "Empregos",
+		applications: "Quadro de Candidaturas"
+	},
+	table: {
+		headers: {
+			priority: "Prioridade",
+			company: "Empresa",
+			position: "Cargo",
+			currentPhase: "Fase Atual",
+			contactPerson: "Contato",
+			salaryRange: "Salario",
+			sourceUrl: "Link",
+			location: "Localização",
+			notes: "Notas",
+			tasks: "Tarefas",
+			actions: "Ações"
+		},
+		filters: {
+			allPriorities: "Todas as Prioridades",
+			allPhases: "Todas as Fases"
+		},
+		placeholders: {
+			company: "Nome da Empresa",
+			position: "Cargo",
+			contactPerson: "Nome do Contato",
+			contactEmail: "Email do Contato",
+			salaryRange: "Faixa Salarial",
+			location: "Localização",
+			sourceUrl: "URL da Vaga"
+		}
+	},
+	priorities: {
+		high: "Alta",
+		medium: "Média",
+		low: "Baixa"
+	},
+	phases: {
+		wishlist: "Lista de Desejos",
+		applied: "Candidatura Enviada",
+		interview: "Entrevista",
+		offer: "Oferta",
+		rejected_withdrawn: "Rejeitado / Retirado"
+	},
+	substeps: {
+		none: "Nenhuma subetapa",
+		application_review: "Análise da Candidatura",
+		initial_screening: "Triagem Inicial",
+		hr_phone_screen: "Triagem por Telefone - RH",
+		recruiter_call: "Ligação do Recrutador",
+		phone_screening: "Triagem por Telefone",
+		technical_phone_screen: "Triagem Técnica por Telefone",
+		coding_challenge: "Desafio de Programação",
+		take_home_assignment: "Tarefa para Casa",
+		technical_interview: "Entrevista Técnica",
+		system_design_interview: "Entrevista de Design de Sistema",
+		behavioral_interview: "Entrevista Comportamental",
+		team_interview: "Entrevista com a Equipe",
+		hiring_manager_interview: "Entrevista com Gerente de Contratação",
+		panel_interview: "Entrevista em Painel",
+		final_round: "Etapa Final",
+		reference_check: "Verificação de Referências",
+		background_check: "Verificação de Antecedentes",
+		offer_discussion: "Discussão da Oferta",
+		salary_negotiation: "Negociação Salarial"
+	},
+	stats: {
+		totalApplications: "Total de Candidaturas",
+		active: "Ativas",
+		interviews: "Entrevistas",
+		offers: "Ofertas",
+		rejections: "Rejeições"
+	},
+	messages: {
+		welcome: "Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
+		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?"
+	},
+	demo: {
+		contactPerson1: "Sarah Chen",
+		contactPerson2: "Mike Rodriguez",
+		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
+		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado."
+	},
+	seo: {
+		title: "JobTracker - Rastreador Local Gratuito | Sem Login, Sem Rastreamento, Dados Privados",
+		description: "Rastreador de candidaturas 100% gratuito que funciona localmente no seu navegador. Sem login necessário, sem rastreamento de dados, sem servidores. Seus dados de busca de emprego ficam completamente privados no seu dispositivo.",
+		keywords: "rastreador gratuito de empregos, rastreador local de candidaturas, busca de emprego privada, rastreador sem login, rastreador offline de empregos, candidaturas com privacidade, gestão de carreira sem rastreamento, busca de emprego local",
+		author: "Equipe JobTracker",
+		ogTitle: "JobTracker - Rastreador Local Gratuito (Sem Login Necessário)",
+		ogDescription: "Acompanhe candidaturas de forma privada no seu navegador. 100% gratuito, sem login, sem rastreamento, seus dados nunca saem do seu dispositivo.",
+		twitterTitle: "JobTracker - Rastreador Privado de Candidaturas",
+		twitterDescription: "Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo."
+	},
+	modals: {
+		notes: {
+			title: "Notas para {position} na {company}",
+			activeSection: "Notas Ativas",
+			archivedSection: "Notas Arquivadas ({count})",
+			emptyState: "Sem notas ainda. Adicione sua primeira nota abaixo.",
+			addSection: "Adicionar Nova Nota",
+			phaseLabelPrefix: " Fase: ",
+			placeholder: "Digite sua nota aqui...",
+			editTitle: "Editar nota",
+			archiveTitle: "Arquivar nota",
+			unarchiveTitle: "Desarquivar nota",
+			addButton: "Adicionar Nota"
+		},
+		tasks: {
+			title: "Tarefas para {position} na {company}",
+			activeSection: "Tarefas Ativas",
+			archivedSection: "Tarefas Arquivadas ({count})",
+			emptyState: "Sem tarefas ainda. Adicione sua primeira tarefa abaixo.",
+			addSection: "Adicionar Nova Tarefa",
+			placeholder: "Digite sua tarefa aqui...",
+			editTitle: "Editar tarefa",
+			archiveTitle: "Arquivar tarefa",
+			unarchiveTitle: "Desarquivar tarefa",
+			addButton: "Adicionar Tarefa",
+			statusTodo: "A Fazer",
+			statusInProgress: "Em Progresso",
+			statusDone: "Concluída",
+			priorityLow: "Baixa",
+			priorityMedium: "Média",
+			priorityHigh: "Alta"
+		},
+		contacts: {
+			title: "Contatos para {position} na {company}",
+			activeSection: "Contatos Ativos",
+			archivedSection: "Contatos Arquivados ({count})",
+			emptyState: "Sem contatos ainda. Adicione seu primeiro contato abaixo.",
+			addSection: "Adicionar Novo Contato",
+			editTitle: "Editar contato",
+			archiveTitle: "Arquivar contato",
+			unarchiveTitle: "Desarquivar contato",
+			addButton: "Adicionar Contato",
+			placeholderName: "Nome",
+			placeholderEmail: "Email",
+			placeholderPhone: "Telefone",
+			placeholderCompany: "Empresa",
+			noContacts: "Sem contatos",
+			defaultContact: "Contato"
+		},
+		common: {
+			save: "Salvar",
+			cancel: "Cancelar",
+			close: "Fechar"
+		}
+	},
+	forms: {
+		saveChangesTitle: "Salvar alterações",
+		cancelEditingTitle: "Cancelar edição",
+		noDueDate: "Sem data de vencimento",
+		placeholderNameEmail: "Nome\nEmail"
+	},
+	footer: {
+		madeWith: "Feito com",
+		by: "por"
+	}
+};
+
+// ============================================================================
 // SRC/LIB/I18N.JS
 // ============================================================================
 
@@ -2966,361 +3314,8 @@ const I18n = {
 
 // Translation constants
 I18n.translations = {
-	en: {
-		app: {
-			title: "JobTracker",
-		},
-		buttons: {
-			addApplication: "+ Add Application",
-		},
-		tabs: {
-			jobs: "Jobs",
-			applications: "Applications Board",
-		},
-		table: {
-			headers: {
-				priority: "Priority",
-				company: "Company",
-				position: "Position",
-				currentPhase: "Stage",
-				contactPerson: "Contact",
-				salaryRange: "Salary Range",
-				location: "Location",
-				sourceUrl: "Source",
-				notes: "Notes",
-				tasks: "Tasks",
-				actions: "Actions",
-			},
-			filters: {
-				allPriorities: "All Priorities",
-				allPhases: "All Phases",
-			},
-			placeholders: {
-				company: "Company Name",
-				position: "Position Title",
-				contactPerson: "Contact Name",
-				contactEmail: "Contact Email",
-				salaryRange: "Salary Range",
-				location: "Location",
-				sourceUrl: "Job Posting URL",
-			},
-		},
-		priorities: {
-			high: "High",
-			medium: "Medium",
-			low: "Low",
-		},
-		phases: {
-			wishlist: "Wishlist",
-			applied: "Applied",
-			interview: "Interview",
-			offer: "Offer",
-			rejected_withdrawn: "Rejected / Withdrawn",
-		},
-		substeps: {
-			none: "No substep",
-			// Applied substeps
-			application_review: "Application Review",
-			initial_screening: "Initial Screening",
-			hr_phone_screen: "HR Phone Screen",
-			recruiter_call: "Recruiter Call",
-			// Interview substeps
-			phone_screening: "Phone Screening",
-			technical_phone_screen: "Technical Phone Screen",
-			coding_challenge: "Coding Challenge",
-			take_home_assignment: "Take-home Assignment",
-			technical_interview: "Technical Interview",
-			system_design_interview: "System Design Interview",
-			behavioral_interview: "Behavioral Interview",
-			team_interview: "Team Interview",
-			hiring_manager_interview: "Hiring Manager Interview",
-			panel_interview: "Panel Interview",
-			final_round: "Final Round",
-			// Offer substeps
-			reference_check: "Reference Check",
-			background_check: "Background Check",
-			offer_discussion: "Offer Discussion",
-			salary_negotiation: "Salary Negotiation",
-		},
-		stats: {
-			totalApplications: "Total Applications",
-			active: "Active",
-			interviews: "Interviews",
-			offers: "Offers",
-			rejections: "Rejections",
-		},
-		messages: {
-			welcome:
-				"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
-			confirmDelete:
-				"Are you sure you want to delete the application for {position} at {company}?",
-		},
-		demo: {
-			contactPerson1: "Sarah Chen",
-			contactPerson2: "Mike Rodriguez",
-			notes1:
-				"Great culture fit. Need to research their microservices architecture.",
-			notes2: "Early stage startup. High growth potential but risky.",
-		},
-		seo: {
-			title:
-				"JobTracker - Free Local Job Tracker | No Login, No Tracking, Your Data Stays Private",
-			description:
-				"100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.",
-			keywords:
-				"free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search",
-			author: "JobTracker Team",
-			ogTitle: "JobTracker - Free Local Job Tracker (No Login Required)",
-			ogDescription:
-				"Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.",
-			twitterTitle: "JobTracker - Private Job Application Tracker",
-			twitterDescription:
-				"Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device.",
-		},
-		modals: {
-			notes: {
-				title: "Notes for {position} at {company}",
-				activeSection: "Active Notes",
-				archivedSection: "Archived Notes ({count})",
-				emptyState: "No notes yet. Add your first note below.",
-				addSection: "Add New Note",
-				phaseLabelPrefix: " Phase: ",
-				placeholder: "Enter your note here...",
-				editTitle: "Edit note",
-				archiveTitle: "Archive note",
-				unarchiveTitle: "Unarchive note",
-				addButton: "Add Note",
-			},
-			tasks: {
-				title: "Tasks for {position} at {company}",
-				activeSection: "Active Tasks",
-				archivedSection: "Archived Tasks ({count})",
-				emptyState: "No tasks yet. Add your first task below.",
-				addSection: "Add New Task",
-				placeholder: "Enter your task here...",
-				editTitle: "Edit task",
-				archiveTitle: "Archive task",
-				unarchiveTitle: "Unarchive task",
-				addButton: "Add Task",
-				statusTodo: "To Do",
-				statusInProgress: "In Progress",
-				statusDone: "Done",
-				priorityLow: "Low",
-				priorityMedium: "Medium",
-				priorityHigh: "High",
-			},
-			contacts: {
-				title: "Contacts for {position} at {company}",
-				activeSection: "Active Contacts",
-				archivedSection: "Archived Contacts ({count})",
-				emptyState: "No contacts yet. Add your first contact below.",
-				addSection: "Add New Contact",
-				editTitle: "Edit contact",
-				archiveTitle: "Archive contact",
-				unarchiveTitle: "Unarchive contact",
-				addButton: "Add Contact",
-				placeholderName: "Name",
-				placeholderEmail: "Email",
-				placeholderPhone: "Phone",
-				placeholderCompany: "Company",
-				noContacts: "No contacts",
-				defaultContact: "Contact",
-			},
-			common: {
-				save: "Save",
-				cancel: "Cancel",
-				close: "Close",
-			},
-		},
-		forms: {
-			saveChangesTitle: "Save changes",
-			cancelEditingTitle: "Cancel editing",
-			noDueDate: "No due date",
-			placeholderNameEmail: "Name\nEmail",
-		},
-		footer: {
-			madeWith: "Made with",
-			by: "by",
-		},
-	},
-	pt: {
-		app: {
-			title: "JobTracker",
-		},
-		buttons: {
-			addApplication: "+ Adicionar Candidatura",
-		},
-		tabs: {
-			jobs: "Empregos",
-			applications: "Quadro de Candidaturas",
-		},
-		table: {
-			headers: {
-				priority: "Prioridade",
-				company: "Empresa",
-				position: "Cargo",
-				currentPhase: "Fase Atual",
-				contactPerson: "Contato",
-				salaryRange: "Salario",
-				sourceUrl: "Link",
-				location: "Localização",
-				notes: "Notas",
-				tasks: "Tarefas",
-				actions: "Ações",
-			},
-			filters: {
-				allPriorities: "Todas as Prioridades",
-				allPhases: "Todas as Fases",
-			},
-			placeholders: {
-				company: "Nome da Empresa",
-				position: "Cargo",
-				contactPerson: "Nome do Contato",
-				contactEmail: "Email do Contato",
-				salaryRange: "Faixa Salarial",
-				location: "Localização",
-				sourceUrl: "URL da Vaga",
-			},
-		},
-		priorities: {
-			high: "Alta",
-			medium: "Média",
-			low: "Baixa",
-		},
-		phases: {
-			wishlist: "Lista de Desejos",
-			applied: "Candidatura Enviada",
-			interview: "Entrevista",
-			offer: "Oferta",
-			rejected_withdrawn: "Rejeitado / Retirado",
-		},
-		substeps: {
-			none: "Nenhuma subetapa",
-			// Applied substeps
-			application_review: "Análise da Candidatura",
-			initial_screening: "Triagem Inicial",
-			hr_phone_screen: "Triagem por Telefone - RH",
-			recruiter_call: "Ligação do Recrutador",
-			// Interview substeps
-			phone_screening: "Triagem por Telefone",
-			technical_phone_screen: "Triagem Técnica por Telefone",
-			coding_challenge: "Desafio de Programação",
-			take_home_assignment: "Tarefa para Casa",
-			technical_interview: "Entrevista Técnica",
-			system_design_interview: "Entrevista de Design de Sistema",
-			behavioral_interview: "Entrevista Comportamental",
-			team_interview: "Entrevista com a Equipe",
-			hiring_manager_interview: "Entrevista com Gerente de Contratação",
-			panel_interview: "Entrevista em Painel",
-			final_round: "Etapa Final",
-			// Offer substeps
-			reference_check: "Verificação de Referências",
-			background_check: "Verificação de Antecedentes",
-			offer_discussion: "Discussão da Oferta",
-			salary_negotiation: "Negociação Salarial",
-		},
-		stats: {
-			totalApplications: "Total de Candidaturas",
-			active: "Ativas",
-			interviews: "Entrevistas",
-			offers: "Ofertas",
-			rejections: "Rejeições",
-		},
-		messages: {
-			welcome:
-				"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
-			confirmDelete:
-				"Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
-		},
-		demo: {
-			contactPerson1: "Sarah Chen",
-			contactPerson2: "Mike Rodriguez",
-			notes1:
-				"Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
-			notes2:
-				"Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
-		},
-		seo: {
-			title:
-				"JobTracker - Rastreador Local Gratuito | Sem Login, Sem Rastreamento, Dados Privados",
-			description:
-				"Rastreador de candidaturas 100% gratuito que funciona localmente no seu navegador. Sem login necessário, sem rastreamento de dados, sem servidores. Seus dados de busca de emprego ficam completamente privados no seu dispositivo.",
-			keywords:
-				"rastreador gratuito de empregos, rastreador local de candidaturas, busca de emprego privada, rastreador sem login, rastreador offline de empregos, candidaturas com privacidade, gestão de carreira sem rastreamento, busca de emprego local",
-			author: "Equipe JobTracker",
-			ogTitle: "JobTracker - Rastreador Local Gratuito (Sem Login Necessário)",
-			ogDescription:
-				"Acompanhe candidaturas de forma privada no seu navegador. 100% gratuito, sem login, sem rastreamento, seus dados nunca saem do seu dispositivo.",
-			twitterTitle: "JobTracker - Rastreador Privado de Candidaturas",
-			twitterDescription:
-				"Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo.",
-		},
-		modals: {
-			notes: {
-				title: "Notas para {position} na {company}",
-				activeSection: "Notas Ativas",
-				archivedSection: "Notas Arquivadas ({count})",
-				emptyState: "Sem notas ainda. Adicione sua primeira nota abaixo.",
-				addSection: "Adicionar Nova Nota",
-				phaseLabelPrefix: " Fase: ",
-				placeholder: "Digite sua nota aqui...",
-				editTitle: "Editar nota",
-				archiveTitle: "Arquivar nota",
-				unarchiveTitle: "Desarquivar nota",
-				addButton: "Adicionar Nota",
-			},
-			tasks: {
-				title: "Tarefas para {position} na {company}",
-				activeSection: "Tarefas Ativas",
-				archivedSection: "Tarefas Arquivadas ({count})",
-				emptyState: "Sem tarefas ainda. Adicione sua primeira tarefa abaixo.",
-				addSection: "Adicionar Nova Tarefa",
-				placeholder: "Digite sua tarefa aqui...",
-				editTitle: "Editar tarefa",
-				archiveTitle: "Arquivar tarefa",
-				unarchiveTitle: "Desarquivar tarefa",
-				addButton: "Adicionar Tarefa",
-				statusTodo: "A Fazer",
-				statusInProgress: "Em Progresso",
-				statusDone: "Concluída",
-				priorityLow: "Baixa",
-				priorityMedium: "Média",
-				priorityHigh: "Alta",
-			},
-			contacts: {
-				title: "Contatos para {position} na {company}",
-				activeSection: "Contatos Ativos",
-				archivedSection: "Contatos Arquivados ({count})",
-				emptyState: "Sem contatos ainda. Adicione seu primeiro contato abaixo.",
-				addSection: "Adicionar Novo Contato",
-				editTitle: "Editar contato",
-				archiveTitle: "Arquivar contato",
-				unarchiveTitle: "Desarquivar contato",
-				addButton: "Adicionar Contato",
-				placeholderName: "Nome",
-				placeholderEmail: "Email",
-				placeholderPhone: "Telefone",
-				placeholderCompany: "Empresa",
-				noContacts: "Sem contatos",
-				defaultContact: "Contato",
-			},
-			common: {
-				save: "Salvar",
-				cancel: "Cancelar",
-				close: "Fechar",
-			},
-		},
-		forms: {
-			saveChangesTitle: "Salvar alterações",
-			cancelEditingTitle: "Cancelar edição",
-			noDueDate: "Sem data de vencimento",
-			placeholderNameEmail: "Nome\nEmail",
-		},
-		footer: {
-			madeWith: "Feito com",
-			by: "por",
-		},
-	},
+	en: EN_TRANSLATIONS,
+	pt: PT_TRANSLATIONS
 };
 
 

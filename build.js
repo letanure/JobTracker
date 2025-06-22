@@ -19,6 +19,8 @@ const BUILD_CONFIG = {
     // Core libraries
     'src/lib/dom.js',
     'src/lib/storage.js', 
+    'src/lib/i18n/en.js',
+    'src/lib/i18n/pt.js',
     'src/lib/i18n.js',
     
     // Utilities and constants
