@@ -54,12 +54,6 @@ function editJob(job) {
 				).join("")}
 			</select>
 		</td>
-		<td class="contact" data-job-id="${job.id}">
-			${ContactsCount({
-				contacts: job.contacts || [],
-				onClick: null, // Will be attached after rendering
-			}).outerHTML}
-		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="salaryRange" value="${job.salaryRange || ""}" 
 				placeholder="${I18n.t("table.placeholders.salaryRange")}">
@@ -74,6 +68,12 @@ function editJob(job) {
 		<td>
 			<input type="url" class="inline-edit" data-field="sourceUrl" value="${job.sourceUrl || ""}" 
 				placeholder="${I18n.t("table.placeholders.sourceUrl")}">
+		</td>
+		<td class="contact" data-job-id="${job.id}">
+			${ContactsCount({
+				contacts: job.contacts || [],
+				onClick: null, // Will be attached after rendering
+			}).outerHTML}
 		</td>
 		<td class="notes" data-job-id="${job.id}">
 			${NotesCount({

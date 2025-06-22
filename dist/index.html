@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T17:44:35.310Z
+Generated: 2025-06-22T17:47:48.646Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1766,10 +1766,10 @@ tr.editing .actions-cell button {
                                         <div class="filter-dropdown" id="phaseDropdown"></div>
                                     </div>
                                 </th>
-                                <th id="contactPersonHeader">...</th>
                                 <th id="salaryRangeHeader">...</th>
                                 <th id="locationHeader">...</th>
                                 <th id="sourceUrlHeader">...</th>
+                                <th id="contactPersonHeader">...</th>
                                 <th id="notesHeader">...</th>
                                 <th id="tasksHeader">...</th>
                                 <th id="actionsHeader">...</th>
@@ -1832,11 +1832,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T17:44:35.305Z
+// Generated: 2025-06-22T17:47:48.641Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T17:44:35.305Z");
+console.log("JobTracker - Built at: 2025-06-22T17:47:48.641Z");
 
 
 // ============================================================================
@@ -5233,14 +5233,6 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				job.currentSubstep ? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep)) : null
 			)
 		),
-		h(
-			"td",
-			{ className: "contact" },
-			ContactsCount({
-				contacts: job.contacts || [],
-				onClick: () => openContactsModal(job),
-			})
-		),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", { className: "location" }, job.location),
 		h("td", { className: "source-url" }, 
@@ -5251,6 +5243,14 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				className: "source-link",
 				title: job.sourceUrl
 			}, h("span", { className: "material-symbols-outlined" }, "open_in_new")) : ""
+		),
+		h(
+			"td",
+			{ className: "contact" },
+			ContactsCount({
+				contacts: job.contacts || [],
+				onClick: () => openContactsModal(job),
+			})
 		),
 		h(
 			"td",
@@ -5445,12 +5445,6 @@ function editJob(job) {
 				).join("")}
 			</select>
 		</td>
-		<td class="contact" data-job-id="${job.id}">
-			${ContactsCount({
-				contacts: job.contacts || [],
-				onClick: null, // Will be attached after rendering
-			}).outerHTML}
-		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="salaryRange" value="${job.salaryRange || ""}" 
 				placeholder="${I18n.t("table.placeholders.salaryRange")}">
@@ -5465,6 +5459,12 @@ function editJob(job) {
 		<td>
 			<input type="url" class="inline-edit" data-field="sourceUrl" value="${job.sourceUrl || ""}" 
 				placeholder="${I18n.t("table.placeholders.sourceUrl")}">
+		</td>
+		<td class="contact" data-job-id="${job.id}">
+			${ContactsCount({
+				contacts: job.contacts || [],
+				onClick: null, // Will be attached after rendering
+			}).outerHTML}
 		</td>
 		<td class="notes" data-job-id="${job.id}">
 			${NotesCount({

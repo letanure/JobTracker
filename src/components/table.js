@@ -26,14 +26,6 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				job.currentSubstep ? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep)) : null
 			)
 		),
-		h(
-			"td",
-			{ className: "contact" },
-			ContactsCount({
-				contacts: job.contacts || [],
-				onClick: () => openContactsModal(job),
-			})
-		),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", { className: "location" }, job.location),
 		h("td", { className: "source-url" }, 
@@ -44,6 +36,14 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				className: "source-link",
 				title: job.sourceUrl
 			}, h("span", { className: "material-symbols-outlined" }, "open_in_new")) : ""
+		),
+		h(
+			"td",
+			{ className: "contact" },
+			ContactsCount({
+				contacts: job.contacts || [],
+				onClick: () => openContactsModal(job),
+			})
 		),
 		h(
 			"td",
