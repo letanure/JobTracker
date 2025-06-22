@@ -64,7 +64,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleStatusChange = (newStatus) => {
@@ -85,7 +85,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handlePriorityChange = (newPriority) => {
@@ -106,7 +106,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleDueDateChange = (newDueDate) => {
@@ -126,7 +126,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleEdit = () => {
@@ -160,7 +160,7 @@ const TaskItem = ({ task, job }) => {
 				taskTextElement.textContent = newText;
 				
 				// Update interface
-				updateStats();
+				refreshInterface();
 			}
 		});
 		
@@ -298,7 +298,7 @@ const TasksModal = ({ job, onClose }) => {
 		textarea.value = "";
 
 		// Update the tasks count in the table (refresh interface for count update)
-		updateStats();
+		refreshInterface();
 	};
 
 	return h(
