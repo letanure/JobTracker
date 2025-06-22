@@ -145,6 +145,12 @@ function refreshInterface() {
 		TabNavigation && TabNavigation.activeTab === 'applications') {
 		KanbanBoard.refresh();
 	}
+	
+	// Also refresh tasks board if it exists and tasks tab is active
+	if (typeof TasksBoard !== 'undefined' && 
+		TabNavigation && TabNavigation.activeTab === 'tasks') {
+		TasksBoard.refresh();
+	}
 }
 
 // Render job table

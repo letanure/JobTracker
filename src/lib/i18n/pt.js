@@ -11,7 +11,8 @@ const PT_TRANSLATIONS = {
 	},
 	tabs: {
 		jobs: "Empregos",
-		applications: "Quadro de Candidaturas"
+		applications: "Quadro de Candidaturas",
+		tasks: "Quadro de Tarefas"
 	},
 	kanban: {
 		title: "Quadro de Candidaturas",

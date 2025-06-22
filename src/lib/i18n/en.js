@@ -11,7 +11,8 @@ const EN_TRANSLATIONS = {
 	},
 	tabs: {
 		jobs: "Jobs",
-		applications: "Applications Board"
+		applications: "Applications Board",
+		tasks: "Tasks Board"
 	},
 	kanban: {
 		title: "Applications Board",

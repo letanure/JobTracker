@@ -18,6 +18,13 @@ const CONFIG = {
 
 const PRIORITIES = ["high", "medium", "low"];
 
+// Task statuses for task management
+const TASK_STATUSES = [
+	"todo",
+	"in-progress", 
+	"done"
+];
+
 // Basic phases for main workflow
 const PHASES = [
 	"wishlist",

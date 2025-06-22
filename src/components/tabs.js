@@ -9,7 +9,8 @@ const TabNavigation = {
 	// Available tabs configuration
 	tabs: [
 		{ id: 'jobs', key: 'tabs.jobs', icon: 'work' },
-		{ id: 'applications', key: 'tabs.applications', icon: 'dashboard' }
+		{ id: 'applications', key: 'tabs.applications', icon: 'dashboard' },
+		{ id: 'tasks', key: 'tabs.tasks', icon: 'task_alt' }
 	],
 
 	// Get tab from URL parameter
@@ -111,6 +112,10 @@ const TabNavigation = {
 				// Initialize applications board if needed
 				TabNavigation.initializeApplicationsBoard();
 				break;
+			case 'tasks':
+				// Initialize tasks board if needed
+				TabNavigation.initializeTasksBoard();
+				break;
 		}
 	},
 
@@ -118,6 +123,13 @@ const TabNavigation = {
 	initializeApplicationsBoard: () => {
 		if (typeof KanbanBoard !== 'undefined') {
 			KanbanBoard.init();
+		}
+	},
+
+	// Initialize tasks board with task kanban
+	initializeTasksBoard: () => {
+		if (typeof TasksBoard !== 'undefined') {
+			TasksBoard.init();
 		}
 	},
 

@@ -1001,6 +1001,261 @@ textarea {
 
 
 /* ============================================================================ */
+/* TASKS BOARD */
+/* ============================================================================ */
+
+.tasks-container {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.tasks-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.tasks-title {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+}
+
+.tasks-stats {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.tasks-total-count {
+	font-size: 14px;
+	color: var(--gray-600);
+	background: var(--gray-100);
+	padding: 4px 12px;
+	border-radius: 12px;
+	font-weight: 500;
+}
+
+.tasks-board {
+	display: flex;
+	gap: 16px;
+	overflow-x: auto;
+	padding: 8px 0;
+	flex: 1;
+	align-items: stretch;
+	min-height: 600px;
+}
+
+.tasks-column {
+	flex: 1;
+	min-width: 0;
+	background: var(--gray-50);
+	border-radius: 12px;
+	border: var(--border-width) solid var(--border-color);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	transition: var(--transition-fast);
+}
+
+.tasks-column.drag-active {
+	border-color: var(--blue-300);
+}
+
+.tasks-column.drag-over {
+	background: var(--blue-50);
+	border-color: var(--blue-500);
+	transform: scale(1.02);
+}
+
+.tasks-column-header {
+	padding: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+	background: var(--white);
+	border-radius: 12px 12px 0 0;
+}
+
+.tasks-column-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.tasks-column-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.tasks-column-count {
+	background: var(--gray-200);
+	color: var(--gray-700);
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+	min-width: 20px;
+	text-align: center;
+}
+
+.tasks-column-body {
+	padding: 12px;
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 200px;
+}
+
+.tasks-task-card {
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 8px;
+	padding: 12px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tasks-task-card:hover {
+	border-color: var(--blue-300);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-1px);
+}
+
+.tasks-task-card.dragging {
+	opacity: 0.5;
+	transform: rotate(5deg);
+}
+
+.tasks-priority-dot {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.tasks-priority-dot.priority-high {
+	background: var(--red-500);
+}
+
+.tasks-priority-dot.priority-medium {
+	background: var(--orange-500);
+}
+
+.tasks-priority-dot.priority-low {
+	background: var(--green-500);
+}
+
+.tasks-task-content {
+	margin-bottom: 12px;
+	padding-right: 16px;
+}
+
+.tasks-task-text {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-color);
+	line-height: 1.4;
+	word-wrap: break-word;
+}
+
+.tasks-job-context {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-bottom: 12px;
+}
+
+.tasks-job-info,
+.tasks-job-phase {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.tasks-job-icon,
+.tasks-phase-icon {
+	font-size: 12px;
+	color: var(--gray-500);
+	flex-shrink: 0;
+}
+
+.tasks-job-text,
+.tasks-phase-text {
+	font-size: 11px;
+	color: var(--gray-600);
+	line-height: 1.2;
+}
+
+.tasks-action-icons {
+	display: flex;
+	gap: 4px;
+	justify-content: flex-end;
+	padding-top: 8px;
+	border-top: 1px solid var(--gray-200);
+}
+
+.tasks-icon-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: var(--gray-500);
+	cursor: pointer;
+	transition: var(--transition-fast);
+	padding: 0;
+	min-width: auto;
+	box-shadow: none;
+	position: relative;
+}
+
+.tasks-icon-btn:hover {
+	background: var(--gray-100);
+	color: var(--gray-700);
+	border-color: var(--gray-300);
+	transform: none;
+	box-shadow: none;
+}
+
+.tasks-icon-btn .material-symbols-outlined {
+	font-size: 14px;
+}
+
+/* Responsive tasks board */
+@media (max-width: 768px) {
+	.tasks-container {
+		padding: 16px;
+	}
+
+	.tasks-board {
+		gap: 12px;
+	}
+
+	.tasks-column {
+		min-width: 200px;
+	}
+
+	.tasks-task-card {
+		padding: 10px;
+	}
+}
+
+/* ============================================================================ */
 /* KANBAN JOB EDIT MODAL */
 /* ============================================================================ */
 
