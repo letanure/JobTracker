@@ -357,11 +357,12 @@ const TasksModal = ({ job, onClose }) => {
 								}
 							}
 						}, 
-							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_less'),
+							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_more'),
 							I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
 						),
 						h("div", { 
-							id: "archived-tasks-content"
+							id: "archived-tasks-content",
+							style: "display: none"
 						}, ...sortedArchivedTasks.map((task) => TaskItem({ task, job })))
 					]
 					: []),
