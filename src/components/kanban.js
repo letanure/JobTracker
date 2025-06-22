@@ -469,30 +469,36 @@ const KanbanBoard = {
 
 	// Initialize the kanban board in the applications tab
 	init: () => {
-		const applicationsTab = document.querySelector('[data-tab="applications"]');
+		const applicationsTab = document.querySelector('.tab-content[data-tab="applications"]');
 		if (applicationsTab) {
-			// Clear existing content
-			applicationsTab.innerHTML = '';
-			
-			// Create board header
-			const header = h("div", { className: "kanban-header" },
-				h("h2", { className: "kanban-title" }, I18n.t("kanban.title")),
-				h("div", { className: "kanban-stats" },
-					h("span", { className: "kanban-total-jobs" }, 
-						I18n.t("kanban.totalJobs", { count: jobsData.length })
+			// Only clear and initialize if not already initialized
+			if (!applicationsTab.querySelector('.kanban-container')) {
+				// Clear existing content
+				applicationsTab.innerHTML = '';
+				
+				// Create board header
+				const header = h("div", { className: "kanban-header" },
+					h("h2", { className: "kanban-title" }, I18n.t("kanban.title")),
+					h("div", { className: "kanban-stats" },
+						h("span", { className: "kanban-total-jobs" }, 
+							I18n.t("kanban.totalJobs", { count: jobsData.length })
+						)
 					)
-				)
-			);
-			
-			// Create the kanban board
-			const board = KanbanBoard.create();
-			
-			// Add to container
-			const container = h("div", { className: "kanban-container" });
-			container.appendChild(header);
-			container.appendChild(board);
-			
-			applicationsTab.appendChild(container);
+				);
+				
+				// Create the kanban board
+				const board = KanbanBoard.create();
+				
+				// Add to container
+				const container = h("div", { className: "kanban-container" });
+				container.appendChild(header);
+				container.appendChild(board);
+				
+				applicationsTab.appendChild(container);
+			} else {
+				// Just refresh the existing board
+				KanbanBoard.refresh();
+			}
 		}
 	}
 };
