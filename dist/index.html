@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T19:23:48.648Z
+Generated: 2025-06-22T19:25:34.317Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -2539,11 +2539,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T19:23:48.642Z
+// Generated: 2025-06-22T19:25:34.311Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T19:23:48.642Z");
+console.log("JobTracker - Built at: 2025-06-22T19:25:34.311Z");
 
 
 // ============================================================================
@@ -6350,16 +6350,20 @@ const KanbanBoard = {
 				),
 				h("div", { className: "modal-body" },
 					h("form", { className: "job-edit-form" },
-						// Priority and Phase row
+						// Priority row
 						h("div", { className: "form-row" },
-							h("div", { className: "form-field" },
+							h("div", { className: "form-field full-width" },
 								h("label", {}, I18n.t("table.headers.priority") || "Priority"),
 								h("select", { name: "priority" },
 									h("option", { value: "high" }, I18n.t("priorities.high") || "High"),
 									h("option", { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
 									h("option", { value: "low" }, I18n.t("priorities.low") || "Low")
 								)
-							),
+							)
+						),
+						
+						// Phase and Substep row
+						h("div", { className: "form-row" },
 							h("div", { className: "form-field" },
 								h("label", {}, I18n.t("table.headers.currentPhase") || "Phase"),
 								h("select", { 
@@ -6393,6 +6397,28 @@ const KanbanBoard = {
 										h("option", { value: phase }, getPhaseText(phase))
 									)
 								)
+							),
+							h("div", { className: "form-field" },
+								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
+								h("select", { 
+									name: "substep",
+									onchange: (e) => {
+										const selectedSubstep = e.target.value;
+										
+										// Update job substep immediately for real-time kanban update
+										const jobIndex = jobsData.findIndex(j => j.id === job.id);
+										if (jobIndex !== -1) {
+											jobsData[jobIndex].currentSubstep = selectedSubstep;
+											saveToLocalStorage();
+											KanbanBoard.refresh();
+										}
+									}
+								},
+									h("option", { value: job.currentPhase }, getPhaseText(job.currentPhase)),
+									...getSubstepsForPhase(job.currentPhase).map(substep =>
+										h("option", { value: substep }, getSubstepText(substep))
+									)
+								)
 							)
 						),
 						
@@ -6420,32 +6446,6 @@ const KanbanBoard = {
 								}),
 								h("datalist", { id: "positions-list" },
 									...positions.map(position => h("option", { value: position }))
-								)
-							)
-						),
-
-						// Substep
-						h("div", { className: "form-row" },
-							h("div", { className: "form-field full-width" },
-								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
-								h("select", { 
-									name: "substep",
-									onchange: (e) => {
-										const selectedSubstep = e.target.value;
-										
-										// Update job substep immediately for real-time kanban update
-										const jobIndex = jobsData.findIndex(j => j.id === job.id);
-										if (jobIndex !== -1) {
-											jobsData[jobIndex].currentSubstep = selectedSubstep;
-											saveToLocalStorage();
-											KanbanBoard.refresh();
-										}
-									}
-								},
-									h("option", { value: job.currentPhase }, getPhaseText(job.currentPhase)),
-									...getSubstepsForPhase(job.currentPhase).map(substep =>
-										h("option", { value: substep }, getSubstepText(substep))
-									)
 								)
 							)
 						),
