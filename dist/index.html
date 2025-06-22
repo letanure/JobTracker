@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T19:44:33.508Z
+Generated: 2025-06-22T21:41:54.914Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -2177,6 +2177,557 @@ textarea {
 	}
 }
 
+/* ============================================================================ */
+/* CALENDAR VIEW */
+/* ============================================================================ */
+
+.calendar-container {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	background: var(--white);
+}
+
+.calendar-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.calendar-title {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+}
+
+.calendar-controls {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+}
+
+.calendar-view-selector {
+	display: flex;
+	background: var(--gray-100);
+	border-radius: 6px;
+	padding: 2px;
+}
+
+.view-btn {
+	padding: 6px 16px;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	color: var(--gray-600);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.view-btn:hover {
+	color: var(--text-color);
+}
+
+.view-btn.active {
+	background: var(--white);
+	color: var(--text-color);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-nav {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.nav-btn {
+	padding: 6px 12px;
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	color: var(--text-color);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.nav-btn:hover {
+	background: var(--gray-50);
+	border-color: var(--gray-300);
+}
+
+.nav-btn .material-symbols-outlined {
+	font-size: 18px;
+}
+
+.today-btn {
+	padding: 6px 16px;
+}
+
+.calendar-period {
+	margin-bottom: 24px;
+}
+
+.calendar-period-text {
+	font-size: 20px;
+	font-weight: 500;
+	color: var(--text-color);
+	margin: 0;
+}
+
+.calendar-body {
+	flex: 1;
+	overflow: auto;
+}
+
+/* Month View */
+.calendar-month {
+	width: 100%;
+}
+
+.calendar-weekdays {
+	display: grid;
+	grid-template-columns: repeat(7, minmax(0, 1fr));
+	gap: 1px;
+	background: var(--border-color);
+	border: var(--border-width) solid var(--border-color);
+	border-bottom: none;
+	border-radius: 6px 6px 0 0;
+}
+
+.calendar-weekday {
+	background: var(--gray-50);
+	padding: 12px 8px;
+	text-align: center;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.calendar-days {
+	display: grid;
+	grid-template-columns: repeat(7, minmax(0, 1fr));
+	gap: 1px;
+	background: var(--border-color);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 0 0 6px 6px;
+}
+
+.calendar-day {
+	background: var(--white);
+	min-height: 120px;
+	padding: 6px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	min-width: 0;
+}
+
+.calendar-day:hover {
+	background: var(--gray-50);
+}
+
+.calendar-day.other-month {
+	background: var(--gray-50);
+	color: var(--gray-500);
+}
+
+.calendar-day.other-month:hover {
+	background: var(--gray-100);
+}
+
+.calendar-day.today {
+	background: var(--blue-50);
+}
+
+.calendar-day.today .calendar-day-number {
+	background: var(--blue-500);
+	color: var(--white);
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+}
+
+.calendar-day-number {
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 8px;
+}
+
+.calendar-day-events {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin-top: 4px;
+}
+
+.calendar-day-event-mini {
+	font-size: 10px;
+	padding: 2px 4px;
+	border-radius: 2px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.calendar-day-event-mini:hover {
+	opacity: 0.8;
+	transform: scale(1.02);
+}
+
+.calendar-event-mini-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.2;
+	font-weight: 500;
+}
+
+.calendar-event-more {
+	font-size: 9px;
+	color: var(--gray-600);
+	cursor: pointer;
+	padding: 1px 2px;
+	text-align: center;
+	font-weight: 500;
+}
+
+.calendar-event-more:hover {
+	color: var(--text-color);
+}
+
+/* Color-specific text colors for better readability */
+.calendar-event-task .calendar-event-mini-text {
+	color: var(--blue-700);
+}
+
+.calendar-event-applied .calendar-event-mini-text {
+	color: var(--green-700);
+}
+
+.calendar-event-interview .calendar-event-mini-text {
+	color: var(--orange-700);
+}
+
+.calendar-event-followup .calendar-event-mini-text {
+	color: var(--purple-700);
+}
+
+/* Week View */
+.calendar-week {
+	display: grid;
+	grid-template-columns: 60px repeat(7, 1fr);
+	gap: 1px;
+	background: var(--border-color);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	height: 600px;
+	overflow: hidden;
+}
+
+.calendar-week-times {
+	background: var(--gray-50);
+	display: flex;
+	flex-direction: column;
+}
+
+.calendar-week-time-header {
+	height: 60px;
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.calendar-time-slot {
+	height: 60px;
+	padding: 4px 8px;
+	font-size: 11px;
+	color: var(--gray-600);
+	text-align: right;
+	border-bottom: 1px solid var(--gray-200);
+}
+
+.calendar-week-day {
+	background: var(--white);
+	display: flex;
+	flex-direction: column;
+}
+
+.calendar-week-day.today {
+	background: var(--blue-50);
+}
+
+.calendar-week-day-header {
+	padding: 12px;
+	text-align: center;
+	border-bottom: var(--border-width) solid var(--border-color);
+	background: var(--gray-50);
+}
+
+.calendar-week-day-name {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+}
+
+.calendar-week-day-number {
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--text-color);
+	margin-top: 4px;
+}
+
+.calendar-week-day-events {
+	flex: 1;
+	padding: 8px;
+	overflow-y: auto;
+}
+
+.calendar-week-event {
+	padding: 6px 8px;
+	margin-bottom: 4px;
+	border-radius: 4px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.calendar-week-event:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-event-time {
+	font-size: 11px;
+	margin-bottom: 2px;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.calendar-event-time .material-symbols-outlined {
+	font-size: 14px;
+}
+
+.calendar-event-title {
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+/* Day View */
+.calendar-day-view {
+	display: grid;
+	grid-template-columns: 60px 1fr;
+	gap: 1px;
+	background: var(--border-color);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	height: 600px;
+	overflow: hidden;
+}
+
+.calendar-day-times {
+	background: var(--gray-50);
+	display: flex;
+	flex-direction: column;
+}
+
+.calendar-day-events-column {
+	background: var(--white);
+	padding: 16px;
+	overflow-y: auto;
+}
+
+.calendar-no-events {
+	text-align: center;
+	color: var(--gray-500);
+	padding: 40px;
+	font-style: italic;
+}
+
+.calendar-day-event {
+	padding: 12px;
+	margin-bottom: 12px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.calendar-day-event:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-event-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.calendar-event-priority {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.calendar-event-priority.priority-high {
+	background: var(--red-500);
+}
+
+.calendar-event-priority.priority-medium {
+	background: var(--orange-500);
+}
+
+.calendar-event-priority.priority-low {
+	background: var(--green-500);
+}
+
+.calendar-event-subtitle {
+	font-size: 12px;
+	color: var(--gray-600);
+	margin-top: 4px;
+}
+
+/* Event Cards */
+.calendar-events-modal {
+	max-width: 500px;
+}
+
+.calendar-events-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.calendar-event-card {
+	padding: 16px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 8px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.calendar-event-card:hover {
+	border-color: var(--blue-300);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-event-card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.calendar-event-type-badge {
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.priority-badge {
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 11px;
+	font-weight: 500;
+}
+
+.priority-badge.priority-high {
+	background: var(--red-100);
+	color: var(--red-700);
+}
+
+.priority-badge.priority-medium {
+	background: var(--orange-100);
+	color: var(--orange-700);
+}
+
+.priority-badge.priority-low {
+	background: var(--green-100);
+	color: var(--green-700);
+}
+
+.calendar-event-card-title {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin-bottom: 4px;
+}
+
+.calendar-event-card-subtitle {
+	font-size: 12px;
+	color: var(--gray-600);
+}
+
+/* Responsive Calendar */
+@media (max-width: 768px) {
+	.calendar-container {
+		padding: 16px;
+	}
+	
+	.calendar-header {
+		flex-direction: column;
+		gap: 16px;
+		align-items: stretch;
+	}
+	
+	.calendar-controls {
+		flex-direction: column;
+		gap: 12px;
+	}
+	
+	.calendar-view-selector,
+	.calendar-nav {
+		width: 100%;
+		justify-content: center;
+	}
+	
+	.calendar-day {
+		min-height: 80px;
+		padding: 6px;
+	}
+	
+	.calendar-week,
+	.calendar-day-view {
+		height: 400px;
+	}
+	
+	.calendar-week-times,
+	.calendar-day-times {
+		display: none;
+	}
+	
+	.calendar-week {
+		grid-template-columns: repeat(7, 1fr);
+	}
+	
+	.calendar-day-view {
+		grid-template-columns: 1fr;
+	}
+}
+
 
 /* ============================================================================ */
 /* SRC/STYLES/TABLE.CSS */
@@ -2775,6 +3326,11 @@ tr.editing .actions-cell button {
             <div class="tab-content" data-tab="tasks">
                 <!-- Content will be dynamically generated -->
             </div>
+            
+            <!-- Calendar View Tab -->
+            <div class="tab-content" data-tab="calendar">
+                <!-- Content will be dynamically generated -->
+            </div>
         </div>
     </div>
 
@@ -2799,11 +3355,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T19:44:33.504Z
+// Generated: 2025-06-22T21:41:54.908Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T19:44:33.504Z");
+console.log("JobTracker - Built at: 2025-06-22T21:41:54.908Z");
 
 
 // ============================================================================
@@ -3074,7 +3630,9 @@ const EN_TRANSLATIONS = {
 	tabs: {
 		jobs: "Jobs",
 		applications: "Applications Board",
-		tasks: "Tasks Board"
+		tasks: "Tasks Board",
+		calendar: "Calendar",
+		profile: "Profile"
 	},
 	kanban: {
 		title: "Applications Board",
@@ -3244,6 +3802,27 @@ const EN_TRANSLATIONS = {
 	footer: {
 		madeWith: "Made with",
 		by: "by"
+	},
+	calendar: {
+		title: "Calendar View",
+		today: "Today",
+		month: "Month",
+		week: "Week",
+		day: "Day",
+		previous: "Previous",
+		next: "Next",
+		noEvents: "No events scheduled",
+		events: "events",
+		applied: "Applied",
+		task: "Task",
+		interview: "Interview",
+		followUp: "Follow-up",
+		months: [
+			"January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December"
+		],
+		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	}
 };
 
@@ -3265,7 +3844,9 @@ const PT_TRANSLATIONS = {
 	tabs: {
 		jobs: "Empregos",
 		applications: "Quadro de Candidaturas",
-		tasks: "Quadro de Tarefas"
+		tasks: "Quadro de Tarefas",
+		calendar: "Calendário",
+		profile: "Perfil"
 	},
 	kanban: {
 		title: "Quadro de Candidaturas",
@@ -3435,6 +4016,27 @@ const PT_TRANSLATIONS = {
 	footer: {
 		madeWith: "Feito com",
 		by: "por"
+	},
+	calendar: {
+		title: "Visualização de Calendário",
+		today: "Hoje",
+		month: "Mês",
+		week: "Semana",
+		day: "Dia",
+		previous: "Anterior",
+		next: "Próximo",
+		noEvents: "Nenhum evento agendado",
+		events: "eventos",
+		applied: "Candidatou-se",
+		task: "Tarefa",
+		interview: "Entrevista",
+		followUp: "Acompanhamento",
+		months: [
+			"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+			"Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+		],
+		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 	}
 };
 
@@ -3500,6 +4102,11 @@ const I18n = {
 				`Translation missing for key: ${key} in language: ${I18n.currentLanguage}`,
 			);
 			return key;
+		}
+
+		// If translation is not a string (e.g., array or object), return as is
+		if (typeof translation !== 'string') {
+			return translation;
 		}
 
 		// Replace parameters in translation
@@ -3646,7 +4253,7 @@ const DEMO_DATA = [
 				priority: "high",
 				createdAt: "2025-06-15T10:00:00.000Z",
 				completedAt: null,
-				dueDate: "2025-06-22T10:00:00.000Z",
+				dueDate: "2025-06-25T10:00:00.000Z",
 			},
 			{
 				id: "2",
@@ -3656,6 +4263,24 @@ const DEMO_DATA = [
 				createdAt: "2025-06-14T09:00:00.000Z",
 				completedAt: "2025-06-16T14:30:00.000Z",
 				dueDate: null,
+			},
+			{
+				id: "3",
+				text: "Complete coding assessment",
+				status: "todo",
+				priority: "high",
+				createdAt: "2025-06-20T10:00:00.000Z",
+				completedAt: null,
+				dueDate: "2025-06-28T23:59:00.000Z",
+			},
+			{
+				id: "4",
+				text: "Research team members on LinkedIn",
+				status: "todo",
+				priority: "low",
+				createdAt: "2025-06-21T10:00:00.000Z",
+				completedAt: null,
+				dueDate: "2025-07-02T10:00:00.000Z",
 			},
 		],
 		contacts: []
@@ -3676,13 +4301,40 @@ const DEMO_DATA = [
 		notes: "demo.notes2",
 		tasks: [
 			{
-				id: "3",
-				text: "Wait for callback",
+				id: "5",
+				text: "Follow up on application",
 				status: "in-progress",
 				priority: "medium",
 				createdAt: "2025-06-12T15:00:00.000Z",
 				completedAt: null,
-				dueDate: "2025-06-20T17:00:00.000Z",
+				dueDate: "2025-06-26T17:00:00.000Z",
+			},
+			{
+				id: "6",
+				text: "Prepare portfolio projects showcase",
+				status: "todo",
+				priority: "high",
+				createdAt: "2025-06-18T10:00:00.000Z",
+				completedAt: null,
+				dueDate: "2025-06-30T17:00:00.000Z",
+			},
+			{
+				id: "7",
+				text: "Write thank you note after interview",
+				status: "todo",
+				priority: "medium",
+				createdAt: "2025-06-22T10:00:00.000Z",
+				completedAt: null,
+				dueDate: "2025-07-05T10:00:00.000Z",
+			},
+			{
+				id: "8",
+				text: "Review equity compensation guide",
+				status: "todo",
+				priority: "low",
+				createdAt: "2025-06-23T10:00:00.000Z",
+				completedAt: null,
+				dueDate: "2025-07-10T10:00:00.000Z",
 			},
 		],
 		contacts: []
@@ -6122,7 +6774,8 @@ const TabNavigation = {
 	tabs: [
 		{ id: 'jobs', key: 'tabs.jobs', icon: 'work' },
 		{ id: 'applications', key: 'tabs.applications', icon: 'dashboard' },
-		{ id: 'tasks', key: 'tabs.tasks', icon: 'task_alt' }
+		{ id: 'tasks', key: 'tabs.tasks', icon: 'task_alt' },
+		{ id: 'calendar', key: 'tabs.calendar', icon: 'calendar_month' }
 	],
 
 	// Get tab from URL parameter
@@ -6228,6 +6881,10 @@ const TabNavigation = {
 				// Initialize tasks board if needed
 				TabNavigation.initializeTasksBoard();
 				break;
+			case 'calendar':
+				// Initialize calendar view if needed
+				TabNavigation.initializeCalendarView();
+				break;
 		}
 	},
 
@@ -6242,6 +6899,13 @@ const TabNavigation = {
 	initializeTasksBoard: () => {
 		if (typeof TasksBoard !== 'undefined') {
 			TasksBoard.init();
+		}
+	},
+
+	// Initialize calendar view
+	initializeCalendarView: () => {
+		if (typeof CalendarView !== 'undefined') {
+			CalendarView.init();
 		}
 	},
 
@@ -6523,6 +7187,12 @@ const KanbanBoard = {
 		if (job && job.currentPhase !== targetPhase) {
 			// Update job phase
 			job.currentPhase = targetPhase;
+			
+			// Track when job moves to applied status
+			if (targetPhase === 'applied' && !job.appliedDate) {
+				job.appliedDate = new Date().toISOString();
+			}
+			
 			// Clear substep if moving to a different phase that doesn't support it
 			if (!getSubstepsForPhase(targetPhase).includes(job.currentSubstep)) {
 				job.currentSubstep = targetPhase;
@@ -6595,6 +7265,11 @@ const KanbanBoard = {
 			// Update job in data
 			const jobIndex = jobsData.findIndex(j => j.id === job.id);
 			if (jobIndex !== -1) {
+				// Track when job moves to applied status
+				if (updatedJob.currentPhase === 'applied' && jobsData[jobIndex].currentPhase !== 'applied' && !jobsData[jobIndex].appliedDate) {
+					updatedJob.appliedDate = new Date().toISOString();
+				}
+				
 				Object.assign(jobsData[jobIndex], updatedJob);
 				saveToLocalStorage();
 				
@@ -7153,6 +7828,663 @@ const TasksBoard = {
 
 // Make tasks board available globally
 window.TasksBoard = TasksBoard;
+
+// ============================================================================
+// SRC/COMPONENTS/CALENDAR-VIEW.JS
+// ============================================================================
+
+// ============================================================================
+// CALENDAR VIEW COMPONENT
+// ============================================================================
+
+const CalendarView = {
+	// Current view settings
+	currentView: 'month', // month, week, day
+	currentDate: new Date(),
+	selectedDate: null,
+	events: [],
+
+	// Initialize calendar view
+	init: () => {
+		const calendarTab = document.querySelector('.tab-content[data-tab="calendar"]');
+		
+		if (calendarTab) {
+			// Always reload events to get latest data
+			CalendarView.loadEvents();
+			
+			// Only clear and initialize if not already initialized
+			if (!calendarTab.querySelector('.calendar-container')) {
+				// Clear existing content
+				calendarTab.innerHTML = '';
+				
+				// Create calendar container
+				const container = CalendarView.create();
+				calendarTab.appendChild(container);
+			} else {
+				// If already initialized, just update the view
+				CalendarView.updateView();
+			}
+		}
+	},
+
+	// Create the main calendar structure
+	create: () => {
+		const container = h("div", { className: "calendar-container" },
+			// Header with title and controls
+			h("div", { className: "calendar-header" },
+				h("h2", { className: "calendar-title" }, I18n.t("calendar.title")),
+				
+				// View selector
+				h("div", { className: "calendar-controls" },
+					h("div", { className: "calendar-view-selector" },
+						h("button", {
+							className: `view-btn ${CalendarView.currentView === 'month' ? 'active' : ''}`,
+							onclick: () => CalendarView.switchView('month')
+						}, I18n.t("calendar.month")),
+						h("button", {
+							className: `view-btn ${CalendarView.currentView === 'week' ? 'active' : ''}`,
+							onclick: () => CalendarView.switchView('week')
+						}, I18n.t("calendar.week")),
+						h("button", {
+							className: `view-btn ${CalendarView.currentView === 'day' ? 'active' : ''}`,
+							onclick: () => CalendarView.switchView('day')
+						}, I18n.t("calendar.day"))
+					),
+					
+					// Navigation controls
+					h("div", { className: "calendar-nav" },
+						h("button", {
+							className: "nav-btn",
+							onclick: () => CalendarView.navigate('prev'),
+							title: I18n.t("calendar.previous")
+						}, h("span", { className: "material-symbols-outlined" }, "chevron_left")),
+						
+						h("button", {
+							className: "nav-btn today-btn",
+							onclick: () => CalendarView.navigateToday()
+						}, I18n.t("calendar.today")),
+						
+						h("button", {
+							className: "nav-btn",
+							onclick: () => CalendarView.navigate('next'),
+							title: I18n.t("calendar.next")
+						}, h("span", { className: "material-symbols-outlined" }, "chevron_right"))
+					)
+				)
+			),
+			
+			// Current period display
+			h("div", { className: "calendar-period" },
+				h("h3", { className: "calendar-period-text" }, CalendarView.getCurrentPeriodText())
+			),
+			
+			// Calendar body
+			h("div", { className: "calendar-body", id: "calendarBody" },
+				CalendarView.renderCurrentView()
+			)
+		);
+		
+		return container;
+	},
+
+	// Switch between views
+	switchView: (view) => {
+		CalendarView.currentView = view;
+		CalendarView.updateView();
+	},
+
+	// Navigate calendar
+	navigate: (direction) => {
+		const date = new Date(CalendarView.currentDate);
+		
+		switch (CalendarView.currentView) {
+			case 'month':
+				if (direction === 'prev') {
+					date.setMonth(date.getMonth() - 1);
+				} else {
+					date.setMonth(date.getMonth() + 1);
+				}
+				break;
+			case 'week':
+				if (direction === 'prev') {
+					date.setDate(date.getDate() - 7);
+				} else {
+					date.setDate(date.getDate() + 7);
+				}
+				break;
+			case 'day':
+				if (direction === 'prev') {
+					date.setDate(date.getDate() - 1);
+				} else {
+					date.setDate(date.getDate() + 1);
+				}
+				break;
+		}
+		
+		CalendarView.currentDate = date;
+		CalendarView.updateView();
+	},
+
+	// Navigate to today
+	navigateToday: () => {
+		CalendarView.currentDate = new Date();
+		CalendarView.updateView();
+	},
+
+	// Update calendar view
+	updateView: () => {
+		// Update view selector buttons
+		document.querySelectorAll('.view-btn').forEach(btn => {
+			btn.classList.toggle('active', btn.textContent.toLowerCase() === CalendarView.currentView);
+		});
+		
+		// Update period text
+		const periodText = document.querySelector('.calendar-period-text');
+		if (periodText) {
+			periodText.textContent = CalendarView.getCurrentPeriodText();
+		}
+		
+		// Update calendar body
+		const calendarBody = document.getElementById('calendarBody');
+		if (calendarBody) {
+			calendarBody.innerHTML = '';
+			calendarBody.appendChild(CalendarView.renderCurrentView());
+		}
+	},
+
+	// Get current period text
+	getCurrentPeriodText: () => {
+		const date = CalendarView.currentDate;
+		const months = I18n.t("calendar.months");
+		
+		switch (CalendarView.currentView) {
+			case 'month':
+				return `${months[date.getMonth()]} ${date.getFullYear()}`;
+			case 'week':
+				const weekStart = CalendarView.getWeekStart(date);
+				const weekEnd = CalendarView.getWeekEnd(date);
+				if (weekStart.getMonth() === weekEnd.getMonth()) {
+					return `${weekStart.getDate()}-${weekEnd.getDate()} ${months[weekStart.getMonth()]} ${weekStart.getFullYear()}`;
+				} else if (weekStart.getFullYear() === weekEnd.getFullYear()) {
+					return `${weekStart.getDate()} ${months[weekStart.getMonth()]} - ${weekEnd.getDate()} ${months[weekEnd.getMonth()]} ${weekStart.getFullYear()}`;
+				} else {
+					return `${weekStart.getDate()} ${months[weekStart.getMonth()]} ${weekStart.getFullYear()} - ${weekEnd.getDate()} ${months[weekEnd.getMonth()]} ${weekEnd.getFullYear()}`;
+				}
+			case 'day':
+				const weekdays = I18n.t("calendar.weekdaysFull");
+				return `${weekdays[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+		}
+	},
+
+	// Render current view
+	renderCurrentView: () => {
+		switch (CalendarView.currentView) {
+			case 'month':
+				return CalendarView.renderMonthView();
+			case 'week':
+				return CalendarView.renderWeekView();
+			case 'day':
+				return CalendarView.renderDayView();
+		}
+	},
+
+	// Render month view
+	renderMonthView: () => {
+		const year = CalendarView.currentDate.getFullYear();
+		const month = CalendarView.currentDate.getMonth();
+		const firstDay = new Date(year, month, 1);
+		const lastDay = new Date(year, month + 1, 0);
+		const startDate = new Date(firstDay);
+		startDate.setDate(startDate.getDate() - firstDay.getDay());
+		
+		const weekdays = I18n.t("calendar.weekdays");
+		
+		const monthGrid = h("div", { className: "calendar-month" },
+			// Weekday headers
+			h("div", { className: "calendar-weekdays" },
+				...weekdays.map(day => 
+					h("div", { className: "calendar-weekday" }, day)
+				)
+			),
+			
+			// Days grid
+			h("div", { className: "calendar-days" },
+				...CalendarView.generateMonthDays(startDate, firstDay, lastDay)
+			)
+		);
+		
+		return monthGrid;
+	},
+
+	// Generate month days
+	generateMonthDays: (startDate, firstDay, lastDay) => {
+		const days = [];
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		
+		const current = new Date(startDate);
+		
+		// Generate 6 weeks of days
+		for (let week = 0; week < 6; week++) {
+			for (let day = 0; day < 7; day++) {
+				const date = new Date(current);
+				const isCurrentMonth = date.getMonth() === firstDay.getMonth();
+				const isToday = date.getTime() === today.getTime();
+				const dayEvents = CalendarView.getEventsForDate(date);
+				
+				const dayContent = [
+					h("div", { className: "calendar-day-number" }, date.getDate())
+				];
+				
+				if (dayEvents.length > 0) {
+					dayContent.push(
+						h("div", { className: "calendar-day-events" },
+							...CalendarView.renderDayEventCards(dayEvents)
+						)
+					);
+				}
+				
+				days.push(
+					h("div", {
+						className: `calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${dayEvents.length > 0 ? 'has-events' : ''}`,
+						onclick: () => CalendarView.selectDate(date)
+					},
+						...dayContent
+					)
+				);
+				
+				current.setDate(current.getDate() + 1);
+			}
+		}
+		
+		return days;
+	},
+
+	// Render week view
+	renderWeekView: () => {
+		const weekStart = CalendarView.getWeekStart(CalendarView.currentDate);
+		const weekdays = I18n.t("calendar.weekdays");
+		const weekdaysFull = I18n.t("calendar.weekdaysFull");
+		
+		const weekGrid = h("div", { className: "calendar-week" },
+			// Time column
+			h("div", { className: "calendar-week-times" },
+				h("div", { className: "calendar-week-time-header" }, ""),
+				...CalendarView.generateTimeSlots()
+			),
+			
+			// Days columns
+			...Array.from({ length: 7 }, (_, i) => {
+				const date = new Date(weekStart);
+				date.setDate(date.getDate() + i);
+				const dayEvents = CalendarView.getEventsForDate(date);
+				const isToday = CalendarView.isToday(date);
+				
+				return h("div", { className: `calendar-week-day ${isToday ? 'today' : ''}` },
+					h("div", { className: "calendar-week-day-header" },
+						h("div", { className: "calendar-week-day-name" }, weekdays[i]),
+						h("div", { className: "calendar-week-day-number" }, date.getDate())
+					),
+					h("div", { className: "calendar-week-day-events" },
+						...CalendarView.renderWeekEvents(dayEvents)
+					)
+				);
+			})
+		);
+		
+		return weekGrid;
+	},
+
+	// Render day view
+	renderDayView: () => {
+		const date = CalendarView.currentDate;
+		const dayEvents = CalendarView.getEventsForDate(date);
+		
+		const dayView = h("div", { className: "calendar-day-view" },
+			// Time slots
+			h("div", { className: "calendar-day-times" },
+				...CalendarView.generateTimeSlots()
+			),
+			
+			// Events column
+			h("div", { className: "calendar-day-events-column" },
+				...(dayEvents.length === 0 ? 
+					[h("div", { className: "calendar-no-events" }, I18n.t("calendar.noEvents"))] :
+					CalendarView.renderDayEvents(dayEvents))
+			)
+		);
+		
+		return dayView;
+	},
+
+	// Generate time slots
+	generateTimeSlots: () => {
+		const slots = [];
+		for (let hour = 0; hour < 24; hour++) {
+			const time = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
+			slots.push(
+				h("div", { className: "calendar-time-slot" }, time)
+			);
+		}
+		return slots;
+	},
+
+	// Load events from jobs data
+	loadEvents: () => {
+		const events = [];
+		
+		jobsData.forEach(job => {
+			// Add application date event
+			if (job.appliedDate) {
+				events.push({
+					id: `applied-${job.id}`,
+					type: 'applied',
+					date: new Date(job.appliedDate),
+					title: `${I18n.t("calendar.applied")}: ${job.company}`,
+					job: job,
+					color: 'green'
+				});
+			}
+			
+			// Add tasks with due dates
+			if (job.tasks) {
+				job.tasks.forEach(task => {
+					if (task.dueDate && task.status !== 'done' && !task.archived) {
+						events.push({
+							id: `task-${job.id}-${task.id}`,
+							type: 'task',
+							date: new Date(task.dueDate),
+							title: task.text,
+							job: job,
+							task: task,
+							priority: task.priority,
+							color: 'blue'
+						});
+					}
+				});
+			}
+			
+			// Add interview events based on substeps
+			const interviewSubsteps = [
+				'hr_phone_screen', 'phone_screening', 'technical_phone_screen',
+				'technical_interview', 'behavioral_interview', 'team_interview',
+				'hiring_manager_interview', 'panel_interview', 'final_round'
+			];
+			
+			if (interviewSubsteps.includes(job.currentSubstep)) {
+				// For demo purposes, set interview date to near future
+				const interviewDate = new Date();
+				interviewDate.setDate(interviewDate.getDate() + Math.floor(Math.random() * 7) + 1);
+				
+				events.push({
+					id: `interview-${job.id}`,
+					type: 'interview',
+					date: interviewDate,
+					title: `${I18n.t("calendar.interview")}: ${job.company} - ${job.position}`,
+					job: job,
+					color: 'orange'
+				});
+			}
+			
+			// Add follow-up reminders
+			if (job.currentPhase === 'applied' && job.appliedDate) {
+				const followUpDate = new Date(job.appliedDate);
+				followUpDate.setDate(followUpDate.getDate() + 7); // Follow up after 1 week
+				
+				if (followUpDate > new Date()) {
+					events.push({
+						id: `followup-${job.id}`,
+						type: 'followup',
+						date: followUpDate,
+						title: `${I18n.t("calendar.followUp")}: ${job.company}`,
+						job: job,
+						color: 'purple'
+					});
+				}
+			}
+		});
+		
+		CalendarView.events = events;
+	},
+
+	// Get events for a specific date
+	getEventsForDate: (date) => {
+		const dateStr = CalendarView.formatDateKey(date);
+		return CalendarView.events.filter(event => 
+			CalendarView.formatDateKey(event.date) === dateStr
+		);
+	},
+
+	// Format date as key
+	formatDateKey: (date) => {
+		return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+	},
+
+	// Check if date is today
+	isToday: (date) => {
+		const today = new Date();
+		return date.getFullYear() === today.getFullYear() &&
+			date.getMonth() === today.getMonth() &&
+			date.getDate() === today.getDate();
+	},
+
+	// Get week start
+	getWeekStart: (date) => {
+		const d = new Date(date);
+		const day = d.getDay();
+		const diff = d.getDate() - day;
+		return new Date(d.setDate(diff));
+	},
+
+	// Get week end
+	getWeekEnd: (date) => {
+		const d = new Date(date);
+		const day = d.getDay();
+		const diff = d.getDate() - day + 6;
+		return new Date(d.setDate(diff));
+	},
+
+	// Select a date
+	selectDate: (date) => {
+		CalendarView.selectedDate = date;
+		const events = CalendarView.getEventsForDate(date);
+		
+		if (events.length > 0) {
+			CalendarView.showDateEvents(date, events);
+		}
+	},
+
+	// Render day event cards (mini cards with text)
+	renderDayEventCards: (events) => {
+		// Limit to first 3 events to avoid overflow
+		const displayEvents = events.slice(0, 3);
+		const cards = [];
+		
+		displayEvents.forEach(event => {
+			const color = CalendarView.getEventColor(event.type);
+			let eventText = '';
+			
+			// Format event text based on type
+			switch(event.type) {
+				case 'task':
+					eventText = event.task.text;
+					break;
+				case 'applied':
+					eventText = `Applied: ${event.job.company}`;
+					break;
+				case 'interview':
+					eventText = `Interview: ${event.job.position}`;
+					break;
+				case 'followup':
+					eventText = `Follow up: ${event.job.company}`;
+					break;
+			}
+			
+			cards.push(
+				h("div", {
+					className: `calendar-day-event-mini calendar-event-${event.type}`,
+					style: `background-color: var(--${color}-100); border-left: 2px solid var(--${color}-500);`,
+					onclick: (e) => {
+						e.stopPropagation();
+						CalendarView.selectDate(new Date(event.date));
+					},
+					title: eventText
+				},
+					h("div", { className: "calendar-event-mini-text" }, eventText)
+				)
+			);
+		});
+		
+		// Add overflow indicator if there are more events
+		if (events.length > 3) {
+			cards.push(
+				h("div", { 
+					className: "calendar-event-more",
+					onclick: (e) => {
+						e.stopPropagation();
+						CalendarView.selectDate(new Date(events[0].date));
+					}
+				}, `+${events.length - 3} more`)
+			);
+		}
+		
+		return cards;
+	},
+
+	// Render week events
+	renderWeekEvents: (events) => {
+		return events.map(event => 
+			h("div", {
+				className: `calendar-week-event calendar-event-${event.type}`,
+				style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); border-left: 3px solid var(--${CalendarView.getEventColor(event.type)}-500);`,
+				onclick: () => CalendarView.showEventDetails(event)
+			},
+				h("div", { className: "calendar-event-time" }, CalendarView.formatEventTime(event)),
+				h("div", { className: "calendar-event-title" }, event.title)
+			)
+		);
+	},
+
+	// Render day events
+	renderDayEvents: (events) => {
+		return events.map(event => 
+			h("div", {
+				className: `calendar-day-event calendar-event-${event.type}`,
+				style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type)}-500);`,
+				onclick: () => CalendarView.showEventDetails(event)
+			},
+				h("div", { className: "calendar-event-header" },
+					h("div", { className: "calendar-event-time" }, CalendarView.formatEventTime(event)),
+					event.type === 'task' && event.priority && 
+						h("span", { className: `calendar-event-priority priority-${event.priority}` })
+				),
+				h("div", { className: "calendar-event-title" }, event.title),
+				h("div", { className: "calendar-event-subtitle" }, 
+					`${event.job.company} - ${event.job.position}`
+				)
+			)
+		);
+	},
+
+	// Get event color
+	getEventColor: (type) => {
+		const colors = {
+			applied: 'green',
+			task: 'blue',
+			interview: 'orange',
+			followup: 'purple'
+		};
+		return colors[type] || 'gray';
+	},
+
+	// Format event time
+	formatEventTime: (event) => {
+		// For now, just return the type icon
+		const icons = {
+			applied: 'work',
+			task: 'task_alt',
+			interview: 'groups',
+			followup: 'follow_the_signs'
+		};
+		return h("span", { className: "material-symbols-outlined" }, icons[event.type] || 'event');
+	},
+
+	// Show date events modal
+	showDateEvents: (date, events) => {
+		const months = I18n.t("calendar.months");
+		const weekdays = I18n.t("calendar.weekdaysFull");
+		const dateStr = `${weekdays[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]}`;
+		
+		const modal = h("div", { className: "modal-overlay", onclick: (e) => {
+			if (e.target.className === "modal-overlay") e.target.remove();
+		}},
+			h("div", { className: "modal calendar-events-modal" },
+				h("div", { className: "modal-header" },
+					h("h3", { className: "modal-title" }, dateStr),
+					h("button", {
+						className: "modal-close",
+						onclick: (e) => e.target.closest('.modal-overlay').remove()
+					}, "×")
+				),
+				h("div", { className: "modal-body" },
+					h("div", { className: "calendar-events-list" },
+						...events.map(event => CalendarView.renderEventCard(event))
+					)
+				)
+			)
+		);
+		
+		document.body.appendChild(modal);
+	},
+
+	// Render event card
+	renderEventCard: (event) => {
+		return h("div", {
+			className: `calendar-event-card calendar-event-${event.type}`,
+			onclick: () => CalendarView.handleEventClick(event)
+		},
+			h("div", { className: "calendar-event-card-header" },
+				h("span", {
+					className: "calendar-event-type-badge",
+					style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); color: var(--${CalendarView.getEventColor(event.type)}-700);`
+				}, I18n.t(`calendar.${event.type}`)),
+				event.type === 'task' && event.priority && 
+					h("span", { className: `priority-badge priority-${event.priority}` }, 
+						I18n.t(`modals.tasks.priority${event.priority.charAt(0).toUpperCase() + event.priority.slice(1)}`)
+					)
+			),
+			h("div", { className: "calendar-event-card-title" }, event.title),
+			h("div", { className: "calendar-event-card-subtitle" }, 
+				`${event.job.company} - ${event.job.position}`
+			)
+		);
+	},
+
+	// Handle event click
+	handleEventClick: (event) => {
+		// Close modal
+		const modal = document.querySelector('.modal-overlay');
+		if (modal) modal.remove();
+		
+		// Navigate based on event type
+		if (event.type === 'task') {
+			// Open tasks modal for the job
+			openTasksModal(event.job);
+		} else {
+			// Switch to jobs tab and highlight the job
+			TabNavigation.switchTo('jobs');
+			// Could add highlighting logic here
+		}
+	},
+
+	// Show event details
+	showEventDetails: (event) => {
+		CalendarView.handleEventClick(event);
+	}
+};
+
+// Make CalendarView available globally
+window.CalendarView = CalendarView;
 
 // ============================================================================
 // SRC/COMPONENTS/TABLE.JS

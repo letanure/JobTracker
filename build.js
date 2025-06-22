@@ -38,6 +38,7 @@ const BUILD_CONFIG = {
     'src/components/tabs.js',
     'src/components/kanban.js',
     'src/components/tasks-board.js',
+    'src/components/calendar-view.js',
     'src/components/table.js',
     
     // Application modules

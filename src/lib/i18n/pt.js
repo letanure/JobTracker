@@ -12,7 +12,9 @@ const PT_TRANSLATIONS = {
 	tabs: {
 		jobs: "Empregos",
 		applications: "Quadro de Candidaturas",
-		tasks: "Quadro de Tarefas"
+		tasks: "Quadro de Tarefas",
+		calendar: "Calendário",
+		profile: "Perfil"
 	},
 	kanban: {
 		title: "Quadro de Candidaturas",
@@ -182,5 +184,26 @@ const PT_TRANSLATIONS = {
 	footer: {
 		madeWith: "Feito com",
 		by: "por"
+	},
+	calendar: {
+		title: "Visualização de Calendário",
+		today: "Hoje",
+		month: "Mês",
+		week: "Semana",
+		day: "Dia",
+		previous: "Anterior",
+		next: "Próximo",
+		noEvents: "Nenhum evento agendado",
+		events: "eventos",
+		applied: "Candidatou-se",
+		task: "Tarefa",
+		interview: "Entrevista",
+		followUp: "Acompanhamento",
+		months: [
+			"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+			"Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+		],
+		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 	}
 };

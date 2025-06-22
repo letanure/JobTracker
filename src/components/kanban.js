@@ -247,6 +247,12 @@ const KanbanBoard = {
 		if (job && job.currentPhase !== targetPhase) {
 			// Update job phase
 			job.currentPhase = targetPhase;
+			
+			// Track when job moves to applied status
+			if (targetPhase === 'applied' && !job.appliedDate) {
+				job.appliedDate = new Date().toISOString();
+			}
+			
 			// Clear substep if moving to a different phase that doesn't support it
 			if (!getSubstepsForPhase(targetPhase).includes(job.currentSubstep)) {
 				job.currentSubstep = targetPhase;
@@ -319,6 +325,11 @@ const KanbanBoard = {
 			// Update job in data
 			const jobIndex = jobsData.findIndex(j => j.id === job.id);
 			if (jobIndex !== -1) {
+				// Track when job moves to applied status
+				if (updatedJob.currentPhase === 'applied' && jobsData[jobIndex].currentPhase !== 'applied' && !jobsData[jobIndex].appliedDate) {
+					updatedJob.appliedDate = new Date().toISOString();
+				}
+				
 				Object.assign(jobsData[jobIndex], updatedJob);
 				saveToLocalStorage();
 				

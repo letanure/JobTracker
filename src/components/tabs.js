@@ -10,7 +10,8 @@ const TabNavigation = {
 	tabs: [
 		{ id: 'jobs', key: 'tabs.jobs', icon: 'work' },
 		{ id: 'applications', key: 'tabs.applications', icon: 'dashboard' },
-		{ id: 'tasks', key: 'tabs.tasks', icon: 'task_alt' }
+		{ id: 'tasks', key: 'tabs.tasks', icon: 'task_alt' },
+		{ id: 'calendar', key: 'tabs.calendar', icon: 'calendar_month' }
 	],
 
 	// Get tab from URL parameter
@@ -116,6 +117,10 @@ const TabNavigation = {
 				// Initialize tasks board if needed
 				TabNavigation.initializeTasksBoard();
 				break;
+			case 'calendar':
+				// Initialize calendar view if needed
+				TabNavigation.initializeCalendarView();
+				break;
 		}
 	},
 
@@ -130,6 +135,13 @@ const TabNavigation = {
 	initializeTasksBoard: () => {
 		if (typeof TasksBoard !== 'undefined') {
 			TasksBoard.init();
+		}
+	},
+
+	// Initialize calendar view
+	initializeCalendarView: () => {
+		if (typeof CalendarView !== 'undefined') {
+			CalendarView.init();
 		}
 	},
 

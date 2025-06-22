@@ -58,6 +58,11 @@ const I18n = {
 			return key;
 		}
 
+		// If translation is not a string (e.g., array or object), return as is
+		if (typeof translation !== 'string') {
+			return translation;
+		}
+
 		// Replace parameters in translation
 		return translation.replace(/\{(\w+)\}/g, (match, param) => {
 			return params[param] !== undefined ? params[param] : match;

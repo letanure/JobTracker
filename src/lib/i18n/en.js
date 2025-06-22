@@ -12,7 +12,9 @@ const EN_TRANSLATIONS = {
 	tabs: {
 		jobs: "Jobs",
 		applications: "Applications Board",
-		tasks: "Tasks Board"
+		tasks: "Tasks Board",
+		calendar: "Calendar",
+		profile: "Profile"
 	},
 	kanban: {
 		title: "Applications Board",
@@ -182,5 +184,26 @@ const EN_TRANSLATIONS = {
 	footer: {
 		madeWith: "Made with",
 		by: "by"
+	},
+	calendar: {
+		title: "Calendar View",
+		today: "Today",
+		month: "Month",
+		week: "Week",
+		day: "Day",
+		previous: "Previous",
+		next: "Next",
+		noEvents: "No events scheduled",
+		events: "events",
+		applied: "Applied",
+		task: "Task",
+		interview: "Interview",
+		followUp: "Follow-up",
+		months: [
+			"January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December"
+		],
+		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	}
 };
