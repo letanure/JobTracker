@@ -408,8 +408,10 @@
 
 	/* Focus ring fallbacks for older browsers */
 	--focus-ring-fallback: 0 0 0 var(--focus-ring-width) rgba(35, 131, 226, 0.1);
-	--focus-ring-error-fallback: 0 0 0 var(--focus-ring-width) rgba(224, 62, 62, 0.1);
-	--focus-ring-success-fallback: 0 0 0 var(--focus-ring-width) rgba(15, 123, 15, 0.1);
+	--focus-ring-error-fallback: 0 0 0 var(--focus-ring-width)
+		rgba(224, 62, 62, 0.1);
+	--focus-ring-success-fallback: 0 0 0 var(--focus-ring-width)
+		rgba(15, 123, 15, 0.1);
 
 	/* Z-index scale - calc-based */
 	--z-dropdown: calc(var(--base-size) * 25); /* 100 */
@@ -1262,7 +1264,8 @@ tbody tr {
 }
 
 .task-status {
-	padding: calc(var(--base-size) / 2) calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
+	padding: calc(var(--base-size) / 2)
+		calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
 	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
 	height: var(--counter-height); /* Consistent height */
@@ -1273,7 +1276,8 @@ tbody tr {
 
 .task-priority {
 	color: white;
-	padding: calc(var(--base-size) / 2) calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
+	padding: calc(var(--base-size) / 2)
+		calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
 	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
 	height: var(--counter-height); /* Consistent height */
