@@ -1621,6 +1621,32 @@ textarea {
 	color: var(--purple-700);
 }
 
+/* Drag and Drop Styles */
+.calendar-day-event-mini[draggable="true"] {
+	cursor: grab;
+}
+
+.calendar-day-event-mini[draggable="true"]:active {
+	cursor: grabbing;
+}
+
+.calendar-day-event-mini.dragging {
+	opacity: 0.5;
+	transform: scale(0.95);
+	z-index: 1000;
+}
+
+.calendar-day.drag-over {
+	background-color: var(--blue-50) !important;
+	border: 2px dashed var(--blue-400) !important;
+	transform: scale(1.02);
+}
+
+.calendar-day.drag-over .calendar-day-number {
+	color: var(--blue-600);
+	font-weight: 600;
+}
+
 /* Week View */
 .calendar-week {
 	display: grid;

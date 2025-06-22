@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T21:47:33.946Z
+Generated: 2025-06-22T21:54:26.359Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -2433,6 +2433,32 @@ textarea {
 	color: var(--purple-700);
 }
 
+/* Drag and Drop Styles */
+.calendar-day-event-mini[draggable="true"] {
+	cursor: grab;
+}
+
+.calendar-day-event-mini[draggable="true"]:active {
+	cursor: grabbing;
+}
+
+.calendar-day-event-mini.dragging {
+	opacity: 0.5;
+	transform: scale(0.95);
+	z-index: 1000;
+}
+
+.calendar-day.drag-over {
+	background-color: var(--blue-50) !important;
+	border: 2px dashed var(--blue-400) !important;
+	transform: scale(1.02);
+}
+
+.calendar-day.drag-over .calendar-day-number {
+	color: var(--blue-600);
+	font-weight: 600;
+}
+
 /* Week View */
 .calendar-week {
 	display: grid;
@@ -3387,11 +3413,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T21:47:33.939Z
+// Generated: 2025-06-22T21:54:26.353Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T21:47:33.939Z");
+console.log("JobTracker - Built at: 2025-06-22T21:54:26.353Z");
 
 
 // ============================================================================
@@ -8163,7 +8189,11 @@ const CalendarView = {
 				days.push(
 					h("div", {
 						className: `calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${dayEvents.length > 0 ? 'has-events' : ''}`,
-						onclick: () => CalendarView.selectDate(date)
+						onclick: () => CalendarView.selectDate(date),
+						ondragover: (e) => CalendarView.handleDragOver(e),
+						ondragleave: (e) => CalendarView.handleDragLeave(e),
+						ondrop: (e) => CalendarView.handleDrop(e, date),
+						'data-date': CalendarView.formatDateKey(date)
 					},
 						...dayContent
 					)
@@ -8201,7 +8231,13 @@ const CalendarView = {
 						h("div", { className: "calendar-week-day-name" }, weekdays[i]),
 						h("div", { className: "calendar-week-day-number" }, date.getDate())
 					),
-					h("div", { className: "calendar-week-day-events" },
+					h("div", { 
+						className: "calendar-week-day-events",
+						ondragover: (e) => CalendarView.handleDragOver(e),
+						ondragleave: (e) => CalendarView.handleDragLeave(e),
+						ondrop: (e) => CalendarView.handleDrop(e, date),
+						'data-date': CalendarView.formatDateKey(date)
+					},
 						...CalendarView.renderWeekEvents(dayEvents)
 					)
 				);
@@ -8400,9 +8436,15 @@ const CalendarView = {
 				h("div", {
 					className: `calendar-day-event-mini calendar-event-${event.type}`,
 					style: `background-color: var(--${color}-100); border-left: 2px solid var(--${color}-500);`,
+					draggable: event.type === 'task', // Only tasks can be dragged
 					onclick: (e) => {
 						e.stopPropagation();
 						CalendarView.selectDate(new Date(event.date));
+					},
+					ondragstart: (e) => {
+						if (event.type === 'task') {
+							CalendarView.handleDragStart(e, event);
+						}
 					},
 					title: eventText
 				},
@@ -8433,7 +8475,13 @@ const CalendarView = {
 			h("div", {
 				className: `calendar-week-event calendar-event-${event.type}`,
 				style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); border-left: 3px solid var(--${CalendarView.getEventColor(event.type)}-500);`,
-				onclick: () => CalendarView.showEventDetails(event)
+				draggable: event.type === 'task', // Only tasks can be dragged
+				onclick: () => CalendarView.showEventDetails(event),
+				ondragstart: (e) => {
+					if (event.type === 'task') {
+						CalendarView.handleDragStart(e, event);
+					}
+				}
 			},
 				h("div", { className: "calendar-event-time" }, CalendarView.formatEventTime(event)),
 				h("div", { className: "calendar-event-title" }, event.title)
@@ -8627,6 +8675,118 @@ const CalendarView = {
 	// Show event details
 	showEventDetails: (event) => {
 		CalendarView.handleEventClick(event);
+	},
+
+	// Drag and drop handlers
+	handleDragStart: (e, event) => {
+		e.stopPropagation();
+		
+		// Only allow dragging tasks
+		if (event.type !== 'task') {
+			e.preventDefault();
+			return;
+		}
+		
+		// Store the event data
+		e.dataTransfer.setData('text/plain', JSON.stringify({
+			eventId: event.id,
+			jobId: event.job.id,
+			taskId: event.task.id,
+			eventType: event.type
+		}));
+		
+		e.dataTransfer.effectAllowed = 'move';
+		
+		// Add visual feedback
+		e.target.classList.add('dragging');
+	},
+
+	handleDragOver: (e) => {
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'move';
+		
+		// Add visual feedback to drop target
+		const dayElement = e.currentTarget;
+		dayElement.classList.add('drag-over');
+	},
+
+	handleDragLeave: (e) => {
+		// Remove visual feedback
+		const dayElement = e.currentTarget;
+		dayElement.classList.remove('drag-over');
+	},
+
+	handleDrop: (e, targetDate) => {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		// Remove visual feedback
+		const dayElement = e.currentTarget;
+		dayElement.classList.remove('drag-over');
+		
+		// Remove dragging class from all elements
+		document.querySelectorAll('.dragging').forEach(el => {
+			el.classList.remove('dragging');
+		});
+		
+		try {
+			const dragData = JSON.parse(e.dataTransfer.getData('text/plain'));
+			
+			if (dragData.eventType === 'task') {
+				CalendarView.moveTaskToDate(dragData.jobId, dragData.taskId, targetDate);
+			}
+		} catch (error) {
+			console.error('Error handling drop:', error);
+		}
+	},
+
+	// Move task to new date
+	moveTaskToDate: (jobId, taskId, newDate) => {
+		// Find the job
+		const job = jobsData.find(j => j.id === parseInt(jobId));
+		if (!job || !job.tasks) return;
+		
+		// Find the task
+		const task = job.tasks.find(t => t.id === taskId);
+		if (!task) return;
+		
+		// Update the task's due date
+		const newDueDate = new Date(newDate);
+		newDueDate.setHours(23, 59, 59, 999); // Set to end of day
+		task.dueDate = newDueDate.toISOString();
+		
+		// Save changes
+		saveToLocalStorage();
+		
+		// Reload events and refresh calendar
+		CalendarView.loadEvents();
+		CalendarView.updateView();
+		
+		// Show confirmation
+		CalendarView.showMoveConfirmation(task, job, newDate);
+	},
+
+	// Show confirmation of task move
+	showMoveConfirmation: (task, job, newDate) => {
+		const dateStr = newDate.toLocaleDateString();
+		
+		// Create temporary notification
+		const notification = h("div", {
+			className: "calendar-move-notification",
+			style: "position: fixed; top: 20px; right: 20px; background: var(--green-100); color: var(--green-700); padding: 12px 16px; border-radius: 6px; border: 1px solid var(--green-300); z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
+		},
+			h("div", { style: "font-weight: 600; margin-bottom: 4px;" }, "Task moved successfully!"),
+			h("div", { style: "font-size: 12px;" }, `"${task.text}" moved to ${dateStr}`)
+		);
+		
+		document.body.appendChild(notification);
+		
+		// Remove notification after 3 seconds
+		setTimeout(() => {
+			if (notification.parentNode) {
+				notification.parentNode.removeChild(notification);
+			}
+		}, 3000);
 	}
 };
 
