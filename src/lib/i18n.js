@@ -74,6 +74,7 @@ I18n.translations = {
 				contactPerson: "Contact Person",
 				salaryRange: "Salary Range",
 				location: "Location",
+				sourceUrl: "Source",
 				notes: "Notes",
 				tasks: "Tasks",
 				actions: "Actions",
@@ -89,6 +90,7 @@ I18n.translations = {
 				contactEmail: "Contact Email",
 				salaryRange: "Salary Range",
 				location: "Location",
+				sourceUrl: "Job Posting URL",
 			},
 		},
 		priorities: {

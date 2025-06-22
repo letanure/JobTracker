@@ -1821,7 +1821,8 @@ body {
 }
 
 .editable-cell:hover::after {
-	content: "✏️";
+	content: "edit";
+	font-family: 'Material Symbols Outlined';
 	position: absolute;
 	right: var(--space-1);
 	top: 50%;
@@ -1907,6 +1908,28 @@ body {
 
 .contact-link:hover {
 	text-decoration: underline;
+}
+
+/* Source URL link styling */
+.source-link {
+	color: var(--primary-color);
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-1);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
+}
+
+.source-link:hover {
+	background: var(--background-color);
+	color: var(--primary-hover);
+}
+
+.source-url {
+	text-align: center;
+	width: 60px;
 }
 
 /* Legacy contact form grid (keep for backward compatibility) */

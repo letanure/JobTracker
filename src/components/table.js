@@ -31,6 +31,15 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", { className: "location" }, job.location),
+		h("td", { className: "source-url" }, 
+			job.sourceUrl ? h("a", { 
+				href: job.sourceUrl, 
+				target: "_blank", 
+				rel: "noopener noreferrer",
+				className: "source-link",
+				title: job.sourceUrl
+			}, h("span", { className: "material-symbols-outlined" }, "open_in_new")) : ""
+		),
 		h(
 			"td",
 			{ className: "notes" },

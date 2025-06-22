@@ -91,6 +91,7 @@ function updateStaticTexts() {
 	$("#contactPersonHeader").text(I18n.t("table.headers.contactPerson"));
 	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
 	$("#locationHeader").text(I18n.t("table.headers.location"));
+	$("#sourceUrlHeader").text(I18n.t("table.headers.sourceUrl"));
 	$("#notesHeader").text(I18n.t("table.headers.notes"));
 	$("#tasksHeader").text(I18n.t("table.headers.tasks"));
 	$("#actionsHeader").text(I18n.t("table.headers.actions"));
