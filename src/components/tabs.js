@@ -33,6 +33,13 @@ const TabNavigation = {
 		} else {
 			url.searchParams.delete('tab');
 		}
+		
+		// If switching away from calendar, clean up calendar-specific params
+		if (tabId !== 'calendar') {
+			url.searchParams.delete('view');
+			url.searchParams.delete('date');
+		}
+		
 		window.history.replaceState({}, '', url);
 	},
 

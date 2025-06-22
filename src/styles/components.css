@@ -1624,7 +1624,7 @@ textarea {
 /* Week View */
 .calendar-week {
 	display: grid;
-	grid-template-columns: 60px repeat(7, 1fr);
+	grid-template-columns: 60px repeat(7, minmax(0, 1fr));
 	gap: 1px;
 	background: var(--border-color);
 	border: var(--border-width) solid var(--border-color);
@@ -1642,6 +1642,7 @@ textarea {
 .calendar-week-time-header {
 	height: 60px;
 	border-bottom: var(--border-width) solid var(--border-color);
+	background: var(--gray-50);
 }
 
 .calendar-time-slot {
@@ -1724,7 +1725,7 @@ textarea {
 /* Day View */
 .calendar-day-view {
 	display: grid;
-	grid-template-columns: 60px 1fr;
+	grid-template-columns: 60px minmax(0, 1fr);
 	gap: 1px;
 	background: var(--border-color);
 	border: var(--border-width) solid var(--border-color);
@@ -1867,6 +1868,37 @@ textarea {
 .calendar-event-card-subtitle {
 	font-size: 12px;
 	color: var(--gray-600);
+}
+
+/* Event Details Modal */
+.calendar-event-details-modal {
+	max-width: 500px;
+}
+
+.event-details {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.event-detail-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.event-detail-row strong {
+	min-width: 80px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.event-type-badge {
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: capitalize;
 }
 
 /* Responsive Calendar */

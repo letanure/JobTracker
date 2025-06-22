@@ -9,11 +9,42 @@ const CalendarView = {
 	selectedDate: null,
 	events: [],
 
+	// Get calendar state from URL
+	getStateFromURL: () => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const view = urlParams.get('view');
+		const date = urlParams.get('date');
+		
+		return {
+			view: ['month', 'week', 'day'].includes(view) ? view : 'month',
+			date: date ? new Date(date) : new Date()
+		};
+	},
+
+	// Set calendar state in URL
+	setStateInURL: () => {
+		const url = new URL(window.location);
+		const currentTab = url.searchParams.get('tab');
+		
+		// Only update URL if we're on calendar tab
+		if (currentTab === 'calendar') {
+			url.searchParams.set('view', CalendarView.currentView);
+			url.searchParams.set('date', CalendarView.currentDate.toISOString().split('T')[0]);
+		}
+		
+		window.history.replaceState({}, '', url);
+	},
+
 	// Initialize calendar view
 	init: () => {
 		const calendarTab = document.querySelector('.tab-content[data-tab="calendar"]');
 		
 		if (calendarTab) {
+			// Load state from URL
+			const urlState = CalendarView.getStateFromURL();
+			CalendarView.currentView = urlState.view;
+			CalendarView.currentDate = urlState.date;
+			
 			// Always reload events to get latest data
 			CalendarView.loadEvents();
 			
@@ -29,6 +60,9 @@ const CalendarView = {
 				// If already initialized, just update the view
 				CalendarView.updateView();
 			}
+			
+			// Update URL with current state
+			CalendarView.setStateInURL();
 		}
 	},
 
@@ -96,6 +130,7 @@ const CalendarView = {
 	switchView: (view) => {
 		CalendarView.currentView = view;
 		CalendarView.updateView();
+		CalendarView.setStateInURL();
 	},
 
 	// Navigate calendar
@@ -128,12 +163,14 @@ const CalendarView = {
 		
 		CalendarView.currentDate = date;
 		CalendarView.updateView();
+		CalendarView.setStateInURL();
 	},
 
 	// Navigate to today
 	navigateToday: () => {
 		CalendarView.currentDate = new Date();
 		CalendarView.updateView();
+		CalendarView.setStateInURL();
 	},
 
 	// Update calendar view
@@ -627,19 +664,90 @@ const CalendarView = {
 
 	// Handle event click
 	handleEventClick: (event) => {
-		// Close modal
-		const modal = document.querySelector('.modal-overlay');
-		if (modal) modal.remove();
+		// Close any existing modal
+		const existingModal = document.querySelector('.modal-overlay');
+		if (existingModal) existingModal.remove();
 		
-		// Navigate based on event type
-		if (event.type === 'task') {
-			// Open tasks modal for the job
-			openTasksModal(event.job);
-		} else {
-			// Switch to jobs tab and highlight the job
-			TabNavigation.switchTo('jobs');
-			// Could add highlighting logic here
-		}
+		// Show event details modal instead of navigating away
+		CalendarView.showEventDetailsModal(event);
+	},
+
+	// Show event details modal
+	showEventDetailsModal: (event) => {
+		const modal = h("div", { 
+			className: "modal-overlay", 
+			onclick: (e) => {
+				if (e.target.className === "modal-overlay") e.target.remove();
+			}
+		},
+			h("div", { className: "modal calendar-event-details-modal" },
+				h("div", { className: "modal-header" },
+					h("h3", { className: "modal-title" }, event.title),
+					h("button", {
+						className: "modal-close",
+						onclick: (e) => e.target.closest('.modal-overlay').remove()
+					}, "×")
+				),
+				h("div", { className: "modal-body" },
+					h("div", { className: "event-details" },
+						h("div", { className: "event-detail-row" },
+							h("strong", {}, "Type: "),
+							h("span", {
+								className: `event-type-badge event-type-${event.type}`,
+								style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); color: var(--${CalendarView.getEventColor(event.type)}-700);`
+							}, I18n.t(`calendar.${event.type}`))
+						),
+						h("div", { className: "event-detail-row" },
+							h("strong", {}, "Company: "),
+							h("span", {}, event.job.company)
+						),
+						h("div", { className: "event-detail-row" },
+							h("strong", {}, "Position: "),
+							h("span", {}, event.job.position)
+						),
+						h("div", { className: "event-detail-row" },
+							h("strong", {}, "Date: "),
+							h("span", {}, event.date.toLocaleDateString())
+						),
+						event.type === 'task' && event.task && [
+							h("div", { className: "event-detail-row" },
+								h("strong", {}, "Priority: "),
+								h("span", { 
+									className: `priority-badge priority-${event.task.priority}`,
+									style: `background-color: var(--${CalendarView.getEventColor(event.task.priority === 'high' ? 'red' : event.task.priority === 'medium' ? 'orange' : 'green')}-100); color: var(--${CalendarView.getEventColor(event.task.priority === 'high' ? 'red' : event.task.priority === 'medium' ? 'orange' : 'green')}-700);`
+								}, event.task.priority)
+							),
+							h("div", { className: "event-detail-row" },
+								h("strong", {}, "Status: "),
+								h("span", {}, event.task.status)
+							)
+						]
+					)
+				),
+				h("div", { className: "modal-footer" },
+					event.type === 'task' && h("button", {
+						className: "btn-primary",
+						onclick: () => {
+							modal.remove();
+							openTasksModal(event.job);
+						}
+					}, "Open Tasks"),
+					h("button", {
+						className: "btn-secondary",
+						onclick: () => {
+							modal.remove();
+							TabNavigation.switchTo('jobs');
+						}
+					}, "View Job"),
+					h("button", {
+						className: "btn-secondary",
+						onclick: () => modal.remove()
+					}, "Close")
+				)
+			)
+		);
+		
+		document.body.appendChild(modal);
 	},
 
 	// Show event details
