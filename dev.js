@@ -41,6 +41,8 @@ const server = http.createServer((req, res) => {
     let filePath = path.join(DIST_PATH, req.url === '/' ? 'index.html' : req.url);
     const extname = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[extname] || 'application/octet-stream';
+    
+    console.log(`📄 Serving: ${req.url} (${new Date().toLocaleTimeString()})`);
 
     fs.readFile(filePath, (error, content) => {
         if (error) {
@@ -51,7 +53,16 @@ const server = http.createServer((req, res) => {
                         res.writeHead(404);
                         res.end('404 Not Found');
                     } else {
-                        res.writeHead(200, { 'Content-Type': 'text/html' });
+                        const timestamp = Date.now();
+                        res.writeHead(200, { 
+                            'Content-Type': 'text/html',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                            'Last-Modified': new Date(timestamp).toUTCString(),
+                            'ETag': `"${timestamp}"`,
+                            'X-Timestamp': timestamp
+                        });
                         res.end(content, 'utf-8');
                     }
                 });
@@ -60,12 +71,16 @@ const server = http.createServer((req, res) => {
                 res.end(`Server Error: ${error.code}`);
             }
         } else {
-            // Add cache control headers to prevent browser caching
+            // Add strong cache control headers to prevent browser caching
+            const timestamp = Date.now();
             res.writeHead(200, { 
                 'Content-Type': contentType,
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
                 'Pragma': 'no-cache',
-                'Expires': '0'
+                'Expires': '0',
+                'Last-Modified': new Date(timestamp).toUTCString(),
+                'ETag': `"${timestamp}"`,
+                'X-Timestamp': timestamp // For debugging
             });
             res.end(content, 'utf-8');
         }
