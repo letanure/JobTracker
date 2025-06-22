@@ -821,8 +821,16 @@ tbody tr {
 .action-btn:hover {
 	background: var(--background-color); /* Subtle background on hover */
 	color: var(--text-color); /* Darker color on hover */
-	box-shadow: none; /* No shadow for ghost buttons */
+	box-shadow: none !important; /* No shadow for ghost buttons */
 	transform: none; /* No transform for subtle effect */
+}
+
+/* Override general button shadows for action buttons */
+.action-btn,
+.action-btn:hover,
+.action-btn:active {
+	box-shadow: none !important;
+	transform: none !important;
 }
 
 .edit-btn .material-symbols-outlined {
@@ -844,6 +852,23 @@ tbody tr {
 .material-symbols-outlined {
 	font-size: var(--icon-lg) !important;
 	vertical-align: middle;
+}
+
+.primary-btn {
+	background: var(--primary-color);
+	color: var(--text-on-dark);
+	border: none;
+	padding: var(--padding-sm);
+	border-radius: var(--radius-sm);
+	font-weight: 600;
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.primary-btn:hover {
+	background: var(--primary-hover);
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-md);
 }
 
 .cancel-btn {
@@ -941,6 +966,9 @@ tbody tr {
 	margin: 0;
 	color: var(--text-color);
 	letter-spacing: -0.025em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .modal-close {
@@ -957,12 +985,14 @@ tbody tr {
 	align-items: center;
 	justify-content: center;
 	transition: var(--transition-fast);
+	box-shadow: none !important; /* Remove shadows from modal close */
 }
 
 .modal-close:hover {
 	background: var(--background-color); /* Subtle background on hover */
 	color: var(--text-color);
 	transform: none; /* No transform for subtle effect */
+	box-shadow: none !important; /* Remove shadows on hover */
 }
 
 .modal-body {
@@ -1156,7 +1186,7 @@ tbody tr {
 /* Common section titles */
 .add-note-title,
 .add-task-title {
-	font-size: var(--font-size-lg);
+	font-size: var(--font-size-sm);
 	font-weight: 700;
 	margin: 0 0 var(--space-3) 0;
 	color: var(--text-color);
@@ -1172,7 +1202,8 @@ tbody tr {
 
 .add-note-textarea {
 	width: 100%;
-	min-height: calc(var(--base-size) * 20); /* 80px */
+	min-height: calc(var(--base-size) * 8); /* 32px - 2 lines */
+	max-height: none; /* Allow unlimited growth */
 	padding: var(--space-3);
 	border: var(--border-width) solid var(--border-color);
 	border-radius: var(--radius-md);
@@ -1183,6 +1214,8 @@ tbody tr {
 	line-height: 1.5;
 	white-space: pre-wrap;
 	transition: var(--transition-fast);
+	field-sizing: content; /* Native CSS property for auto-grow */
+	max-width: calc(100% - (2 * var(--space-4)));
 }
 
 .add-note-textarea:focus {
@@ -1313,20 +1346,26 @@ tbody tr {
 
 .add-task-textarea {
 	width: 100%;
-	min-height: calc(var(--base-size) * 15); /* 60px */
-	padding: 0;
-	border: none;
-	background: transparent;
+	min-height: calc(var(--base-size) * 8); /* 32px - 2 lines */
+	max-height: none; /* Allow unlimited growth */
+	padding: var(--space-3);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	background: var(--container-background);
 	font-size: var(--font-size-base);
 	font-family: inherit;
 	resize: vertical;
 	line-height: 1.4;
 	white-space: pre-wrap;
+	field-sizing: content; /* Native CSS property for auto-grow */
 	margin-bottom: var(--space-3);
+	max-width: calc(100% - (2 * var(--space-4)));
 }
 
 .add-task-textarea:focus {
 	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
 }
 
 .add-task-textarea::placeholder {
@@ -1695,4 +1734,269 @@ body {
 
 .container {
 	flex: 1;
+}
+
+/* Modern Contacts Counter - same as notes/tasks counter */
+.contacts-count {
+	background: var(--background-color);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+	padding: calc(var(--base-size) / 2) var(--space-1); /* 2px */
+	border-radius: var(--radius-full);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-1);
+	transition: var(--transition-fast);
+	box-shadow: var(--shadow-sm);
+	min-width: var(--space-5); /* 20px */
+	height: var(--counter-height); /* Consistent height for all badges */
+	text-align: center;
+}
+
+.contacts-count:hover {
+	background: var(--container-background);
+	border-color: var(--text-light);
+	transform: scale(1.05);
+	box-shadow: var(--shadow-md);
+}
+
+/* Contacts table layout (Excel-like) */
+.contacts-table-container {
+	width: 100%;
+}
+
+.contacts-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+}
+
+.contacts-table th,
+.contacts-table td {
+	padding: var(--space-3);
+	text-align: left;
+	border-bottom: var(--border-width) solid var(--border-color);
+	vertical-align: middle;
+}
+
+.contacts-table th {
+	background: var(--background-color);
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-sm);
+	color: var(--text-light);
+}
+
+.contacts-table tbody tr:hover {
+	background: var(--background-color);
+}
+
+.contacts-table.archived {
+	opacity: 0.7;
+}
+
+.contacts-table-actions {
+	width: 60px;
+	text-align: center;
+}
+
+.archived-contacts-section {
+	margin-top: var(--space-4);
+}
+
+.contacts-archived-header {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--text-light);
+	margin-bottom: var(--space-3);
+	padding: var(--space-2);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
+}
+
+.contacts-archived-header:hover {
+	background: var(--background-color);
+}
+
+/* Add contact form (like a new table row) */
+.add-contact-row {
+	margin-top: var(--space-4);
+	padding: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	background: var(--background-color);
+}
+
+.add-contact-title {
+	font-size: var(--font-size-lg);
+	font-weight: 700;
+	margin: 0 0 var(--space-3) 0;
+	color: var(--text-color);
+}
+
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr auto;
+	gap: var(--space-3);
+	align-items: center;
+}
+
+.contact-form-row input {
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	transition: var(--transition-fast);
+}
+
+.contact-form-row input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+.contact-link {
+	color: var(--primary-color);
+	text-decoration: none;
+}
+
+.contact-link:hover {
+	text-decoration: underline;
+}
+
+/* Legacy contact form grid (keep for backward compatibility) */
+.contact-form-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-3);
+	margin-bottom: var(--space-3);
+}
+
+.contact-form-grid input {
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	transition: var(--transition-fast);
+}
+
+.contact-form-grid input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+/* Contact item styles */
+.contact-item {
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	padding: var(--space-4);
+	margin-bottom: var(--space-3);
+	background: var(--container-background);
+	transition: var(--transition-fast);
+}
+
+.contact-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--space-2);
+}
+
+.contact-display {
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-normal);
+}
+
+.contact-name {
+	font-weight: var(--font-weight-semibold);
+	margin-bottom: var(--space-1);
+}
+
+.contact-email,
+.contact-phone {
+	margin-bottom: var(--space-1);
+}
+
+.contact-link {
+	color: var(--primary-color);
+	text-decoration: none;
+}
+
+.contact-link:hover {
+	color: var(--primary-hover);
+	text-decoration: underline;
+}
+
+.contact-company {
+	color: var(--text-light);
+	font-size: var(--font-size-sm);
+	font-style: italic;
+}
+
+.contact-date {
+	font-size: var(--font-size-xs);
+	color: var(--text-light);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Contact form styles */
+.contact-edit-form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-3);
+}
+
+.contact-edit-input {
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+}
+
+.contact-edit-input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+.contact-form-actions {
+	display: flex;
+	gap: var(--space-2);
+	margin-top: var(--space-2);
+}
+
+.add-contact-section {
+	margin-top: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	padding: var(--space-4);
+	background: var(--background-color);
+	transition: var(--transition-fast);
+}
+
+.add-contact-title {
+	font-size: var(--font-size-lg);
+	font-weight: 700;
+	margin: 0 0 var(--space-3) 0;
+	color: var(--text-color);
 }

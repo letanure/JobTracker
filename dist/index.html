@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T12:29:18.289Z
+Generated: 2025-06-22T13:02:17.932Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -874,8 +874,16 @@ tbody tr {
 .action-btn:hover {
 	background: var(--background-color); /* Subtle background on hover */
 	color: var(--text-color); /* Darker color on hover */
-	box-shadow: none; /* No shadow for ghost buttons */
+	box-shadow: none !important; /* No shadow for ghost buttons */
 	transform: none; /* No transform for subtle effect */
+}
+
+/* Override general button shadows for action buttons */
+.action-btn,
+.action-btn:hover,
+.action-btn:active {
+	box-shadow: none !important;
+	transform: none !important;
 }
 
 .edit-btn .material-symbols-outlined {
@@ -897,6 +905,23 @@ tbody tr {
 .material-symbols-outlined {
 	font-size: var(--icon-lg) !important;
 	vertical-align: middle;
+}
+
+.primary-btn {
+	background: var(--primary-color);
+	color: var(--text-on-dark);
+	border: none;
+	padding: var(--padding-sm);
+	border-radius: var(--radius-sm);
+	font-weight: 600;
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.primary-btn:hover {
+	background: var(--primary-hover);
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-md);
 }
 
 .cancel-btn {
@@ -994,6 +1019,9 @@ tbody tr {
 	margin: 0;
 	color: var(--text-color);
 	letter-spacing: -0.025em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .modal-close {
@@ -1010,12 +1038,14 @@ tbody tr {
 	align-items: center;
 	justify-content: center;
 	transition: var(--transition-fast);
+	box-shadow: none !important; /* Remove shadows from modal close */
 }
 
 .modal-close:hover {
 	background: var(--background-color); /* Subtle background on hover */
 	color: var(--text-color);
 	transform: none; /* No transform for subtle effect */
+	box-shadow: none !important; /* Remove shadows on hover */
 }
 
 .modal-body {
@@ -1209,7 +1239,7 @@ tbody tr {
 /* Common section titles */
 .add-note-title,
 .add-task-title {
-	font-size: var(--font-size-lg);
+	font-size: var(--font-size-sm);
 	font-weight: 700;
 	margin: 0 0 var(--space-3) 0;
 	color: var(--text-color);
@@ -1225,7 +1255,8 @@ tbody tr {
 
 .add-note-textarea {
 	width: 100%;
-	min-height: calc(var(--base-size) * 20); /* 80px */
+	min-height: calc(var(--base-size) * 8); /* 32px - 2 lines */
+	max-height: none; /* Allow unlimited growth */
 	padding: var(--space-3);
 	border: var(--border-width) solid var(--border-color);
 	border-radius: var(--radius-md);
@@ -1236,6 +1267,8 @@ tbody tr {
 	line-height: 1.5;
 	white-space: pre-wrap;
 	transition: var(--transition-fast);
+	field-sizing: content; /* Native CSS property for auto-grow */
+	max-width: calc(100% - (2 * var(--space-4)));
 }
 
 .add-note-textarea:focus {
@@ -1366,20 +1399,26 @@ tbody tr {
 
 .add-task-textarea {
 	width: 100%;
-	min-height: calc(var(--base-size) * 15); /* 60px */
-	padding: 0;
-	border: none;
-	background: transparent;
+	min-height: calc(var(--base-size) * 8); /* 32px - 2 lines */
+	max-height: none; /* Allow unlimited growth */
+	padding: var(--space-3);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	background: var(--container-background);
 	font-size: var(--font-size-base);
 	font-family: inherit;
 	resize: vertical;
 	line-height: 1.4;
 	white-space: pre-wrap;
+	field-sizing: content; /* Native CSS property for auto-grow */
 	margin-bottom: var(--space-3);
+	max-width: calc(100% - (2 * var(--space-4)));
 }
 
 .add-task-textarea:focus {
 	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
 }
 
 .add-task-textarea::placeholder {
@@ -1750,6 +1789,271 @@ body {
 	flex: 1;
 }
 
+/* Modern Contacts Counter - same as notes/tasks counter */
+.contacts-count {
+	background: var(--background-color);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+	padding: calc(var(--base-size) / 2) var(--space-1); /* 2px */
+	border-radius: var(--radius-full);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-1);
+	transition: var(--transition-fast);
+	box-shadow: var(--shadow-sm);
+	min-width: var(--space-5); /* 20px */
+	height: var(--counter-height); /* Consistent height for all badges */
+	text-align: center;
+}
+
+.contacts-count:hover {
+	background: var(--container-background);
+	border-color: var(--text-light);
+	transform: scale(1.05);
+	box-shadow: var(--shadow-md);
+}
+
+/* Contacts table layout (Excel-like) */
+.contacts-table-container {
+	width: 100%;
+}
+
+.contacts-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+}
+
+.contacts-table th,
+.contacts-table td {
+	padding: var(--space-3);
+	text-align: left;
+	border-bottom: var(--border-width) solid var(--border-color);
+	vertical-align: middle;
+}
+
+.contacts-table th {
+	background: var(--background-color);
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-sm);
+	color: var(--text-light);
+}
+
+.contacts-table tbody tr:hover {
+	background: var(--background-color);
+}
+
+.contacts-table.archived {
+	opacity: 0.7;
+}
+
+.contacts-table-actions {
+	width: 60px;
+	text-align: center;
+}
+
+.archived-contacts-section {
+	margin-top: var(--space-4);
+}
+
+.contacts-archived-header {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--text-light);
+	margin-bottom: var(--space-3);
+	padding: var(--space-2);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
+}
+
+.contacts-archived-header:hover {
+	background: var(--background-color);
+}
+
+/* Add contact form (like a new table row) */
+.add-contact-row {
+	margin-top: var(--space-4);
+	padding: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	background: var(--background-color);
+}
+
+.add-contact-title {
+	font-size: var(--font-size-lg);
+	font-weight: 700;
+	margin: 0 0 var(--space-3) 0;
+	color: var(--text-color);
+}
+
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr auto;
+	gap: var(--space-3);
+	align-items: center;
+}
+
+.contact-form-row input {
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	transition: var(--transition-fast);
+}
+
+.contact-form-row input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+.contact-link {
+	color: var(--primary-color);
+	text-decoration: none;
+}
+
+.contact-link:hover {
+	text-decoration: underline;
+}
+
+/* Legacy contact form grid (keep for backward compatibility) */
+.contact-form-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-3);
+	margin-bottom: var(--space-3);
+}
+
+.contact-form-grid input {
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	transition: var(--transition-fast);
+}
+
+.contact-form-grid input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+/* Contact item styles */
+.contact-item {
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	padding: var(--space-4);
+	margin-bottom: var(--space-3);
+	background: var(--container-background);
+	transition: var(--transition-fast);
+}
+
+.contact-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--space-2);
+}
+
+.contact-display {
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-normal);
+}
+
+.contact-name {
+	font-weight: var(--font-weight-semibold);
+	margin-bottom: var(--space-1);
+}
+
+.contact-email,
+.contact-phone {
+	margin-bottom: var(--space-1);
+}
+
+.contact-link {
+	color: var(--primary-color);
+	text-decoration: none;
+}
+
+.contact-link:hover {
+	color: var(--primary-hover);
+	text-decoration: underline;
+}
+
+.contact-company {
+	color: var(--text-light);
+	font-size: var(--font-size-sm);
+	font-style: italic;
+}
+
+.contact-date {
+	font-size: var(--font-size-xs);
+	color: var(--text-light);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Contact form styles */
+.contact-edit-form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-3);
+}
+
+.contact-edit-input {
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+}
+
+.contact-edit-input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+.contact-form-actions {
+	display: flex;
+	gap: var(--space-2);
+	margin-top: var(--space-2);
+}
+
+.add-contact-section {
+	margin-top: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	padding: var(--space-4);
+	background: var(--background-color);
+	transition: var(--transition-fast);
+}
+
+.add-contact-title {
+	font-size: var(--font-size-lg);
+	font-weight: 700;
+	margin: 0 0 var(--space-3) 0;
+	color: var(--text-color);
+}
+
     </style>
 </head>
 <body>
@@ -1840,11 +2144,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T12:29:18.284Z
+// Generated: 2025-06-22T13:02:17.929Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T12:29:18.284Z");
+console.log("JobTracker - Built at: 2025-06-22T13:02:17.929Z");
 
 
 // ============================================================================
@@ -3044,7 +3348,7 @@ const NotesModal = ({ job, onClose }) => {
 					h("textarea", {
 						className: "add-note-textarea",
 						placeholder: I18n.t("modals.notes.placeholder"),
-						rows: 3,
+						rows: 2,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
 								e.preventDefault();
@@ -3060,15 +3364,10 @@ const NotesModal = ({ job, onClose }) => {
 				h(
 					"button",
 					{
-						className: "action-btn edit-btn",
+						className: "action-btn primary-btn",
 						onclick: handleAddNote,
 					},
 					I18n.t("modals.notes.addButton"),
-				),
-				h(
-					"button",
-					{ className: "action-btn cancel-btn", onclick: onClose },
-					I18n.t("modals.common.close"),
 				),
 			),
 		),
@@ -3479,7 +3778,7 @@ const TasksModal = ({ job, onClose }) => {
 					h("textarea", {
 						className: "add-task-textarea",
 						placeholder: I18n.t("modals.tasks.placeholder"),
-						rows: 3,
+						rows: 2,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
 								e.preventDefault();
@@ -3495,15 +3794,10 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"button",
 					{
-						className: "action-btn edit-btn",
+						className: "action-btn primary-btn",
 						onclick: handleAddTask,
 					},
 					I18n.t("modals.tasks.addButton"),
-				),
-				h(
-					"button",
-					{ className: "action-btn cancel-btn", onclick: onClose },
-					I18n.t("modals.common.close"),
 				),
 			),
 		),
@@ -3538,7 +3832,7 @@ const ContactsCount = ({ contacts = [], onClick }) => {
 
 	return h("span", {
 		className,
-		onclick: count > 0 ? onClick : null,
+		onclick: onClick, // Always allow clicks to open modal
 		textContent: count.toString(),
 		title: `${count} contact${count !== 1 ? 's' : ''}${contacts.length !== count ? ` (${contacts.length - count} archived)` : ''}`
 	});
@@ -3574,7 +3868,7 @@ const ContactItem = ({ contact, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleEdit = () => {
@@ -3638,7 +3932,7 @@ const ContactItem = ({ contact, job }) => {
 				contactInfoElement.appendChild(createContactDisplay(jobsData[jobIndex].contacts[contactIndex]));
 				
 				// Update interface
-				updateStats();
+				refreshInterface();
 			}
 		});
 		
@@ -3766,22 +4060,30 @@ const ContactsModal = ({ job, onClose }) => {
 		// Update the job object for this modal
 		job.contacts = jobsData[jobIndex].contacts;
 
-		// Add the new contact to the existing modal without reopening
-		const modalBody = document.querySelector(".modal-body");
-		const addContactSection = modalBody.querySelector(".add-contact-section");
-
-		// Create and insert the new contact before the add contact section
-		const newContactElement = ContactItem({ contact: newContact, job });
-		modalBody.insertBefore(newContactElement, addContactSection);
-
-		// Clear the inputs
-		nameInput.value = "";
-		emailInput.value = "";
-		phoneInput.value = "";
-		companyInput.value = "";
+		// Refresh the table by reopening the modal
+		closeModal();
+		openContactsModal(job);
 
 		// Update the contacts count in the table (refresh interface for count update)
-		updateStats();
+		refreshInterface();
+	};
+
+	const handleArchiveContact = (contact) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
+		if (contactIndex === -1) return;
+		
+		jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
+		saveToLocalStorage();
+		
+		// Refresh the table by reopening the modal
+		closeModal();
+		openContactsModal(job);
+		
+		// Update interface
+		refreshInterface();
 	};
 
 	return h(
@@ -3792,7 +4094,7 @@ const ContactsModal = ({ job, onClose }) => {
 		},
 		h(
 			"div",
-			{ className: "modal" },
+			{ className: "modal contacts-modal" },
 			h(
 				"div",
 				{ className: "modal-header" },
@@ -3806,36 +4108,51 @@ const ContactsModal = ({ job, onClose }) => {
 			h(
 				"div",
 				{ className: "modal-body" },
-				// Active contacts section
-				...(sortedActiveContacts.length > 0
-					? [
-						h("h4", { 
-							className: "modal-section-header"
-						}, I18n.t("modals.contacts.activeSection")),
-						...sortedActiveContacts.map((contact) => ContactItem({ contact, job }))
-					]
-					: [
-						h(
-							"p",
-							{
-								className: "modal-empty-message"
-							},
-							I18n.t("modals.contacts.emptyState"),
+				// Contacts table
+				h("div", { className: "contacts-table-container" },
+					// Active contacts table
+					sortedActiveContacts.length > 0 ? h("table", { className: "contacts-table" },
+						h("thead", {},
+							h("tr", {},
+								h("th", {}, I18n.t("modals.contacts.placeholderName")),
+								h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+								h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+								h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+								h("th", {}, "Actions")
+							)
 						),
-					]),
-				// Archived contacts section
-				...(sortedArchivedContacts.length > 0
-					? [
+						h("tbody", {},
+							...sortedActiveContacts.map((contact) => 
+								h("tr", { key: contact.id },
+									h("td", {}, contact.name || "—"),
+									h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
+									h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
+									h("td", {}, contact.company || "—"),
+									h("td", { className: "contacts-table-actions" },
+										h("button", {
+											className: "action-btn archive-btn icon-btn-transparent",
+											title: I18n.t("modals.contacts.archiveTitle"),
+											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+											onclick: () => handleArchiveContact(contact)
+										})
+									)
+								)
+							)
+						)
+					) : h("p", { className: "modal-empty-message" }, I18n.t("modals.contacts.emptyState")),
+					
+					// Archived contacts section
+					sortedArchivedContacts.length > 0 ? h("div", { className: "archived-contacts-section" },
 						h("h4", { 
-							className: "modal-archived-header",
+							className: "contacts-archived-header",
 							onclick: () => {
-								const archivedSection = document.getElementById('archived-contacts-content');
+								const archivedTable = document.getElementById('archived-contacts-table');
 								const expandIcon = document.getElementById('archived-contacts-icon');
-								if (archivedSection.style.display === 'none') {
-									archivedSection.style.display = 'block';
+								if (archivedTable.style.display === 'none') {
+									archivedTable.style.display = 'table';
 									expandIcon.textContent = 'expand_less';
 								} else {
-									archivedSection.style.display = 'none';
+									archivedTable.style.display = 'none';
 									expandIcon.textContent = 'expand_more';
 								}
 							}
@@ -3843,56 +4160,71 @@ const ContactsModal = ({ job, onClose }) => {
 							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-contacts-icon' }, 'expand_less'),
 							I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
 						),
-						h("div", { 
-							id: "archived-contacts-content"
-						}, ...sortedArchivedContacts.map((contact) => ContactItem({ contact, job })))
-					]
-					: []),
-				// Add contact form section
-				h(
-					"div",
-					{ className: "add-contact-section" },
-					h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
-					h("div", { className: "contact-form-grid" },
-						h("input", {
-							type: "text",
-							className: "add-contact-name",
-							placeholder: I18n.t("modals.contacts.placeholderName"),
-						}),
-						h("input", {
-							type: "email",
-							className: "add-contact-email",
-							placeholder: I18n.t("modals.contacts.placeholderEmail"),
-						}),
-						h("input", {
-							type: "tel",
-							className: "add-contact-phone",
-							placeholder: I18n.t("modals.contacts.placeholderPhone"),
-						}),
-						h("input", {
-							type: "text",
-							className: "add-contact-company",
-							placeholder: I18n.t("modals.contacts.placeholderCompany"),
-						})
+						h("table", { 
+							id: "archived-contacts-table",
+							className: "contacts-table archived"
+						},
+							h("thead", {},
+								h("tr", {},
+									h("th", {}, I18n.t("modals.contacts.placeholderName")),
+									h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+									h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+									h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+									h("th", {}, "Actions")
+								)
+							),
+							h("tbody", {},
+								...sortedArchivedContacts.map((contact) => 
+									h("tr", { key: contact.id },
+										h("td", {}, contact.name || "—"),
+										h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
+										h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
+										h("td", {}, contact.company || "—"),
+										h("td", { className: "contacts-table-actions" },
+											h("button", {
+												className: "action-btn archive-btn icon-btn-transparent",
+												title: I18n.t("modals.contacts.unarchiveTitle"),
+												innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
+												onclick: () => handleArchiveContact(contact)
+											})
+										)
+									)
+								)
+							)
+						)
+					) : null,
+					
+					// Add contact form (like a new table row)
+					h("div", { className: "add-contact-row" },
+						h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
+						h("div", { className: "contact-form-row" },
+							h("input", {
+								type: "text",
+								className: "add-contact-name",
+								placeholder: I18n.t("modals.contacts.placeholderName"),
+							}),
+							h("input", {
+								type: "email",
+								className: "add-contact-email",
+								placeholder: I18n.t("modals.contacts.placeholderEmail"),
+							}),
+							h("input", {
+								type: "tel",
+								className: "add-contact-phone",
+								placeholder: I18n.t("modals.contacts.placeholderPhone"),
+							}),
+							h("input", {
+								type: "text",
+								className: "add-contact-company",
+								placeholder: I18n.t("modals.contacts.placeholderCompany"),
+							}),
+							h("button", {
+								className: "action-btn primary-btn",
+								onclick: handleAddContact,
+							}, I18n.t("modals.contacts.addButton"))
+						)
 					)
 				)
-			),
-			h(
-				"div",
-				{ className: "modal-footer" },
-				h(
-					"button",
-					{
-						className: "action-btn edit-btn",
-						onclick: handleAddContact,
-					},
-					I18n.t("modals.contacts.addButton"),
-				),
-				h(
-					"button",
-					{ className: "action-btn cancel-btn", onclick: onClose },
-					I18n.t("modals.common.close"),
-				),
 			),
 		),
 	);
@@ -4140,7 +4472,14 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		h("td", { className: "company-name" }, job.company),
 		h("td", { className: "position-name" }, job.position),
 		h("td", { className: "current-phase" }, getPhaseText(job.currentPhase)),
-		h("td", { className: "contact", innerHTML: `${job.contactPerson}<br>${job.contactEmail}` }),
+		h(
+			"td",
+			{ className: "contact" },
+			ContactsCount({
+				contacts: job.contacts || [],
+				onClick: () => openContactsModal(job),
+			})
+		),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", { className: "location" }, job.location),
 		h(

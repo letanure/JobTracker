@@ -283,7 +283,7 @@ const NotesModal = ({ job, onClose }) => {
 					h("textarea", {
 						className: "add-note-textarea",
 						placeholder: I18n.t("modals.notes.placeholder"),
-						rows: 3,
+						rows: 2,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
 								e.preventDefault();
@@ -299,15 +299,10 @@ const NotesModal = ({ job, onClose }) => {
 				h(
 					"button",
 					{
-						className: "action-btn edit-btn",
+						className: "action-btn primary-btn",
 						onclick: handleAddNote,
 					},
 					I18n.t("modals.notes.addButton"),
-				),
-				h(
-					"button",
-					{ className: "action-btn cancel-btn", onclick: onClose },
-					I18n.t("modals.common.close"),
 				),
 			),
 		),
