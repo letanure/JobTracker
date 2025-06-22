@@ -60,6 +60,7 @@ tbody tr {
 	text-align: left;
 	width: 60px;
 	padding: 8px 16px;
+	white-space: nowrap;
 }
 
 .company-name {

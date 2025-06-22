@@ -501,11 +501,6 @@ const ContactsModal = ({ job, onClose }) => {
 					}),
 					h("input", {
 						type: "text",
-						className: "add-contact-role",
-						placeholder: "Role",
-					}),
-					h("input", {
-						type: "text",
 						className: "add-contact-company",
 						placeholder: I18n.t("modals.contacts.placeholderCompany"),
 					}),
@@ -575,10 +570,9 @@ const ContactsModal = ({ job, onClose }) => {
 						const nameInput = modal.querySelector('.add-contact-name');
 						const emailInput = modal.querySelector('.add-contact-email');
 						const phoneInput = modal.querySelector('.add-contact-phone');
-						const roleInput = modal.querySelector('.add-contact-role');
 						const companyInput = modal.querySelector('.add-contact-company');
 						
-						if (!nameInput || !emailInput || !phoneInput || !roleInput || !companyInput) {
+						if (!nameInput || !emailInput || !phoneInput || !companyInput) {
 							console.error('Contact form inputs not found');
 							return;
 						}
@@ -586,16 +580,10 @@ const ContactsModal = ({ job, onClose }) => {
 						const name = nameInput.value.trim();
 						const email = emailInput.value.trim();
 						const phone = phoneInput.value.trim();
-						const role = roleInput.value.trim();
 						const company = companyInput.value.trim();
 						
 						if (!name) {
 							showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequired"));
-							return;
-						}
-						
-						if (!email) {
-							showValidationError(emailInput, I18n.t("modals.contacts.validation.emailRequired"));
 							return;
 						}
 						
@@ -604,7 +592,6 @@ const ContactsModal = ({ job, onClose }) => {
 							name,
 							email,
 							phone,
-							role,
 							company,
 							isActive: true,
 							lastContactDate: null,
@@ -618,7 +605,6 @@ const ContactsModal = ({ job, onClose }) => {
 						nameInput.value = '';
 						emailInput.value = '';
 						phoneInput.value = '';
-						roleInput.value = '';
 						companyInput.value = '';
 						
 						// Clear any validation errors
