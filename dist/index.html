@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T19:20:05.013Z
+Generated: 2025-06-22T19:23:48.648Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1642,9 +1642,10 @@ textarea {
 	margin-bottom: 8px;
 }
 
-.kanban-job-emoji {
+.kanban-job-icon {
 	font-size: 14px;
 	flex-shrink: 0;
+	color: var(--gray-600);
 }
 
 .kanban-job-title {
@@ -1665,8 +1666,9 @@ textarea {
 	margin-bottom: 4px;
 }
 
-.kanban-phase-emoji {
+.kanban-phase-icon {
 	font-size: 12px;
+	color: var(--gray-500);
 }
 
 .kanban-phase-text {
@@ -1689,7 +1691,7 @@ textarea {
 	padding: 2px 0;
 }
 
-.kanban-substep-emoji {
+.kanban-substep-icon {
 	font-size: 10px;
 	width: 12px;
 	flex-shrink: 0;
@@ -1704,13 +1706,25 @@ textarea {
 	color: var(--green-600);
 }
 
+.kanban-substep-item.completed .kanban-substep-icon {
+	color: var(--green-600);
+}
+
 .kanban-substep-item.current .kanban-substep-text {
 	color: var(--orange-600);
 	font-weight: 500;
 }
 
+.kanban-substep-item.current .kanban-substep-icon {
+	color: var(--orange-600);
+}
+
 .kanban-substep-item.pending .kanban-substep-text {
 	color: var(--gray-500);
+}
+
+.kanban-substep-item.pending .kanban-substep-icon {
+	color: var(--gray-400);
 }
 
 .kanban-action-icons {
@@ -1784,10 +1798,11 @@ textarea {
 	gap: 4px;
 }
 
-.kanban-metadata-emoji {
+.kanban-metadata-icon {
 	font-size: 10px;
 	width: 12px;
 	flex-shrink: 0;
+	color: var(--gray-500);
 }
 
 .kanban-metadata-text {
@@ -2524,11 +2539,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T19:20:05.004Z
+// Generated: 2025-06-22T19:23:48.642Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T19:20:05.004Z");
+console.log("JobTracker - Built at: 2025-06-22T19:23:48.642Z");
 
 
 // ============================================================================
@@ -6049,9 +6064,9 @@ const KanbanBoard = {
 			className: `kanban-priority-dot priority-${job.priority}` 
 		});
 		
-		// Company and position header with emoji
+		// Company and position header with icon
 		const header = h("div", { className: "kanban-job-header" },
-			h("span", { className: "kanban-job-emoji" }, "🏢"),
+			h("span", { className: "material-symbols-outlined kanban-job-icon" }, "business"),
 			h("span", { className: "kanban-job-title" }, `${job.company} — ${job.position}`)
 		);
 		
@@ -6062,13 +6077,13 @@ const KanbanBoard = {
 		const metadata = [];
 		if (job.salaryRange) {
 			metadata.push(h("div", { className: "kanban-metadata-item" },
-				h("span", { className: "kanban-metadata-emoji" }, "💰"),
+				h("span", { className: "material-symbols-outlined kanban-metadata-icon" }, "payments"),
 				h("span", { className: "kanban-metadata-text" }, job.salaryRange)
 			));
 		}
 		if (job.location) {
 			metadata.push(h("div", { className: "kanban-metadata-item" },
-				h("span", { className: "kanban-metadata-emoji" }, "📍"),
+				h("span", { className: "material-symbols-outlined kanban-metadata-icon" }, "location_on"),
 				h("span", { className: "kanban-metadata-text" }, job.location)
 			));
 		}
@@ -6153,7 +6168,7 @@ const KanbanBoard = {
 		const availableSubsteps = getSubstepsForPhase(currentPhase);
 
 		const phaseHeader = h("div", { className: "kanban-phase-header" },
-			h("span", { className: "kanban-phase-emoji" }, "🕑"),
+			h("span", { className: "material-symbols-outlined kanban-phase-icon" }, "schedule"),
 			h("span", { className: "kanban-phase-text" }, `${getPhaseText(currentPhase)} Stage:`)
 		);
 
@@ -6166,19 +6181,19 @@ const KanbanBoard = {
 				const isCurrent = substep === currentSubstep;
 				const isPending = !isCompleted && !isCurrent;
 
-				let emoji = "⚪"; // Pending
+				let icon = "radio_button_unchecked"; // Pending
 				let className = "kanban-substep-item pending";
 
 				if (isCompleted) {
-					emoji = "✅";
+					icon = "check_circle";
 					className = "kanban-substep-item completed";
 				} else if (isCurrent) {
-					emoji = "🟡";
+					icon = "radio_button_checked";
 					className = "kanban-substep-item current";
 				}
 
 				const substepItem = h("div", { className },
-					h("span", { className: "kanban-substep-emoji" }, emoji),
+					h("span", { className: "material-symbols-outlined kanban-substep-icon" }, icon),
 					h("span", { className: "kanban-substep-text" }, getSubstepText(substep))
 				);
 
@@ -6187,7 +6202,7 @@ const KanbanBoard = {
 		} else {
 			// No substeps, just show the phase
 			const phaseItem = h("div", { className: "kanban-substep-item current" },
-				h("span", { className: "kanban-substep-emoji" }, "🟡"),
+				h("span", { className: "material-symbols-outlined kanban-substep-icon" }, "radio_button_checked"),
 				h("span", { className: "kanban-substep-text" }, getPhaseText(currentPhase))
 			);
 			substepsList.appendChild(phaseItem);
@@ -6363,6 +6378,15 @@ const KanbanBoard = {
 											substepSelect.appendChild(option);
 										});
 										substepSelect.value = selectedPhase;
+										
+										// Update job phase immediately for real-time kanban update
+										const jobIndex = jobsData.findIndex(j => j.id === job.id);
+										if (jobIndex !== -1) {
+											jobsData[jobIndex].currentPhase = selectedPhase;
+											jobsData[jobIndex].currentSubstep = selectedPhase;
+											saveToLocalStorage();
+											KanbanBoard.refresh();
+										}
 									}
 								},
 									...PHASES.map(phase => 
@@ -6404,7 +6428,20 @@ const KanbanBoard = {
 						h("div", { className: "form-row" },
 							h("div", { className: "form-field full-width" },
 								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
-								h("select", { name: "substep" },
+								h("select", { 
+									name: "substep",
+									onchange: (e) => {
+										const selectedSubstep = e.target.value;
+										
+										// Update job substep immediately for real-time kanban update
+										const jobIndex = jobsData.findIndex(j => j.id === job.id);
+										if (jobIndex !== -1) {
+											jobsData[jobIndex].currentSubstep = selectedSubstep;
+											saveToLocalStorage();
+											KanbanBoard.refresh();
+										}
+									}
+								},
 									h("option", { value: job.currentPhase }, getPhaseText(job.currentPhase)),
 									...getSubstepsForPhase(job.currentPhase).map(substep =>
 										h("option", { value: substep }, getSubstepText(substep))

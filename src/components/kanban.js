@@ -69,9 +69,9 @@ const KanbanBoard = {
 			className: `kanban-priority-dot priority-${job.priority}` 
 		});
 		
-		// Company and position header with emoji
+		// Company and position header with icon
 		const header = h("div", { className: "kanban-job-header" },
-			h("span", { className: "kanban-job-emoji" }, "🏢"),
+			h("span", { className: "material-symbols-outlined kanban-job-icon" }, "business"),
 			h("span", { className: "kanban-job-title" }, `${job.company} — ${job.position}`)
 		);
 		
@@ -82,13 +82,13 @@ const KanbanBoard = {
 		const metadata = [];
 		if (job.salaryRange) {
 			metadata.push(h("div", { className: "kanban-metadata-item" },
-				h("span", { className: "kanban-metadata-emoji" }, "💰"),
+				h("span", { className: "material-symbols-outlined kanban-metadata-icon" }, "payments"),
 				h("span", { className: "kanban-metadata-text" }, job.salaryRange)
 			));
 		}
 		if (job.location) {
 			metadata.push(h("div", { className: "kanban-metadata-item" },
-				h("span", { className: "kanban-metadata-emoji" }, "📍"),
+				h("span", { className: "material-symbols-outlined kanban-metadata-icon" }, "location_on"),
 				h("span", { className: "kanban-metadata-text" }, job.location)
 			));
 		}
@@ -173,7 +173,7 @@ const KanbanBoard = {
 		const availableSubsteps = getSubstepsForPhase(currentPhase);
 
 		const phaseHeader = h("div", { className: "kanban-phase-header" },
-			h("span", { className: "kanban-phase-emoji" }, "🕑"),
+			h("span", { className: "material-symbols-outlined kanban-phase-icon" }, "schedule"),
 			h("span", { className: "kanban-phase-text" }, `${getPhaseText(currentPhase)} Stage:`)
 		);
 
@@ -186,19 +186,19 @@ const KanbanBoard = {
 				const isCurrent = substep === currentSubstep;
 				const isPending = !isCompleted && !isCurrent;
 
-				let emoji = "⚪"; // Pending
+				let icon = "radio_button_unchecked"; // Pending
 				let className = "kanban-substep-item pending";
 
 				if (isCompleted) {
-					emoji = "✅";
+					icon = "check_circle";
 					className = "kanban-substep-item completed";
 				} else if (isCurrent) {
-					emoji = "🟡";
+					icon = "radio_button_checked";
 					className = "kanban-substep-item current";
 				}
 
 				const substepItem = h("div", { className },
-					h("span", { className: "kanban-substep-emoji" }, emoji),
+					h("span", { className: "material-symbols-outlined kanban-substep-icon" }, icon),
 					h("span", { className: "kanban-substep-text" }, getSubstepText(substep))
 				);
 
@@ -207,7 +207,7 @@ const KanbanBoard = {
 		} else {
 			// No substeps, just show the phase
 			const phaseItem = h("div", { className: "kanban-substep-item current" },
-				h("span", { className: "kanban-substep-emoji" }, "🟡"),
+				h("span", { className: "material-symbols-outlined kanban-substep-icon" }, "radio_button_checked"),
 				h("span", { className: "kanban-substep-text" }, getPhaseText(currentPhase))
 			);
 			substepsList.appendChild(phaseItem);
@@ -383,6 +383,15 @@ const KanbanBoard = {
 											substepSelect.appendChild(option);
 										});
 										substepSelect.value = selectedPhase;
+										
+										// Update job phase immediately for real-time kanban update
+										const jobIndex = jobsData.findIndex(j => j.id === job.id);
+										if (jobIndex !== -1) {
+											jobsData[jobIndex].currentPhase = selectedPhase;
+											jobsData[jobIndex].currentSubstep = selectedPhase;
+											saveToLocalStorage();
+											KanbanBoard.refresh();
+										}
 									}
 								},
 									...PHASES.map(phase => 
@@ -424,7 +433,20 @@ const KanbanBoard = {
 						h("div", { className: "form-row" },
 							h("div", { className: "form-field full-width" },
 								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
-								h("select", { name: "substep" },
+								h("select", { 
+									name: "substep",
+									onchange: (e) => {
+										const selectedSubstep = e.target.value;
+										
+										// Update job substep immediately for real-time kanban update
+										const jobIndex = jobsData.findIndex(j => j.id === job.id);
+										if (jobIndex !== -1) {
+											jobsData[jobIndex].currentSubstep = selectedSubstep;
+											saveToLocalStorage();
+											KanbanBoard.refresh();
+										}
+									}
+								},
 									h("option", { value: job.currentPhase }, getPhaseText(job.currentPhase)),
 									...getSubstepsForPhase(job.currentPhase).map(substep =>
 										h("option", { value: substep }, getSubstepText(substep))

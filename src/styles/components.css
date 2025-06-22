@@ -830,9 +830,10 @@ textarea {
 	margin-bottom: 8px;
 }
 
-.kanban-job-emoji {
+.kanban-job-icon {
 	font-size: 14px;
 	flex-shrink: 0;
+	color: var(--gray-600);
 }
 
 .kanban-job-title {
@@ -853,8 +854,9 @@ textarea {
 	margin-bottom: 4px;
 }
 
-.kanban-phase-emoji {
+.kanban-phase-icon {
 	font-size: 12px;
+	color: var(--gray-500);
 }
 
 .kanban-phase-text {
@@ -877,7 +879,7 @@ textarea {
 	padding: 2px 0;
 }
 
-.kanban-substep-emoji {
+.kanban-substep-icon {
 	font-size: 10px;
 	width: 12px;
 	flex-shrink: 0;
@@ -892,13 +894,25 @@ textarea {
 	color: var(--green-600);
 }
 
+.kanban-substep-item.completed .kanban-substep-icon {
+	color: var(--green-600);
+}
+
 .kanban-substep-item.current .kanban-substep-text {
 	color: var(--orange-600);
 	font-weight: 500;
 }
 
+.kanban-substep-item.current .kanban-substep-icon {
+	color: var(--orange-600);
+}
+
 .kanban-substep-item.pending .kanban-substep-text {
 	color: var(--gray-500);
+}
+
+.kanban-substep-item.pending .kanban-substep-icon {
+	color: var(--gray-400);
 }
 
 .kanban-action-icons {
@@ -972,10 +986,11 @@ textarea {
 	gap: 4px;
 }
 
-.kanban-metadata-emoji {
+.kanban-metadata-icon {
 	font-size: 10px;
 	width: 12px;
 	flex-shrink: 0;
+	color: var(--gray-500);
 }
 
 .kanban-metadata-text {
