@@ -355,11 +355,10 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 			refreshInterface();
 		}
 	} else {
-		// Restore original HTML for non-empty jobs
-		row.innerHTML = atob(originalHTMLBase64);
+		// Instead of restoring HTML (which loses event listeners),
+		// we'll refresh the interface to properly recreate the row
 		row.classList.remove("editing");
-		// Ensure the data-job-id attribute is preserved
-		row.setAttribute("data-job-id", jobId);
+		refreshInterface();
 	}
 }
 

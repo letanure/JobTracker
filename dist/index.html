@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T12:19:42.652Z
+Generated: 2025-06-22T12:25:36.051Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -461,8 +461,10 @@ Generated: 2025-06-22T12:19:42.652Z
 
 	/* Focus ring fallbacks for older browsers */
 	--focus-ring-fallback: 0 0 0 var(--focus-ring-width) rgba(35, 131, 226, 0.1);
-	--focus-ring-error-fallback: 0 0 0 var(--focus-ring-width) rgba(224, 62, 62, 0.1);
-	--focus-ring-success-fallback: 0 0 0 var(--focus-ring-width) rgba(15, 123, 15, 0.1);
+	--focus-ring-error-fallback: 0 0 0 var(--focus-ring-width)
+		rgba(224, 62, 62, 0.1);
+	--focus-ring-success-fallback: 0 0 0 var(--focus-ring-width)
+		rgba(15, 123, 15, 0.1);
 
 	/* Z-index scale - calc-based */
 	--z-dropdown: calc(var(--base-size) * 25); /* 100 */
@@ -1315,7 +1317,8 @@ tbody tr {
 }
 
 .task-status {
-	padding: calc(var(--base-size) / 2) calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
+	padding: calc(var(--base-size) / 2)
+		calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
 	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
 	height: var(--counter-height); /* Consistent height */
@@ -1326,7 +1329,8 @@ tbody tr {
 
 .task-priority {
 	color: white;
-	padding: calc(var(--base-size) / 2) calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
+	padding: calc(var(--base-size) / 2)
+		calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
 	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
 	height: var(--counter-height); /* Consistent height */
@@ -1836,11 +1840,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T12:19:42.647Z
+// Generated: 2025-06-22T12:25:36.048Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T12:19:42.647Z");
+console.log("JobTracker - Built at: 2025-06-22T12:25:36.048Z");
 
 
 // ============================================================================
@@ -4544,11 +4548,10 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 			refreshInterface();
 		}
 	} else {
-		// Restore original HTML for non-empty jobs
-		row.innerHTML = atob(originalHTMLBase64);
+		// Instead of restoring HTML (which loses event listeners),
+		// we'll refresh the interface to properly recreate the row
 		row.classList.remove("editing");
-		// Ensure the data-job-id attribute is preserved
-		row.setAttribute("data-job-id", jobId);
+		refreshInterface();
 	}
 }
 
