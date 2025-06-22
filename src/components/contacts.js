@@ -84,7 +84,7 @@ const ContactItem = ({ contact, job }) => {
 		
 		const saveBtn = h("button", {
 			className: "action-btn edit-btn edit-save-btn",
-			textContent: "Save",
+			textContent: I18n.t("modals.common.save"),
 			onclick: () => {
 				const newName = nameInput.value.trim();
 				const newEmail = emailInput.value.trim();
@@ -116,7 +116,7 @@ const ContactItem = ({ contact, job }) => {
 		
 		const cancelBtn = h("button", {
 			className: "action-btn cancel-btn edit-cancel-btn",
-			textContent: "Cancel",
+			textContent: I18n.t("modals.common.cancel"),
 			onclick: () => {
 				// Cancel editing - restore original display
 				contactInfoElement.innerHTML = "";
@@ -169,13 +169,13 @@ const ContactItem = ({ contact, job }) => {
 				{ className: "contact-actions modal-actions-row" },
 				h("button", {
 					className: "action-btn edit-contact-btn icon-btn-transparent",
-					title: "Edit contact",
+					title: I18n.t("modals.contacts.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
 					className: "action-btn archive-btn icon-btn-transparent",
-					title: isArchived ? "Unarchive contact" : "Archive contact",
+					title: isArchived ? I18n.t("modals.contacts.unarchiveTitle") : I18n.t("modals.contacts.archiveTitle"),
 					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
@@ -271,7 +271,7 @@ const ContactsModal = ({ job, onClose }) => {
 				h(
 					"h3",
 					{ className: "modal-title" },
-					`Contacts for ${job.position} at ${job.company}`,
+					I18n.t("modals.contacts.title", { position: job.position, company: job.company }),
 				),
 				h("button", { className: "modal-close", onclick: onClose }, "×"),
 			),
@@ -283,7 +283,7 @@ const ContactsModal = ({ job, onClose }) => {
 					? [
 						h("h4", { 
 							className: "modal-section-header"
-						}, "Active Contacts"),
+						}, I18n.t("modals.contacts.activeSection")),
 						...sortedActiveContacts.map((contact) => ContactItem({ contact, job }))
 					]
 					: [
@@ -292,7 +292,7 @@ const ContactsModal = ({ job, onClose }) => {
 							{
 								className: "modal-empty-message"
 							},
-							"No contacts yet. Add your first contact below.",
+							I18n.t("modals.contacts.emptyState"),
 						),
 					]),
 				// Archived contacts section
@@ -313,7 +313,7 @@ const ContactsModal = ({ job, onClose }) => {
 							}
 						}, 
 							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-contacts-icon' }, 'expand_less'),
-							`Archived Contacts (${sortedArchivedContacts.length})`
+							I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
 						),
 						h("div", { 
 							id: "archived-contacts-content"
@@ -324,27 +324,27 @@ const ContactsModal = ({ job, onClose }) => {
 				h(
 					"div",
 					{ className: "add-contact-section" },
-					h("h4", { className: "add-contact-title" }, "Add New Contact"),
+					h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
 					h("div", { className: "contact-form-grid" },
 						h("input", {
 							type: "text",
 							className: "add-contact-name",
-							placeholder: "Name",
+							placeholder: I18n.t("modals.contacts.placeholderName"),
 						}),
 						h("input", {
 							type: "email",
 							className: "add-contact-email",
-							placeholder: "Email",
+							placeholder: I18n.t("modals.contacts.placeholderEmail"),
 						}),
 						h("input", {
 							type: "tel",
 							className: "add-contact-phone",
-							placeholder: "Phone",
+							placeholder: I18n.t("modals.contacts.placeholderPhone"),
 						}),
 						h("input", {
 							type: "text",
 							className: "add-contact-company",
-							placeholder: "Company",
+							placeholder: I18n.t("modals.contacts.placeholderCompany"),
 						})
 					)
 				)
@@ -358,12 +358,12 @@ const ContactsModal = ({ job, onClose }) => {
 						className: "action-btn edit-btn",
 						onclick: handleAddContact,
 					},
-					"Add Contact",
+					I18n.t("modals.contacts.addButton"),
 				),
 				h(
 					"button",
 					{ className: "action-btn cancel-btn", onclick: onClose },
-					"Close",
+					I18n.t("modals.common.close"),
 				),
 			),
 		),
@@ -404,13 +404,13 @@ const getLatestContact = (contacts = []) => {
 
 // Format contact for table display
 const formatContactForTable = (contact) => {
-	if (!contact) return "No contacts";
+	if (!contact) return I18n.t("modals.contacts.noContacts");
 	
 	const parts = [];
 	if (contact.name) parts.push(contact.name);
 	if (contact.email) parts.push(contact.email);
 	
-	return parts.join("<br>") || "Contact";
+	return parts.join("<br>") || I18n.t("modals.contacts.defaultContact");
 };
 
 // Make contact components and functions available globally for Vite

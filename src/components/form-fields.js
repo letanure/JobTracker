@@ -41,7 +41,7 @@ const ContactTextarea = ({ contactPerson = "", contactEmail = "" }) => {
     const contactText = [contactPerson, contactEmail].filter(Boolean).join("\n");
     return TextareaField({
         value: contactText,
-        placeholder: "Name\nEmail",
+        placeholder: I18n.t("forms.placeholderNameEmail"),
         className: "editable contact-textarea",
     });
 };
@@ -63,15 +63,15 @@ const createPrioritySelect = (selectedPriority = "medium", disabled = false, cla
         h("option", { 
             value: "high",
             selected: selectedPriority === "high"
-        }, "High"),
+        }, I18n.t("priorities.high")),
         h("option", { 
             value: "medium",
             selected: selectedPriority === "medium"
-        }, "Medium"),
+        }, I18n.t("priorities.medium")),
         h("option", { 
             value: "low",
             selected: selectedPriority === "low"
-        }, "Low")
+        }, I18n.t("priorities.low"))
     );
 };
 
@@ -92,35 +92,35 @@ const createPhaseSelect = (selectedPhase = "wishlist", disabled = false, classNa
         h("option", { 
             value: "wishlist",
             selected: selectedPhase === "wishlist"
-        }, "Wishlist"),
+        }, I18n.t("phases.wishlist")),
         h("option", { 
             value: "applied",
             selected: selectedPhase === "applied"
-        }, "Applied"),
+        }, I18n.t("phases.applied")),
         h("option", { 
             value: "phone_screening",
             selected: selectedPhase === "phone_screening"
-        }, "Phone Screening"),
+        }, I18n.t("phases.phone_screening")),
         h("option", { 
             value: "interview",
             selected: selectedPhase === "interview"
-        }, "Interview"),
+        }, I18n.t("phases.interview")),
         h("option", { 
             value: "final_round",
             selected: selectedPhase === "final_round"
-        }, "Final Round"),
+        }, I18n.t("phases.final_round")),
         h("option", { 
             value: "offer",
             selected: selectedPhase === "offer"
-        }, "Offer"),
+        }, I18n.t("phases.offer")),
         h("option", { 
             value: "rejected",
             selected: selectedPhase === "rejected"
-        }, "Rejected"),
+        }, I18n.t("phases.rejected")),
         h("option", { 
             value: "withdrawn",
             selected: selectedPhase === "withdrawn"
-        }, "Withdrawn")
+        }, I18n.t("phases.withdrawn"))
     );
 };
 
@@ -134,7 +134,7 @@ const EditActionsCell = ({ jobId, onSave, onCancel }) => {
             {
                 className: "action-btn edit-btn",
                 onclick: (e) => onSave(e.target.closest('button')),
-                title: "Save changes"
+                title: I18n.t("forms.saveChangesTitle")
             },
             h("span", { className: "material-symbols-outlined" }, "save")
         ),
@@ -143,7 +143,7 @@ const EditActionsCell = ({ jobId, onSave, onCancel }) => {
             {
                 className: "action-btn cancel-btn",
                 onclick: (e) => onCancel(e.target.closest('button')),
-                title: "Cancel editing"
+                title: I18n.t("forms.cancelEditingTitle")
             },
             h("span", { className: "material-symbols-outlined" }, "close")
         )

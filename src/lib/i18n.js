@@ -64,10 +64,6 @@ I18n.translations = {
 		},
 		buttons: {
 			addApplication: "+ Add Application",
-			save: "Save",
-			edit: "Edit",
-			delete: "Delete",
-			cancel: "Cancel",
 		},
 		table: {
 			headers: {
@@ -85,21 +81,14 @@ I18n.translations = {
 			filters: {
 				allPriorities: "All Priorities",
 				allPhases: "All Phases",
-				highPriority: "High Priority",
-				mediumPriority: "Medium Priority",
-				lowPriority: "Low Priority",
 			},
 			placeholders: {
-				companyName: "Company Name",
 				company: "Company Name",
-				positionTitle: "Position Title",
 				position: "Position Title",
-				nameEmail: "Name & Email",
 				contactPerson: "Contact Name",
 				contactEmail: "Contact Email",
 				salaryRange: "Salary Range",
 				location: "Location",
-				notes: "Notes",
 			},
 		},
 		priorities: {
@@ -147,14 +136,10 @@ I18n.translations = {
 		messages: {
 			welcome:
 				"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
-			errorLoading:
-				"There was an error loading your data.\n\nWould you like to start with 2 example job applications?",
 			confirmDelete:
 				"Are you sure you want to delete the application for {position} at {company}?",
 		},
 		demo: {
-			nextTask1: "Prepare system design",
-			nextTask2: "Wait for callback",
 			contactPerson1: "Sarah Chen",
 			contactPerson2: "Mike Rodriguez",
 			notes1:
@@ -171,6 +156,67 @@ I18n.translations = {
 			twitterTitle: "JobTracker - Free Job Application Tracker",
 			twitterDescription: "Free job application tracker to organize your job search. Track applications, interviews, and career progress.",
 		},
+		modals: {
+			notes: {
+				title: "Notes for {position} at {company}",
+				activeSection: "Active Notes",
+				archivedSection: "Archived Notes ({count})",
+				emptyState: "No notes yet. Add your first note below.",
+				addSection: "Add New Note",
+				phaseLabelPrefix: " Phase: ",
+				placeholder: "Enter your note here...",
+				editTitle: "Edit note",
+				archiveTitle: "Archive note",
+				unarchiveTitle: "Unarchive note",
+				addButton: "Add Note",
+			},
+			tasks: {
+				title: "Tasks for {position} at {company}",
+				activeSection: "Active Tasks",
+				archivedSection: "Archived Tasks ({count})",
+				emptyState: "No tasks yet. Add your first task below.",
+				addSection: "Add New Task",
+				placeholder: "Enter your task here...",
+				editTitle: "Edit task",
+				archiveTitle: "Archive task",
+				unarchiveTitle: "Unarchive task",
+				addButton: "Add Task",
+				statusTodo: "To Do",
+				statusInProgress: "In Progress",
+				statusDone: "Done",
+				priorityLow: "Low",
+				priorityMedium: "Medium",
+				priorityHigh: "High",
+			},
+			contacts: {
+				title: "Contacts for {position} at {company}",
+				activeSection: "Active Contacts",
+				archivedSection: "Archived Contacts ({count})",
+				emptyState: "No contacts yet. Add your first contact below.",
+				addSection: "Add New Contact",
+				editTitle: "Edit contact",
+				archiveTitle: "Archive contact",
+				unarchiveTitle: "Unarchive contact",
+				addButton: "Add Contact",
+				placeholderName: "Name",
+				placeholderEmail: "Email",
+				placeholderPhone: "Phone",
+				placeholderCompany: "Company",
+				noContacts: "No contacts",
+				defaultContact: "Contact",
+			},
+			common: {
+				save: "Save",
+				cancel: "Cancel",
+				close: "Close",
+			},
+		},
+		forms: {
+			saveChangesTitle: "Save changes",
+			cancelEditingTitle: "Cancel editing",
+			noDueDate: "No due date",
+			placeholderNameEmail: "Name\nEmail",
+		},
 	},
 	pt: {
 		app: {
@@ -178,10 +224,6 @@ I18n.translations = {
 		},
 		buttons: {
 			addApplication: "+ Adicionar Candidatura",
-			save: "Salvar",
-			edit: "Editar",
-			delete: "Excluir",
-			cancel: "Cancelar",
 		},
 		table: {
 			headers: {
@@ -199,21 +241,14 @@ I18n.translations = {
 			filters: {
 				allPriorities: "Todas as Prioridades",
 				allPhases: "Todas as Fases",
-				highPriority: "Prioridade Alta",
-				mediumPriority: "Prioridade Média",
-				lowPriority: "Prioridade Baixa",
 			},
 			placeholders: {
-				companyName: "Nome da Empresa",
 				company: "Nome da Empresa",
-				positionTitle: "Título do Cargo",
 				position: "Título do Cargo",
-				nameEmail: "Nome e Email",
 				contactPerson: "Nome do Contato",
 				contactEmail: "Email do Contato",
 				salaryRange: "Faixa Salarial",
 				location: "Localização",
-				notes: "Notas",
 			},
 		},
 		priorities: {
@@ -261,14 +296,10 @@ I18n.translations = {
 		messages: {
 			welcome:
 				"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
-			errorLoading:
-				"Houve um erro ao carregar seus dados.\n\nGostaria de começar com 2 exemplos de candidaturas?",
 			confirmDelete:
 				"Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
 		},
 		demo: {
-			nextTask1: "Preparar design de sistema",
-			nextTask2: "Aguardar retorno",
 			contactPerson1: "Sarah Chen",
 			contactPerson2: "Mike Rodriguez",
 			notes1:
@@ -285,6 +316,67 @@ I18n.translations = {
 			ogDescription: "Organize sua busca por emprego com nosso rastreador de candidaturas gratuito e fácil de usar. Acompanhe candidaturas, entrevistas e tarefas em um só lugar.",
 			twitterTitle: "JobTracker - Rastreador Gratuito de Candidaturas",
 			twitterDescription: "Rastreador gratuito de candidaturas para organizar sua busca por emprego. Acompanhe candidaturas, entrevistas e progresso na carreira.",
+		},
+		modals: {
+			notes: {
+				title: "Notas para {position} na {company}",
+				activeSection: "Notas Ativas",
+				archivedSection: "Notas Arquivadas ({count})",
+				emptyState: "Sem notas ainda. Adicione sua primeira nota abaixo.",
+				addSection: "Adicionar Nova Nota",
+				phaseLabelPrefix: " Fase: ",
+				placeholder: "Digite sua nota aqui...",
+				editTitle: "Editar nota",
+				archiveTitle: "Arquivar nota",
+				unarchiveTitle: "Desarquivar nota",
+				addButton: "Adicionar Nota",
+			},
+			tasks: {
+				title: "Tarefas para {position} na {company}",
+				activeSection: "Tarefas Ativas",
+				archivedSection: "Tarefas Arquivadas ({count})",
+				emptyState: "Sem tarefas ainda. Adicione sua primeira tarefa abaixo.",
+				addSection: "Adicionar Nova Tarefa",
+				placeholder: "Digite sua tarefa aqui...",
+				editTitle: "Editar tarefa",
+				archiveTitle: "Arquivar tarefa",
+				unarchiveTitle: "Desarquivar tarefa",
+				addButton: "Adicionar Tarefa",
+				statusTodo: "A Fazer",
+				statusInProgress: "Em Progresso",
+				statusDone: "Concluída",
+				priorityLow: "Baixa",
+				priorityMedium: "Média",
+				priorityHigh: "Alta",
+			},
+			contacts: {
+				title: "Contatos para {position} na {company}",
+				activeSection: "Contatos Ativos",
+				archivedSection: "Contatos Arquivados ({count})",
+				emptyState: "Sem contatos ainda. Adicione seu primeiro contato abaixo.",
+				addSection: "Adicionar Novo Contato",
+				editTitle: "Editar contato",
+				archiveTitle: "Arquivar contato",
+				unarchiveTitle: "Desarquivar contato",
+				addButton: "Adicionar Contato",
+				placeholderName: "Nome",
+				placeholderEmail: "Email",
+				placeholderPhone: "Telefone",
+				placeholderCompany: "Empresa",
+				noContacts: "Sem contatos",
+				defaultContact: "Contato",
+			},
+			common: {
+				save: "Salvar",
+				cancel: "Cancelar",
+				close: "Fechar",
+			},
+		},
+		forms: {
+			saveChangesTitle: "Salvar alterações",
+			cancelEditingTitle: "Cancelar edição",
+			noDueDate: "Sem data de vencimento",
+			placeholderNameEmail: "Nome\nEmail",
 		},
 	},
 };
