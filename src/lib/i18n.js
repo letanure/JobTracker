@@ -70,8 +70,8 @@ I18n.translations = {
 				priority: "Priority",
 				company: "Company",
 				position: "Position",
-				currentPhase: "Current Phase",
-				contactPerson: "Contact Person",
+				currentPhase: "Stage",
+				contactPerson: "Contact",
 				salaryRange: "Salary Range",
 				location: "Location",
 				sourceUrl: "Source",
@@ -149,14 +149,19 @@ I18n.translations = {
 			notes2: "Early stage startup. High growth potential but risky.",
 		},
 		seo: {
-			title: "JobTracker - Free Local Job Tracker | No Login, No Tracking, Your Data Stays Private",
-			description: "100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.",
-			keywords: "free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search",
+			title:
+				"JobTracker - Free Local Job Tracker | No Login, No Tracking, Your Data Stays Private",
+			description:
+				"100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.",
+			keywords:
+				"free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search",
 			author: "JobTracker Team",
 			ogTitle: "JobTracker - Free Local Job Tracker (No Login Required)",
-			ogDescription: "Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.",
+			ogDescription:
+				"Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.",
 			twitterTitle: "JobTracker - Private Job Application Tracker",
-			twitterDescription: "Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device.",
+			twitterDescription:
+				"Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device.",
 		},
 		modals: {
 			notes: {
@@ -314,14 +319,19 @@ I18n.translations = {
 				"Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
 		},
 		seo: {
-			title: "JobTracker - Rastreador Local Gratuito | Sem Login, Sem Rastreamento, Dados Privados",
-			description: "Rastreador de candidaturas 100% gratuito que funciona localmente no seu navegador. Sem login necessário, sem rastreamento de dados, sem servidores. Seus dados de busca de emprego ficam completamente privados no seu dispositivo.",
-			keywords: "rastreador gratuito de empregos, rastreador local de candidaturas, busca de emprego privada, rastreador sem login, rastreador offline de empregos, candidaturas com privacidade, gestão de carreira sem rastreamento, busca de emprego local",
+			title:
+				"JobTracker - Rastreador Local Gratuito | Sem Login, Sem Rastreamento, Dados Privados",
+			description:
+				"Rastreador de candidaturas 100% gratuito que funciona localmente no seu navegador. Sem login necessário, sem rastreamento de dados, sem servidores. Seus dados de busca de emprego ficam completamente privados no seu dispositivo.",
+			keywords:
+				"rastreador gratuito de empregos, rastreador local de candidaturas, busca de emprego privada, rastreador sem login, rastreador offline de empregos, candidaturas com privacidade, gestão de carreira sem rastreamento, busca de emprego local",
 			author: "Equipe JobTracker",
 			ogTitle: "JobTracker - Rastreador Local Gratuito (Sem Login Necessário)",
-			ogDescription: "Acompanhe candidaturas de forma privada no seu navegador. 100% gratuito, sem login, sem rastreamento, seus dados nunca saem do seu dispositivo.",
+			ogDescription:
+				"Acompanhe candidaturas de forma privada no seu navegador. 100% gratuito, sem login, sem rastreamento, seus dados nunca saem do seu dispositivo.",
 			twitterTitle: "JobTracker - Rastreador Privado de Candidaturas",
-			twitterDescription: "Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo.",
+			twitterDescription:
+				"Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo.",
 		},
 		modals: {
 			notes: {
