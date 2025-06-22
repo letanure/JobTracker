@@ -7,6 +7,11 @@ function initializeApp() {
 	// Initialize i18n
 	I18n.init();
 	
+	// Always set up UI structure first to prevent blinking
+	updateStaticTexts();
+	setupEventListeners();
+	setupFilters();
+	
 	// Load data from localStorage
 	const savedJobs = loadFromLocalStorage();
 	
@@ -14,21 +19,19 @@ function initializeApp() {
 		jobsData = savedJobs;
 		originalData = [...jobsData];
 		refreshInterface();
-		updateStaticTexts();
 	} else {
+		// Show empty interface first
+		refreshInterface();
+		
 		// Show welcome message for new users
 		const showDemo = confirm(I18n.t("messages.welcome"));
 		if (showDemo) {
 			jobsData = getDemoData();
 			originalData = [...jobsData];
 			saveToLocalStorage();
+			refreshInterface();
 		}
-		refreshInterface();
-		updateStaticTexts();
 	}
-	
-	setupEventListeners();
-	setupFilters();
 }
 
 // Setup event listeners
@@ -255,16 +258,16 @@ function editJob(job) {
 				${locations.map(l => `<option value="${l}">`).join("")}
 			</datalist>
 		</td>
-		<td class="notes">
+		<td class="notes" data-job-id="${job.id}">
 			${NotesCount({
 				notes: job.notes || [],
-				onClick: () => openNotesModal(job),
+				onClick: null, // Will be attached after rendering
 			}).outerHTML}
 		</td>
-		<td class="tasks">
+		<td class="tasks" data-job-id="${job.id}">
 			${TasksCount({
 				tasks: job.tasks || [],
-				onClick: () => openTasksModal(job),
+				onClick: null, // Will be attached after rendering
 			}).outerHTML}
 		</td>
 		<td class="actions-cell">
@@ -280,6 +283,18 @@ function editJob(job) {
 	// Focus first input
 	const firstInput = row.querySelector('input[data-field="company"]');
 	if (firstInput) firstInput.focus();
+	
+	// Attach click handlers for notes and tasks
+	const notesCell = row.querySelector('.notes .notes-count');
+	const tasksCell = row.querySelector('.tasks .tasks-count');
+	
+	if (notesCell) {
+		notesCell.addEventListener('click', () => openNotesModal(job));
+	}
+	
+	if (tasksCell) {
+		tasksCell.addEventListener('click', () => openTasksModal(job));
+	}
 	
 	// Handle Enter key to save, Escape to cancel
 	row.addEventListener("keydown", (e) => {
@@ -318,9 +333,32 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 	const row = document.querySelector(`tr[data-job-id="${jobId}"]`);
 	if (!row) return;
 	
-	// Restore original HTML
-	row.innerHTML = atob(originalHTMLBase64);
-	row.classList.remove("editing");
+	// Find the job
+	const job = jobsData.find(j => j.id === jobId);
+	if (!job) return;
+	
+	// Check if this is an empty job (new job with no meaningful data)
+	const isEmpty = !job.company.trim() && 
+					!job.position.trim() && 
+					!job.contactPerson.trim() && 
+					!job.contactEmail.trim() && 
+					!job.salaryRange.trim() && 
+					!job.location.trim();
+	
+	if (isEmpty) {
+		// Remove the empty job from data
+		const index = jobsData.findIndex(j => j.id === jobId);
+		if (index !== -1) {
+			jobsData.splice(index, 1);
+			originalData = [...jobsData];
+			saveToLocalStorage();
+			refreshInterface();
+		}
+	} else {
+		// Restore original HTML for non-empty jobs
+		row.innerHTML = atob(originalHTMLBase64);
+		row.classList.remove("editing");
+	}
 }
 
 // Delete job function  
