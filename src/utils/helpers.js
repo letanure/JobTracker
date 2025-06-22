@@ -79,6 +79,9 @@ const getTaskStatusText = (statusKey) => {
 function updateStaticTexts() {
 	// Update header
 	$("#appTitle").text(I18n.t("app.title"));
+	
+	// Update jobs header title
+	$("#jobsTitle").text(I18n.t("headers.jobs"));
 
 	// Update button
 	$("#addAppBtn").text(I18n.t("buttons.addApplication"));

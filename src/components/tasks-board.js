@@ -272,8 +272,8 @@ const TasksBoard = {
 				});
 				
 				// Create board header
-				const header = h("div", { className: "tasks-header" },
-					h("h2", { className: "tasks-title" }, I18n.t("tabs.tasks")),
+				const header = h("div", { className: "tab-header" },
+					h("h2", { className: "tab-title" }, I18n.t("tabs.tasks")),
 					h("div", { className: "tasks-stats" },
 						h("span", { className: "tasks-total-count" }, 
 							`${totalTasks} total tasks`

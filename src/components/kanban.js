@@ -553,8 +553,8 @@ const KanbanBoard = {
 				applicationsTab.innerHTML = '';
 				
 				// Create board header
-				const header = h("div", { className: "kanban-header" },
-					h("h2", { className: "kanban-title" }, I18n.t("kanban.title")),
+				const header = h("div", { className: "tab-header" },
+					h("h2", { className: "tab-title" }, I18n.t("kanban.title")),
 					h("div", { className: "kanban-stats" },
 						h("span", { className: "kanban-total-jobs" }, 
 							I18n.t("kanban.totalJobs", { count: jobsData.length })

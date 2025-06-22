@@ -27,8 +27,8 @@ const ContactsView = {
 	create: () => {
 		const container = h("div", { className: "contacts-container" },
 			// Header
-			h("div", { className: "contacts-header" },
-				h("h2", { className: "contacts-title" }, I18n.t("contactsView.title")),
+			h("div", { className: "tab-header" },
+				h("h2", { className: "tab-title" }, I18n.t("contactsView.title")),
 				h("div", { className: "contacts-stats" },
 					h("span", { className: "contacts-count" }, ContactsView.getTotalContactsText())
 				)

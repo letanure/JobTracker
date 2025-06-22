@@ -57,68 +57,74 @@
         <div class="tab-content-container">
             <!-- Jobs Tab -->
             <div class="tab-content active" data-tab="jobs">
-                <div class="table-container">
-                    <table id="jobTable">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <div class="header-with-filter">
-                                        <span id="priorityHeader">...</span>
-                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">
-                                            <span class="material-symbols-outlined">expand_more</span>
-                                        </span>
-                                        <div class="filter-dropdown" id="priorityDropdown"></div>
-                                    </div>
-                                </th>
-                                <th id="companyHeader">...</th>
-                                <th id="positionHeader">...</th>
-                                <th>
-                                    <div class="header-with-filter">
-                                        <span id="currentPhaseHeader">...</span>
-                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">
-                                            <span class="material-symbols-outlined">expand_more</span>
-                                        </span>
-                                        <div class="filter-dropdown" id="phaseDropdown"></div>
-                                    </div>
-                                </th>
-                                <th id="salaryRangeHeader">...</th>
-                                <th id="locationHeader">...</th>
-                                <th id="sourceUrlHeader">...</th>
-                                <th id="contactPersonHeader">...</th>
-                                <th id="notesHeader">...</th>
-                                <th id="tasksHeader">...</th>
-                                <th id="actionsHeader">...</th>
-                            </tr>
-                        </thead>
-                        <tbody id="jobTableBody">
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="table-actions">
-                    <button id="addAppBtn" onclick="addRow()">...</button>
-                </div>
-                
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-number" id="totalApps">0</div>
-                        <div class="stat-label" id="totalAppsLabel">...</div>
+                <div class="jobs-container">
+                    <!-- Jobs header -->
+                    <div class="jobs-header">
+                        <h2 class="jobs-title" id="jobsTitle">...</h2>
+                        <div class="jobs-stats">
+                            <div class="stat-item">
+                                <div class="stat-number" id="totalApps">0</div>
+                                <div class="stat-label" id="totalAppsLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="activeApps">0</div>
+                                <div class="stat-label" id="activeAppsLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="interviews">0</div>
+                                <div class="stat-label" id="interviewsLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="offers">0</div>
+                                <div class="stat-label" id="offersLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="rejections">0</div>
+                                <div class="stat-label" id="rejectionsLabel">...</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="activeApps">0</div>
-                        <div class="stat-label" id="activeAppsLabel">...</div>
+                    
+                    <div class="table-container">
+                        <table id="jobTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="header-with-filter">
+                                            <span id="priorityHeader">...</span>
+                                            <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">
+                                                <span class="material-symbols-outlined">expand_more</span>
+                                            </span>
+                                            <div class="filter-dropdown" id="priorityDropdown"></div>
+                                        </div>
+                                    </th>
+                                    <th id="companyHeader">...</th>
+                                    <th id="positionHeader">...</th>
+                                    <th>
+                                        <div class="header-with-filter">
+                                            <span id="currentPhaseHeader">...</span>
+                                            <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">
+                                                <span class="material-symbols-outlined">expand_more</span>
+                                            </span>
+                                            <div class="filter-dropdown" id="phaseDropdown"></div>
+                                        </div>
+                                    </th>
+                                    <th id="salaryRangeHeader">...</th>
+                                    <th id="locationHeader">...</th>
+                                    <th id="sourceUrlHeader">...</th>
+                                    <th id="contactPersonHeader">...</th>
+                                    <th id="notesHeader">...</th>
+                                    <th id="tasksHeader">...</th>
+                                    <th id="actionsHeader">...</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobTableBody">
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="interviews">0</div>
-                        <div class="stat-label" id="interviewsLabel">...</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="offers">0</div>
-                        <div class="stat-label" id="offersLabel">...</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="rejections">0</div>
-                        <div class="stat-label" id="rejectionsLabel">...</div>
+                    
+                    <div class="table-actions">
+                        <button id="addAppBtn" onclick="addRow()">...</button>
                     </div>
                 </div>
             </div>

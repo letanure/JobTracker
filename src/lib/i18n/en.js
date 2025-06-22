@@ -17,6 +17,13 @@ const EN_TRANSLATIONS = {
 		contacts: "Contacts",
 		profile: "Profile"
 	},
+	headers: {
+		jobs: "Job Applications",
+		applications: "Applications Board",
+		tasks: "Tasks Board",
+		calendar: "Calendar View",
+		contacts: "All Contacts"
+	},
 	kanban: {
 		title: "Applications Board",
 		totalJobs: "{count} total applications",

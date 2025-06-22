@@ -17,6 +17,13 @@ const PT_TRANSLATIONS = {
 		contacts: "Contatos",
 		profile: "Perfil"
 	},
+	headers: {
+		jobs: "Candidaturas a Empregos",
+		applications: "Quadro de Candidaturas",
+		tasks: "Quadro de Tarefas",
+		calendar: "Vista do Calendário",
+		contacts: "Todos os Contatos"
+	},
 	kanban: {
 		title: "Quadro de Candidaturas",
 		totalJobs: "{count} candidaturas no total",

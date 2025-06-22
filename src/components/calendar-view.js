@@ -70,8 +70,8 @@ const CalendarView = {
 	create: () => {
 		const container = h("div", { className: "calendar-container" },
 			// Header with title and controls
-			h("div", { className: "calendar-header" },
-				h("h2", { className: "calendar-title" }, I18n.t("calendar.title")),
+			h("div", { className: "tab-header" },
+				h("h2", { className: "tab-title" }, I18n.t("calendar.title")),
 				
 				// View selector
 				h("div", { className: "calendar-controls" },

@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T22:29:12.739Z
+Generated: 2025-06-22T22:40:22.880Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -3250,6 +3250,123 @@ textarea {
 	}
 }
 
+/* ============================================================================ */
+/* UNIFIED TAB HEADERS */
+/* ============================================================================ */
+
+.tab-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--space-4);
+	padding-bottom: var(--space-3);
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.tab-title {
+	font-size: var(--font-size-xl);
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+	line-height: var(--line-height-tight);
+}
+
+/* Jobs container styling */
+.jobs-container {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+/* Jobs specific header styling */
+.jobs-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--space-4);
+	padding-bottom: var(--space-3);
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.jobs-title {
+	font-size: var(--font-size-xl);
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+	line-height: var(--line-height-tight);
+}
+
+.jobs-stats {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: var(--space-4);
+	align-items: center;
+}
+
+.jobs-stats .stat-item {
+	text-align: center;
+	padding: var(--space-2);
+}
+
+.jobs-stats .stat-number {
+	font-size: var(--font-size-lg);
+	font-weight: 600;
+	color: var(--text-color);
+	display: block;
+	line-height: 1.25;
+}
+
+.jobs-stats .stat-label {
+	font-size: var(--font-size-xs);
+	color: var(--text-secondary);
+	margin-top: var(--space-1);
+	font-weight: 500;
+}
+
+/* Responsive headers */
+@media (max-width: 768px) {
+	.tab-header,
+	.jobs-header {
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--space-3);
+	}
+	
+	.tab-title,
+	.jobs-title {
+		text-align: center;
+	}
+	
+	.jobs-container {
+		padding: 16px;
+	}
+	
+	.jobs-stats {
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--space-2);
+	}
+}
+
+@media (max-width: 480px) {
+	.jobs-stats {
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-2);
+	}
+	
+	.jobs-stats .stat-item {
+		padding: var(--space-1);
+	}
+	
+	.jobs-stats .stat-number {
+		font-size: var(--font-size-base);
+	}
+	
+	.jobs-stats .stat-label {
+		font-size: 10px;
+	}
+}
+
 
 /* ============================================================================ */
 /* SRC/STYLES/TABLE.CSS */
@@ -3773,68 +3890,74 @@ tr.editing .actions-cell button {
         <div class="tab-content-container">
             <!-- Jobs Tab -->
             <div class="tab-content active" data-tab="jobs">
-                <div class="table-container">
-                    <table id="jobTable">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <div class="header-with-filter">
-                                        <span id="priorityHeader">...</span>
-                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">
-                                            <span class="material-symbols-outlined">expand_more</span>
-                                        </span>
-                                        <div class="filter-dropdown" id="priorityDropdown"></div>
-                                    </div>
-                                </th>
-                                <th id="companyHeader">...</th>
-                                <th id="positionHeader">...</th>
-                                <th>
-                                    <div class="header-with-filter">
-                                        <span id="currentPhaseHeader">...</span>
-                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">
-                                            <span class="material-symbols-outlined">expand_more</span>
-                                        </span>
-                                        <div class="filter-dropdown" id="phaseDropdown"></div>
-                                    </div>
-                                </th>
-                                <th id="salaryRangeHeader">...</th>
-                                <th id="locationHeader">...</th>
-                                <th id="sourceUrlHeader">...</th>
-                                <th id="contactPersonHeader">...</th>
-                                <th id="notesHeader">...</th>
-                                <th id="tasksHeader">...</th>
-                                <th id="actionsHeader">...</th>
-                            </tr>
-                        </thead>
-                        <tbody id="jobTableBody">
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="table-actions">
-                    <button id="addAppBtn" onclick="addRow()">...</button>
-                </div>
-                
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-number" id="totalApps">0</div>
-                        <div class="stat-label" id="totalAppsLabel">...</div>
+                <div class="jobs-container">
+                    <!-- Jobs header -->
+                    <div class="jobs-header">
+                        <h2 class="jobs-title" id="jobsTitle">...</h2>
+                        <div class="jobs-stats">
+                            <div class="stat-item">
+                                <div class="stat-number" id="totalApps">0</div>
+                                <div class="stat-label" id="totalAppsLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="activeApps">0</div>
+                                <div class="stat-label" id="activeAppsLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="interviews">0</div>
+                                <div class="stat-label" id="interviewsLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="offers">0</div>
+                                <div class="stat-label" id="offersLabel">...</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="rejections">0</div>
+                                <div class="stat-label" id="rejectionsLabel">...</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="activeApps">0</div>
-                        <div class="stat-label" id="activeAppsLabel">...</div>
+                    
+                    <div class="table-container">
+                        <table id="jobTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="header-with-filter">
+                                            <span id="priorityHeader">...</span>
+                                            <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">
+                                                <span class="material-symbols-outlined">expand_more</span>
+                                            </span>
+                                            <div class="filter-dropdown" id="priorityDropdown"></div>
+                                        </div>
+                                    </th>
+                                    <th id="companyHeader">...</th>
+                                    <th id="positionHeader">...</th>
+                                    <th>
+                                        <div class="header-with-filter">
+                                            <span id="currentPhaseHeader">...</span>
+                                            <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">
+                                                <span class="material-symbols-outlined">expand_more</span>
+                                            </span>
+                                            <div class="filter-dropdown" id="phaseDropdown"></div>
+                                        </div>
+                                    </th>
+                                    <th id="salaryRangeHeader">...</th>
+                                    <th id="locationHeader">...</th>
+                                    <th id="sourceUrlHeader">...</th>
+                                    <th id="contactPersonHeader">...</th>
+                                    <th id="notesHeader">...</th>
+                                    <th id="tasksHeader">...</th>
+                                    <th id="actionsHeader">...</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobTableBody">
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="interviews">0</div>
-                        <div class="stat-label" id="interviewsLabel">...</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="offers">0</div>
-                        <div class="stat-label" id="offersLabel">...</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="rejections">0</div>
-                        <div class="stat-label" id="rejectionsLabel">...</div>
+                    
+                    <div class="table-actions">
+                        <button id="addAppBtn" onclick="addRow()">...</button>
                     </div>
                 </div>
             </div>
@@ -3882,11 +4005,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T22:29:12.733Z
+// Generated: 2025-06-22T22:40:22.874Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T22:29:12.733Z");
+console.log("JobTracker - Built at: 2025-06-22T22:40:22.874Z");
 
 
 // ============================================================================
@@ -4162,6 +4285,13 @@ const EN_TRANSLATIONS = {
 		contacts: "Contacts",
 		profile: "Profile"
 	},
+	headers: {
+		jobs: "Job Applications",
+		applications: "Applications Board",
+		tasks: "Tasks Board",
+		calendar: "Calendar View",
+		contacts: "All Contacts"
+	},
 	kanban: {
 		title: "Applications Board",
 		totalJobs: "{count} total applications",
@@ -4406,6 +4536,13 @@ const PT_TRANSLATIONS = {
 		calendar: "Calendário",
 		contacts: "Contatos",
 		profile: "Perfil"
+	},
+	headers: {
+		jobs: "Candidaturas a Empregos",
+		applications: "Quadro de Candidaturas",
+		tasks: "Quadro de Tarefas",
+		calendar: "Vista do Calendário",
+		contacts: "Todos os Contatos"
 	},
 	kanban: {
 		title: "Quadro de Candidaturas",
@@ -5071,6 +5208,9 @@ const getTaskStatusText = (statusKey) => {
 function updateStaticTexts() {
 	// Update header
 	$("#appTitle").text(I18n.t("app.title"));
+	
+	// Update jobs header title
+	$("#jobsTitle").text(I18n.t("headers.jobs"));
 
 	// Update button
 	$("#addAppBtn").text(I18n.t("buttons.addApplication"));
@@ -8366,8 +8506,8 @@ const KanbanBoard = {
 				applicationsTab.innerHTML = '';
 				
 				// Create board header
-				const header = h("div", { className: "kanban-header" },
-					h("h2", { className: "kanban-title" }, I18n.t("kanban.title")),
+				const header = h("div", { className: "tab-header" },
+					h("h2", { className: "tab-title" }, I18n.t("kanban.title")),
 					h("div", { className: "kanban-stats" },
 						h("span", { className: "kanban-total-jobs" }, 
 							I18n.t("kanban.totalJobs", { count: jobsData.length })
@@ -8673,8 +8813,8 @@ const TasksBoard = {
 				});
 				
 				// Create board header
-				const header = h("div", { className: "tasks-header" },
-					h("h2", { className: "tasks-title" }, I18n.t("tabs.tasks")),
+				const header = h("div", { className: "tab-header" },
+					h("h2", { className: "tab-title" }, I18n.t("tabs.tasks")),
 					h("div", { className: "tasks-stats" },
 						h("span", { className: "tasks-total-count" }, 
 							`${totalTasks} total tasks`
@@ -8778,8 +8918,8 @@ const CalendarView = {
 	create: () => {
 		const container = h("div", { className: "calendar-container" },
 			// Header with title and controls
-			h("div", { className: "calendar-header" },
-				h("h2", { className: "calendar-title" }, I18n.t("calendar.title")),
+			h("div", { className: "tab-header" },
+				h("h2", { className: "tab-title" }, I18n.t("calendar.title")),
 				
 				// View selector
 				h("div", { className: "calendar-controls" },
@@ -9634,8 +9774,8 @@ const ContactsView = {
 	create: () => {
 		const container = h("div", { className: "contacts-container" },
 			// Header
-			h("div", { className: "contacts-header" },
-				h("h2", { className: "contacts-title" }, I18n.t("contactsView.title")),
+			h("div", { className: "tab-header" },
+				h("h2", { className: "tab-title" }, I18n.t("contactsView.title")),
 				h("div", { className: "contacts-stats" },
 					h("span", { className: "contacts-count" }, ContactsView.getTotalContactsText())
 				)
