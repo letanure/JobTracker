@@ -21,7 +21,14 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		h("td", { className: "company-name" }, job.company),
 		h("td", { className: "position-name" }, job.position),
 		h("td", { className: "current-phase" }, getPhaseText(job.currentPhase)),
-		h("td", { className: "contact", innerHTML: `${job.contactPerson}<br>${job.contactEmail}` }),
+		h(
+			"td",
+			{ className: "contact" },
+			ContactsCount({
+				contacts: job.contacts || [],
+				onClick: () => openContactsModal(job),
+			})
+		),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", { className: "location" }, job.location),
 		h(

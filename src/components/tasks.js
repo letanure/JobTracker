@@ -373,7 +373,7 @@ const TasksModal = ({ job, onClose }) => {
 					h("textarea", {
 						className: "add-task-textarea",
 						placeholder: I18n.t("modals.tasks.placeholder"),
-						rows: 3,
+						rows: 2,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
 								e.preventDefault();
@@ -389,15 +389,10 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"button",
 					{
-						className: "action-btn edit-btn",
+						className: "action-btn primary-btn",
 						onclick: handleAddTask,
 					},
 					I18n.t("modals.tasks.addButton"),
-				),
-				h(
-					"button",
-					{ className: "action-btn cancel-btn", onclick: onClose },
-					I18n.t("modals.common.close"),
 				),
 			),
 		),
