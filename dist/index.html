@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T13:02:17.932Z
+Generated: 2025-06-22T13:34:30.577Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -984,13 +984,18 @@ tbody tr {
 	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-xl);
 	border: var(--border-width) solid var(--border-color);
-	max-width: var(--col-64); /* 512px - closer to 640px but systematic */
+	max-width: 90vw; /* Much wider for better table visibility */
 	width: 90%;
 	max-height: 85vh;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 	animation: slideUp var(--transition-fast);
+}
+
+/* Contacts modal gets even wider for table layout */
+.contacts-modal {
+	max-width: 95vw;
 }
 
 @keyframes slideUp {
@@ -1859,6 +1864,35 @@ body {
 	text-align: center;
 }
 
+.editable-cell {
+	cursor: pointer;
+	position: relative;
+}
+
+.editable-cell:hover {
+	background: var(--background-color);
+}
+
+.editable-cell:hover::after {
+	content: "✏️";
+	position: absolute;
+	right: var(--space-1);
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: var(--font-size-xs);
+	opacity: 0.6;
+}
+
+.inline-edit-input {
+	width: 100%;
+	padding: var(--space-1);
+	border: var(--border-width) solid var(--primary-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	box-shadow: var(--focus-ring);
+}
+
 .archived-contacts-section {
 	margin-top: var(--space-4);
 }
@@ -1943,6 +1977,108 @@ body {
 	font-size: var(--font-size-base);
 	background: var(--container-background);
 	transition: var(--transition-fast);
+}
+
+/* Notes and Tasks table layouts */
+.notes-table,
+.tasks-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+}
+
+.notes-table th,
+.notes-table td,
+.tasks-table th,
+.tasks-table td {
+	padding: var(--space-3);
+	text-align: left;
+	border-bottom: var(--border-width) solid var(--border-color);
+	vertical-align: middle;
+}
+
+.notes-table th,
+.tasks-table th {
+	background: var(--background-color);
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-sm);
+	color: var(--text-light);
+}
+
+.notes-table tbody tr:hover,
+.tasks-table tbody tr:hover {
+	background: var(--background-color);
+}
+
+.notes-table.archived,
+.tasks-table.archived {
+	opacity: 0.7;
+}
+
+.notes-table-actions,
+.tasks-table-actions {
+	width: 80px;
+	text-align: center;
+}
+
+.note-text-cell,
+.task-text-cell {
+	max-width: 300px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+.inline-edit-textarea {
+	width: 100%;
+	min-height: 60px;
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--primary-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	font-family: inherit;
+	resize: vertical;
+	box-shadow: var(--focus-ring);
+}
+
+.archived-notes-section,
+.archived-tasks-section {
+	margin-top: var(--space-4);
+}
+
+.notes-archived-header,
+.tasks-archived-header {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--text-light);
+	margin-bottom: var(--space-3);
+	padding: var(--space-2);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
+}
+
+.notes-archived-header:hover,
+.tasks-archived-header:hover {
+	background: var(--background-color);
+}
+
+/* Validation errors */
+.validation-error {
+	color: var(--error-color);
+	font-size: var(--font-size-xs);
+	margin-top: var(--space-1);
+	padding: var(--space-1) var(--space-2);
+	background: var(--error-light);
+	border-radius: var(--radius-sm);
+	border: var(--border-width) solid var(--error-color);
+	animation: fadeIn var(--transition-fast);
 }
 
 .contact-form-grid input:focus {
@@ -2144,11 +2280,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T13:02:17.929Z
+// Generated: 2025-06-22T13:34:30.575Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T13:02:17.929Z");
+console.log("JobTracker - Built at: 2025-06-22T13:34:30.575Z");
 
 
 // ============================================================================
@@ -3222,7 +3358,8 @@ const NotesModal = ({ job, onClose }) => {
 		const noteText = textarea.value.trim();
 
 		if (!noteText) {
-			textarea.focus();
+			// Show error message instead of alert
+			showValidationError(textarea, "Note text is required");
 			return;
 		}
 
@@ -3247,19 +3384,245 @@ const NotesModal = ({ job, onClose }) => {
 		// Update the job object for this modal
 		job.notes = jobsData[jobIndex].notes;
 
-		// Add the new note to the existing modal without reopening
-		const modalBody = document.querySelector(".modal-body");
-		const addNoteSection = modalBody.querySelector(".add-note-section");
-
-		// Create and insert the new note before the add note section
-		const newNoteElement = NoteItem({ note: newNote, job });
-		modalBody.insertBefore(newNoteElement, addNoteSection);
+		// Refresh modal without flicker
+		refreshNotesModal(job);
 
 		// Clear the textarea
 		textarea.value = "";
 
 		// Update the notes count in the table (refresh interface for count update)
 		refreshInterface();
+	};
+
+	const editNoteInline = (note, job) => {
+		const cell = event.target.closest('tr').querySelector('.note-text-cell');
+		const currentText = note.text;
+		
+		// Create textarea element
+		const textarea = h("textarea", {
+			value: currentText,
+			className: "inline-edit-textarea",
+			onblur: () => saveNoteText(note, job, textarea.value, cell),
+			onkeydown: (e) => {
+				if (e.key === "Enter" && e.ctrlKey) {
+					e.preventDefault();
+					saveNoteText(note, job, textarea.value, cell);
+				} else if (e.key === "Escape") {
+					e.preventDefault();
+					restoreNoteCell(note, cell);
+				}
+			}
+		});
+		
+		// Replace cell content with textarea
+		cell.innerHTML = "";
+		cell.appendChild(textarea);
+		textarea.focus();
+	};
+
+	const saveNoteText = (note, job, newText, cell) => {
+		const trimmedText = newText.trim();
+		
+		if (!trimmedText) {
+			showValidationError(cell, "Note text is required");
+			return;
+		}
+		
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+		if (noteIndex === -1) return;
+		
+		// Update the data
+		jobsData[jobIndex].notes[noteIndex].text = trimmedText;
+		saveToLocalStorage();
+		
+		// Update the cell display
+		restoreNoteCell(jobsData[jobIndex].notes[noteIndex], cell);
+		
+		// Update interface
+		refreshInterface();
+	};
+
+	const restoreNoteCell = (note, cell) => {
+		cell.innerHTML = "";
+		cell.textContent = note.text;
+	};
+
+	const archiveNote = (note, job) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+		if (noteIndex === -1) return;
+		
+		jobsData[jobIndex].notes[noteIndex].archived = !note.archived;
+		saveToLocalStorage();
+		
+		// Refresh modal without flicker
+		refreshNotesModal(job);
+		
+		// Update interface
+		refreshInterface();
+	};
+
+	const refreshNotesModal = (job) => {
+		const modalBody = document.querySelector(".modal-body");
+		if (!modalBody) return;
+		
+		// Get updated data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		job.notes = jobsData[jobIndex].notes || [];
+		const notes = job.notes;
+		const activeNotes = notes.filter(note => !note.archived);
+		const archivedNotes = notes.filter(note => note.archived);
+		const sortedActiveNotes = [...activeNotes].sort((a, b) => new Date(a.date) - new Date(b.date));
+		const sortedArchivedNotes = [...archivedNotes].sort((a, b) => new Date(a.date) - new Date(b.date));
+		
+		// Recreate modal body content
+		modalBody.innerHTML = "";
+		modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes));
+	};
+
+	const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
+		return h("div", {},
+			// Active notes table
+			sortedActiveNotes.length > 0 ? h("div", { className: "notes-table-container" },
+				h("table", { className: "notes-table" },
+					h("thead", {},
+						h("tr", {},
+							h("th", {}, "Phase"),
+							h("th", {}, "Date"),
+							h("th", {}, "Note"),
+							h("th", {}, "Actions")
+						)
+					),
+					h("tbody", {},
+						...sortedActiveNotes.map((note) => 
+							h("tr", { key: note.id },
+								h("td", {}, getPhaseText(note.phase)),
+								h("td", {}, formatDate(note.date)),
+								h("td", { className: "note-text-cell" }, note.text),
+								h("td", { className: "notes-table-actions" },
+									h("button", {
+										className: "action-btn edit-note-btn icon-btn-transparent",
+										title: I18n.t("modals.notes.editTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
+										onclick: () => editNoteInline(note, job)
+									}),
+									h("button", {
+										className: "action-btn archive-btn icon-btn-transparent",
+										title: I18n.t("modals.notes.archiveTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+										onclick: () => archiveNote(note, job)
+									})
+								)
+							)
+						)
+					)
+				)
+			) : h("p", { className: "modal-empty-message" }, I18n.t("modals.notes.emptyState")),
+			
+			// Archived notes section
+			sortedArchivedNotes.length > 0 ? h("div", { className: "archived-notes-section" },
+				h("h4", { 
+					className: "notes-archived-header",
+					onclick: () => {
+						const archivedTable = document.getElementById('archived-notes-table');
+						const expandIcon = document.getElementById('archived-notes-icon');
+						if (archivedTable.style.display === 'none') {
+							archivedTable.style.display = 'table';
+							expandIcon.textContent = 'expand_less';
+						} else {
+							archivedTable.style.display = 'none';
+							expandIcon.textContent = 'expand_more';
+						}
+					}
+				}, 
+					h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-notes-icon' }, 'expand_more'),
+					I18n.t("modals.notes.archivedSection", { count: sortedArchivedNotes.length })
+				),
+				h("table", { 
+					id: "archived-notes-table",
+					className: "notes-table archived",
+					style: "display: none"
+				},
+					h("thead", {},
+						h("tr", {},
+							h("th", {}, "Phase"),
+							h("th", {}, "Date"),
+							h("th", {}, "Note"),
+							h("th", {}, "Actions")
+						)
+					),
+					h("tbody", {},
+						...sortedArchivedNotes.map((note) => 
+							h("tr", { key: note.id },
+								h("td", {}, getPhaseText(note.phase)),
+								h("td", {}, formatDate(note.date)),
+								h("td", { className: "note-text-cell" }, note.text),
+								h("td", { className: "notes-table-actions" },
+									h("button", {
+										className: "action-btn archive-btn icon-btn-transparent",
+										title: I18n.t("modals.notes.unarchiveTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
+										onclick: () => archiveNote(note, job)
+									})
+								)
+							)
+						)
+					)
+				)
+			) : null,
+			
+			// Add note form section
+			h("div", { className: "add-note-section" },
+				h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
+				h("div", { className: "note-form-info" },
+					h("span", {},
+						h("span", { className: "material-symbols-outlined" }, "assignment"),
+						I18n.t("modals.notes.phaseLabelPrefix") + getPhaseText(job.currentPhase)
+					)
+				),
+				h("textarea", {
+					className: "add-note-textarea",
+					placeholder: I18n.t("modals.notes.placeholder"),
+					rows: 2,
+					onkeydown: (e) => {
+						if (e.key === "Enter" && e.shiftKey) {
+							e.preventDefault();
+							handleAddNote();
+						}
+					}
+				})
+			)
+		);
+	};
+
+	const showValidationError = (element, message) => {
+		// Remove existing error
+		const existingError = element.parentNode.querySelector('.validation-error');
+		if (existingError) {
+			existingError.remove();
+		}
+		
+		// Add error message
+		const errorElement = h("div", { 
+			className: "validation-error" 
+		}, message);
+		
+		element.parentNode.appendChild(errorElement);
+		element.focus();
+		
+		// Remove error after 3 seconds
+		setTimeout(() => {
+			if (errorElement.parentNode) {
+				errorElement.remove();
+			}
+		}, 3000);
 	};
 
 	return h(
@@ -3284,79 +3647,7 @@ const NotesModal = ({ job, onClose }) => {
 			h(
 				"div",
 				{ className: "modal-body" },
-				// Active notes section
-				...(sortedActiveNotes.length > 0
-					? [
-						h("h4", { 
-							className: "modal-section-header"
-						}, I18n.t("modals.notes.activeSection")),
-						...sortedActiveNotes.map((note) => NoteItem({ note, job }))
-					]
-					: [
-							h(
-								"p",
-								{
-									className: "modal-empty-message"
-								},
-								I18n.t("modals.notes.emptyState"),
-							),
-						]),
-				// Archived notes section
-				...(sortedArchivedNotes.length > 0
-					? [
-						h("h4", { 
-							className: "modal-archived-header",
-							onclick: () => {
-								const archivedSection = document.getElementById('archived-notes-content');
-								const expandIcon = document.getElementById('archived-notes-icon');
-								if (archivedSection.style.display === 'none') {
-									archivedSection.style.display = 'block';
-									expandIcon.textContent = 'expand_less';
-								} else {
-									archivedSection.style.display = 'none';
-									expandIcon.textContent = 'expand_more';
-								}
-							}
-						}, 
-							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-notes-icon' }, 'expand_less'),
-							I18n.t("modals.notes.archivedSection", { count: sortedArchivedNotes.length })
-						),
-						h("div", { 
-							id: "archived-notes-content"
-						}, ...sortedArchivedNotes.map((note) => NoteItem({ note, job })))
-					]
-					: []),
-				// Add note form section
-				h(
-					"div",
-					{ className: "add-note-section" },
-					h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
-					h(
-						"div",
-						{ className: "note-form-info" },
-						h(
-							"span",
-							{},
-							h(
-								"span",
-								{ className: "material-symbols-outlined" },
-								"assignment",
-							),
-							I18n.t("modals.notes.phaseLabelPrefix") + getPhaseText(job.currentPhase),
-						),
-					),
-					h("textarea", {
-						className: "add-note-textarea",
-						placeholder: I18n.t("modals.notes.placeholder"),
-						rows: 2,
-						onkeydown: (e) => {
-							if (e.key === "Enter" && e.shiftKey) {
-								e.preventDefault();
-								handleAddNote();
-							}
-						},
-					}),
-				),
+				createNotesContent(job, sortedActiveNotes, sortedArchivedNotes)
 			),
 			h(
 				"div",
@@ -3762,11 +4053,12 @@ const TasksModal = ({ job, onClose }) => {
 								}
 							}
 						}, 
-							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_less'),
+							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_more'),
 							I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
 						),
 						h("div", { 
-							id: "archived-tasks-content"
+							id: "archived-tasks-content",
+							style: "display: none"
 						}, ...sortedArchivedTasks.map((task) => TaskItem({ task, job })))
 					]
 					: []),
@@ -4032,8 +4324,13 @@ const ContactsModal = ({ job, onClose }) => {
 		const phone = phoneInput.value.trim();
 		const company = companyInput.value.trim();
 
-		if (!name && !email && !phone) {
-			nameInput.focus();
+		if (!name) {
+			showValidationError(nameInput, "Name is required for a contact");
+			return;
+		}
+		
+		if (email && !email.includes("@")) {
+			showValidationError(emailInput, "Please enter a valid email address");
 			return;
 		}
 
@@ -4060,9 +4357,8 @@ const ContactsModal = ({ job, onClose }) => {
 		// Update the job object for this modal
 		job.contacts = jobsData[jobIndex].contacts;
 
-		// Refresh the table by reopening the modal
-		closeModal();
-		openContactsModal(job);
+		// Refresh the table without flicker
+		refreshContactsModal(job);
 
 		// Update the contacts count in the table (refresh interface for count update)
 		refreshInterface();
@@ -4078,12 +4374,280 @@ const ContactsModal = ({ job, onClose }) => {
 		jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
 		saveToLocalStorage();
 		
-		// Refresh the table by reopening the modal
-		closeModal();
-		openContactsModal(job);
+		// Refresh the table without flicker
+		refreshContactsModal(job);
 		
 		// Update interface
 		refreshInterface();
+	};
+
+	const editContactField = (contact, field) => {
+		const cell = event.target.closest('td');
+		const currentValue = contact[field] || "";
+		
+		// Create input element
+		const input = h("input", {
+			type: field === "email" ? "email" : field === "phone" ? "tel" : "text",
+			value: currentValue,
+			className: "inline-edit-input",
+			onblur: () => saveContactField(contact, field, input.value, cell),
+			onkeydown: (e) => {
+				if (e.key === "Enter") {
+					e.preventDefault();
+					saveContactField(contact, field, input.value, cell);
+				} else if (e.key === "Escape") {
+					e.preventDefault();
+					restoreContactCell(contact, field, cell);
+				}
+			}
+		});
+		
+		// Replace cell content with input
+		cell.innerHTML = "";
+		cell.appendChild(input);
+		input.focus();
+		input.select();
+	};
+
+	const saveContactField = (contact, field, newValue, cell) => {
+		const trimmedValue = newValue.trim();
+		
+		// Validation - name is required
+		if (field === "name" && !trimmedValue) {
+			showValidationError(cell, "Name is required for a contact");
+			return;
+		}
+		
+		// Email validation
+		if (field === "email" && trimmedValue && !trimmedValue.includes("@")) {
+			showValidationError(cell, "Please enter a valid email address");
+			return;
+		}
+		
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
+		if (contactIndex === -1) return;
+		
+		// Update the data
+		jobsData[jobIndex].contacts[contactIndex][field] = trimmedValue;
+		saveToLocalStorage();
+		
+		// Update the cell display
+		restoreContactCell(jobsData[jobIndex].contacts[contactIndex], field, cell);
+		
+		// Update interface
+		refreshInterface();
+	};
+
+	const restoreContactCell = (contact, field, cell) => {
+		const value = contact[field] || "—";
+		cell.innerHTML = "";
+		
+		if (field === "email" && contact[field]) {
+			const link = h("a", { 
+				href: `mailto:${contact[field]}`, 
+				className: "contact-link",
+				onclick: (e) => e.stopPropagation()
+			}, contact[field]);
+			cell.appendChild(link);
+		} else if (field === "phone" && contact[field]) {
+			const link = h("a", { 
+				href: `tel:${contact[field]}`, 
+				className: "contact-link",
+				onclick: (e) => e.stopPropagation()
+			}, contact[field]);
+			cell.appendChild(link);
+		} else {
+			cell.textContent = value;
+		}
+		
+		// Re-add click handler for editing
+		cell.onclick = () => editContactField(contact, field);
+	};
+
+	const refreshContactsModal = (job) => {
+		const modalBody = document.querySelector(".modal-body");
+		if (!modalBody) return;
+		
+		// Get updated data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		job.contacts = jobsData[jobIndex].contacts || [];
+		const contacts = job.contacts;
+		const activeContacts = contacts.filter(contact => !contact.archived);
+		const archivedContacts = contacts.filter(contact => contact.archived);
+		const sortedActiveContacts = [...activeContacts].sort((a, b) => new Date(a.date) - new Date(b.date));
+		const sortedArchivedContacts = [...archivedContacts].sort((a, b) => new Date(a.date) - new Date(b.date));
+		
+		// Recreate modal body content
+		modalBody.innerHTML = "";
+		modalBody.appendChild(createContactsContent(job, sortedActiveContacts, sortedArchivedContacts));
+	};
+
+	const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts) => {
+		return h("div", { className: "contacts-table-container" },
+			// Active contacts table
+			sortedActiveContacts.length > 0 ? h("table", { className: "contacts-table" },
+				h("thead", {},
+					h("tr", {},
+						h("th", {}, I18n.t("modals.contacts.placeholderName")),
+						h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+						h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+						h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+						h("th", {}, "Actions")
+					)
+				),
+				h("tbody", {},
+					...sortedActiveContacts.map((contact) => 
+						h("tr", { key: contact.id },
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "name")
+							}, contact.name || "—"),
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "email")
+							}, contact.email ? h("a", { 
+								href: `mailto:${contact.email}`, 
+								className: "contact-link",
+								onclick: (e) => e.stopPropagation()
+							}, contact.email) : "—"),
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "phone")
+							}, contact.phone ? h("a", { 
+								href: `tel:${contact.phone}`, 
+								className: "contact-link",
+								onclick: (e) => e.stopPropagation()
+							}, contact.phone) : "—"),
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "company")
+							}, contact.company || "—"),
+							h("td", { className: "contacts-table-actions" },
+								h("button", {
+									className: "action-btn archive-btn icon-btn-transparent",
+									title: I18n.t("modals.contacts.archiveTitle"),
+									innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+									onclick: () => handleArchiveContact(contact)
+								})
+							)
+						)
+					)
+				)
+			) : h("p", { className: "modal-empty-message" }, I18n.t("modals.contacts.emptyState")),
+			
+			// Archived contacts section
+			sortedArchivedContacts.length > 0 ? h("div", { className: "archived-contacts-section" },
+				h("h4", { 
+					className: "contacts-archived-header",
+					onclick: () => {
+						const archivedTable = document.getElementById('archived-contacts-table');
+						const expandIcon = document.getElementById('archived-contacts-icon');
+						if (archivedTable.style.display === 'none') {
+							archivedTable.style.display = 'table';
+							expandIcon.textContent = 'expand_less';
+						} else {
+							archivedTable.style.display = 'none';
+							expandIcon.textContent = 'expand_more';
+						}
+					}
+				}, 
+					h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-contacts-icon' }, 'expand_more'),
+					I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
+				),
+				h("table", { 
+					id: "archived-contacts-table",
+					className: "contacts-table archived",
+					style: "display: none"
+				},
+					h("thead", {},
+						h("tr", {},
+							h("th", {}, I18n.t("modals.contacts.placeholderName")),
+							h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+							h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+							h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+							h("th", {}, "Actions")
+						)
+					),
+					h("tbody", {},
+						...sortedArchivedContacts.map((contact) => 
+							h("tr", { key: contact.id },
+								h("td", {}, contact.name || "—"),
+								h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
+								h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
+								h("td", {}, contact.company || "—"),
+								h("td", { className: "contacts-table-actions" },
+									h("button", {
+										className: "action-btn archive-btn icon-btn-transparent",
+										title: I18n.t("modals.contacts.unarchiveTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
+										onclick: () => handleArchiveContact(contact)
+									})
+								)
+							)
+						)
+					)
+				)
+			) : null,
+			
+			// Add contact form (like a new table row)
+			h("div", { className: "add-contact-row" },
+				h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
+				h("div", { className: "contact-form-row" },
+					h("input", {
+						type: "text",
+						className: "add-contact-name",
+						placeholder: I18n.t("modals.contacts.placeholderName"),
+					}),
+					h("input", {
+						type: "email",
+						className: "add-contact-email",
+						placeholder: I18n.t("modals.contacts.placeholderEmail"),
+					}),
+					h("input", {
+						type: "tel",
+						className: "add-contact-phone",
+						placeholder: I18n.t("modals.contacts.placeholderPhone"),
+					}),
+					h("input", {
+						type: "text",
+						className: "add-contact-company",
+						placeholder: I18n.t("modals.contacts.placeholderCompany"),
+					}),
+					h("button", {
+						className: "action-btn primary-btn",
+						onclick: handleAddContact,
+					}, I18n.t("modals.contacts.addButton"))
+				)
+			)
+		);
+	};
+
+	const showValidationError = (element, message) => {
+		// Remove existing error
+		const existingError = element.parentNode.querySelector('.validation-error');
+		if (existingError) {
+			existingError.remove();
+		}
+		
+		// Add error message
+		const errorElement = h("div", { 
+			className: "validation-error" 
+		}, message);
+		
+		element.parentNode.appendChild(errorElement);
+		element.focus();
+		
+		// Remove error after 3 seconds
+		setTimeout(() => {
+			if (errorElement.parentNode) {
+				errorElement.remove();
+			}
+		}, 3000);
 	};
 
 	return h(
@@ -4108,123 +4672,7 @@ const ContactsModal = ({ job, onClose }) => {
 			h(
 				"div",
 				{ className: "modal-body" },
-				// Contacts table
-				h("div", { className: "contacts-table-container" },
-					// Active contacts table
-					sortedActiveContacts.length > 0 ? h("table", { className: "contacts-table" },
-						h("thead", {},
-							h("tr", {},
-								h("th", {}, I18n.t("modals.contacts.placeholderName")),
-								h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
-								h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
-								h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
-								h("th", {}, "Actions")
-							)
-						),
-						h("tbody", {},
-							...sortedActiveContacts.map((contact) => 
-								h("tr", { key: contact.id },
-									h("td", {}, contact.name || "—"),
-									h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
-									h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
-									h("td", {}, contact.company || "—"),
-									h("td", { className: "contacts-table-actions" },
-										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
-											title: I18n.t("modals.contacts.archiveTitle"),
-											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
-											onclick: () => handleArchiveContact(contact)
-										})
-									)
-								)
-							)
-						)
-					) : h("p", { className: "modal-empty-message" }, I18n.t("modals.contacts.emptyState")),
-					
-					// Archived contacts section
-					sortedArchivedContacts.length > 0 ? h("div", { className: "archived-contacts-section" },
-						h("h4", { 
-							className: "contacts-archived-header",
-							onclick: () => {
-								const archivedTable = document.getElementById('archived-contacts-table');
-								const expandIcon = document.getElementById('archived-contacts-icon');
-								if (archivedTable.style.display === 'none') {
-									archivedTable.style.display = 'table';
-									expandIcon.textContent = 'expand_less';
-								} else {
-									archivedTable.style.display = 'none';
-									expandIcon.textContent = 'expand_more';
-								}
-							}
-						}, 
-							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-contacts-icon' }, 'expand_less'),
-							I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
-						),
-						h("table", { 
-							id: "archived-contacts-table",
-							className: "contacts-table archived"
-						},
-							h("thead", {},
-								h("tr", {},
-									h("th", {}, I18n.t("modals.contacts.placeholderName")),
-									h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
-									h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
-									h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
-									h("th", {}, "Actions")
-								)
-							),
-							h("tbody", {},
-								...sortedArchivedContacts.map((contact) => 
-									h("tr", { key: contact.id },
-										h("td", {}, contact.name || "—"),
-										h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
-										h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
-										h("td", {}, contact.company || "—"),
-										h("td", { className: "contacts-table-actions" },
-											h("button", {
-												className: "action-btn archive-btn icon-btn-transparent",
-												title: I18n.t("modals.contacts.unarchiveTitle"),
-												innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
-												onclick: () => handleArchiveContact(contact)
-											})
-										)
-									)
-								)
-							)
-						)
-					) : null,
-					
-					// Add contact form (like a new table row)
-					h("div", { className: "add-contact-row" },
-						h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
-						h("div", { className: "contact-form-row" },
-							h("input", {
-								type: "text",
-								className: "add-contact-name",
-								placeholder: I18n.t("modals.contacts.placeholderName"),
-							}),
-							h("input", {
-								type: "email",
-								className: "add-contact-email",
-								placeholder: I18n.t("modals.contacts.placeholderEmail"),
-							}),
-							h("input", {
-								type: "tel",
-								className: "add-contact-phone",
-								placeholder: I18n.t("modals.contacts.placeholderPhone"),
-							}),
-							h("input", {
-								type: "text",
-								className: "add-contact-company",
-								placeholder: I18n.t("modals.contacts.placeholderCompany"),
-							}),
-							h("button", {
-								className: "action-btn primary-btn",
-								onclick: handleAddContact,
-							}, I18n.t("modals.contacts.addButton"))
-						)
-					)
-				)
+				createContactsContent(job, sortedActiveContacts, sortedArchivedContacts)
 			),
 		),
 	);

@@ -931,13 +931,18 @@ tbody tr {
 	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-xl);
 	border: var(--border-width) solid var(--border-color);
-	max-width: var(--col-64); /* 512px - closer to 640px but systematic */
+	max-width: 90vw; /* Much wider for better table visibility */
 	width: 90%;
 	max-height: 85vh;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 	animation: slideUp var(--transition-fast);
+}
+
+/* Contacts modal gets even wider for table layout */
+.contacts-modal {
+	max-width: 95vw;
 }
 
 @keyframes slideUp {
@@ -1806,6 +1811,35 @@ body {
 	text-align: center;
 }
 
+.editable-cell {
+	cursor: pointer;
+	position: relative;
+}
+
+.editable-cell:hover {
+	background: var(--background-color);
+}
+
+.editable-cell:hover::after {
+	content: "✏️";
+	position: absolute;
+	right: var(--space-1);
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: var(--font-size-xs);
+	opacity: 0.6;
+}
+
+.inline-edit-input {
+	width: 100%;
+	padding: var(--space-1);
+	border: var(--border-width) solid var(--primary-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	box-shadow: var(--focus-ring);
+}
+
 .archived-contacts-section {
 	margin-top: var(--space-4);
 }
@@ -1890,6 +1924,108 @@ body {
 	font-size: var(--font-size-base);
 	background: var(--container-background);
 	transition: var(--transition-fast);
+}
+
+/* Notes and Tasks table layouts */
+.notes-table,
+.tasks-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: var(--space-4);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+}
+
+.notes-table th,
+.notes-table td,
+.tasks-table th,
+.tasks-table td {
+	padding: var(--space-3);
+	text-align: left;
+	border-bottom: var(--border-width) solid var(--border-color);
+	vertical-align: middle;
+}
+
+.notes-table th,
+.tasks-table th {
+	background: var(--background-color);
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-sm);
+	color: var(--text-light);
+}
+
+.notes-table tbody tr:hover,
+.tasks-table tbody tr:hover {
+	background: var(--background-color);
+}
+
+.notes-table.archived,
+.tasks-table.archived {
+	opacity: 0.7;
+}
+
+.notes-table-actions,
+.tasks-table-actions {
+	width: 80px;
+	text-align: center;
+}
+
+.note-text-cell,
+.task-text-cell {
+	max-width: 300px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+.inline-edit-textarea {
+	width: 100%;
+	min-height: 60px;
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--primary-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-base);
+	background: var(--container-background);
+	font-family: inherit;
+	resize: vertical;
+	box-shadow: var(--focus-ring);
+}
+
+.archived-notes-section,
+.archived-tasks-section {
+	margin-top: var(--space-4);
+}
+
+.notes-archived-header,
+.tasks-archived-header {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--text-light);
+	margin-bottom: var(--space-3);
+	padding: var(--space-2);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
+}
+
+.notes-archived-header:hover,
+.tasks-archived-header:hover {
+	background: var(--background-color);
+}
+
+/* Validation errors */
+.validation-error {
+	color: var(--error-color);
+	font-size: var(--font-size-xs);
+	margin-top: var(--space-1);
+	padding: var(--space-1) var(--space-2);
+	background: var(--error-light);
+	border-radius: var(--radius-sm);
+	border: var(--border-width) solid var(--error-color);
+	animation: fadeIn var(--transition-fast);
 }
 
 .contact-form-grid input:focus {

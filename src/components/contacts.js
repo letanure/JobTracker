@@ -210,8 +210,13 @@ const ContactsModal = ({ job, onClose }) => {
 		const phone = phoneInput.value.trim();
 		const company = companyInput.value.trim();
 
-		if (!name && !email && !phone) {
-			nameInput.focus();
+		if (!name) {
+			showValidationError(nameInput, "Name is required for a contact");
+			return;
+		}
+		
+		if (email && !email.includes("@")) {
+			showValidationError(emailInput, "Please enter a valid email address");
 			return;
 		}
 
@@ -238,9 +243,8 @@ const ContactsModal = ({ job, onClose }) => {
 		// Update the job object for this modal
 		job.contacts = jobsData[jobIndex].contacts;
 
-		// Refresh the table by reopening the modal
-		closeModal();
-		openContactsModal(job);
+		// Refresh the table without flicker
+		refreshContactsModal(job);
 
 		// Update the contacts count in the table (refresh interface for count update)
 		refreshInterface();
@@ -256,12 +260,280 @@ const ContactsModal = ({ job, onClose }) => {
 		jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
 		saveToLocalStorage();
 		
-		// Refresh the table by reopening the modal
-		closeModal();
-		openContactsModal(job);
+		// Refresh the table without flicker
+		refreshContactsModal(job);
 		
 		// Update interface
 		refreshInterface();
+	};
+
+	const editContactField = (contact, field) => {
+		const cell = event.target.closest('td');
+		const currentValue = contact[field] || "";
+		
+		// Create input element
+		const input = h("input", {
+			type: field === "email" ? "email" : field === "phone" ? "tel" : "text",
+			value: currentValue,
+			className: "inline-edit-input",
+			onblur: () => saveContactField(contact, field, input.value, cell),
+			onkeydown: (e) => {
+				if (e.key === "Enter") {
+					e.preventDefault();
+					saveContactField(contact, field, input.value, cell);
+				} else if (e.key === "Escape") {
+					e.preventDefault();
+					restoreContactCell(contact, field, cell);
+				}
+			}
+		});
+		
+		// Replace cell content with input
+		cell.innerHTML = "";
+		cell.appendChild(input);
+		input.focus();
+		input.select();
+	};
+
+	const saveContactField = (contact, field, newValue, cell) => {
+		const trimmedValue = newValue.trim();
+		
+		// Validation - name is required
+		if (field === "name" && !trimmedValue) {
+			showValidationError(cell, "Name is required for a contact");
+			return;
+		}
+		
+		// Email validation
+		if (field === "email" && trimmedValue && !trimmedValue.includes("@")) {
+			showValidationError(cell, "Please enter a valid email address");
+			return;
+		}
+		
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
+		if (contactIndex === -1) return;
+		
+		// Update the data
+		jobsData[jobIndex].contacts[contactIndex][field] = trimmedValue;
+		saveToLocalStorage();
+		
+		// Update the cell display
+		restoreContactCell(jobsData[jobIndex].contacts[contactIndex], field, cell);
+		
+		// Update interface
+		refreshInterface();
+	};
+
+	const restoreContactCell = (contact, field, cell) => {
+		const value = contact[field] || "—";
+		cell.innerHTML = "";
+		
+		if (field === "email" && contact[field]) {
+			const link = h("a", { 
+				href: `mailto:${contact[field]}`, 
+				className: "contact-link",
+				onclick: (e) => e.stopPropagation()
+			}, contact[field]);
+			cell.appendChild(link);
+		} else if (field === "phone" && contact[field]) {
+			const link = h("a", { 
+				href: `tel:${contact[field]}`, 
+				className: "contact-link",
+				onclick: (e) => e.stopPropagation()
+			}, contact[field]);
+			cell.appendChild(link);
+		} else {
+			cell.textContent = value;
+		}
+		
+		// Re-add click handler for editing
+		cell.onclick = () => editContactField(contact, field);
+	};
+
+	const refreshContactsModal = (job) => {
+		const modalBody = document.querySelector(".modal-body");
+		if (!modalBody) return;
+		
+		// Get updated data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		job.contacts = jobsData[jobIndex].contacts || [];
+		const contacts = job.contacts;
+		const activeContacts = contacts.filter(contact => !contact.archived);
+		const archivedContacts = contacts.filter(contact => contact.archived);
+		const sortedActiveContacts = [...activeContacts].sort((a, b) => new Date(a.date) - new Date(b.date));
+		const sortedArchivedContacts = [...archivedContacts].sort((a, b) => new Date(a.date) - new Date(b.date));
+		
+		// Recreate modal body content
+		modalBody.innerHTML = "";
+		modalBody.appendChild(createContactsContent(job, sortedActiveContacts, sortedArchivedContacts));
+	};
+
+	const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts) => {
+		return h("div", { className: "contacts-table-container" },
+			// Active contacts table
+			sortedActiveContacts.length > 0 ? h("table", { className: "contacts-table" },
+				h("thead", {},
+					h("tr", {},
+						h("th", {}, I18n.t("modals.contacts.placeholderName")),
+						h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+						h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+						h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+						h("th", {}, "Actions")
+					)
+				),
+				h("tbody", {},
+					...sortedActiveContacts.map((contact) => 
+						h("tr", { key: contact.id },
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "name")
+							}, contact.name || "—"),
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "email")
+							}, contact.email ? h("a", { 
+								href: `mailto:${contact.email}`, 
+								className: "contact-link",
+								onclick: (e) => e.stopPropagation()
+							}, contact.email) : "—"),
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "phone")
+							}, contact.phone ? h("a", { 
+								href: `tel:${contact.phone}`, 
+								className: "contact-link",
+								onclick: (e) => e.stopPropagation()
+							}, contact.phone) : "—"),
+							h("td", { 
+								className: "editable-cell",
+								onclick: () => editContactField(contact, "company")
+							}, contact.company || "—"),
+							h("td", { className: "contacts-table-actions" },
+								h("button", {
+									className: "action-btn archive-btn icon-btn-transparent",
+									title: I18n.t("modals.contacts.archiveTitle"),
+									innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+									onclick: () => handleArchiveContact(contact)
+								})
+							)
+						)
+					)
+				)
+			) : h("p", { className: "modal-empty-message" }, I18n.t("modals.contacts.emptyState")),
+			
+			// Archived contacts section
+			sortedArchivedContacts.length > 0 ? h("div", { className: "archived-contacts-section" },
+				h("h4", { 
+					className: "contacts-archived-header",
+					onclick: () => {
+						const archivedTable = document.getElementById('archived-contacts-table');
+						const expandIcon = document.getElementById('archived-contacts-icon');
+						if (archivedTable.style.display === 'none') {
+							archivedTable.style.display = 'table';
+							expandIcon.textContent = 'expand_less';
+						} else {
+							archivedTable.style.display = 'none';
+							expandIcon.textContent = 'expand_more';
+						}
+					}
+				}, 
+					h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-contacts-icon' }, 'expand_more'),
+					I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
+				),
+				h("table", { 
+					id: "archived-contacts-table",
+					className: "contacts-table archived",
+					style: "display: none"
+				},
+					h("thead", {},
+						h("tr", {},
+							h("th", {}, I18n.t("modals.contacts.placeholderName")),
+							h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+							h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+							h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+							h("th", {}, "Actions")
+						)
+					),
+					h("tbody", {},
+						...sortedArchivedContacts.map((contact) => 
+							h("tr", { key: contact.id },
+								h("td", {}, contact.name || "—"),
+								h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
+								h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
+								h("td", {}, contact.company || "—"),
+								h("td", { className: "contacts-table-actions" },
+									h("button", {
+										className: "action-btn archive-btn icon-btn-transparent",
+										title: I18n.t("modals.contacts.unarchiveTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
+										onclick: () => handleArchiveContact(contact)
+									})
+								)
+							)
+						)
+					)
+				)
+			) : null,
+			
+			// Add contact form (like a new table row)
+			h("div", { className: "add-contact-row" },
+				h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
+				h("div", { className: "contact-form-row" },
+					h("input", {
+						type: "text",
+						className: "add-contact-name",
+						placeholder: I18n.t("modals.contacts.placeholderName"),
+					}),
+					h("input", {
+						type: "email",
+						className: "add-contact-email",
+						placeholder: I18n.t("modals.contacts.placeholderEmail"),
+					}),
+					h("input", {
+						type: "tel",
+						className: "add-contact-phone",
+						placeholder: I18n.t("modals.contacts.placeholderPhone"),
+					}),
+					h("input", {
+						type: "text",
+						className: "add-contact-company",
+						placeholder: I18n.t("modals.contacts.placeholderCompany"),
+					}),
+					h("button", {
+						className: "action-btn primary-btn",
+						onclick: handleAddContact,
+					}, I18n.t("modals.contacts.addButton"))
+				)
+			)
+		);
+	};
+
+	const showValidationError = (element, message) => {
+		// Remove existing error
+		const existingError = element.parentNode.querySelector('.validation-error');
+		if (existingError) {
+			existingError.remove();
+		}
+		
+		// Add error message
+		const errorElement = h("div", { 
+			className: "validation-error" 
+		}, message);
+		
+		element.parentNode.appendChild(errorElement);
+		element.focus();
+		
+		// Remove error after 3 seconds
+		setTimeout(() => {
+			if (errorElement.parentNode) {
+				errorElement.remove();
+			}
+		}, 3000);
 	};
 
 	return h(
@@ -286,123 +558,7 @@ const ContactsModal = ({ job, onClose }) => {
 			h(
 				"div",
 				{ className: "modal-body" },
-				// Contacts table
-				h("div", { className: "contacts-table-container" },
-					// Active contacts table
-					sortedActiveContacts.length > 0 ? h("table", { className: "contacts-table" },
-						h("thead", {},
-							h("tr", {},
-								h("th", {}, I18n.t("modals.contacts.placeholderName")),
-								h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
-								h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
-								h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
-								h("th", {}, "Actions")
-							)
-						),
-						h("tbody", {},
-							...sortedActiveContacts.map((contact) => 
-								h("tr", { key: contact.id },
-									h("td", {}, contact.name || "—"),
-									h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
-									h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
-									h("td", {}, contact.company || "—"),
-									h("td", { className: "contacts-table-actions" },
-										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
-											title: I18n.t("modals.contacts.archiveTitle"),
-											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
-											onclick: () => handleArchiveContact(contact)
-										})
-									)
-								)
-							)
-						)
-					) : h("p", { className: "modal-empty-message" }, I18n.t("modals.contacts.emptyState")),
-					
-					// Archived contacts section
-					sortedArchivedContacts.length > 0 ? h("div", { className: "archived-contacts-section" },
-						h("h4", { 
-							className: "contacts-archived-header",
-							onclick: () => {
-								const archivedTable = document.getElementById('archived-contacts-table');
-								const expandIcon = document.getElementById('archived-contacts-icon');
-								if (archivedTable.style.display === 'none') {
-									archivedTable.style.display = 'table';
-									expandIcon.textContent = 'expand_less';
-								} else {
-									archivedTable.style.display = 'none';
-									expandIcon.textContent = 'expand_more';
-								}
-							}
-						}, 
-							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-contacts-icon' }, 'expand_less'),
-							I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
-						),
-						h("table", { 
-							id: "archived-contacts-table",
-							className: "contacts-table archived"
-						},
-							h("thead", {},
-								h("tr", {},
-									h("th", {}, I18n.t("modals.contacts.placeholderName")),
-									h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
-									h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
-									h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
-									h("th", {}, "Actions")
-								)
-							),
-							h("tbody", {},
-								...sortedArchivedContacts.map((contact) => 
-									h("tr", { key: contact.id },
-										h("td", {}, contact.name || "—"),
-										h("td", {}, contact.email ? h("a", { href: `mailto:${contact.email}`, className: "contact-link" }, contact.email) : "—"),
-										h("td", {}, contact.phone ? h("a", { href: `tel:${contact.phone}`, className: "contact-link" }, contact.phone) : "—"),
-										h("td", {}, contact.company || "—"),
-										h("td", { className: "contacts-table-actions" },
-											h("button", {
-												className: "action-btn archive-btn icon-btn-transparent",
-												title: I18n.t("modals.contacts.unarchiveTitle"),
-												innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
-												onclick: () => handleArchiveContact(contact)
-											})
-										)
-									)
-								)
-							)
-						)
-					) : null,
-					
-					// Add contact form (like a new table row)
-					h("div", { className: "add-contact-row" },
-						h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
-						h("div", { className: "contact-form-row" },
-							h("input", {
-								type: "text",
-								className: "add-contact-name",
-								placeholder: I18n.t("modals.contacts.placeholderName"),
-							}),
-							h("input", {
-								type: "email",
-								className: "add-contact-email",
-								placeholder: I18n.t("modals.contacts.placeholderEmail"),
-							}),
-							h("input", {
-								type: "tel",
-								className: "add-contact-phone",
-								placeholder: I18n.t("modals.contacts.placeholderPhone"),
-							}),
-							h("input", {
-								type: "text",
-								className: "add-contact-company",
-								placeholder: I18n.t("modals.contacts.placeholderCompany"),
-							}),
-							h("button", {
-								className: "action-btn primary-btn",
-								onclick: handleAddContact,
-							}, I18n.t("modals.contacts.addButton"))
-						)
-					)
-				)
+				createContactsContent(job, sortedActiveContacts, sortedArchivedContacts)
 			),
 		),
 	);
