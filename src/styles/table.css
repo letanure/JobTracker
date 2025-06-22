@@ -1,0 +1,418 @@
+/* ============================================================================ */
+/* TABLE STYLES - TABLE LAYOUT, INLINE EDITING, AND DATA DISPLAY */
+/* ============================================================================ */
+
+/* ============================================================================ */
+/* TABLE STRUCTURE */
+/* ============================================================================ */
+
+table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	font-size: var(--font-size-sm);
+}
+
+th {
+	background: var(--background-color);
+	position: sticky;
+	top: 0;
+	z-index: var(--z-dropdown);
+	padding: var(--space-3) var(--space-2);
+	text-align: left;
+	font-weight: var(--font-weight-semibold);
+	border-bottom: var(--border-width) solid var(--border-color);
+	white-space: nowrap;
+	color: var(--text-color);
+	text-transform: uppercase;
+	letter-spacing: var(--letter-spacing-wide);
+}
+
+td {
+	padding: var(--space-3) var(--space-2);
+	border-bottom: var(--border-width) solid var(--border-light);
+	vertical-align: middle;
+	background: var(--container-background);
+	font-weight: var(--font-weight-normal);
+	color: var(--text-color);
+}
+
+tr {
+	transition: var(--transition-fast);
+}
+
+tr:hover {
+	background-color: var(--background-color);
+	box-shadow: var(--shadow-xs);
+}
+
+tbody tr {
+	border-radius: var(--radius-md);
+}
+
+/* ============================================================================ */
+/* TABLE CELL TYPES */
+/* ============================================================================ */
+
+.priority-cell {
+	text-align: center;
+	width: var(--col-8);
+	padding: var(--space-2);
+}
+
+.company-name {
+	font-weight: var(--font-weight-medium);
+	color: var(--text-color);
+	max-width: var(--col-24);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.position-name {
+	font-weight: var(--font-weight-medium);
+	color: var(--primary-color);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: var(--col-24);
+}
+
+.current-phase {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: var(--col-20);
+}
+
+.phase-display {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.phase-main {
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.phase-substep {
+	font-size: var(--font-size-xs);
+	color: var(--text-secondary);
+	opacity: 0.8;
+}
+
+.salary {
+	color: var(--text-color);
+	font-weight: var(--font-weight-medium);
+	white-space: nowrap;
+}
+
+.location {
+	color: var(--text-light);
+	font-size: var(--font-size-xs);
+}
+
+.contact {
+	text-align: center;
+	width: var(--col-8);
+}
+
+.notes {
+	text-align: center;
+	width: var(--col-8);
+}
+
+.tasks {
+	text-align: center;
+	width: var(--col-8);
+}
+
+.actions-cell {
+	text-align: center;
+	width: var(--col-16);
+	padding: var(--space-2);
+}
+
+.source-url {
+	text-align: center;
+	width: var(--col-6);
+	padding: var(--space-2);
+}
+
+/* Source URL link styling */
+.source-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--action-btn-size);
+	height: var(--action-btn-size);
+	border-radius: var(--radius-sm);
+	background: var(--primary-bg);
+	color: var(--primary-color);
+	text-decoration: none;
+	transition: var(--transition-fast);
+	border: var(--border-width) solid var(--primary-light);
+}
+
+.source-link:hover {
+	background: var(--primary-color);
+	color: var(--text-on-primary);
+	transform: scale(1.05);
+}
+
+.source-link .material-symbols-outlined {
+	font-size: var(--icon-md);
+}
+
+/* ============================================================================ */
+/* INLINE EDITING */
+/* ============================================================================ */
+
+/* Row in editing mode */
+tr.editing {
+	background-color: var(--primary-bg) !important;
+	box-shadow: 0 0 0 var(--border-width-thick) var(--primary-light);
+}
+
+tr.editing td {
+	background-color: transparent;
+	padding: var(--space-1);
+}
+
+/* Phase cell for editing */
+.phase-cell {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.substep-select {
+	font-size: var(--font-size-xs);
+}
+
+/* Inline edit selects */
+.inline-edit.priority-select {
+	width: 100%;
+	font-size: var(--font-size-xs);
+	padding: var(--space-1);
+	height: calc(var(--space-4) + var(--space-1));
+}
+
+.inline-edit.phase-select {
+	width: 100%;
+	font-size: var(--font-size-xs);
+	padding: var(--space-1);
+	height: calc(var(--space-4) + var(--space-1));
+	margin-bottom: var(--space-1);
+}
+
+/* Priority select specific styling */
+.priority-select {
+	text-align: center;
+}
+
+/* Actions cell in edit mode */
+tr.editing .actions-cell {
+	display: flex;
+	gap: var(--space-1);
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-1);
+}
+
+tr.editing .actions-cell button {
+	min-width: var(--action-btn-size);
+	height: var(--action-btn-size);
+	padding: 0;
+	border-radius: var(--radius-sm);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ============================================================================ */
+/* CONTACT, NOTES, AND TASKS DISPLAY */
+/* ============================================================================ */
+
+/* Legacy contact form grid (keep for backward compatibility) */
+.contact-form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-2);
+	margin-bottom: var(--space-3);
+}
+
+.contact-form input {
+	padding: var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-sm);
+}
+
+/* Notes and Tasks table layouts */
+.notes-table, .tasks-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	margin-bottom: var(--space-4);
+	background: var(--container-background);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+}
+
+.notes-table th, .tasks-table th {
+	background: var(--background-color);
+	padding: var(--space-2) var(--space-3);
+	text-align: left;
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-xs);
+	color: var(--text-light);
+	border-bottom: var(--border-width) solid var(--border-color);
+	position: static;
+}
+
+.notes-table td, .tasks-table td {
+	padding: var(--space-3);
+	border-bottom: var(--border-width) solid var(--border-light);
+	vertical-align: top;
+	background: var(--container-background);
+}
+
+.notes-table tr:last-child td, .tasks-table tr:last-child td {
+	border-bottom: none;
+}
+
+.notes-table tr:hover, .tasks-table tr:hover {
+	background: var(--background-color);
+}
+
+/* Contacts table layout (Excel-like) */
+.contacts-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	margin-bottom: var(--space-4);
+	background: var(--container-background);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+}
+
+.contacts-table th {
+	background: var(--background-color);
+	padding: var(--space-2) var(--space-3);
+	text-align: left;
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-xs);
+	color: var(--text-light);
+	border-bottom: var(--border-width) solid var(--border-color);
+	white-space: nowrap;
+	position: static;
+}
+
+.contacts-table td {
+	padding: var(--space-2) var(--space-3);
+	border-bottom: var(--border-width) solid var(--border-light);
+	vertical-align: middle;
+	background: var(--container-background);
+	font-size: var(--font-size-sm);
+}
+
+.contacts-table tr:last-child td {
+	border-bottom: none;
+}
+
+.contacts-table tr:hover {
+	background: var(--background-color);
+}
+
+.contacts-table .contact-name {
+	font-weight: var(--font-weight-medium);
+	color: var(--text-color);
+}
+
+.contacts-table .contact-email {
+	color: var(--primary-color);
+	text-decoration: none;
+}
+
+.contacts-table .contact-email:hover {
+	text-decoration: underline;
+}
+
+.contacts-table .contact-phone {
+	color: var(--text-light);
+	font-family: monospace;
+}
+
+.contacts-table .contact-company {
+	color: var(--text-light);
+	font-style: italic;
+}
+
+/* Add contact form (like a new table row) */
+.add-contact-form {
+	display: contents;
+}
+
+.add-contact-form td {
+	padding: var(--space-2) var(--space-3);
+	background: var(--primary-bg);
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.add-contact-form input {
+	width: 100%;
+	padding: var(--space-1) var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-xs);
+	font-size: var(--font-size-sm);
+	background: var(--container-background);
+}
+
+.add-contact-form input:focus {
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+/* ============================================================================ */
+/* RESPONSIVE TABLE */
+/* ============================================================================ */
+
+@media (max-width: 1024px) {
+	table {
+		font-size: var(--font-size-xs);
+	}
+	
+	th, td {
+		padding: var(--space-2) var(--space-1);
+	}
+	
+	.company-name, .position-name {
+		max-width: var(--col-16);
+	}
+	
+	.current-phase {
+		max-width: var(--col-12);
+	}
+}
+
+@media (max-width: 768px) {
+	.table-container {
+		max-height: 60vh;
+	}
+	
+	th, td {
+		padding: var(--space-1);
+	}
+	
+	.company-name, .position-name, .current-phase {
+		max-width: var(--col-10);
+	}
+	
+	.salary, .location {
+		font-size: var(--font-size-2xs);
+	}
+}

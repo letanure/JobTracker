@@ -43,7 +43,10 @@ const BUILD_CONFIG = {
   
   // CSS files to inline
   cssFiles: [
-    'src/styles.css'
+    'src/styles/base.css',
+    'src/styles/layout.css', 
+    'src/styles/components.css',
+    'src/styles/table.css'
   ],
   
   // HTML template

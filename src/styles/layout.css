@@ -1,0 +1,209 @@
+/* ============================================================================ */
+/* LAYOUT STYLES - CONTAINERS, HEADERS, AND BASIC STRUCTURE */
+/* ============================================================================ */
+
+.container {
+	width: 100%;
+	max-width: var(--max-width-container);
+	margin: 0 auto;
+	background: var(--container-background);
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-lg);
+	border: var(--border-width) solid var(--border-light);
+	overflow: hidden;
+}
+
+.header {
+	background: var(--container-background);
+	border-bottom: var(--border-width) solid var(--border-color);
+	padding: var(--space-8) var(--space-6);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.header h1 {
+	margin: 0;
+	font-size: var(--font-size-2xl);
+	font-weight: 700;
+	color: var(--text-color);
+	letter-spacing: -0.025em;
+}
+
+.controls {
+	padding: var(--space-6);
+	background: var(--container-background);
+	border-bottom: var(--border-width) solid var(--border-color);
+	display: flex;
+	gap: var(--space-3);
+	align-items: center;
+}
+
+.table-container {
+	overflow-x: auto;
+	max-height: var(--max-height-table);
+	overflow-y: auto;
+	background: var(--container-background);
+}
+
+/* Stats Section */
+.stats {
+	padding: var(--space-4) var(--space-6);
+	background: var(--background-color);
+	border-bottom: var(--border-width) solid var(--border-color);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(var(--col-20), 1fr));
+	gap: var(--space-4);
+}
+
+.stat {
+	text-align: center;
+	padding: var(--space-2);
+}
+
+.stat-number {
+	font-size: var(--font-size-2xl);
+	font-weight: var(--font-weight-bold);
+	color: var(--primary-color);
+	display: block;
+	line-height: var(--line-height-tight);
+}
+
+.stat-label {
+	font-size: var(--font-size-xs);
+	color: var(--text-light);
+	text-transform: uppercase;
+	letter-spacing: var(--letter-spacing-wide);
+	margin-top: var(--space-1);
+}
+
+/* Footer */
+.footer {
+	background: var(--background-color);
+	padding: var(--space-4) var(--space-6);
+	text-align: center;
+	border-top: var(--border-width) solid var(--border-color);
+	color: var(--text-light);
+	font-size: var(--font-size-xs);
+}
+
+/* Footer sticking to bottom */
+.footer {
+	margin-top: auto;
+}
+
+/* Make footer stick to bottom on short content */
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Tab Content Layout */
+.tab-content-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	min-height: 600px;
+	width: 100%;
+}
+
+.tab-content {
+	display: none;
+	flex: 1;
+	width: 100%;
+}
+
+.tab-content.active {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Applications Board Placeholder */
+.board-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 400px;
+	flex: 1;
+	width: 100%;
+	text-align: center;
+	color: var(--text-light);
+	background: var(--background-color);
+	border-radius: var(--radius-lg);
+	margin: var(--space-6);
+}
+
+.placeholder-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+}
+
+.placeholder-icon {
+	font-size: var(--font-size-3xl);
+	color: var(--text-lighter);
+}
+
+.placeholder-content h3 {
+	margin: 0;
+	font-size: var(--font-size-xl);
+	color: var(--text-color);
+}
+
+.placeholder-content p {
+	margin: 0;
+	font-size: var(--font-size-base);
+	color: var(--text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	body {
+		padding: var(--space-2);
+	}
+	
+	.header {
+		padding: var(--space-4);
+		flex-direction: column;
+		gap: var(--space-3);
+		align-items: stretch;
+	}
+	
+	.controls {
+		padding: var(--space-4);
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--space-2);
+	}
+	
+	.stats {
+		grid-template-columns: repeat(auto-fit, minmax(var(--col-12), 1fr));
+		gap: var(--space-2);
+		padding: var(--space-3) var(--space-4);
+	}
+	
+	.board-placeholder {
+		margin: var(--space-4);
+		min-height: 300px;
+	}
+}
+
+/* Responsive tabs */
+@media (max-width: 600px) {
+	.tab-navigation {
+		flex-direction: column;
+	}
+	
+	.tab-button {
+		width: 100%;
+		justify-content: center;
+	}
+}
