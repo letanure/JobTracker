@@ -433,14 +433,13 @@ const TasksModal = ({ job, onClose }) => {
 						h("tr", {},
 							h("th", {}, "Status"),
 							h("th", {}, "Priority"),
-							h("th", {}, "Task"),
 							h("th", {}, "Due Date"),
 							h("th", {}, "Actions")
 						)
 					),
 					h("tbody", {},
-						...sortedActiveTasks.map((task) => 
-							h("tr", { key: task.id },
+						...sortedActiveTasks.flatMap((task) => [
+							h("tr", { key: task.id, className: "task-info-row" },
 								h("td", {},
 									h("select", {
 										className: "task-status-select",
@@ -463,7 +462,6 @@ const TasksModal = ({ job, onClose }) => {
 										h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 									)
 								),
-								h("td", { className: "task-text-cell" }, task.text),
 								h("td", {}, task.dueDate ? formatDate(task.dueDate) : "—"),
 								h("td", { className: "tasks-table-actions" },
 									h("button", {
@@ -479,8 +477,14 @@ const TasksModal = ({ job, onClose }) => {
 										onclick: () => archiveTask(task, job)
 									})
 								)
+							),
+							h("tr", { key: `${task.id}-text`, className: "task-text-row" },
+								h("td", { 
+									colspan: 4,
+									className: "task-text-cell"
+								}, task.text)
 							)
-						)
+						])
 					)
 				)
 			) : h("p", { className: "modal-empty-message" }, I18n.t("modals.tasks.emptyState")),

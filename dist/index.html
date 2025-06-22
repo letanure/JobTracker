@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T18:09:36.416Z
+Generated: 2025-06-22T18:16:36.833Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1001,8 +1001,42 @@ textarea::placeholder {
 /* Common textarea styles */
 textarea {
 	resize: vertical;
-	min-height: calc(var(--base-size) * 20);
+	min-height: 80px;
 	line-height: var(--line-height-normal);
+	field-sizing: content;
+}
+
+/* Modal form layouts */
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.add-contact-name,
+.add-contact-email {
+	width: 100%;
+}
+
+.add-contact-phone,
+.add-contact-role,
+.add-contact-company {
+	width: 100%;
+}
+
+.add-note-textarea,
+.add-task-textarea {
+	width: 100%;
+	resize: vertical;
+	min-height: 80px;
+	field-sizing: content;
+}
+
+@media (max-width: 640px) {
+	.contact-form-row {
+		grid-template-columns: 1fr;
+	}
 }
 
 /* ============================================================================ */
@@ -1018,7 +1052,7 @@ textarea {
 
 .filter-dropdown-icon {
 	cursor: pointer;
-	font-size: 14px;
+	font-size: 12px;
 	color: var(--gray-500);
 	user-select: none;
 	padding: 2px;
@@ -1034,7 +1068,7 @@ textarea {
 }
 
 .filter-dropdown-icon .material-symbols-outlined {
-	font-size: 16px;
+	font-size: 14px;
 }
 
 .filter-dropdown {
@@ -1742,6 +1776,85 @@ tr.editing .actions-cell button {
 	background: var(--background-color);
 }
 
+/* Prevent line breaking in specific columns */
+.notes-table td:nth-child(2), .tasks-table td:nth-child(2) {
+	white-space: nowrap;
+	width: 120px;
+}
+
+.notes-table td:nth-child(4), .tasks-table td:nth-child(4) {
+	white-space: nowrap;
+	width: 80px;
+}
+
+.notes-table-actions, .tasks-table-actions {
+	white-space: nowrap;
+}
+
+/* Style task status/priority displays when not editing */
+.task-status-display, .task-priority-display {
+	border: none;
+	background: transparent;
+	padding: 4px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+	cursor: default;
+	appearance: none;
+}
+
+.task-status-display {
+	background: var(--gray-100);
+	color: var(--gray-700);
+}
+
+.task-priority-display {
+	background: var(--gray-100);
+	color: var(--gray-700);
+}
+
+.task-status-display.status-done {
+	background: var(--green-50);
+	color: var(--green-600);
+}
+
+.task-status-display.status-in-progress {
+	background: var(--blue-50);
+	color: var(--blue-600);
+}
+
+.task-priority-display.priority-high {
+	background: var(--red-50);
+	color: var(--red-600);
+}
+
+.task-priority-display.priority-medium {
+	background: var(--orange-50);
+	color: var(--orange-600);
+}
+
+.task-priority-display.priority-low {
+	background: var(--green-50);
+	color: var(--green-600);
+}
+
+/* Task text row styling */
+.task-text-row {
+	border-top: none;
+}
+
+.task-text-row td {
+	padding-top: 4px;
+	padding-bottom: 12px;
+	border-bottom: var(--border-width) solid var(--border-light);
+	font-style: italic;
+	color: var(--gray-600);
+}
+
+.task-info-row + .task-text-row td {
+	border-top: none;
+}
+
 /* Contacts table layout (Excel-like) */
 .contacts-table {
 	width: 100%;
@@ -1982,11 +2095,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T18:09:36.375Z
+// Generated: 2025-06-22T18:16:36.827Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T18:09:36.375Z");
+console.log("JobTracker - Built at: 2025-06-22T18:16:36.827Z");
 
 
 // ============================================================================
@@ -4082,14 +4195,13 @@ const TasksModal = ({ job, onClose }) => {
 						h("tr", {},
 							h("th", {}, "Status"),
 							h("th", {}, "Priority"),
-							h("th", {}, "Task"),
 							h("th", {}, "Due Date"),
 							h("th", {}, "Actions")
 						)
 					),
 					h("tbody", {},
-						...sortedActiveTasks.map((task) => 
-							h("tr", { key: task.id },
+						...sortedActiveTasks.flatMap((task) => [
+							h("tr", { key: task.id, className: "task-info-row" },
 								h("td", {},
 									h("select", {
 										className: "task-status-select",
@@ -4112,7 +4224,6 @@ const TasksModal = ({ job, onClose }) => {
 										h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 									)
 								),
-								h("td", { className: "task-text-cell" }, task.text),
 								h("td", {}, task.dueDate ? formatDate(task.dueDate) : "—"),
 								h("td", { className: "tasks-table-actions" },
 									h("button", {
@@ -4128,8 +4239,14 @@ const TasksModal = ({ job, onClose }) => {
 										onclick: () => archiveTask(task, job)
 									})
 								)
+							),
+							h("tr", { key: `${task.id}-text`, className: "task-text-row" },
+								h("td", { 
+									colspan: 4,
+									className: "task-text-cell"
+								}, task.text)
 							)
-						)
+						])
 					)
 				)
 			) : h("p", { className: "modal-empty-message" }, I18n.t("modals.tasks.emptyState")),

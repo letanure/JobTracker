@@ -189,8 +189,42 @@ textarea::placeholder {
 /* Common textarea styles */
 textarea {
 	resize: vertical;
-	min-height: calc(var(--base-size) * 20);
+	min-height: 80px;
 	line-height: var(--line-height-normal);
+	field-sizing: content;
+}
+
+/* Modal form layouts */
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.add-contact-name,
+.add-contact-email {
+	width: 100%;
+}
+
+.add-contact-phone,
+.add-contact-role,
+.add-contact-company {
+	width: 100%;
+}
+
+.add-note-textarea,
+.add-task-textarea {
+	width: 100%;
+	resize: vertical;
+	min-height: 80px;
+	field-sizing: content;
+}
+
+@media (max-width: 640px) {
+	.contact-form-row {
+		grid-template-columns: 1fr;
+	}
 }
 
 /* ============================================================================ */
@@ -206,7 +240,7 @@ textarea {
 
 .filter-dropdown-icon {
 	cursor: pointer;
-	font-size: 14px;
+	font-size: 12px;
 	color: var(--gray-500);
 	user-select: none;
 	padding: 2px;
@@ -222,7 +256,7 @@ textarea {
 }
 
 .filter-dropdown-icon .material-symbols-outlined {
-	font-size: 16px;
+	font-size: 14px;
 }
 
 .filter-dropdown {
