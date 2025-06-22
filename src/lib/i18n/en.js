@@ -61,6 +61,11 @@ const EN_TRANSLATIONS = {
 	},
 	substeps: {
 		none: "No substep",
+		wishlist: "Wishlist",
+		applied: "Applied",
+		interview: "Interview",
+		offer: "Offer",
+		rejected_withdrawn: "Rejected / Withdrawn",
 		application_review: "Application Review",
 		initial_screening: "Initial Screening",
 		hr_phone_screen: "HR Phone Screen",

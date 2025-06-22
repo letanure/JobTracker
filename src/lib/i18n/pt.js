@@ -61,6 +61,11 @@ const PT_TRANSLATIONS = {
 	},
 	substeps: {
 		none: "Nenhuma subetapa",
+		wishlist: "Lista de Desejos",
+		applied: "Candidatura Enviada",
+		interview: "Entrevista",
+		offer: "Oferta",
+		rejected_withdrawn: "Rejeitado / Retirado",
 		application_review: "Análise da Candidatura",
 		initial_screening: "Triagem Inicial",
 		hr_phone_screen: "Triagem por Telefone - RH",

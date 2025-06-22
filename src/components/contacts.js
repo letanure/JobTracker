@@ -612,7 +612,7 @@ const ContactsModal = ({ job, onClose }) => {
 						
 						// Save and refresh
 						saveToLocalStorage();
-						onContactUpdate(job.contacts);
+						refreshContactsModal(job);
 						refreshInterface();
 					}
 				}, I18n.t("modals.contacts.addButton"))

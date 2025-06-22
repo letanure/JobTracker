@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T19:15:33.581Z
+Generated: 2025-06-22T19:20:05.013Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -2524,11 +2524,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T19:15:33.576Z
+// Generated: 2025-06-22T19:20:05.004Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T19:15:33.576Z");
+console.log("JobTracker - Built at: 2025-06-22T19:20:05.004Z");
 
 
 // ============================================================================
@@ -2848,6 +2848,11 @@ const EN_TRANSLATIONS = {
 	},
 	substeps: {
 		none: "No substep",
+		wishlist: "Wishlist",
+		applied: "Applied",
+		interview: "Interview",
+		offer: "Offer",
+		rejected_withdrawn: "Rejected / Withdrawn",
 		application_review: "Application Review",
 		initial_screening: "Initial Screening",
 		hr_phone_screen: "HR Phone Screen",
@@ -3033,6 +3038,11 @@ const PT_TRANSLATIONS = {
 	},
 	substeps: {
 		none: "Nenhuma subetapa",
+		wishlist: "Lista de Desejos",
+		applied: "Candidatura Enviada",
+		interview: "Entrevista",
+		offer: "Oferta",
+		rejected_withdrawn: "Rejeitado / Retirado",
 		application_review: "Análise da Candidatura",
 		initial_screening: "Triagem Inicial",
 		hr_phone_screen: "Triagem por Telefone - RH",
@@ -5457,7 +5467,7 @@ const ContactsModal = ({ job, onClose }) => {
 						
 						// Save and refresh
 						saveToLocalStorage();
-						onContactUpdate(job.contacts);
+						refreshContactsModal(job);
 						refreshInterface();
 					}
 				}, I18n.t("modals.contacts.addButton"))
