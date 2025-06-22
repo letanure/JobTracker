@@ -213,11 +213,191 @@ textarea {
 }
 
 .add-note-textarea,
+.add-task-section {
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid var(--border-color);
+}
+
+.add-task-title {
+	margin: 0 0 16px 0;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.add-task-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
 .add-task-textarea {
 	width: 100%;
 	resize: vertical;
 	min-height: 80px;
 	field-sizing: content;
+}
+
+.add-task-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.add-task-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.add-task-field label {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.add-task-status,
+.add-task-priority,
+.add-task-due-date,
+.add-task-duration {
+	width: 100%;
+	padding: 8px 12px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	background: var(--white);
+}
+
+.add-task-duration {
+	font-family: var(--font-mono);
+}
+
+/* Task table styles */
+.tasks-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 16px;
+}
+
+.tasks-table th,
+.tasks-table td {
+	padding: 8px 12px;
+	text-align: left;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.tasks-table th {
+	background: var(--gray-50);
+	font-weight: 600;
+	font-size: 12px;
+	text-transform: uppercase;
+	color: var(--gray-600);
+}
+
+.task-text-cell {
+	cursor: pointer;
+	padding: 12px;
+	background: var(--gray-50);
+	border-bottom: 1px solid var(--border-color);
+}
+
+.task-text-cell:hover {
+	background: var(--gray-100);
+}
+
+/* Task field displays */
+.task-status-display,
+.task-priority-display,
+.task-due-date-display,
+.task-duration-display {
+	display: block;
+	padding: 8px 12px;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	background: transparent;
+	min-height: 18px;
+	line-height: 18px;
+}
+
+/* Task field edit inputs - match display padding to prevent jump */
+.task-status-edit,
+.task-priority-edit,
+.task-due-date-edit,
+.task-duration-edit,
+.task-text-edit {
+	display: block;
+	padding: 8px 12px;
+	border: 1px solid var(--blue-500);
+	border-radius: 6px;
+	background: var(--white);
+	font-size: 14px;
+	width: 100%;
+	min-height: 18px;
+	line-height: 18px;
+}
+
+.task-text-edit {
+	resize: vertical;
+	min-height: 60px;
+	font-family: inherit;
+}
+
+/* Archived tasks section */
+.archived-tasks-section {
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid var(--border-color);
+}
+
+.tasks-archived-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	margin: 0 0 16px 0;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.tasks-archived-header:hover {
+	color: var(--blue-600);
+}
+
+.expand-icon {
+	font-size: 20px !important;
+	transition: transform 0.2s ease;
+}
+
+.archived-task-text-cell {
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--border-color);
+}
+
+/* Remove hover effect from archived task text cells */
+.archived-task-text-cell:hover {
+	background: transparent;
+}
+
+.inline-edit-textarea,
+.inline-edit-date,
+.inline-edit-duration {
+	width: 100%;
+	padding: 4px 8px;
+	border: 1px solid var(--blue-500);
+	border-radius: 4px;
+	font-size: 14px;
+	background: var(--white);
+}
+
+.inline-edit-textarea {
+	resize: vertical;
+	min-height: 60px;
+}
+
+.inline-edit-duration {
+	font-family: var(--font-mono);
 }
 
 @media (max-width: 640px) {

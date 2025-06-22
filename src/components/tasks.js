@@ -256,6 +256,11 @@ const TasksModal = ({ job, onClose }) => {
 
 	const handleAddTask = () => {
 		const textarea = document.querySelector(".add-task-textarea");
+		const statusSelect = document.querySelector(".add-task-status");
+		const prioritySelect = document.querySelector(".add-task-priority");
+		const dueDateInput = document.querySelector(".add-task-due-date");
+		const durationInput = document.querySelector(".add-task-duration");
+		
 		const taskText = textarea.value.trim();
 
 		if (!taskText) {
@@ -268,9 +273,10 @@ const TasksModal = ({ job, onClose }) => {
 			id: Date.now(),
 			createdDate: new Date().toISOString(),
 			text: taskText,
-			status: "todo",
-			priority: "medium",
-			dueDate: null
+			status: statusSelect.value || "todo",
+			priority: prioritySelect.value || "medium",
+			dueDate: dueDateInput.value ? dueDateInput.value + 'T00:00:00.000Z' : null,
+			duration: durationInput.value || null
 		};
 
 		// Add task to job data
@@ -290,37 +296,126 @@ const TasksModal = ({ job, onClose }) => {
 		// Refresh modal without flicker
 		refreshTasksModal(job);
 
-		// Clear the textarea
+		// Clear the form
 		textarea.value = "";
+		statusSelect.value = "todo";
+		prioritySelect.value = "medium";
+		dueDateInput.value = "";
+		durationInput.value = "";
 
 		// Update the tasks count in the table (refresh interface for count update)
 		refreshInterface();
 	};
 
-	const editTaskInline = (task, job) => {
-		const cell = event.target.closest('tr').querySelector('.task-text-cell');
-		const currentText = task.text;
+	const enableTaskEditing = (task, job) => {
+		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
+		if (!taskElement) return;
 		
-		// Create textarea element
-		const textarea = h("textarea", {
-			value: currentText,
-			className: "inline-edit-textarea",
-			onblur: () => saveTaskText(task, job, textarea.value, cell),
-			onkeydown: (e) => {
-				if (e.key === "Enter" && e.ctrlKey) {
-					e.preventDefault();
-					saveTaskText(task, job, textarea.value, cell);
-				} else if (e.key === "Escape") {
-					e.preventDefault();
-					restoreTaskCell(task, cell);
-				}
-			}
+		const taskRow = taskElement.closest('tr');
+		if (!taskRow) return;
+		
+		// Store original state
+		taskRow.dataset.editing = "true";
+		
+		// Replace status display with select
+		const statusDisplay = taskRow.querySelector('.task-status-display');
+		const statusSelect = h("select", {
+			className: "task-status-edit",
+			value: task.status,
+			onchange: (e) => updateTaskStatus(task, job, e.target.value)
+		}, 
+			h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
+			h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
+			h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
+		);
+		statusDisplay.parentNode.replaceChild(statusSelect, statusDisplay);
+		
+		// Replace priority display with select
+		const priorityDisplay = taskRow.querySelector('.task-priority-display');
+		const prioritySelect = h("select", {
+			className: "task-priority-edit",
+			value: task.priority,
+			onchange: (e) => updateTaskPriority(task, job, e.target.value)
+		}, 
+			h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
+			h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
+			h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
+		);
+		priorityDisplay.parentNode.replaceChild(prioritySelect, priorityDisplay);
+		
+		// Replace due date display with input
+		const dueDateDisplay = taskRow.querySelector('.task-due-date-display');
+		const currentDate = task.dueDate ? task.dueDate.split('T')[0] : "";
+		const dateInput = h("input", {
+			type: "date",
+			value: currentDate,
+			className: "task-due-date-edit",
+			onchange: (e) => updateTaskDueDate(task, job, e.target.value)
 		});
+		dueDateDisplay.parentNode.replaceChild(dateInput, dueDateDisplay);
 		
-		// Replace cell content with textarea
-		cell.innerHTML = "";
-		cell.appendChild(textarea);
-		textarea.focus();
+		// Replace duration display with select
+		const durationDisplay = taskRow.querySelector('.task-duration-display');
+		const durationSelect = h("select", {
+			className: "task-duration-edit",
+			value: task.duration || "",
+			onchange: (e) => updateTaskDuration(task, job, e.target.value)
+		}, 
+			h("option", { value: "" }, "—"),
+			h("option", { value: "15min" }, "15 min"),
+			h("option", { value: "30min" }, "30 min"),
+			h("option", { value: "1h" }, "1h"),
+			h("option", { value: "1h30" }, "1:30"),
+			h("option", { value: "2h" }, "2h"),
+			h("option", { value: "3h" }, "3h")
+		);
+		durationDisplay.parentNode.replaceChild(durationSelect, durationDisplay);
+		
+		// Update edit button to save/cancel
+		const editBtn = taskRow.querySelector('.edit-task-btn');
+		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
+		editBtn.title = I18n.t("modals.common.save");
+		editBtn.onclick = () => saveTaskChanges(task, job);
+		
+		// Make task text editable
+		const taskTextCell = taskRow.nextElementSibling?.querySelector('.task-text-cell');
+		if (taskTextCell) {
+			const currentText = task.text;
+			const textarea = document.createElement("textarea");
+			textarea.value = currentText;
+			textarea.className = "task-text-edit";
+			textarea.addEventListener('input', (e) => {
+				// Store the current value in a data attribute for later retrieval
+				textarea.dataset.currentValue = e.target.value;
+			});
+			taskTextCell.innerHTML = "";
+			taskTextCell.appendChild(textarea);
+			textarea.focus();
+			
+			// Store reference to textarea for saving
+			taskRow.dataset.textarea = 'true';
+		}
+	};
+
+	const saveTaskChanges = (task, job) => {
+		// Get the textarea value before refreshing the modal
+		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
+		if (taskElement) {
+			const taskRow = taskElement.closest('tr');
+			const textarea = taskRow?.nextElementSibling?.querySelector('.task-text-edit');
+			if (textarea && textarea.value.trim()) {
+				updateTaskText(task, job, textarea.value);
+			}
+		}
+		
+		// Refresh the modal to restore display state
+		refreshTasksModal(job);
+	};
+
+	const disableTaskEditing = (task, job) => {
+		// Just refresh the modal to restore display state
+		// No need to find the taskRow since refreshTasksModal will recreate everything
+		refreshTasksModal(job);
 	};
 
 	const saveTaskText = (task, job, newText, cell) => {
@@ -348,9 +443,68 @@ const TasksModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
-	const restoreTaskCell = (task, cell) => {
-		cell.innerHTML = "";
-		cell.textContent = task.text;
+	const updateTaskText = (task, job, newText) => {
+		const trimmedText = newText.trim();
+		if (!trimmedText) return;
+		
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		// Update the data
+		jobsData[jobIndex].tasks[taskIndex].text = trimmedText;
+		saveToLocalStorage();
+		
+		// Update interface
+		refreshInterface();
+	};
+
+	const updateTaskDueDate = (task, job, newDate) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		// Update the data
+		jobsData[jobIndex].tasks[taskIndex].dueDate = newDate ? newDate + 'T00:00:00.000Z' : null;
+		saveToLocalStorage();
+		
+		// Update interface
+		refreshInterface();
+	};
+
+	const updateTaskDuration = (task, job, newDuration) => {
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+		
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+		
+		// Update the data
+		jobsData[jobIndex].tasks[taskIndex].duration = newDuration || null;
+		saveToLocalStorage();
+		
+		// Update interface
+		refreshInterface();
+	};
+
+	const formatDuration = (duration) => {
+		if (!duration) return "—";
+		
+		// Map duration values to display text
+		const durationMap = {
+			"15min": "15 min",
+			"30min": "30 min", 
+			"1h": "1h",
+			"1h30": "1:30",
+			"2h": "2h",
+			"3h": "3h"
+		};
+		
+		return durationMap[duration] || duration;
 	};
 
 	const archiveTask = (task, job) => {
@@ -360,11 +514,27 @@ const TasksModal = ({ job, onClose }) => {
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
 		
+		// Store archived section state before refresh
+		const archivedTable = document.getElementById('archived-tasks-table');
+		const wasExpanded = archivedTable && archivedTable.style.display === 'table';
+		
 		jobsData[jobIndex].tasks[taskIndex].archived = !task.archived;
 		saveToLocalStorage();
 		
 		// Refresh modal without flicker
 		refreshTasksModal(job);
+		
+		// Restore archived section state after refresh
+		if (wasExpanded) {
+			setTimeout(() => {
+				const newArchivedTable = document.getElementById('archived-tasks-table');
+				const expandIcon = document.getElementById('archived-tasks-icon');
+				if (newArchivedTable) {
+					newArchivedTable.style.display = 'table';
+					if (expandIcon) expandIcon.textContent = 'expand_less';
+				}
+			}, 0);
+		}
 		
 		// Update interface
 		refreshInterface();
@@ -434,41 +604,47 @@ const TasksModal = ({ job, onClose }) => {
 							h("th", {}, "Status"),
 							h("th", {}, "Priority"),
 							h("th", {}, "Due Date"),
+							h("th", {}, "Duration"),
 							h("th", {}, "Actions")
 						)
 					),
 					h("tbody", {},
 						...sortedActiveTasks.flatMap((task) => [
 							h("tr", { key: task.id, className: "task-info-row" },
-								h("td", {},
-									h("select", {
-										className: "task-status-select",
-										value: task.status,
-										onchange: (e) => updateTaskStatus(task, job, e.target.value)
-									}, 
-										h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
-										h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
-										h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
-									)
+								h("td", { className: "task-status-cell" },
+									h("span", {
+										className: "task-status-display",
+										"data-task-id": task.id,
+										"data-field": "status"
+									}, getTaskStatusText(task.status))
 								),
-								h("td", {},
-									h("select", {
-										className: "task-priority-select",
-										value: task.priority,
-										onchange: (e) => updateTaskPriority(task, job, e.target.value)
-									}, 
-										h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
-										h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
-										h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
-									)
+								h("td", { className: "task-priority-cell" },
+									h("span", {
+										className: "task-priority-display",
+										"data-task-id": task.id,
+										"data-field": "priority"
+									}, getPriorityText(task.priority))
 								),
-								h("td", {}, task.dueDate ? formatDate(task.dueDate) : "—"),
+								h("td", { className: "task-due-date-cell" },
+									h("span", {
+										className: "task-due-date-display",
+										"data-task-id": task.id,
+										"data-field": "dueDate"
+									}, task.dueDate ? formatDate(task.dueDate) : "—")
+								),
+								h("td", { className: "task-duration-cell" },
+									h("span", {
+										className: "task-duration-display", 
+										"data-task-id": task.id,
+										"data-field": "duration"
+									}, formatDuration(task.duration))
+								),
 								h("td", { className: "tasks-table-actions" },
 									h("button", {
 										className: "action-btn edit-task-btn icon-btn-transparent",
 										title: I18n.t("modals.tasks.editTitle"),
 										innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-										onclick: () => editTaskInline(task, job)
+										onclick: () => enableTaskEditing(task, job)
 									}),
 									h("button", {
 										className: "action-btn archive-btn icon-btn-transparent",
@@ -480,7 +656,7 @@ const TasksModal = ({ job, onClose }) => {
 							),
 							h("tr", { key: `${task.id}-text`, className: "task-text-row" },
 								h("td", { 
-									colspan: 4,
+									colspan: 5,
 									className: "task-text-cell"
 								}, task.text)
 							)
@@ -527,7 +703,7 @@ const TasksModal = ({ job, onClose }) => {
 							h("tr", { key: task.id },
 								h("td", {}, getTaskStatusText(task.status)),
 								h("td", {}, getPriorityText(task.priority)),
-								h("td", { className: "task-text-cell" }, task.text),
+								h("td", { className: "archived-task-text-cell" }, task.text),
 								h("td", {}, task.dueDate ? formatDate(task.dueDate) : "—"),
 								h("td", { className: "tasks-table-actions" },
 									h("button", {
@@ -546,17 +722,66 @@ const TasksModal = ({ job, onClose }) => {
 			// Add task form section
 			h("div", { className: "add-task-section" },
 				h("h4", { className: "add-task-title" }, I18n.t("modals.tasks.addSection")),
-				h("textarea", {
-					className: "add-task-textarea",
-					placeholder: I18n.t("modals.tasks.placeholder"),
-					rows: 2,
-					onkeydown: (e) => {
-						if (e.key === "Enter" && e.shiftKey) {
-							e.preventDefault();
-							handleAddTask();
+				h("div", { className: "add-task-form" },
+					h("textarea", {
+						className: "add-task-textarea",
+						placeholder: I18n.t("modals.tasks.placeholder"),
+						rows: 2,
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.shiftKey) {
+								e.preventDefault();
+								handleAddTask();
+							}
 						}
-					}
-				})
+					}),
+					h("div", { className: "add-task-form-row" },
+						h("div", { className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.status")),
+							h("select", {
+								className: "add-task-status",
+								value: "todo"
+							}, 
+								h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
+								h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
+								h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
+							)
+						),
+						h("div", { className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.priority")),
+							h("select", {
+								className: "add-task-priority",
+								value: "medium"
+							}, 
+								h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
+								h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
+								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
+							)
+						)
+					),
+					h("div", { className: "add-task-form-row" },
+						h("div", { className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.dueDate")),
+							h("input", {
+								type: "date",
+								className: "add-task-due-date"
+							})
+						),
+						h("div", { className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.duration")),
+							h("select", {
+								className: "add-task-duration"
+							}, 
+								h("option", { value: "" }, "—"),
+								h("option", { value: "15min" }, "15 min"),
+								h("option", { value: "30min" }, "30 min"),
+								h("option", { value: "1h" }, "1h"),
+								h("option", { value: "1h30" }, "1:30"),
+								h("option", { value: "2h" }, "2h"),
+								h("option", { value: "3h" }, "3h")
+							)
+						)
+					)
+				)
 			)
 		);
 	};
