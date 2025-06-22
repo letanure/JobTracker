@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-21T19:13:52.852Z
+Generated: 2025-06-22T06:34:45.902Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1575,11 +1575,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-21T19:13:52.849Z
+// Generated: 2025-06-22T06:34:45.898Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-21T19:13:52.849Z");
+console.log("JobTracker - Built at: 2025-06-22T06:34:45.898Z");
 
 
 // ============================================================================
@@ -1929,8 +1929,12 @@ I18n.translations = {
 			},
 			placeholders: {
 				companyName: "Company Name",
+				company: "Company Name",
 				positionTitle: "Position Title",
+				position: "Position Title",
 				nameEmail: "Name & Email",
+				contactPerson: "Contact Name",
+				contactEmail: "Contact Email",
 				salaryRange: "Salary Range",
 				location: "Location",
 				notes: "Notes",
@@ -2039,8 +2043,12 @@ I18n.translations = {
 			},
 			placeholders: {
 				companyName: "Nome da Empresa",
+				company: "Nome da Empresa",
 				positionTitle: "Título do Cargo",
+				position: "Título do Cargo",
 				nameEmail: "Nome e Email",
+				contactPerson: "Nome do Contato",
+				contactEmail: "Email do Contato",
 				salaryRange: "Faixa Salarial",
 				location: "Localização",
 				notes: "Notas",
@@ -4035,38 +4043,38 @@ function editJob(job) {
 		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="company" value="${job.company || ""}" 
-				list="company-list-${job.id}" placeholder="${I18n.t("placeholders.company")}">
+				list="company-list-${job.id}" placeholder="${I18n.t("table.placeholders.company")}">
 			<datalist id="company-list-${job.id}">
 				${companies.map(c => `<option value="${c}">`).join("")}
 			</datalist>
 		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="position" value="${job.position || ""}" 
-				list="position-list-${job.id}" placeholder="${I18n.t("placeholders.position")}">
+				list="position-list-${job.id}" placeholder="${I18n.t("table.placeholders.position")}">
 			<datalist id="position-list-${job.id}">
 				${positions.map(p => `<option value="${p}">`).join("")}
 			</datalist>
 		</td>
 		<td>
 			<select class="inline-edit phase-select" data-field="currentPhase">
-				${Object.keys(PHASES).map(phase => 
+				${PHASES.map(phase => 
 					`<option value="${phase}" ${job.currentPhase === phase ? "selected" : ""}>${getPhaseText(phase)}</option>`
 				).join("")}
 			</select>
 		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="contactPerson" value="${job.contactPerson || ""}" 
-				placeholder="${I18n.t("placeholders.contactPerson")}">
+				placeholder="${I18n.t("table.placeholders.contactPerson")}">
 			<input type="email" class="inline-edit" data-field="contactEmail" value="${job.contactEmail || ""}" 
-				placeholder="${I18n.t("placeholders.contactEmail")}" style="margin-top: 4px;">
+				placeholder="${I18n.t("table.placeholders.contactEmail")}" style="margin-top: 4px;">
 		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="salaryRange" value="${job.salaryRange || ""}" 
-				placeholder="${I18n.t("placeholders.salaryRange")}">
+				placeholder="${I18n.t("table.placeholders.salaryRange")}">
 		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="location" value="${job.location || ""}" 
-				list="location-list-${job.id}" placeholder="${I18n.t("placeholders.location")}">
+				list="location-list-${job.id}" placeholder="${I18n.t("table.placeholders.location")}">
 			<datalist id="location-list-${job.id}">
 				${locations.map(l => `<option value="${l}">`).join("")}
 			</datalist>
