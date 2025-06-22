@@ -69,110 +69,134 @@ const KanbanBoard = {
 			className: `kanban-priority-dot priority-${job.priority}` 
 		});
 		
-		// Company name
-		const company = h("div", { className: "kanban-job-company" }, job.company);
+		// Company and position header with emoji
+		const header = h("div", { className: "kanban-job-header" },
+			h("span", { className: "kanban-job-emoji" }, "🏢"),
+			h("span", { className: "kanban-job-title" }, `${job.company} — ${job.position}`)
+		);
 		
-		// Position title
-		const position = h("div", { className: "kanban-job-position" }, job.position);
-		
-		// Substep if available
-		let substep = null;
-		if (job.currentSubstep && job.currentSubstep !== job.currentPhase) {
-			substep = h("div", { className: "kanban-job-substep" }, getSubstepText(job.currentSubstep));
-		}
+		// Current phase with substeps progression
+		const phaseSection = KanbanBoard.createPhaseSection(job);
 		
 		// Job metadata (salary, location)
 		const metadata = [];
 		if (job.salaryRange) {
-			metadata.push(h("span", { className: "kanban-job-salary" }, job.salaryRange));
+			metadata.push(h("div", { className: "kanban-metadata-item" },
+				h("span", { className: "kanban-metadata-emoji" }, "💰"),
+				h("span", { className: "kanban-metadata-text" }, job.salaryRange)
+			));
 		}
 		if (job.location) {
-			metadata.push(h("span", { className: "kanban-job-location" }, job.location));
+			metadata.push(h("div", { className: "kanban-metadata-item" },
+				h("span", { className: "kanban-metadata-emoji" }, "📍"),
+				h("span", { className: "kanban-metadata-text" }, job.location)
+			));
 		}
 		
 		const metadataRow = metadata.length > 0 ? 
 			h("div", { className: "kanban-job-metadata" }, ...metadata) : null;
 		
-		// Activity indicators (notes, tasks, contacts)
-		const activities = [];
-		
-		if (job.notes && job.notes.length > 0) {
-			const activeNotes = job.notes.filter(note => !note.archived);
-			if (activeNotes.length > 0) {
-				activities.push(
-					h("span", { 
-						className: "kanban-activity-indicator notes",
-						title: `${activeNotes.length} note${activeNotes.length !== 1 ? 's' : ''}`
-					},
-						h("span", { className: "material-symbols-outlined" }, "note"),
-						h("span", { className: "kanban-activity-count" }, activeNotes.length.toString())
-					)
-				);
-			}
-		}
-		
-		if (job.tasks && job.tasks.length > 0) {
-			const activeTasks = job.tasks.filter(task => !task.archived);
-			const doneTasks = activeTasks.filter(task => task.status === 'done');
-			if (activeTasks.length > 0) {
-				activities.push(
-					h("span", { 
-						className: "kanban-activity-indicator tasks",
-						title: `${doneTasks.length}/${activeTasks.length} tasks completed`
-					},
-						h("span", { className: "material-symbols-outlined" }, "task_alt"),
-						h("span", { className: "kanban-activity-count" }, `${doneTasks.length}/${activeTasks.length}`)
-					)
-				);
-			}
-		}
-		
-		if (job.contacts && job.contacts.length > 0) {
-			const activeContacts = job.contacts.filter(contact => !contact.archived);
-			if (activeContacts.length > 0) {
-				activities.push(
-					h("span", { 
-						className: "kanban-activity-indicator contacts",
-						title: `${activeContacts.length} contact${activeContacts.length !== 1 ? 's' : ''}`
-					},
-						h("span", { className: "material-symbols-outlined" }, "person"),
-						h("span", { className: "kanban-activity-count" }, activeContacts.length.toString())
-					)
-				);
-			}
-		}
-		
-		const activitiesRow = activities.length > 0 ? 
-			h("div", { className: "kanban-job-activities" }, ...activities) : null;
+		// Action icons (notes, tasks, contacts)
+		const actionIcons = h("div", { className: "kanban-action-icons" },
+			h("button", {
+				className: "kanban-icon-btn",
+				title: "Notes",
+				onclick: (e) => {
+					e.stopPropagation();
+					openNotesModal(job);
+				}
+			}, h("span", { className: "material-symbols-outlined" }, "note")),
+			
+			h("button", {
+				className: "kanban-icon-btn",
+				title: "Tasks", 
+				onclick: (e) => {
+					e.stopPropagation();
+					openTasksModal(job);
+				}
+			}, h("span", { className: "material-symbols-outlined" }, "task_alt")),
+			
+			h("button", {
+				className: "kanban-icon-btn",
+				title: "Contacts",
+				onclick: (e) => {
+					e.stopPropagation();
+					openContactsModal(job);
+				}
+			}, h("span", { className: "material-symbols-outlined" }, "person"))
+		);
 		
 		// Card click handler to view/edit job
 		card.addEventListener('click', (e) => {
-			if (e.target.closest('.kanban-activity-indicator')) {
-				// Handle activity indicator clicks
-				const indicator = e.target.closest('.kanban-activity-indicator');
-				if (indicator.classList.contains('notes')) {
-					openNotesModal(job);
-				} else if (indicator.classList.contains('tasks')) {
-					openTasksModal(job);
-				} else if (indicator.classList.contains('contacts')) {
-					openContactsModal(job);
-				}
-			} else {
-				// Handle card click to edit job in modal
-				KanbanBoard.openJobEditModal(job);
+			// Don't trigger if clicking on action buttons
+			if (e.target.closest('.kanban-icon-btn')) {
+				return;
 			}
+			// Handle card click to edit job in modal
+			KanbanBoard.openJobEditModal(job);
 		});
 		
 		// Assemble card
 		card.appendChild(priorityDot);
-		card.appendChild(company);
-		card.appendChild(position);
-		if (substep) card.appendChild(substep);
+		card.appendChild(header);
+		card.appendChild(phaseSection);
 		if (metadataRow) card.appendChild(metadataRow);
-		if (activitiesRow) card.appendChild(activitiesRow);
+		card.appendChild(actionIcons);
 		
 		return card;
 	},
+
+	// Create phase section with substep progression
+	createPhaseSection: (job) => {
+		const currentPhase = job.currentPhase;
+		const currentSubstep = job.currentSubstep || currentPhase;
+		const completedSubsteps = job.completedSubsteps || [];
+		const availableSubsteps = getSubstepsForPhase(currentPhase);
+
+		const phaseHeader = h("div", { className: "kanban-phase-header" },
+			h("span", { className: "kanban-phase-emoji" }, "🕑"),
+			h("span", { className: "kanban-phase-text" }, `${getPhaseText(currentPhase)} Stage:`)
+		);
+
+		const substepsList = h("div", { className: "kanban-substeps-list" });
+
+		if (availableSubsteps.length > 0) {
+			// Show progression through substeps
+			availableSubsteps.forEach(substep => {
+				const isCompleted = completedSubsteps.includes(substep);
+				const isCurrent = substep === currentSubstep;
+				const isPending = !isCompleted && !isCurrent;
+
+				let emoji = "⚪"; // Pending
+				let className = "kanban-substep-item pending";
+
+				if (isCompleted) {
+					emoji = "✅";
+					className = "kanban-substep-item completed";
+				} else if (isCurrent) {
+					emoji = "🟡";
+					className = "kanban-substep-item current";
+				}
+
+				const substepItem = h("div", { className },
+					h("span", { className: "kanban-substep-emoji" }, emoji),
+					h("span", { className: "kanban-substep-text" }, getSubstepText(substep))
+				);
+
+				substepsList.appendChild(substepItem);
+			});
+		} else {
+			// No substeps, just show the phase
+			const phaseItem = h("div", { className: "kanban-substep-item current" },
+				h("span", { className: "kanban-substep-emoji" }, "🟡"),
+				h("span", { className: "kanban-substep-text" }, getPhaseText(currentPhase))
+			);
+			substepsList.appendChild(phaseItem);
+		}
+
+		return h("div", { className: "kanban-phase-section" }, phaseHeader, substepsList);
+	},
+
 
 	// Drag and drop handlers
 	handleDragStart: (e, job) => {
