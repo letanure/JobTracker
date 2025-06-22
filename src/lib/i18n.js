@@ -282,7 +282,7 @@ I18n.translations = {
 			},
 			placeholders: {
 				company: "Nome da Empresa",
-				position: "Título do Cargo",
+				position: "Cargo",
 				contactPerson: "Nome do Contato",
 				contactEmail: "Email do Contato",
 				salaryRange: "Faixa Salarial",
