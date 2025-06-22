@@ -27,8 +27,8 @@ const LanguageSwitcher = {
 		
 		// Create arrow span
 		const arrowSpan = document.createElement("span");
-		arrowSpan.className = "language-arrow";
-		arrowSpan.textContent = "▼";
+		arrowSpan.className = "language-arrow material-symbols-outlined";
+		arrowSpan.textContent = "expand_more";
 		
 		// Append to button
 		button.appendChild(flagSpan);

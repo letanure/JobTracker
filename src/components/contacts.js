@@ -501,13 +501,15 @@ const ContactsModal = ({ job, onClose }) => {
 					}),
 					h("input", {
 						type: "text",
+						className: "add-contact-role",
+						placeholder: "Role",
+					}),
+					h("input", {
+						type: "text",
 						className: "add-contact-company",
 						placeholder: I18n.t("modals.contacts.placeholderCompany"),
 					}),
-					h("button", {
-						className: "action-btn primary-btn",
-						onclick: handleAddContact,
-					}, I18n.t("modals.contacts.addButton"))
+					// Submit button moved to modal footer
 				)
 			)
 		);
@@ -560,6 +562,75 @@ const ContactsModal = ({ job, onClose }) => {
 				{ className: "modal-body" },
 				createContactsContent(job, sortedActiveContacts, sortedArchivedContacts)
 			),
+			h(
+				"div",
+				{ className: "modal-footer" },
+				h("button", {
+					className: "action-btn primary-btn",
+					onclick: (e) => {
+						// Find the modal to scope our search
+						const modal = e.target.closest('.modal');
+						if (!modal) return;
+						
+						const nameInput = modal.querySelector('.add-contact-name');
+						const emailInput = modal.querySelector('.add-contact-email');
+						const phoneInput = modal.querySelector('.add-contact-phone');
+						const roleInput = modal.querySelector('.add-contact-role');
+						const companyInput = modal.querySelector('.add-contact-company');
+						
+						if (!nameInput || !emailInput || !phoneInput || !roleInput || !companyInput) {
+							console.error('Contact form inputs not found');
+							return;
+						}
+						
+						const name = nameInput.value.trim();
+						const email = emailInput.value.trim();
+						const phone = phoneInput.value.trim();
+						const role = roleInput.value.trim();
+						const company = companyInput.value.trim();
+						
+						if (!name) {
+							showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequired"));
+							return;
+						}
+						
+						if (!email) {
+							showValidationError(emailInput, I18n.t("modals.contacts.validation.emailRequired"));
+							return;
+						}
+						
+						const newContact = {
+							id: Date.now(),
+							name,
+							email,
+							phone,
+							role,
+							company,
+							isActive: true,
+							lastContactDate: null,
+							notes: ""
+						};
+						
+						if (!job.contacts) job.contacts = [];
+						job.contacts.push(newContact);
+						
+						// Clear inputs
+						nameInput.value = '';
+						emailInput.value = '';
+						phoneInput.value = '';
+						roleInput.value = '';
+						companyInput.value = '';
+						
+						// Clear any validation errors
+						modal.querySelectorAll('.validation-error').forEach(error => error.remove());
+						
+						// Save and refresh
+						saveToLocalStorage();
+						onContactUpdate(job.contacts);
+						refreshInterface();
+					}
+				}, I18n.t("modals.contacts.addButton"))
+			)
 		),
 	);
 };

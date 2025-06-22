@@ -8,7 +8,25 @@ function setupEventListeners() {
 	document.addEventListener("keydown", (e) => {
 		if (e.key === "Escape") {
 			closeModal();
+			closeAllDropdowns();
 		}
+	});
+	
+	// Close dropdowns when clicking outside
+	document.addEventListener("click", (e) => {
+		const isDropdownIcon = e.target.closest('.filter-dropdown-icon');
+		const isDropdownContent = e.target.closest('.filter-dropdown');
+		
+		if (!isDropdownIcon && !isDropdownContent) {
+			closeAllDropdowns();
+		}
+	});
+}
+
+// Close all dropdowns
+function closeAllDropdowns() {
+	document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+		dropdown.style.display = 'none';
 	});
 }
 

@@ -57,10 +57,6 @@
         <div class="tab-content-container">
             <!-- Jobs Tab -->
             <div class="tab-content active" data-tab="jobs">
-                <div class="controls">
-                    <button id="addAppBtn" onclick="addRow()">...</button>
-                </div>
-                
                 <div class="table-container">
                     <table id="jobTable">
                         <thead>
@@ -68,7 +64,9 @@
                                 <th>
                                     <div class="header-with-filter">
                                         <span id="priorityHeader">...</span>
-                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
+                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">
+                                            <span class="material-symbols-outlined">expand_more</span>
+                                        </span>
                                         <div class="filter-dropdown" id="priorityDropdown"></div>
                                     </div>
                                 </th>
@@ -77,7 +75,9 @@
                                 <th>
                                     <div class="header-with-filter">
                                         <span id="currentPhaseHeader">...</span>
-                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
+                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">
+                                            <span class="material-symbols-outlined">expand_more</span>
+                                        </span>
                                         <div class="filter-dropdown" id="phaseDropdown"></div>
                                     </div>
                                 </th>
@@ -93,6 +93,10 @@
                         <tbody id="jobTableBody">
                         </tbody>
                     </table>
+                </div>
+                
+                <div class="table-actions">
+                    <button id="addAppBtn" onclick="addRow()">...</button>
                 </div>
                 
                 <div class="stats">

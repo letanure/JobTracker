@@ -149,7 +149,11 @@ const EN_TRANSLATIONS = {
 			placeholderPhone: "Phone",
 			placeholderCompany: "Company",
 			noContacts: "No contacts",
-			defaultContact: "Contact"
+			defaultContact: "Contact",
+			validation: {
+				nameRequired: "Name is required",
+				emailRequired: "Email is required"
+			}
 		},
 		common: {
 			save: "Save",
