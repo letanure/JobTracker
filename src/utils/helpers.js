@@ -107,3 +107,45 @@ function updateStaticTexts() {
 	$("#footerMadeWith").text(I18n.t("footer.madeWith"));
 	$("#footerBy").text(I18n.t("footer.by"));
 }
+
+// Initialize language switcher
+function initializeLanguageSwitcher() {
+	console.log("Initializing language switcher...");
+	const container = $("#languageSwitcher");
+	console.log("Container found:", !!container);
+	
+	if (container) {
+		console.log("Creating language switcher...");
+		const switcher = LanguageSwitcher.create();
+		console.log("Switcher created:", !!switcher);
+		
+		container.get().innerHTML = "";
+		container.get().appendChild(switcher);
+		LanguageSwitcher.init();
+		
+		console.log("Language switcher initialized");
+	} else {
+		console.error("Language switcher container not found!");
+	}
+}
+
+// Global function to update UI language - called when language changes
+function updateUILanguage() {
+	// Update all static texts
+	updateStaticTexts();
+	
+	// Update language switcher
+	if (typeof LanguageSwitcher !== 'undefined') {
+		LanguageSwitcher.updateUI();
+	}
+	
+	// Update filter dropdowns with new language
+	if (typeof setupFilters === 'function') {
+		setupFilters();
+	}
+	
+	// Re-render the table to update all dynamic content
+	if (typeof refreshInterface === 'function') {
+		refreshInterface();
+	}
+}

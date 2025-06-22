@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T13:44:14.886Z
+Generated: 2025-06-22T14:47:52.323Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -2213,17 +2213,148 @@ body {
 	color: var(--text-color);
 }
 
+/* ============================================================================ */
+/* LANGUAGE SWITCHER */
+/* ============================================================================ */
+
+.language-switcher {
+	position: relative;
+	display: inline-block;
+	z-index: 1000;
+}
+
+.language-selector {
+	position: relative;
+}
+
+.language-button {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-3);
+	background: var(--container-background);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	box-shadow: var(--shadow-sm);
+	min-width: 120px;
+}
+
+.language-button:hover {
+	background: var(--background-color);
+	border-color: var(--primary-color);
+	box-shadow: var(--shadow-md);
+}
+
+.language-button:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: var(--focus-ring);
+}
+
+.language-flag {
+	font-size: var(--font-size-base);
+	line-height: 1;
+}
+
+.language-name {
+	flex: 1;
+	text-align: left;
+}
+
+.language-arrow {
+	font-size: var(--font-size-xs);
+	color: var(--text-light);
+	transition: var(--transition-fast);
+}
+
+.language-button:hover .language-arrow {
+	color: var(--primary-color);
+}
+
+.language-dropdown {
+	position: absolute;
+	top: calc(100% + var(--space-1));
+	left: 0;
+	right: 0;
+	background: var(--container-background);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-lg);
+	overflow: hidden;
+	z-index: 1001;
+}
+
+.language-option {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-3);
+	cursor: pointer;
+	font-size: var(--font-size-sm);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.language-option:last-child {
+	border-bottom: none;
+}
+
+.language-option:hover {
+	background: var(--background-color);
+	color: var(--primary-color);
+}
+
+.language-option .language-flag {
+	font-size: var(--font-size-base);
+}
+
+.language-option .language-name {
+	font-weight: var(--font-weight-medium);
+}
+
+/* Language switcher container positioning */
+.language-switcher-container {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: var(--space-4);
+	padding: 0 var(--space-2);
+}
+
+@media (max-width: calc(var(--base-size) * 120)) {
+	/* 480px */
+	.language-button {
+		min-width: 100px;
+		padding: var(--space-1) var(--space-2);
+		font-size: var(--font-size-xs);
+	}
+	
+	.language-option {
+		padding: var(--space-1) var(--space-2);
+		font-size: var(--font-size-xs);
+	}
+}
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1 id="appTitle">...</h1>
+            <div class="language-switcher-container">
+                <div id="languageSwitcher"></div>
+            </div>
         </div>
         
         <div class="controls">
             <button id="addAppBtn" onclick="addRow()">...</button>
         </div>
+        
         
         <div class="table-container">
             <table id="jobTable">
@@ -2304,11 +2435,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T13:44:14.883Z
+// Generated: 2025-06-22T14:47:52.319Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T13:44:14.883Z");
+console.log("JobTracker - Built at: 2025-06-22T14:47:52.319Z");
 
 
 // ============================================================================
@@ -2580,10 +2711,29 @@ const I18n = {
 		return I18n.translations[langCode] ? langCode : "en";
 	},
 
+	// Get language from URL parameter
+	getLanguageFromURL: () => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const langParam = urlParams.get("lang");
+		return langParam && I18n.translations[langParam] ? langParam : null;
+	},
+
+	// Set language in URL parameter
+	setLanguageInURL: (lang) => {
+		const url = new URL(window.location);
+		if (lang && lang !== "en") {
+			url.searchParams.set("lang", lang);
+		} else {
+			url.searchParams.delete("lang");
+		}
+		window.history.replaceState({}, "", url);
+	},
+
 	// Set current language
 	setLanguage: (lang) => {
 		if (I18n.translations[lang]) {
 			I18n.currentLanguage = lang;
+			I18n.setLanguageInURL(lang);
 			DataStore.save({ ...DataStore.load(), language: lang });
 			return true;
 		}
@@ -2617,9 +2767,15 @@ const I18n = {
 
 	// Initialize language from storage or browser
 	init: () => {
+		// Priority: URL parameter > saved language > browser language > default (en)
+		const urlLang = I18n.getLanguageFromURL();
 		const savedData = DataStore.load();
 		const savedLanguage = savedData?.language;
-		I18n.currentLanguage = savedLanguage || I18n.detectLanguage();
+
+		I18n.currentLanguage = urlLang || savedLanguage || I18n.detectLanguage();
+
+		// Update URL to reflect current language
+		I18n.setLanguageInURL(I18n.currentLanguage);
 	},
 };
 
@@ -2809,8 +2965,10 @@ I18n.translations = {
 				company: "Empresa",
 				position: "Cargo",
 				currentPhase: "Fase Atual",
-				contactPerson: "Pessoa de Contato",
-				salaryRange: "Faixa Salarial",
+				contactPerson: "Contato",
+				salaryRange: "Salario",
+				sourceUrl: "Link",
+				source: "Fonte",
 				location: "Localização",
 				notes: "Notas",
 				tasks: "Tarefas",
@@ -2980,6 +3138,11 @@ I18n.translations = {
 const CONFIG = {
 	dateFormat: "DD/MM/YY HH:MM", // Options: 'DD/MM/YY', 'MM/DD/YY', 'YYYY-MM-DD', 'DD/MM/YY HH:MM'
 	showTimeInNotes: true, // Set to true to include time in notes
+	// Language configuration
+	languages: [
+		{ code: "en", name: "English", flag: "🇺🇸" },
+		{ code: "pt", name: "Português", flag: "🇧🇷" }
+	]
 };
 
 // ============================================================================
@@ -3196,6 +3359,48 @@ function updateStaticTexts() {
 	// Update footer text
 	$("#footerMadeWith").text(I18n.t("footer.madeWith"));
 	$("#footerBy").text(I18n.t("footer.by"));
+}
+
+// Initialize language switcher
+function initializeLanguageSwitcher() {
+	console.log("Initializing language switcher...");
+	const container = $("#languageSwitcher");
+	console.log("Container found:", !!container);
+	
+	if (container) {
+		console.log("Creating language switcher...");
+		const switcher = LanguageSwitcher.create();
+		console.log("Switcher created:", !!switcher);
+		
+		container.get().innerHTML = "";
+		container.get().appendChild(switcher);
+		LanguageSwitcher.init();
+		
+		console.log("Language switcher initialized");
+	} else {
+		console.error("Language switcher container not found!");
+	}
+}
+
+// Global function to update UI language - called when language changes
+function updateUILanguage() {
+	// Update all static texts
+	updateStaticTexts();
+	
+	// Update language switcher
+	if (typeof LanguageSwitcher !== 'undefined') {
+		LanguageSwitcher.updateUI();
+	}
+	
+	// Update filter dropdowns with new language
+	if (typeof setupFilters === 'function') {
+		setupFilters();
+	}
+	
+	// Re-render the table to update all dynamic content
+	if (typeof refreshInterface === 'function') {
+		refreshInterface();
+	}
 }
 
 // ============================================================================
@@ -5152,6 +5357,155 @@ window.createPhaseSelect = createPhaseSelect;
 window.EditActionsCell = EditActionsCell;
 
 // ============================================================================
+// SRC/COMPONENTS/LANGUAGE-SWITCHER.JS
+// ============================================================================
+
+// ============================================================================
+// LANGUAGE SWITCHER COMPONENT
+// ============================================================================
+
+const LanguageSwitcher = {
+	// Create the language switcher HTML
+	create: () => {
+		console.log("Creating language switcher...");
+		console.log("CONFIG.languages:", CONFIG.languages);
+		console.log("I18n.currentLanguage:", I18n.currentLanguage);
+		
+		// Get current language info
+		const currentLang = CONFIG.languages.find(lang => lang.code === I18n.currentLanguage) || CONFIG.languages[0];
+		console.log("Current language:", currentLang);
+		
+		// Create button using simple DOM creation instead of h() function
+		const button = document.createElement("button");
+		button.className = "language-button";
+		button.id = "languageButton";
+		
+		// Create flag span
+		const flagSpan = document.createElement("span");
+		flagSpan.className = "language-flag";
+		flagSpan.id = "currentLanguageFlag";
+		flagSpan.textContent = currentLang.flag;
+		
+		// Create name span  
+		const nameSpan = document.createElement("span");
+		nameSpan.className = "language-name";
+		nameSpan.id = "currentLanguageName";
+		nameSpan.textContent = currentLang.name;
+		
+		// Create arrow span
+		const arrowSpan = document.createElement("span");
+		arrowSpan.className = "language-arrow";
+		arrowSpan.textContent = "▼";
+		
+		// Append to button
+		button.appendChild(flagSpan);
+		button.appendChild(nameSpan);
+		button.appendChild(arrowSpan);
+
+		// Create dropdown
+		const dropdown = document.createElement("div");
+		dropdown.className = "language-dropdown";
+		dropdown.id = "languageDropdown";
+		dropdown.style.display = "none";
+
+		// Create dropdown options
+		CONFIG.languages.forEach(lang => {
+			const option = document.createElement("div");
+			option.className = "language-option";
+			
+			const optionFlag = document.createElement("span");
+			optionFlag.className = "language-flag";
+			optionFlag.textContent = lang.flag;
+			
+			const optionName = document.createElement("span");
+			optionName.className = "language-name";
+			optionName.textContent = lang.name;
+			
+			option.appendChild(optionFlag);
+			option.appendChild(optionName);
+			
+			// Add click event listener
+			option.addEventListener('click', () => LanguageSwitcher.selectLanguage(lang.code));
+			
+			dropdown.appendChild(option);
+		});
+
+		// Create selector container
+		const selector = document.createElement("div");
+		selector.className = "language-selector";
+		selector.appendChild(button);
+		selector.appendChild(dropdown);
+
+		// Create main container
+		const container = document.createElement("div");
+		container.className = "language-switcher";
+		container.appendChild(selector);
+
+		// Add click event listener to button
+		button.addEventListener('click', () => LanguageSwitcher.toggle());
+
+		console.log("Language switcher DOM created:", container);
+		return container;
+	},
+
+	// Toggle the dropdown visibility
+	toggle: () => {
+		const dropdown = document.getElementById("languageDropdown");
+		if (!dropdown) return;
+		
+		const isVisible = dropdown.style.display !== "none";
+		dropdown.style.display = isVisible ? "none" : "block";
+		
+		// Close dropdown when clicking outside
+		if (!isVisible) {
+			document.addEventListener("click", LanguageSwitcher.handleClickOutside);
+		}
+	},
+
+	// Handle clicks outside the dropdown to close it
+	handleClickOutside: (event) => {
+		const languageSwitcher = document.querySelector(".language-switcher");
+		if (languageSwitcher && !languageSwitcher.contains(event.target)) {
+			const dropdown = document.getElementById("languageDropdown");
+			if (dropdown) {
+				dropdown.style.display = "none";
+			}
+			document.removeEventListener("click", LanguageSwitcher.handleClickOutside);
+		}
+	},
+
+	// Select a language
+	selectLanguage: (langCode) => {
+		if (I18n.setLanguage(langCode)) {
+			LanguageSwitcher.updateUI();
+			LanguageSwitcher.toggle(); // Close dropdown
+			
+			// Re-render the app with new language
+			if (typeof updateUILanguage === 'function') {
+				updateUILanguage();
+			}
+		}
+	},
+
+	// Update the switcher UI to reflect current language
+	updateUI: () => {
+		const currentLang = CONFIG.languages.find(lang => lang.code === I18n.currentLanguage);
+		if (currentLang) {
+			const flagElement = document.getElementById("currentLanguageFlag");
+			const nameElement = document.getElementById("currentLanguageName");
+			
+			if (flagElement) flagElement.textContent = currentLang.flag;
+			if (nameElement) nameElement.textContent = currentLang.name;
+		}
+	},
+
+	// Initialize the language switcher
+	init: () => {
+		LanguageSwitcher.updateUI();
+	}
+};
+
+// ============================================================================
 // SRC/COMPONENTS/TABLE.JS
 // ============================================================================
 
@@ -5258,6 +5612,11 @@ function initializeApp() {
 	updateStaticTexts();
 	setupEventListeners();
 	setupFilters();
+	
+	// Initialize language switcher after a short delay to ensure DOM is ready
+	setTimeout(() => {
+		initializeLanguageSwitcher();
+	}, 100);
 	
 	// Load data from localStorage
 	const savedJobs = loadFromLocalStorage();

@@ -5,6 +5,11 @@
 const CONFIG = {
 	dateFormat: "DD/MM/YY HH:MM", // Options: 'DD/MM/YY', 'MM/DD/YY', 'YYYY-MM-DD', 'DD/MM/YY HH:MM'
 	showTimeInNotes: true, // Set to true to include time in notes
+	// Language configuration
+	languages: [
+		{ code: "en", name: "English", flag: "🇺🇸" },
+		{ code: "pt", name: "Português", flag: "🇧🇷" }
+	]
 };
 
 // ============================================================================

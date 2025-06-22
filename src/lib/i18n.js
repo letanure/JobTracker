@@ -13,10 +13,29 @@ const I18n = {
 		return I18n.translations[langCode] ? langCode : "en";
 	},
 
+	// Get language from URL parameter
+	getLanguageFromURL: () => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const langParam = urlParams.get("lang");
+		return langParam && I18n.translations[langParam] ? langParam : null;
+	},
+
+	// Set language in URL parameter
+	setLanguageInURL: (lang) => {
+		const url = new URL(window.location);
+		if (lang && lang !== "en") {
+			url.searchParams.set("lang", lang);
+		} else {
+			url.searchParams.delete("lang");
+		}
+		window.history.replaceState({}, "", url);
+	},
+
 	// Set current language
 	setLanguage: (lang) => {
 		if (I18n.translations[lang]) {
 			I18n.currentLanguage = lang;
+			I18n.setLanguageInURL(lang);
 			DataStore.save({ ...DataStore.load(), language: lang });
 			return true;
 		}
@@ -50,9 +69,15 @@ const I18n = {
 
 	// Initialize language from storage or browser
 	init: () => {
+		// Priority: URL parameter > saved language > browser language > default (en)
+		const urlLang = I18n.getLanguageFromURL();
 		const savedData = DataStore.load();
 		const savedLanguage = savedData?.language;
-		I18n.currentLanguage = savedLanguage || I18n.detectLanguage();
+
+		I18n.currentLanguage = urlLang || savedLanguage || I18n.detectLanguage();
+
+		// Update URL to reflect current language
+		I18n.setLanguageInURL(I18n.currentLanguage);
 	},
 };
 
@@ -242,8 +267,10 @@ I18n.translations = {
 				company: "Empresa",
 				position: "Cargo",
 				currentPhase: "Fase Atual",
-				contactPerson: "Pessoa de Contato",
-				salaryRange: "Faixa Salarial",
+				contactPerson: "Contato",
+				salaryRange: "Salario",
+				sourceUrl: "Link",
+				source: "Fonte",
 				location: "Localização",
 				notes: "Notas",
 				tasks: "Tarefas",

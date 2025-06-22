@@ -12,6 +12,11 @@ function initializeApp() {
 	setupEventListeners();
 	setupFilters();
 	
+	// Initialize language switcher after a short delay to ensure DOM is ready
+	setTimeout(() => {
+		initializeLanguageSwitcher();
+	}, 100);
+	
 	// Load data from localStorage
 	const savedJobs = loadFromLocalStorage();
 	
