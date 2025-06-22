@@ -719,6 +719,33 @@ tbody tr {
 	max-width: var(--col-20); /* 160px */
 }
 
+.phase-display {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.phase-main {
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.phase-substep {
+	font-size: var(--font-size-xs);
+	color: var(--text-secondary);
+	opacity: 0.8;
+}
+
+.phase-cell {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.substep-select {
+	font-size: var(--font-size-xs);
+}
+
 .next-task {
 	background: var(--next-task-bg);
 	padding: var(--padding-xs);

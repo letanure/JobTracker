@@ -20,7 +20,12 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		PriorityCell({ priority: job.priority }),
 		h("td", { className: "company-name" }, job.company),
 		h("td", { className: "position-name" }, job.position),
-		h("td", { className: "current-phase" }, getPhaseText(job.currentPhase)),
+		h("td", { className: "current-phase" }, 
+			h("div", { className: "phase-display" }, 
+				h("span", { className: "phase-main" }, getPhaseText(job.currentPhase)),
+				job.currentSubstep ? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep)) : null
+			)
+		),
 		h(
 			"td",
 			{ className: "contact" },

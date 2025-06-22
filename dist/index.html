@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T16:15:41.162Z
+Generated: 2025-06-22T17:05:32.821Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -773,6 +773,33 @@ tbody tr {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	max-width: var(--col-20); /* 160px */
+}
+
+.phase-display {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.phase-main {
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.phase-substep {
+	font-size: var(--font-size-xs);
+	color: var(--text-secondary);
+	opacity: 0.8;
+}
+
+.phase-cell {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.substep-select {
+	font-size: var(--font-size-xs);
 }
 
 .next-task {
@@ -2593,11 +2620,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T16:15:41.159Z
+// Generated: 2025-06-22T17:05:32.818Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T16:15:41.159Z");
+console.log("JobTracker - Built at: 2025-06-22T17:05:32.818Z");
 
 
 // ============================================================================
@@ -2984,34 +3011,36 @@ I18n.translations = {
 			low: "Low",
 		},
 		phases: {
-			// PHASES array values
 			wishlist: "Wishlist",
 			applied: "Applied",
-			phone_screening: "Phone Screening",
 			interview: "Interview",
-			final_round: "Final Round",
 			offer: "Offer",
-			rejected: "Rejected",
-			withdrawn: "Withdrawn",
-			// Extended phase values
-			applicationReview: "Application Review",
-			initialScreening: "Initial Screening",
-			hrPhoneScreen: "HR Phone Screen",
-			recruiterCall: "Recruiter Call",
-			technicalPhoneScreen: "Technical Phone Screen",
-			codingChallenge: "Coding Challenge",
-			takeHomeAssignment: "Take-home Assignment",
-			technicalInterview: "Technical Interview",
-			systemDesignInterview: "System Design Interview",
-			behavioralInterview: "Behavioral Interview",
-			teamInterview: "Team Interview",
-			hiringManagerInterview: "Hiring Manager Interview",
-			panelInterview: "Panel Interview",
-			finalRound: "Final Round",
-			referenceCheck: "Reference Check",
-			backgroundCheck: "Background Check",
-			offerDiscussion: "Offer Discussion",
-			salaryNegotiation: "Salary Negotiation",
+			rejected_withdrawn: "Rejected / Withdrawn",
+		},
+		substeps: {
+			none: "No substep",
+			// Applied substeps
+			application_review: "Application Review",
+			initial_screening: "Initial Screening",
+			hr_phone_screen: "HR Phone Screen",
+			recruiter_call: "Recruiter Call",
+			// Interview substeps
+			phone_screening: "Phone Screening",
+			technical_phone_screen: "Technical Phone Screen",
+			coding_challenge: "Coding Challenge",
+			take_home_assignment: "Take-home Assignment",
+			technical_interview: "Technical Interview",
+			system_design_interview: "System Design Interview",
+			behavioral_interview: "Behavioral Interview",
+			team_interview: "Team Interview",
+			hiring_manager_interview: "Hiring Manager Interview",
+			panel_interview: "Panel Interview",
+			final_round: "Final Round",
+			// Offer substeps
+			reference_check: "Reference Check",
+			background_check: "Background Check",
+			offer_discussion: "Offer Discussion",
+			salary_negotiation: "Salary Negotiation",
 		},
 		stats: {
 			totalApplications: "Total Applications",
@@ -3160,34 +3189,36 @@ I18n.translations = {
 			low: "Baixa",
 		},
 		phases: {
-			// PHASES array values
 			wishlist: "Lista de Desejos",
 			applied: "Candidatura Enviada",
-			phone_screening: "Triagem por Telefone",
 			interview: "Entrevista",
-			final_round: "Etapa Final",
 			offer: "Oferta",
-			rejected: "Rejeitado",
-			withdrawn: "Retirado",
-			// Extended phase values
-			applicationReview: "Análise da Candidatura",
-			initialScreening: "Triagem Inicial",
-			hrPhoneScreen: "Triagem por Telefone - RH",
-			recruiterCall: "Ligação do Recrutador",
-			technicalPhoneScreen: "Triagem Técnica por Telefone",
-			codingChallenge: "Desafio de Programação",
-			takeHomeAssignment: "Tarefa para Casa",
-			technicalInterview: "Entrevista Técnica",
-			systemDesignInterview: "Entrevista de Design de Sistema",
-			behavioralInterview: "Entrevista Comportamental",
-			teamInterview: "Entrevista com a Equipe",
-			hiringManagerInterview: "Entrevista com Gerente de Contratação",
-			panelInterview: "Entrevista em Painel",
-			finalRound: "Etapa Final",
-			referenceCheck: "Verificação de Referências",
-			backgroundCheck: "Verificação de Antecedentes",
-			offerDiscussion: "Discussão da Oferta",
-			salaryNegotiation: "Negociação Salarial",
+			rejected_withdrawn: "Rejeitado / Retirado",
+		},
+		substeps: {
+			none: "Nenhuma subetapa",
+			// Applied substeps
+			application_review: "Análise da Candidatura",
+			initial_screening: "Triagem Inicial",
+			hr_phone_screen: "Triagem por Telefone - RH",
+			recruiter_call: "Ligação do Recrutador",
+			// Interview substeps
+			phone_screening: "Triagem por Telefone",
+			technical_phone_screen: "Triagem Técnica por Telefone",
+			coding_challenge: "Desafio de Programação",
+			take_home_assignment: "Tarefa para Casa",
+			technical_interview: "Entrevista Técnica",
+			system_design_interview: "Entrevista de Design de Sistema",
+			behavioral_interview: "Entrevista Comportamental",
+			team_interview: "Entrevista com a Equipe",
+			hiring_manager_interview: "Entrevista com Gerente de Contratação",
+			panel_interview: "Entrevista em Painel",
+			final_round: "Etapa Final",
+			// Offer substeps
+			reference_check: "Verificação de Referências",
+			background_check: "Verificação de Antecedentes",
+			offer_discussion: "Discussão da Oferta",
+			salary_negotiation: "Negociação Salarial",
 		},
 		stats: {
 			totalApplications: "Total de Candidaturas",
@@ -3318,20 +3349,51 @@ const CONFIG = {
 
 const PRIORITIES = ["high", "medium", "low"];
 
+// Basic phases for main workflow
 const PHASES = [
 	"wishlist",
 	"applied",
-	"phone_screening",
 	"interview",
-	"final_round",
 	"offer",
-	"rejected",
-	"withdrawn",
+	"rejected_withdrawn"
 ];
+
+// Sub-steps that can be used within phases
+const PHASE_SUBSTEPS = {
+	applied: [
+		"application_review",
+		"initial_screening",
+		"hr_phone_screen",
+		"recruiter_call"
+	],
+	interview: [
+		"phone_screening",
+		"technical_phone_screen", 
+		"coding_challenge",
+		"take_home_assignment",
+		"technical_interview",
+		"system_design_interview",
+		"behavioral_interview",
+		"team_interview",
+		"hiring_manager_interview",
+		"panel_interview",
+		"final_round"
+	],
+	offer: [
+		"reference_check",
+		"background_check", 
+		"offer_discussion",
+		"salary_negotiation"
+	]
+};
 
 // Helper functions to get translated values
 const getPriorityText = (priorityKey) => I18n.t(`priorities.${priorityKey}`);
 const getPhaseText = (phaseKey) => I18n.t(`phases.${phaseKey}`);
+const getSubstepText = (substepKey) => I18n.t(`substeps.${substepKey}`);
+
+// Helper function to get all substeps for a phase
+const getSubstepsForPhase = (phaseKey) => PHASE_SUBSTEPS[phaseKey] || [];
 
 // Demo data for first-time users
 const DEMO_DATA = [
@@ -3342,6 +3404,8 @@ const DEMO_DATA = [
 		position: "Senior Software Engineer",
 		appliedDate: "2025-06-15T10:00:00.000Z",
 		currentPhase: "interview",
+		currentSubstep: "technical_interview",
+		completedSubsteps: ["phone_screening"],
 		contactPerson: "demo.contactPerson1",
 		contactEmail: "sarah@techcorp.com",
 		salaryRange: "$120k - $150k",
@@ -3374,7 +3438,9 @@ const DEMO_DATA = [
 		company: "StartupXYZ",
 		position: "Full Stack Developer",
 		appliedDate: "2025-06-12T09:00:00.000Z",
-		currentPhase: "phone_screening",
+		currentPhase: "applied",
+		currentSubstep: "hr_phone_screen",
+		completedSubsteps: ["application_review"],
 		contactPerson: "demo.contactPerson2",
 		contactEmail: "hiring@startupxyz.com",
 		salaryRange: "$90k - $110k + equity",
@@ -5954,7 +6020,12 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		PriorityCell({ priority: job.priority }),
 		h("td", { className: "company-name" }, job.company),
 		h("td", { className: "position-name" }, job.position),
-		h("td", { className: "current-phase" }, getPhaseText(job.currentPhase)),
+		h("td", { className: "current-phase" }, 
+			h("div", { className: "phase-display" }, 
+				h("span", { className: "phase-main" }, getPhaseText(job.currentPhase)),
+				job.currentSubstep ? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep)) : null
+			)
+		),
 		h(
 			"td",
 			{ className: "contact" },
@@ -6180,10 +6251,10 @@ function updateStats(filteredJobs = null) {
 
 	for (const job of jobs) {
 		const phase = job.currentPhase;
-		if (phase !== "rejected" && phase !== "withdrawn") active++;
-		if (phase === "interview" || phase === "final_round") interviews++;
+		if (phase !== "rejected_withdrawn") active++;
+		if (phase === "interview") interviews++;
 		if (phase === "offer") offers++;
-		if (phase === "rejected") rejections++;
+		if (phase === "rejected_withdrawn") rejections++;
 	}
 
 	$("#totalApps").text(total.toString());
@@ -6265,10 +6336,16 @@ function editJob(job) {
 				${positions.map(p => `<option value="${p}">`).join("")}
 			</datalist>
 		</td>
-		<td>
-			<select class="inline-edit phase-select" data-field="currentPhase">
+		<td class="phase-cell">
+			<select class="inline-edit phase-select" data-field="currentPhase" onchange="updateSubstepOptions(this, ${job.id})">
 				${PHASES.map(phase => 
 					`<option value="${phase}" ${job.currentPhase === phase ? "selected" : ""}>${getPhaseText(phase)}</option>`
+				).join("")}
+			</select>
+			<select class="inline-edit substep-select" data-field="currentSubstep" id="substep-${job.id}">
+				<option value="">${I18n.t("substeps.none")}</option>
+				${job.currentPhase && getSubstepsForPhase(job.currentPhase).map(substep => 
+					`<option value="${substep}" ${job.currentSubstep === substep ? "selected" : ""}>${getSubstepText(substep)}</option>`
 				).join("")}
 			</select>
 		</td>
@@ -6433,13 +6510,16 @@ function addRow() {
 		position: "",
 		appliedDate: new Date().toISOString(),
 		currentPhase: "wishlist",
+		currentSubstep: "",
+		completedSubsteps: [],
 		contactPerson: "",
 		contactEmail: "",
 		salaryRange: "",
 		location: "",
 		sourceUrl: "",
 		notes: [],
-		tasks: []
+		tasks: [],
+		contacts: []
 	};
 	
 	jobsData.push(newJob);
@@ -6449,6 +6529,26 @@ function addRow() {
 	
 	// Auto-edit the new row
 	setTimeout(() => editJob(newJob), 100);
+}
+
+// Function to update substep options when phase changes
+function updateSubstepOptions(phaseSelect, jobId) {
+	const substepSelect = document.getElementById(`substep-${jobId}`);
+	if (!substepSelect) return;
+	
+	const selectedPhase = phaseSelect.value;
+	const substeps = getSubstepsForPhase(selectedPhase);
+	
+	// Clear current options
+	substepSelect.innerHTML = `<option value="">${I18n.t("substeps.none")}</option>`;
+	
+	// Add substeps for the selected phase
+	substeps.forEach(substep => {
+		const option = document.createElement('option');
+		option.value = substep;
+		option.textContent = getSubstepText(substep);
+		substepSelect.appendChild(option);
+	});
 }
 
 function toggleDropdown(dropdownId) {

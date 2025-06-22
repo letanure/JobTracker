@@ -156,10 +156,10 @@ function updateStats(filteredJobs = null) {
 
 	for (const job of jobs) {
 		const phase = job.currentPhase;
-		if (phase !== "rejected" && phase !== "withdrawn") active++;
-		if (phase === "interview" || phase === "final_round") interviews++;
+		if (phase !== "rejected_withdrawn") active++;
+		if (phase === "interview") interviews++;
 		if (phase === "offer") offers++;
-		if (phase === "rejected") rejections++;
+		if (phase === "rejected_withdrawn") rejections++;
 	}
 
 	$("#totalApps").text(total.toString());
@@ -241,10 +241,16 @@ function editJob(job) {
 				${positions.map(p => `<option value="${p}">`).join("")}
 			</datalist>
 		</td>
-		<td>
-			<select class="inline-edit phase-select" data-field="currentPhase">
+		<td class="phase-cell">
+			<select class="inline-edit phase-select" data-field="currentPhase" onchange="updateSubstepOptions(this, ${job.id})">
 				${PHASES.map(phase => 
 					`<option value="${phase}" ${job.currentPhase === phase ? "selected" : ""}>${getPhaseText(phase)}</option>`
+				).join("")}
+			</select>
+			<select class="inline-edit substep-select" data-field="currentSubstep" id="substep-${job.id}">
+				<option value="">${I18n.t("substeps.none")}</option>
+				${job.currentPhase && getSubstepsForPhase(job.currentPhase).map(substep => 
+					`<option value="${substep}" ${job.currentSubstep === substep ? "selected" : ""}>${getSubstepText(substep)}</option>`
 				).join("")}
 			</select>
 		</td>
@@ -409,13 +415,16 @@ function addRow() {
 		position: "",
 		appliedDate: new Date().toISOString(),
 		currentPhase: "wishlist",
+		currentSubstep: "",
+		completedSubsteps: [],
 		contactPerson: "",
 		contactEmail: "",
 		salaryRange: "",
 		location: "",
 		sourceUrl: "",
 		notes: [],
-		tasks: []
+		tasks: [],
+		contacts: []
 	};
 	
 	jobsData.push(newJob);
@@ -425,6 +434,26 @@ function addRow() {
 	
 	// Auto-edit the new row
 	setTimeout(() => editJob(newJob), 100);
+}
+
+// Function to update substep options when phase changes
+function updateSubstepOptions(phaseSelect, jobId) {
+	const substepSelect = document.getElementById(`substep-${jobId}`);
+	if (!substepSelect) return;
+	
+	const selectedPhase = phaseSelect.value;
+	const substeps = getSubstepsForPhase(selectedPhase);
+	
+	// Clear current options
+	substepSelect.innerHTML = `<option value="">${I18n.t("substeps.none")}</option>`;
+	
+	// Add substeps for the selected phase
+	substeps.forEach(substep => {
+		const option = document.createElement('option');
+		option.value = substep;
+		option.textContent = getSubstepText(substep);
+		substepSelect.appendChild(option);
+	});
 }
 
 function toggleDropdown(dropdownId) {
