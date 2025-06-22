@@ -280,7 +280,6 @@ I18n.translations = {
 				contactPerson: "Contato",
 				salaryRange: "Salario",
 				sourceUrl: "Link",
-				source: "Fonte",
 				location: "Localização",
 				notes: "Notas",
 				tasks: "Tarefas",

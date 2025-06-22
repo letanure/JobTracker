@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T17:05:32.821Z
+Generated: 2025-06-22T17:09:46.674Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -2620,11 +2620,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T17:05:32.818Z
+// Generated: 2025-06-22T17:09:46.670Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T17:05:32.818Z");
+console.log("JobTracker - Built at: 2025-06-22T17:09:46.670Z");
 
 
 // ============================================================================
@@ -3163,7 +3163,6 @@ I18n.translations = {
 				contactPerson: "Contato",
 				salaryRange: "Salario",
 				sourceUrl: "Link",
-				source: "Fonte",
 				location: "Localização",
 				notes: "Notas",
 				tasks: "Tarefas",
@@ -5629,29 +5628,17 @@ const createPhaseSelect = (selectedPhase = "wishlist", disabled = false, classNa
             selected: selectedPhase === "applied"
         }, I18n.t("phases.applied")),
         h("option", { 
-            value: "phone_screening",
-            selected: selectedPhase === "phone_screening"
-        }, I18n.t("phases.phone_screening")),
-        h("option", { 
             value: "interview",
             selected: selectedPhase === "interview"
         }, I18n.t("phases.interview")),
-        h("option", { 
-            value: "final_round",
-            selected: selectedPhase === "final_round"
-        }, I18n.t("phases.final_round")),
         h("option", { 
             value: "offer",
             selected: selectedPhase === "offer"
         }, I18n.t("phases.offer")),
         h("option", { 
-            value: "rejected",
-            selected: selectedPhase === "rejected"
-        }, I18n.t("phases.rejected")),
-        h("option", { 
-            value: "withdrawn",
-            selected: selectedPhase === "withdrawn"
-        }, I18n.t("phases.withdrawn"))
+            value: "rejected_withdrawn",
+            selected: selectedPhase === "rejected_withdrawn"
+        }, I18n.t("phases.rejected_withdrawn"))
     );
 };
 

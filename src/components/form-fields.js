@@ -98,29 +98,17 @@ const createPhaseSelect = (selectedPhase = "wishlist", disabled = false, classNa
             selected: selectedPhase === "applied"
         }, I18n.t("phases.applied")),
         h("option", { 
-            value: "phone_screening",
-            selected: selectedPhase === "phone_screening"
-        }, I18n.t("phases.phone_screening")),
-        h("option", { 
             value: "interview",
             selected: selectedPhase === "interview"
         }, I18n.t("phases.interview")),
-        h("option", { 
-            value: "final_round",
-            selected: selectedPhase === "final_round"
-        }, I18n.t("phases.final_round")),
         h("option", { 
             value: "offer",
             selected: selectedPhase === "offer"
         }, I18n.t("phases.offer")),
         h("option", { 
-            value: "rejected",
-            selected: selectedPhase === "rejected"
-        }, I18n.t("phases.rejected")),
-        h("option", { 
-            value: "withdrawn",
-            selected: selectedPhase === "withdrawn"
-        }, I18n.t("phases.withdrawn"))
+            value: "rejected_withdrawn",
+            selected: selectedPhase === "rejected_withdrawn"
+        }, I18n.t("phases.rejected_withdrawn"))
     );
 };
 
