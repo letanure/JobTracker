@@ -13,8 +13,9 @@ function initializeApp() {
 	setupEventListeners();
 	setupFilters();
 	
-	// Initialize language switcher after a short delay to ensure DOM is ready
+	// Initialize components after a short delay to ensure DOM is ready
 	setTimeout(() => {
+		initializeTabNavigation();
 		initializeLanguageSwitcher();
 	}, 100);
 	

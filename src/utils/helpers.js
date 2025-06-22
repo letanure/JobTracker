@@ -120,6 +120,18 @@ function initializeLanguageSwitcher() {
 	}
 }
 
+// Initialize tab navigation
+function initializeTabNavigation() {
+	const container = $("#tabNavigation");
+	
+	if (container) {
+		const tabNav = TabNavigation.create();
+		container.get().innerHTML = "";
+		container.get().appendChild(tabNav);
+		TabNavigation.init();
+	}
+}
+
 // Update meta tags for current language
 function updateMetaTags() {
 	const lang = I18n.currentLanguage;
@@ -219,6 +231,11 @@ function updateUILanguage() {
 	// Update language switcher
 	if (typeof LanguageSwitcher !== "undefined") {
 		LanguageSwitcher.updateUI();
+	}
+	
+	// Update tab navigation language
+	if (typeof TabNavigation !== "undefined") {
+		TabNavigation.updateLanguage();
 	}
 
 	// Update filter dropdowns with new language

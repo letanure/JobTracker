@@ -32,6 +32,7 @@ const BUILD_CONFIG = {
     'src/components/contacts.js',
     'src/components/form-fields.js',
     'src/components/language-switcher.js',
+    'src/components/tabs.js',
     'src/components/table.js',
     
     // Main application

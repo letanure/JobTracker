@@ -90,6 +90,10 @@ I18n.translations = {
 		buttons: {
 			addApplication: "+ Add Application",
 		},
+		tabs: {
+			jobs: "Jobs",
+			applications: "Applications Board",
+		},
 		table: {
 			headers: {
 				priority: "Priority",
@@ -260,6 +264,10 @@ I18n.translations = {
 		},
 		buttons: {
 			addApplication: "+ Adicionar Candidatura",
+		},
+		tabs: {
+			jobs: "Empregos",
+			applications: "Quadro de Candidaturas",
 		},
 		table: {
 			headers: {

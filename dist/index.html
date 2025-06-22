@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T15:05:17.514Z
+Generated: 2025-06-22T16:15:41.162Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -496,6 +496,7 @@ body {
 }
 
 .container {
+	width: 100%;
 	max-width: var(--max-width-container);
 	margin: 0 auto;
 	background: var(--container-background);
@@ -2343,6 +2344,147 @@ body {
 	}
 }
 
+/* ============================================================================ */
+/* TAB NAVIGATION */
+/* ============================================================================ */
+
+.tab-navigation {
+	display: flex;
+	background: var(--background-color);
+	border-bottom: var(--border-width) solid var(--border-color);
+	padding: 0 var(--space-6);
+	gap: var(--space-1);
+}
+
+.tab-button {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-4) var(--space-6);
+	background: transparent;
+	border: none;
+	border-bottom: calc(var(--border-width) * 3) solid transparent;
+	cursor: pointer;
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-medium);
+	color: var(--text-light);
+	transition: var(--transition-fast);
+	position: relative;
+	min-height: var(--space-12);
+}
+
+.tab-button:hover {
+	color: var(--text-color);
+	background: var(--container-background);
+	border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.tab-button.active {
+	color: var(--primary-color);
+	background: var(--container-background);
+	border-bottom-color: var(--primary-color);
+	border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.tab-button.active::after {
+	content: "";
+	position: absolute;
+	bottom: calc(var(--border-width) * -1);
+	left: 0;
+	right: 0;
+	height: calc(var(--border-width) * 3);
+	background: var(--primary-color);
+}
+
+.tab-icon {
+	font-size: var(--icon-lg) !important;
+	line-height: 1;
+	vertical-align: middle;
+}
+
+.tab-text {
+	font-weight: var(--font-weight-semibold);
+	white-space: nowrap;
+}
+
+/* Tab Content */
+.tab-content-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	min-height: 600px; /* Ensures consistent height */
+}
+
+.tab-content {
+	display: none;
+	flex: 1;
+	flex-direction: column;
+	width: 100%;
+}
+
+.tab-content.active {
+	display: flex;
+}
+
+/* Applications Board Placeholder */
+.board-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 400px;
+	padding: var(--space-8);
+	width: 100%;
+	flex: 1;
+}
+
+.placeholder-content {
+	text-align: center;
+	max-width: 400px;
+}
+
+.placeholder-icon {
+	font-size: calc(var(--font-size-base) * 4) !important;
+	margin-bottom: var(--space-4);
+	opacity: 0.5;
+	display: block;
+}
+
+.placeholder-content h3 {
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-bold);
+	margin: 0 0 var(--space-2) 0;
+	color: var(--text-color);
+}
+
+.placeholder-content p {
+	font-size: var(--font-size-base);
+	color: var(--text-light);
+	margin: 0;
+	line-height: var(--line-height-relaxed);
+}
+
+/* Responsive tabs */
+@media (max-width: calc(var(--base-size) * 120)) {
+	/* 480px */
+	.tab-navigation {
+		padding: 0 var(--space-4);
+		gap: 0;
+	}
+	
+	.tab-button {
+		padding: var(--space-3) var(--space-4);
+		font-size: var(--font-size-sm);
+	}
+	
+	.tab-icon {
+		font-size: var(--icon-md) !important;
+	}
+	
+	.tab-text {
+		display: none;
+	}
+}
+
     </style>
 </head>
 <body>
@@ -2354,65 +2496,78 @@ body {
             </div>
         </div>
         
-        <div class="controls">
-            <button id="addAppBtn" onclick="addRow()">...</button>
-        </div>
+        <!-- Tab Navigation -->
+        <div id="tabNavigation"></div>
         
-        
-        <div class="table-container">
-            <table id="jobTable">
-                <thead>
-                    <tr>
-                        <th>
-                            <div class="header-with-filter">
-                                <span id="priorityHeader">...</span>
-                                <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
-                                <div class="filter-dropdown" id="priorityDropdown"></div>
-                            </div>
-                        </th>
-                        <th id="companyHeader">...</th>
-                        <th id="positionHeader">...</th>
-                        <th>
-                            <div class="header-with-filter">
-                                <span id="currentPhaseHeader">...</span>
-                                <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
-                                <div class="filter-dropdown" id="phaseDropdown"></div>
-                            </div>
-                        </th>
-                        <th id="contactPersonHeader">...</th>
-                        <th id="salaryRangeHeader">...</th>
-                        <th id="locationHeader">...</th>
-                        <th id="sourceUrlHeader">...</th>
-                        <th id="notesHeader">...</th>
-                        <th id="tasksHeader">...</th>
-                        <th id="actionsHeader">...</th>
-                    </tr>
-                </thead>
-                <tbody id="jobTableBody">
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number" id="totalApps">0</div>
-                <div class="stat-label" id="totalAppsLabel">...</div>
+        <!-- Tab Content Area -->
+        <div class="tab-content-container">
+            <!-- Jobs Tab -->
+            <div class="tab-content active" data-tab="jobs">
+                <div class="controls">
+                    <button id="addAppBtn" onclick="addRow()">...</button>
+                </div>
+                
+                <div class="table-container">
+                    <table id="jobTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="header-with-filter">
+                                        <span id="priorityHeader">...</span>
+                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
+                                        <div class="filter-dropdown" id="priorityDropdown"></div>
+                                    </div>
+                                </th>
+                                <th id="companyHeader">...</th>
+                                <th id="positionHeader">...</th>
+                                <th>
+                                    <div class="header-with-filter">
+                                        <span id="currentPhaseHeader">...</span>
+                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
+                                        <div class="filter-dropdown" id="phaseDropdown"></div>
+                                    </div>
+                                </th>
+                                <th id="contactPersonHeader">...</th>
+                                <th id="salaryRangeHeader">...</th>
+                                <th id="locationHeader">...</th>
+                                <th id="sourceUrlHeader">...</th>
+                                <th id="notesHeader">...</th>
+                                <th id="tasksHeader">...</th>
+                                <th id="actionsHeader">...</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobTableBody">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalApps">0</div>
+                        <div class="stat-label" id="totalAppsLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="activeApps">0</div>
+                        <div class="stat-label" id="activeAppsLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="interviews">0</div>
+                        <div class="stat-label" id="interviewsLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="offers">0</div>
+                        <div class="stat-label" id="offersLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="rejections">0</div>
+                        <div class="stat-label" id="rejectionsLabel">...</div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-number" id="activeApps">0</div>
-                <div class="stat-label" id="activeAppsLabel">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="interviews">0</div>
-                <div class="stat-label" id="interviewsLabel">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="offers">0</div>
-                <div class="stat-label" id="offersLabel">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="rejections">0</div>
-                <div class="stat-label" id="rejectionsLabel">...</div>
+            
+            <!-- Applications Board Tab -->
+            <div class="tab-content" data-tab="applications">
+                <!-- Content will be dynamically generated -->
             </div>
         </div>
     </div>
@@ -2438,11 +2593,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T15:05:17.511Z
+// Generated: 2025-06-22T16:15:41.159Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T15:05:17.511Z");
+console.log("JobTracker - Built at: 2025-06-22T16:15:41.159Z");
 
 
 // ============================================================================
@@ -2791,6 +2946,10 @@ I18n.translations = {
 		buttons: {
 			addApplication: "+ Add Application",
 		},
+		tabs: {
+			jobs: "Jobs",
+			applications: "Applications Board",
+		},
 		table: {
 			headers: {
 				priority: "Priority",
@@ -2961,6 +3120,10 @@ I18n.translations = {
 		},
 		buttons: {
 			addApplication: "+ Adicionar Candidatura",
+		},
+		tabs: {
+			jobs: "Empregos",
+			applications: "Quadro de Candidaturas",
 		},
 		table: {
 			headers: {
@@ -3377,6 +3540,18 @@ function initializeLanguageSwitcher() {
 	}
 }
 
+// Initialize tab navigation
+function initializeTabNavigation() {
+	const container = $("#tabNavigation");
+	
+	if (container) {
+		const tabNav = TabNavigation.create();
+		container.get().innerHTML = "";
+		container.get().appendChild(tabNav);
+		TabNavigation.init();
+	}
+}
+
 // Update meta tags for current language
 function updateMetaTags() {
 	const lang = I18n.currentLanguage;
@@ -3476,6 +3651,11 @@ function updateUILanguage() {
 	// Update language switcher
 	if (typeof LanguageSwitcher !== "undefined") {
 		LanguageSwitcher.updateUI();
+	}
+	
+	// Update tab navigation language
+	if (typeof TabNavigation !== "undefined") {
+		TabNavigation.updateLanguage();
 	}
 
 	// Update filter dropdowns with new language
@@ -5587,6 +5767,168 @@ const LanguageSwitcher = {
 };
 
 // ============================================================================
+// SRC/COMPONENTS/TABS.JS
+// ============================================================================
+
+// ============================================================================
+// TAB NAVIGATION COMPONENT
+// ============================================================================
+
+const TabNavigation = {
+	// Current active tab
+	activeTab: 'jobs',
+
+	// Available tabs configuration
+	tabs: [
+		{ id: 'jobs', key: 'tabs.jobs', icon: 'work' },
+		{ id: 'applications', key: 'tabs.applications', icon: 'dashboard' }
+	],
+
+	// Get tab from URL parameter
+	getTabFromURL: () => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const tabParam = urlParams.get('tab');
+		// Validate tab exists
+		if (tabParam && TabNavigation.tabs.some(t => t.id === tabParam)) {
+			return tabParam;
+		}
+		return null;
+	},
+
+	// Set tab in URL parameter
+	setTabInURL: (tabId) => {
+		const url = new URL(window.location);
+		if (tabId && tabId !== 'jobs') {
+			url.searchParams.set('tab', tabId);
+		} else {
+			url.searchParams.delete('tab');
+		}
+		window.history.replaceState({}, '', url);
+	},
+
+	// Create the tab navigation HTML
+	create: () => {
+		// Get initial tab from URL before creating buttons
+		const urlTab = TabNavigation.getTabFromURL();
+		if (urlTab) {
+			TabNavigation.activeTab = urlTab;
+		}
+
+		// Create tab navigation container
+		const tabNav = document.createElement("div");
+		tabNav.className = "tab-navigation";
+
+		// Create tab buttons
+		TabNavigation.tabs.forEach(tab => {
+			const button = document.createElement("button");
+			button.className = `tab-button ${tab.id === TabNavigation.activeTab ? 'active' : ''}`;
+			button.dataset.tab = tab.id;
+			
+			// Create icon span with Material Icon
+			const icon = document.createElement("span");
+			icon.className = "material-symbols-outlined tab-icon";
+			icon.textContent = tab.icon;
+			
+			// Create text span
+			const text = document.createElement("span");
+			text.className = "tab-text";
+			text.textContent = I18n.t(tab.key);
+			
+			button.appendChild(icon);
+			button.appendChild(text);
+			
+			// Add click event listener
+			button.addEventListener('click', () => TabNavigation.switchTo(tab.id));
+			
+			tabNav.appendChild(button);
+		});
+
+		return tabNav;
+	},
+
+	// Switch to a specific tab
+	switchTo: (tabId, force = false) => {
+		if (!force && TabNavigation.activeTab === tabId) return;
+
+		// Update active tab
+		TabNavigation.activeTab = tabId;
+
+		// Update URL
+		TabNavigation.setTabInURL(tabId);
+
+		// Update button states
+		document.querySelectorAll('.tab-button').forEach(btn => {
+			btn.classList.toggle('active', btn.dataset.tab === tabId);
+		});
+
+		// Update content visibility
+		document.querySelectorAll('.tab-content').forEach(content => {
+			content.classList.toggle('active', content.dataset.tab === tabId);
+		});
+
+		// Handle tab-specific logic
+		TabNavigation.handleTabSwitch(tabId);
+	},
+
+	// Handle tab-specific initialization and updates
+	handleTabSwitch: (tabId) => {
+		switch (tabId) {
+			case 'jobs':
+				// Refresh jobs table if needed
+				if (typeof refreshInterface === 'function') {
+					refreshInterface();
+				}
+				break;
+			case 'applications':
+				// Initialize applications board if needed
+				TabNavigation.initializeApplicationsBoard();
+				break;
+		}
+	},
+
+	// Initialize applications board (placeholder for now)
+	initializeApplicationsBoard: () => {
+		const boardContainer = document.querySelector('[data-tab="applications"]');
+		if (boardContainer && !boardContainer.hasChildNodes()) {
+			const placeholder = document.createElement("div");
+			placeholder.className = "board-placeholder";
+			placeholder.innerHTML = `
+				<div class="placeholder-content">
+					<span class="material-symbols-outlined placeholder-icon">view_kanban</span>
+					<h3>Applications Board</h3>
+					<p>Kanban-style board view coming soon...</p>
+				</div>
+			`;
+			boardContainer.appendChild(placeholder);
+		}
+	},
+
+	// Update tab texts when language changes
+	updateLanguage: () => {
+		document.querySelectorAll('.tab-button').forEach(btn => {
+			const tabId = btn.dataset.tab;
+			const tab = TabNavigation.tabs.find(t => t.id === tabId);
+			if (tab) {
+				const textElement = btn.querySelector('.tab-text');
+				if (textElement) {
+					textElement.textContent = I18n.t(tab.key);
+				}
+			}
+		});
+	},
+
+	// Initialize tab navigation
+	init: () => {
+		// Get tab from URL or use default
+		const urlTab = TabNavigation.getTabFromURL();
+		const initialTab = urlTab || 'jobs';
+		
+		// Force switch to show the correct tab on init
+		TabNavigation.switchTo(initialTab, true);
+	}
+};
+
+// ============================================================================
 // SRC/COMPONENTS/TABLE.JS
 // ============================================================================
 
@@ -5695,8 +6037,9 @@ function initializeApp() {
 	setupEventListeners();
 	setupFilters();
 	
-	// Initialize language switcher after a short delay to ensure DOM is ready
+	// Initialize components after a short delay to ensure DOM is ready
 	setTimeout(() => {
+		initializeTabNavigation();
 		initializeLanguageSwitcher();
 	}, 100);
 	

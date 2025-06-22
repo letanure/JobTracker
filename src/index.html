@@ -50,65 +50,78 @@
             </div>
         </div>
         
-        <div class="controls">
-            <button id="addAppBtn" onclick="addRow()">...</button>
-        </div>
+        <!-- Tab Navigation -->
+        <div id="tabNavigation"></div>
         
-        
-        <div class="table-container">
-            <table id="jobTable">
-                <thead>
-                    <tr>
-                        <th>
-                            <div class="header-with-filter">
-                                <span id="priorityHeader">...</span>
-                                <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
-                                <div class="filter-dropdown" id="priorityDropdown"></div>
-                            </div>
-                        </th>
-                        <th id="companyHeader">...</th>
-                        <th id="positionHeader">...</th>
-                        <th>
-                            <div class="header-with-filter">
-                                <span id="currentPhaseHeader">...</span>
-                                <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
-                                <div class="filter-dropdown" id="phaseDropdown"></div>
-                            </div>
-                        </th>
-                        <th id="contactPersonHeader">...</th>
-                        <th id="salaryRangeHeader">...</th>
-                        <th id="locationHeader">...</th>
-                        <th id="sourceUrlHeader">...</th>
-                        <th id="notesHeader">...</th>
-                        <th id="tasksHeader">...</th>
-                        <th id="actionsHeader">...</th>
-                    </tr>
-                </thead>
-                <tbody id="jobTableBody">
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number" id="totalApps">0</div>
-                <div class="stat-label" id="totalAppsLabel">...</div>
+        <!-- Tab Content Area -->
+        <div class="tab-content-container">
+            <!-- Jobs Tab -->
+            <div class="tab-content active" data-tab="jobs">
+                <div class="controls">
+                    <button id="addAppBtn" onclick="addRow()">...</button>
+                </div>
+                
+                <div class="table-container">
+                    <table id="jobTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="header-with-filter">
+                                        <span id="priorityHeader">...</span>
+                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
+                                        <div class="filter-dropdown" id="priorityDropdown"></div>
+                                    </div>
+                                </th>
+                                <th id="companyHeader">...</th>
+                                <th id="positionHeader">...</th>
+                                <th>
+                                    <div class="header-with-filter">
+                                        <span id="currentPhaseHeader">...</span>
+                                        <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
+                                        <div class="filter-dropdown" id="phaseDropdown"></div>
+                                    </div>
+                                </th>
+                                <th id="contactPersonHeader">...</th>
+                                <th id="salaryRangeHeader">...</th>
+                                <th id="locationHeader">...</th>
+                                <th id="sourceUrlHeader">...</th>
+                                <th id="notesHeader">...</th>
+                                <th id="tasksHeader">...</th>
+                                <th id="actionsHeader">...</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobTableBody">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalApps">0</div>
+                        <div class="stat-label" id="totalAppsLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="activeApps">0</div>
+                        <div class="stat-label" id="activeAppsLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="interviews">0</div>
+                        <div class="stat-label" id="interviewsLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="offers">0</div>
+                        <div class="stat-label" id="offersLabel">...</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="rejections">0</div>
+                        <div class="stat-label" id="rejectionsLabel">...</div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-number" id="activeApps">0</div>
-                <div class="stat-label" id="activeAppsLabel">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="interviews">0</div>
-                <div class="stat-label" id="interviewsLabel">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="offers">0</div>
-                <div class="stat-label" id="offersLabel">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="rejections">0</div>
-                <div class="stat-label" id="rejectionsLabel">...</div>
+            
+            <!-- Applications Board Tab -->
+            <div class="tab-content" data-tab="applications">
+                <!-- Content will be dynamically generated -->
             </div>
         </div>
     </div>
