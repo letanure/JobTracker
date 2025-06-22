@@ -3,130 +3,156 @@
 /* ============================================================================ */
 
 /* ============================================================================ */
-/* BUTTONS */
+/* GITHUB-STYLE BUTTONS */
 /* ============================================================================ */
 
 button {
-	background: var(--background-color);
+	background: var(--gray-50);
 	color: var(--text-color);
 	border: var(--border-width) solid var(--border-color);
-	padding: var(--padding-sm);
-	border-radius: var(--radius-md);
+	padding: 5px 16px;
+	border-radius: 6px;
 	cursor: pointer;
-	font-size: var(--font-size-base);
+	font-size: var(--font-size-sm);
 	font-weight: 500;
+	font-family: inherit;
 	display: inline-flex;
 	align-items: center;
 	gap: var(--space-2);
 	transition: var(--transition-fast);
-	box-shadow: var(--shadow-sm);
-	height: var(--btn-height-md);
-	min-width: var(--btn-min-width);
+	height: 32px;
+	min-width: auto;
+	position: relative;
+	text-decoration: none;
+	white-space: nowrap;
+	user-select: none;
+	box-shadow: 0 1px 0 rgba(27,31,35,0.04), inset 0 1px 0 rgba(255,255,255,0.25);
 }
 
 button:hover {
-	background: var(--container-background);
-	border-color: var(--text-light);
-	box-shadow: var(--shadow-md);
-	transform: translateY(-1px);
+	background-color: var(--gray-100);
+	border-color: var(--gray-300);
+	box-shadow: 0 1px 0 rgba(27,31,35,0.1), inset 0 1px 0 rgba(255,255,255,0.03);
+	transition-duration: 0.1s;
 }
 
 button:active {
-	transform: translateY(0);
-	box-shadow: var(--shadow-sm);
+	background-color: var(--gray-200);
+	border-color: var(--gray-400);
+	box-shadow: inset 0 1px 0 rgba(27,31,35,0.04);
 }
 
 button:focus {
-	outline: none;
-	box-shadow: var(--focus-ring), var(--shadow-sm);
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	box-shadow: none;
 }
 
 button:disabled {
-	opacity: 0.6;
+	color: var(--gray-500);
+	background-color: var(--gray-50);
+	border-color: var(--border-color);
 	cursor: not-allowed;
-	transform: none;
+}
+
+/* GitHub Primary Button */
+.btn-primary {
+	color: var(--white);
+	background-color: var(--green-500);
+	border-color: rgba(27,31,35,0.15);
+	box-shadow: 0 1px 0 rgba(27,31,35,0.1), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.btn-primary:hover {
+	background-color: var(--green-600);
+}
+
+.btn-primary:active {
+	background-color: var(--green-700);
+	box-shadow: inset 0 1px 0 rgba(27,31,35,0.15);
 }
 
 /* Action buttons */
 .action-btn {
-	padding: var(--space-1);
-	min-width: var(--action-btn-size);
-	height: var(--action-btn-size);
-	border-radius: var(--radius-sm);
+	padding: 3px;
+	min-width: 28px;
+	height: 28px;
+	border-radius: 6px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	transition: var(--transition-fast);
+	box-shadow: none;
+	border: 1px solid transparent;
+	background: transparent;
 }
 
 .edit-btn {
-	background: var(--primary-bg);
-	color: var(--primary-color);
-	border-color: var(--primary-light);
+	color: var(--gray-700);
 }
 
 .edit-btn:hover {
-	background: var(--primary-color);
-	color: var(--text-on-primary);
+	background: var(--blue-50);
+	color: var(--blue-600);
+	border-color: var(--blue-200);
 }
 
 .delete-btn {
-	background: var(--error-bg);
-	color: var(--error-color);
-	border-color: var(--error-light);
+	color: var(--gray-700);
 }
 
 .delete-btn:hover {
-	background: var(--error-color);
-	color: var(--text-on-primary);
+	background: var(--red-50);
+	color: var(--red-600);
+	border-color: var(--red-200);
 }
 
 .save-btn {
-	background: var(--success-bg);
-	color: var(--success-color);
-	border-color: var(--success-light);
+	color: var(--gray-700);
 }
 
 .save-btn:hover {
-	background: var(--success-color);
-	color: var(--text-on-primary);
+	background: var(--green-50);
+	color: var(--green-600);
+	border-color: var(--green-200);
 }
 
 .cancel-btn {
-	background: var(--error-bg);
-	color: var(--error-color);
-	border-color: var(--error-light);
+	color: var(--gray-700);
 }
 
 .cancel-btn:hover {
-	background: var(--error-color);
-	color: var(--text-on-primary);
+	background: var(--gray-100);
+	color: var(--gray-800);
+	border-color: var(--gray-300);
 }
 
 /* ============================================================================ */
-/* FORMS AND INPUTS */
+/* GITHUB-STYLE FORMS AND INPUTS */
 /* ============================================================================ */
 
 input, select, textarea {
-	padding: var(--space-2);
+	padding: 5px 12px;
 	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-sm);
-	font-size: var(--font-size-base);
+	border-radius: 6px;
+	font-size: var(--font-size-sm);
 	font-family: inherit;
-	background: var(--container-background);
+	background: var(--white);
 	color: var(--text-color);
 	transition: var(--transition-fast);
-	min-height: var(--btn-height-md);
+	min-height: 32px;
+	box-shadow: inset 0 1px 0 rgba(27,31,35,0.075);
 }
 
 input:focus, select:focus, textarea:focus {
-	outline: none;
-	border-color: var(--primary-color);
-	box-shadow: var(--focus-ring);
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+	box-shadow: none;
 }
 
 input:hover, select:hover, textarea:hover {
-	border-color: var(--text-light);
+	border-color: var(--gray-300);
 }
 
 input::placeholder, textarea::placeholder {
@@ -145,20 +171,23 @@ input::placeholder, textarea::placeholder {
 /* Inline edit inputs */
 .inline-edit {
 	width: 100%;
-	padding: var(--space-1) var(--space-2);
+	padding: 3px 8px;
 	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-xs);
+	border-radius: 6px;
 	font-size: var(--font-size-xs);
-	background: var(--container-background);
+	background: var(--white);
 	color: var(--text-color);
 	transition: var(--transition-fast);
 	min-height: auto;
-	height: calc(var(--space-4) + var(--space-2));
+	height: 24px;
+	box-shadow: inset 0 1px 0 rgba(27,31,35,0.075);
 }
 
 .inline-edit:focus {
-	border-color: var(--primary-color);
-	box-shadow: var(--focus-ring);
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+	box-shadow: none;
 }
 
 /* Common textarea styles */
@@ -225,7 +254,7 @@ textarea {
 }
 
 /* ============================================================================ */
-/* MODALS */
+/* GITHUB-STYLE MODALS */
 /* ============================================================================ */
 
 .modal-overlay {
@@ -236,109 +265,121 @@ textarea {
 	height: 100%;
 	background: var(--modal-backdrop);
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
 	z-index: var(--z-modal);
-	padding: var(--space-4);
+	padding: 40px 16px 16px;
+	overflow-y: auto;
 }
 
 .modal {
-	background: var(--container-background);
-	border-radius: var(--radius-lg);
-	box-shadow: var(--shadow-xl);
-	border: var(--border-width) solid var(--border-light);
-	max-width: calc(100vw - var(--space-8));
-	max-height: calc(100vh - var(--space-8));
+	background: var(--white);
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(140,149,159,0.2);
+	border: var(--border-width) solid var(--border-color);
+	max-width: 640px;
+	width: 100%;
+	max-height: calc(100vh - 80px);
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 }
 
 .modal-header {
-	padding: var(--space-6);
+	padding: 16px 24px;
 	border-bottom: var(--border-width) solid var(--border-color);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	background: var(--background-color);
+	background: var(--gray-50);
+	border-radius: 12px 12px 0 0;
 }
 
 .modal-title {
 	margin: 0;
-	font-size: var(--font-size-lg);
-	font-weight: var(--font-weight-semibold);
+	font-size: 16px;
+	font-weight: 600;
 	color: var(--text-color);
+	line-height: 1.25;
 }
 
 .modal-close {
 	background: none;
 	border: none;
-	font-size: var(--font-size-xl);
+	font-size: 16px;
 	cursor: pointer;
-	color: var(--text-light);
+	color: var(--gray-500);
 	min-width: auto;
 	height: auto;
-	padding: var(--space-1);
+	padding: 4px;
+	border-radius: 6px;
+	box-shadow: none;
 }
 
 .modal-close:hover {
-	color: var(--text-color);
-	background: none;
+	color: var(--gray-700);
+	background: var(--gray-100);
 	transform: none;
+	box-shadow: none;
 }
 
 .modal-body {
-	padding: var(--space-6);
+	padding: 24px;
 	overflow-y: auto;
 	flex: 1;
+	background: var(--white);
 }
 
 .modal-footer {
-	padding: var(--space-6);
+	padding: 16px 24px;
 	border-top: var(--border-width) solid var(--border-color);
-	background: var(--background-color);
+	background: var(--gray-50);
 	display: flex;
-	gap: var(--space-3);
+	gap: 8px;
 	justify-content: flex-end;
+	border-radius: 0 0 12px 12px;
 }
 
 /* ============================================================================ */
-/* COUNTERS AND BADGES */
+/* GITHUB-STYLE COUNTERS AND BADGES */
 /* ============================================================================ */
 
 .notes-count, .tasks-count, .contacts-count {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-width: var(--counter-height);
-	height: var(--counter-height);
-	padding: 0 var(--space-2);
-	background: var(--primary-bg);
-	color: var(--primary-color);
-	border-radius: var(--radius-full);
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-semibold);
+	min-width: 20px;
+	height: 20px;
+	padding: 0 6px;
+	background: var(--gray-200);
+	color: var(--gray-700);
+	border-radius: 10px;
+	font-size: 12px;
+	font-weight: 500;
 	cursor: pointer;
 	transition: var(--transition-fast);
 	user-select: none;
+	border: 1px solid var(--gray-300);
 }
 
 .notes-count:hover, .tasks-count:hover, .contacts-count:hover {
-	background: var(--primary-color);
-	color: var(--text-on-primary);
-	transform: scale(1.05);
+	background: var(--blue-100);
+	color: var(--blue-700);
+	border-color: var(--blue-300);
 }
 
 .zero-count {
 	background: var(--gray-100);
-	color: var(--gray-400);
+	color: var(--gray-500);
 	cursor: default;
+	border-color: var(--gray-200);
 }
 
 .zero-count:hover {
 	background: var(--gray-100);
-	color: var(--gray-400);
-	transform: none;
+	color: var(--gray-500);
+	border-color: var(--gray-200);
 }
 
 /* Priority indicators */
@@ -363,23 +404,24 @@ textarea {
 }
 
 /* ============================================================================ */
-/* STATUS BADGES */
+/* GITHUB-STYLE STATUS BADGES */
 /* ============================================================================ */
 
 .status {
-	padding: var(--padding-xs);
-	border-radius: var(--radius-full);
-	font-size: var(--font-size-xs);
-	font-weight: 600;
+	padding: 4px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
 	text-align: center;
 	white-space: nowrap;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-width: var(--btn-min-width);
-	height: var(--counter-height);
-	text-transform: capitalize;
-	letter-spacing: 0.025em;
+	min-width: 60px;
+	height: 22px;
+	text-transform: none;
+	letter-spacing: normal;
+	border: 1px solid transparent;
 }
 
 .status-wishlist {
@@ -466,47 +508,50 @@ textarea {
 }
 
 /* ============================================================================ */
-/* TAB NAVIGATION */
+/* GITHUB-STYLE TAB NAVIGATION */
 /* ============================================================================ */
 
 .tab-navigation {
 	display: flex;
-	background: var(--background-color);
+	background: var(--white);
 	border-bottom: var(--border-width) solid var(--border-color);
 	gap: 0;
+	padding: 0 24px;
 }
 
 .tab-button {
 	display: flex;
 	align-items: center;
-	gap: var(--space-2);
-	padding: var(--space-4) var(--space-6);
+	gap: 8px;
+	padding: 8px 16px;
 	background: transparent;
 	border: none;
-	border-bottom: calc(var(--border-width) * 3) solid transparent;
-	color: var(--text-light);
+	border-bottom: 2px solid transparent;
+	color: var(--gray-600);
 	text-decoration: none;
-	font-size: var(--font-size-base);
-	font-weight: 500;
+	font-size: 14px;
+	font-weight: 400;
 	transition: var(--transition-fast);
 	cursor: pointer;
 	min-width: auto;
 	height: auto;
 	box-shadow: none;
+	position: relative;
 }
 
 .tab-button:hover {
-	background: var(--surface-hover);
+	background: transparent;
 	color: var(--text-color);
-	border-bottom-color: var(--border-color);
+	border-bottom-color: var(--gray-300);
 	transform: none;
 	box-shadow: none;
 }
 
 .tab-button.active {
-	color: var(--primary-color);
-	border-bottom-color: var(--primary-color);
-	background: var(--container-background);
+	color: var(--text-color);
+	border-bottom-color: var(--orange-500);
+	background: transparent;
+	font-weight: 600;
 }
 
 .tab-icon {

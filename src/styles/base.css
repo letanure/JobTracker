@@ -16,96 +16,94 @@
 	 * - 800-900: Very dark, text on light backgrounds
 	 */
 
-	/* Base whites and blacks */
+	/* GitHub Base Colors */
 	--white: #ffffff;
-	--black: #000000;
-	--white-overlay: rgba(255, 255, 255, 0.95);
-	--black-overlay: rgba(0, 0, 0, 0.5);
-	--modal-backdrop: rgba(55, 53, 47, 0.15);
+	--black: #1c2128;
+	--modal-backdrop: rgba(1, 4, 9, 0.8);
 
-	/* Primary brand color - Blue */
-	--blue-50: #f0f7ff;
-	--blue-100: #e0efff;
-	--blue-200: #c7e2ff;
-	--blue-300: #a5d0ff;
-	--blue-400: #7db8ff;
-	--blue-500: #2383e2; /* Primary blue */
-	--blue-600: #1a6bc9;
-	--blue-700: #1557a8;
-	--blue-800: #134489;
-	--blue-900: #0f3460;
+	/* GitHub Blue */
+	--blue-50: #dbeafe;
+	--blue-100: #c7d2fe;
+	--blue-200: #9bb0ff;
+	--blue-300: #6d8bff;
+	--blue-400: #4169e1;
+	--blue-500: #0969da; /* GitHub primary blue */
+	--blue-600: #0550ae;
+	--blue-700: #033d8b;
+	--blue-800: #0a3069;
+	--blue-900: #002155;
 
-	/* Neutral grays */
-	--gray-50: #fafafa;
-	--gray-100: #f5f5f4;
-	--gray-200: #e9e9e7;
-	--gray-300: #d4d4d2;
-	--gray-400: #9b9a97;
-	--gray-500: #787774;
-	--gray-600: #37352f;
-	--gray-700: #2d2b26;
-	--gray-800: #1f1e1a;
-	--gray-900: #0f0f0c;
+	/* GitHub Grays */
+	--gray-50: #f6f8fa;
+	--gray-100: #eaeef2;
+	--gray-200: #d0d7de;
+	--gray-300: #afb8c1;
+	--gray-400: #8c959f;
+	--gray-500: #656d76;
+	--gray-600: #424a53;
+	--gray-700: #32383f;
+	--gray-800: #24292f;
+	--gray-900: #1c2128;
 
-	/* Success green */
-	--green-50: #f0fdf4;
-	--green-100: #ecfdf5;
-	--green-200: #d6f5d6;
-	--green-300: #a8e6a8;
-	--green-400: #7dd87d;
-	--green-500: #0f7b0f; /* Primary green */
-	--green-600: #0d6f0d;
-	--green-700: #0b5d0b;
-	--green-800: #094a09;
-	--green-900: #063906;
+	/* GitHub Green */
+	--green-50: #dcffe4;
+	--green-100: #aff5b4;
+	--green-200: #7ee787;
+	--green-300: #56d364;
+	--green-400: #3fb950;
+	--green-500: #238636; /* GitHub green */
+	--green-600: #196c2e;
+	--green-700: #0f5323;
+	--green-800: #033a16;
+	--green-900: #04260f;
 
-	/* Warning orange */
-	--orange-50: #fef7f0;
-	--orange-100: #fef3e2;
-	--orange-200: #fed7aa;
-	--orange-300: #fdba74;
-	--orange-400: #fb923c;
-	--orange-500: #ff6b35; /* Primary orange */
-	--orange-600: #e85a2e;
-	--orange-700: #c44a26;
-	--orange-800: #a03a1f;
-	--orange-900: #7c2d12;
+	/* GitHub Orange/Yellow */
+	--orange-50: #fff8c5;
+	--orange-100: #fae17d;
+	--orange-200: #eac54f;
+	--orange-300: #d4a72c;
+	--orange-400: #bf8700;
+	--orange-500: #9a6700; /* GitHub orange */
+	--orange-600: #7d4e00;
+	--orange-700: #633c01;
+	--orange-800: #4d2d00;
+	--orange-900: #3b2300;
 
-	/* Error red */
-	--red-50: #fef2f2;
-	--red-100: #fee2e2;
-	--red-200: #fecaca;
-	--red-300: #fca5a5;
-	--red-400: #f87171;
-	--red-500: #e03e3e; /* Primary red */
-	--red-600: #d13a3a;
-	--red-700: #b91c1c;
-	--red-800: #991b1b;
-	--red-900: #7f1d1d;
+	/* GitHub Red */
+	--red-50: #ffebe9;
+	--red-100: #ffcdc5;
+	--red-200: #ffaba8;
+	--red-300: #ff8182;
+	--red-400: #fa4549;
+	--red-500: #cf222e; /* GitHub red */
+	--red-600: #a40e26;
+	--red-700: #82071e;
+	--red-800: #660018;
+	--red-900: #4c0519;
 
-	/* Purple for interview status */
-	--purple-50: #f1f3ff;
-	--purple-100: #ede9fe;
-	--purple-200: #ddd6fe;
-	--purple-300: #c4b5fd;
-	--purple-400: #a78bfa;
-	--purple-500: #6366f1; /* Primary purple */
-	--purple-600: #5b21b6;
-	--purple-700: #4c1d95;
-	--purple-800: #3730a3;
-	--purple-900: #312e81;
+	/* GitHub Purple */
+	--purple-50: #fbefff;
+	--purple-100: #ecd8ff;
+	--purple-200: #d2a8ff;
+	--purple-300: #bc7eff;
+	--purple-400: #a475f9;
+	--purple-500: #8250df; /* GitHub purple */
+	--purple-600: #6639ba;
+	--purple-700: #512a97;
+	--purple-800: #3e1f79;
+	--purple-900: #2e1065;
 
-	/* Teal for offer status */
-	--teal-50: #f0fdfa;
-	--teal-100: #ccfbf1;
-	--teal-200: #99f6e4;
-	--teal-300: #5eead4;
-	--teal-400: #2dd4bf;
-	--teal-500: #059669; /* Primary teal */
-	--teal-600: #047857;
-	--teal-700: #065f46;
-	--teal-800: #064e3b;
-	--teal-900: #064e3b;
+	/* GitHub Pink for special status */
+	--pink-50: #ffeff7;
+	--pink-100: #ffd3ec;
+	--pink-200: #ffadda;
+	--pink-300: #ff80cc;
+	--pink-400: #e85aad;
+	--pink-500: #bf4b8a; /* GitHub pink */
+	--pink-600: #9e3670;
+	--pink-700: #7e2757;
+	--pink-800: #661b47;
+	--pink-900: #4d1336;
 
 	/* ============================================================================ */
 	/* SEMANTIC COLOR SYSTEM */
@@ -117,7 +115,7 @@
 	 * and consistent color usage across components.
 	 */
 
-	/* Core semantic colors */
+	/* GitHub Semantic Colors */
 	--primary-color: var(--blue-500);
 	--primary-hover: var(--blue-600);
 	--primary-light: var(--blue-400);
@@ -151,23 +149,23 @@
 	/* SURFACE & TEXT COLORS */
 	/* ============================================================================ */
 
-	/* Background surfaces */
+	/* GitHub Surface Colors */
 	--background-color: var(--gray-50);
 	--container-background: var(--white);
 	--surface-elevated: var(--white);
-	--surface-overlay: var(--white-overlay);
+	--surface-hover: var(--gray-100);
 
-	/* Borders */
+	/* GitHub Borders */
 	--border-color: var(--gray-200);
 	--border-light: var(--gray-100);
 	--border-strong: var(--gray-300);
 
-	/* Text hierarchy */
-	--text-color: var(--gray-600);
-	--text-primary: var(--gray-600);
-	--text-secondary: var(--gray-500);
-	--text-light: var(--gray-500);
-	--text-lighter: var(--gray-400);
+	/* GitHub Text Hierarchy */
+	--text-color: var(--gray-900);
+	--text-primary: var(--gray-900);
+	--text-secondary: var(--gray-700);
+	--text-light: var(--gray-600);
+	--text-lighter: var(--gray-500);
 	--text-on-primary: var(--white);
 	--text-on-dark: var(--white);
 
@@ -264,10 +262,9 @@
 	--base-icon-size: calc(var(--base-size) * 4); /* Icon base - scales all icon sizes */
 	--base-button-height: calc(var(--base-size) * 8); /* Button base - scales all button heights */
 
-	/* Typography system */
-	--font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
-		Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
-		"Segoe UI Symbol";
+	/* GitHub Typography System */
+	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	--font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 
 	/* Font sizes - calc-based from base */
 	--font-size-base: var(--base-font-size);
@@ -442,11 +439,13 @@ html {
 body {
 	font-family: var(--font-family);
 	margin: 0;
-	padding: var(--space-6);
+	padding: var(--space-4);
 	background-color: var(--background-color);
-	font-size: var(--font-size-base);
+	font-size: var(--font-size-sm);
 	line-height: var(--line-height-normal);
 	color: var(--text-color);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 /* Remove default margins and padding from common elements */
