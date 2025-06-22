@@ -37,6 +37,7 @@ const BUILD_CONFIG = {
     'src/components/language-switcher.js',
     'src/components/tabs.js',
     'src/components/kanban.js',
+    'src/components/tasks-board.js',
     'src/components/table.js',
     
     // Application modules
