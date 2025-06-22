@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T11:36:13.498Z
+Generated: 2025-06-22T12:03:03.543Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -280,30 +280,37 @@ Generated: 2025-06-22T11:36:13.498Z
     /* Modern typography */
     --font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
     
-    /* Typography scale - using rem for better accessibility */
-    --font-size-xs: 0.75rem;    /* 12px */
-    --font-size-sm: 0.875rem;   /* 14px */
-    --font-size-base: 1rem;     /* 16px */
-    --font-size-lg: 1.125rem;   /* 18px */
-    --font-size-xl: 1.25rem;    /* 20px */
-    --font-size-2xl: 1.5rem;    /* 24px */
-    --font-size-3xl: 1.875rem;  /* 30px */
+    /* Typography scale - calc-based from single base value */
+    --font-size-base: 1rem;     /* Base font size - change this to scale everything */
     
-    /* Line height scale */
+    --font-size-2xs: calc(var(--font-size-base) * 0.625);  /* 0.625rem / 10px */
+    --font-size-xs: calc(var(--font-size-base) * 0.75);    /* 0.75rem / 12px */
+    --font-size-sm: calc(var(--font-size-base) * 0.875);   /* 0.875rem / 14px */
+    /* --font-size-base defined above */
+    --font-size-lg: calc(var(--font-size-base) * 1.125);   /* 1.125rem / 18px */
+    --font-size-xl: calc(var(--font-size-base) * 1.25);    /* 1.25rem / 20px */
+    --font-size-2xl: calc(var(--font-size-base) * 1.5);    /* 1.5rem / 24px */
+    --font-size-3xl: calc(var(--font-size-base) * 1.875);  /* 1.875rem / 30px */
+    
+    /* Line height scale - calc-based from base multiplier */
+    --line-height-base: 1.5;    /* Base line height - change this to scale all line heights */
+    
     --line-height-none: 1;
-    --line-height-tight: 1.25;
-    --line-height-snug: 1.375;
-    --line-height-normal: 1.5;
-    --line-height-relaxed: 1.625;
-    --line-height-loose: 2;
+    --line-height-tight: calc(var(--line-height-base) * 0.833);    /* 1.25 */
+    --line-height-snug: calc(var(--line-height-base) * 0.917);     /* 1.375 */
+    --line-height-normal: var(--line-height-base);                 /* 1.5 */
+    --line-height-relaxed: calc(var(--line-height-base) * 1.083);  /* 1.625 */
+    --line-height-loose: calc(var(--line-height-base) * 1.333);    /* 2 */
     
-    /* Letter spacing scale */
-    --letter-spacing-tighter: -0.05em;
-    --letter-spacing-tight: -0.025em;
+    /* Letter spacing scale - calc-based from base unit */
+    --letter-spacing-base: 0.025em;  /* Base letter spacing unit */
+    
+    --letter-spacing-tighter: calc(var(--letter-spacing-base) * -2);  /* -0.05em */
+    --letter-spacing-tight: calc(var(--letter-spacing-base) * -1);    /* -0.025em */
     --letter-spacing-normal: 0;
-    --letter-spacing-wide: 0.025em;
-    --letter-spacing-wider: 0.05em;
-    --letter-spacing-widest: 0.1em;
+    --letter-spacing-wide: var(--letter-spacing-base);                /* 0.025em */
+    --letter-spacing-wider: calc(var(--letter-spacing-base) * 2);     /* 0.05em */
+    --letter-spacing-widest: calc(var(--letter-spacing-base) * 4);    /* 0.1em */
     
     /* Font weight scale */
     --font-weight-thin: 100;
@@ -516,7 +523,7 @@ table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-size: var(--font-size-xs); /* Even smaller font for table content - 12px */
+    font-size: var(--font-size-sm); /* Small font for table content - 14px */
 }
 
 th {
@@ -524,7 +531,7 @@ th {
     position: sticky;
     top: 0;
     z-index: var(--z-dropdown);
-    padding: var(--space-4) var(--space-3);
+    padding: var(--space-3) var(--space-2);
     text-align: left;
     font-weight: var(--font-weight-semibold);
     border-bottom: var(--border-width) solid var(--border-color);
@@ -588,7 +595,7 @@ th {
 }
 
 td {
-    padding: var(--space-4) var(--space-3);
+    padding: var(--space-3) var(--space-2);
     border-bottom: var(--border-width) solid var(--border-light);
     vertical-align: middle;
     background: var(--container-background);
@@ -726,7 +733,6 @@ tbody tr {
 
 .date {
     white-space: nowrap;
-    font-size: var(--font-size-sm);
     color: var(--text-light);
     font-variant-numeric: tabular-nums;
 }
@@ -972,9 +978,9 @@ tbody tr {
     background: var(--background-color);
     color: var(--text-color);
     border: var(--border-width) solid var(--border-color);
-    padding: var(--space-1) var(--space-2);
+    padding: 2px var(--space-1);
     border-radius: var(--radius-full);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-2xs);
     font-weight: var(--font-weight-semibold);
     cursor: pointer;
     display: inline-flex;
@@ -983,7 +989,7 @@ tbody tr {
     gap: var(--space-1);
     transition: var(--transition-fast);
     box-shadow: var(--shadow-sm);
-    min-width: var(--col-3); /* 24px */
+    min-width: 20px;
     text-align: center;
 }
 
@@ -1180,9 +1186,9 @@ tbody tr {
     background: var(--background-color);
     color: var(--text-color);
     border: var(--border-width) solid var(--border-color);
-    padding: var(--space-1) var(--space-2);
+    padding: 2px var(--space-1);
     border-radius: var(--radius-full);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-2xs);
     font-weight: var(--font-weight-semibold);
     cursor: pointer;
     display: inline-flex;
@@ -1191,7 +1197,7 @@ tbody tr {
     gap: var(--space-1);
     transition: var(--transition-fast);
     box-shadow: var(--shadow-sm);
-    min-width: var(--col-3); /* 24px */
+    min-width: 20px;
     text-align: center;
 }
 
@@ -1736,11 +1742,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T11:36:13.495Z
+// Generated: 2025-06-22T12:03:03.540Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T11:36:13.495Z");
+console.log("JobTracker - Built at: 2025-06-22T12:03:03.540Z");
 
 
 // ============================================================================
