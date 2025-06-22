@@ -244,16 +244,19 @@
 	/* DESIGN SYSTEM BASE VALUES - Change these to scale the entire system       */
 	/* ============================================================================ */
 
-	/* Core base values for calculations */
+	/* SINGLE SOURCE OF TRUTH - Change this one value to scale everything */
+	--base-size: 4px; /* Master scale unit - everything derives from this */
+
+	/* Core base values - calculated from master base-size */
 	--base-font-size: 1rem; /* Typography base - scales all fonts */
 	--base-line-height: 1.5; /* Line height base - scales all line heights */
 	--base-letter-spacing: 0.025em; /* Letter spacing base - scales all letter spacing */
-	--base-space-unit: 4px; /* Spacing base - scales all spacing/padding/margins */
-	--base-radius-unit: 2px; /* Border radius base - scales all radius values */
-	--base-shadow-blur: 2px; /* Shadow base - scales all shadow blur values */
-	--base-border-width: 1px; /* Border base - scales all border widths */
-	--base-icon-size: 16px; /* Icon base - scales all icon sizes */
-	--base-button-height: 32px; /* Button base - scales all button heights */
+	--base-space-unit: var(--base-size); /* Spacing base - scales all spacing/padding/margins */
+	--base-radius-unit: calc(var(--base-size) / 2); /* Border radius base - scales all radius values */
+	--base-shadow-blur: calc(var(--base-size) / 2); /* Shadow base - scales all shadow blur values */
+	--base-border-width: calc(var(--base-size) / 4); /* Border base - scales all border widths */
+	--base-icon-size: calc(var(--base-size) * 4); /* Icon base - scales all icon sizes */
+	--base-button-height: calc(var(--base-size) * 8); /* Button base - scales all button heights */
 
 	/* Typography system */
 	--font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -332,7 +335,7 @@
 
 	/* Padding system - calc-based combinations */
 	--padding-xs: var(--space-1) var(--space-2); /* 4px 8px */
-	--padding-sm: calc(var(--space-1) + 2px) var(--space-3); /* 6px 12px */
+	--padding-sm: calc(var(--space-1) + calc(var(--base-size) / 2)) var(--space-3); /* 6px 12px */
 	--padding-md: var(--space-2) var(--space-4); /* 8px 16px */
 	--padding-lg: var(--space-3) var(--space-5); /* 12px 20px */
 	--padding-xl: var(--space-4) var(--space-6); /* 16px 24px */
@@ -343,7 +346,7 @@
 	--radius-md: calc(var(--base-radius-unit) * 3); /* 6px */
 	--radius-lg: calc(var(--base-radius-unit) * 4); /* 8px */
 	--radius-xl: calc(var(--base-radius-unit) * 6); /* 12px */
-	--radius-full: 9999px;
+	--radius-full: calc(var(--base-size) * 2500); /* 9999px equivalent */
 
 	/* Shadow system - calc-based from base blur */
 	--shadow-xs: 0 var(--base-shadow-blur) calc(var(--base-shadow-blur) * 2)
@@ -384,8 +387,8 @@
 	--btn-height-lg: calc(var(--base-button-height) * 1.25); /* 40px */
 	--btn-min-width: calc(var(--base-button-height) * 2.5); /* 80px */
 
-	/* Layout constraints */
-	--max-width-container: 1200px;
+	/* Layout constraints - calc-based where possible */
+	--max-width-container: calc(var(--base-size) * 300); /* 1200px */
 	--max-width-notes: var(--col-32); /* 256px */
 	--max-height-table: 75vh;
 
@@ -394,31 +397,34 @@
 	--transition-normal: 0.3s ease;
 	--transition-slow: 0.5s ease;
 
-	/* Focus ring - using color-mix for better browser support fallback */
-	--focus-ring: 0 0 0 3px
+	/* Focus ring - calc-based from base-size */
+	--focus-ring-width: calc(var(--base-size) * 0.75); /* 3px */
+	--focus-ring: 0 0 0 var(--focus-ring-width)
 		color-mix(in srgb, var(--primary-color) 10%, transparent);
-	--focus-ring-error: 0 0 0 3px
+	--focus-ring-error: 0 0 0 var(--focus-ring-width)
 		color-mix(in srgb, var(--error-color) 10%, transparent);
-	--focus-ring-success: 0 0 0 3px
+	--focus-ring-success: 0 0 0 var(--focus-ring-width)
 		color-mix(in srgb, var(--success-color) 10%, transparent);
 
 	/* Focus ring fallbacks for older browsers */
-	--focus-ring-fallback: 0 0 0 3px rgba(35, 131, 226, 0.1);
-	--focus-ring-error-fallback: 0 0 0 3px rgba(224, 62, 62, 0.1);
-	--focus-ring-success-fallback: 0 0 0 3px rgba(15, 123, 15, 0.1);
+	--focus-ring-fallback: 0 0 0 var(--focus-ring-width) rgba(35, 131, 226, 0.1);
+	--focus-ring-error-fallback: 0 0 0 var(--focus-ring-width) rgba(224, 62, 62, 0.1);
+	--focus-ring-success-fallback: 0 0 0 var(--focus-ring-width) rgba(15, 123, 15, 0.1);
 
-	/* Z-index scale */
-	--z-dropdown: 100;
-	--z-modal: 1000;
-	--z-tooltip: 2000;
+	/* Z-index scale - calc-based */
+	--z-dropdown: calc(var(--base-size) * 25); /* 100 */
+	--z-modal: calc(var(--base-size) * 250); /* 1000 */
+	--z-tooltip: calc(var(--base-size) * 500); /* 2000 */
 
-	/* Misc */
-	--priority-dot-size: calc(var(--base-space-unit) * 2); /* 8px */
+	/* Component-specific calc-based values */
+	--priority-dot-size: calc(var(--base-size) * 2); /* 8px */
+	--counter-height: calc(var(--base-size) * 6); /* 24px - consistent height for badges */
+	--action-btn-size: calc(var(--base-size) * 8); /* 32px - consistent size for action buttons */
 }
 
 /* Base font size for rem calculations */
 html {
-	font-size: 16px; /* 1rem = 16px */
+	font-size: calc(var(--base-size) * 4); /* 16px - 1rem = 16px */
 }
 
 body {
@@ -622,6 +628,7 @@ tbody tr {
 	align-items: center;
 	justify-content: center;
 	min-width: var(--btn-min-width);
+	height: var(--counter-height); /* Consistent height for all badges */
 	text-transform: capitalize;
 	letter-spacing: 0.025em;
 }
@@ -660,8 +667,8 @@ tbody tr {
 }
 
 .priority {
-	width: calc(var(--priority-dot-size) + 2px); /* 10px */
-	height: calc(var(--priority-dot-size) + 2px); /* 10px */
+	width: calc(var(--priority-dot-size) + calc(var(--base-size) / 2)); /* 10px */
+	height: calc(var(--priority-dot-size) + calc(var(--base-size) / 2)); /* 10px */
 	border-radius: var(--radius-full);
 	display: inline-block;
 	margin-right: var(--space-2);
@@ -794,9 +801,9 @@ tbody tr {
 }
 
 .action-btn {
-	padding: var(--space-2);
-	background: var(--background-color);
-	border: var(--border-width) solid var(--border-color);
+	padding: var(--space-1);
+	background: transparent; /* Ghost button style */
+	border: none; /* Remove border for ghost style */
 	border-radius: var(--radius-sm);
 	cursor: pointer;
 	font-size: var(--font-size-base);
@@ -804,16 +811,16 @@ tbody tr {
 	align-items: center;
 	justify-content: center;
 	transition: var(--transition-fast);
-	min-width: var(--btn-height-md);
-	height: var(--btn-height-md);
-	color: var(--text-light);
+	min-width: var(--action-btn-size);
+	height: var(--action-btn-size);
+	color: var(--text-lighter); /* More subtle default color */
 }
 
 .action-btn:hover {
-	background: var(--container-background);
-	border-color: var(--text-light);
-	box-shadow: var(--shadow-md);
-	transform: translateY(-1px);
+	background: var(--background-color); /* Subtle background on hover */
+	color: var(--text-color); /* Darker color on hover */
+	box-shadow: none; /* No shadow for ghost buttons */
+	transform: none; /* No transform for subtle effect */
 }
 
 .edit-btn .material-symbols-outlined {
@@ -860,11 +867,11 @@ tbody tr {
 }
 
 .contact-textarea {
-	min-height: var(--col-5); /* 40px */
+	min-height: calc(var(--base-size) * 10); /* 40px */
 }
 
 .notes-textarea {
-	min-height: calc(var(--base-space-unit) * 15); /* 60px */
+	min-height: calc(var(--base-size) * 15); /* 60px */
 }
 
 /* Modern Modal Styles */
@@ -935,15 +942,15 @@ tbody tr {
 }
 
 .modal-close {
-	background: var(--background-color);
-	border: var(--border-width) solid var(--border-color);
+	background: transparent; /* Ghost button style for modal close */
+	border: none; /* Remove border */
 	cursor: pointer;
 	padding: var(--space-2);
 	border-radius: var(--radius-md);
 	color: var(--text-light);
 	font-size: var(--font-size-xl);
-	width: var(--btn-height-md);
-	height: var(--btn-height-md);
+	width: var(--action-btn-size);
+	height: var(--action-btn-size);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -951,8 +958,9 @@ tbody tr {
 }
 
 .modal-close:hover {
-	background: var(--border-color);
-	transform: scale(1.05);
+	background: var(--background-color); /* Subtle background on hover */
+	color: var(--text-color);
+	transform: none; /* No transform for subtle effect */
 }
 
 .modal-body {
@@ -973,7 +981,7 @@ tbody tr {
 .modal-footer .action-btn {
 	padding: var(--padding-sm);
 	font-size: var(--font-size-base);
-	min-width: var(--col-12); /* 96px - closer to 100px but systematic */
+	min-width: calc(var(--base-size) * 24); /* 96px - closer to 100px but systematic */
 	font-weight: 600;
 }
 
@@ -982,7 +990,7 @@ tbody tr {
 	background: var(--background-color);
 	color: var(--text-color);
 	border: var(--border-width) solid var(--border-color);
-	padding: calc(var(--base-space-unit) / 2) var(--space-1); /* 2px */
+	padding: calc(var(--base-size) / 2) var(--space-1); /* 2px */
 	border-radius: var(--radius-full);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
@@ -994,6 +1002,7 @@ tbody tr {
 	transition: var(--transition-fast);
 	box-shadow: var(--shadow-sm);
 	min-width: var(--space-5); /* 20px */
+	height: var(--counter-height); /* Consistent height for all badges */
 	text-align: center;
 }
 
@@ -1073,7 +1082,7 @@ tbody tr {
 
 .note-form textarea {
 	width: 100%;
-	min-height: var(--col-12); /* 96px - closer to 100px but systematic */
+	min-height: calc(var(--base-size) * 24); /* 96px - closer to 100px but systematic */
 	padding: var(--space-4);
 	border: var(--border-width) solid var(--border-color);
 	border-radius: var(--radius-lg);
@@ -1161,7 +1170,7 @@ tbody tr {
 
 .add-note-textarea {
 	width: 100%;
-	min-height: var(--col-10); /* 80px */
+	min-height: calc(var(--base-size) * 20); /* 80px */
 	padding: var(--space-3);
 	border: var(--border-width) solid var(--border-color);
 	border-radius: var(--radius-md);
@@ -1190,7 +1199,7 @@ tbody tr {
 	background: var(--background-color);
 	color: var(--text-color);
 	border: var(--border-width) solid var(--border-color);
-	padding: calc(var(--base-space-unit) / 2) var(--space-1); /* 2px */
+	padding: calc(var(--base-size) / 2) var(--space-1); /* 2px */
 	border-radius: var(--radius-full);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
@@ -1202,6 +1211,7 @@ tbody tr {
 	transition: var(--transition-fast);
 	box-shadow: var(--shadow-sm);
 	min-width: var(--space-5); /* 20px */
+	height: var(--counter-height); /* Consistent height for all badges */
 	text-align: center;
 }
 
@@ -1252,17 +1262,23 @@ tbody tr {
 }
 
 .task-status {
-	padding: calc(var(--base-space-unit) / 2) calc(var(--space-1) + 2px); /* 2px 6px */
+	padding: calc(var(--base-size) / 2) calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
 	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
+	height: var(--counter-height); /* Consistent height */
+	display: inline-flex;
+	align-items: center;
 	text-transform: capitalize;
 }
 
 .task-priority {
 	color: white;
-	padding: calc(var(--base-space-unit) / 2) calc(var(--space-1) + 2px); /* 2px 6px */
+	padding: calc(var(--base-size) / 2) calc(var(--space-1) + calc(var(--base-size) / 2)); /* 2px 6px */
 	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
+	height: var(--counter-height); /* Consistent height */
+	display: inline-flex;
+	align-items: center;
 	text-transform: capitalize;
 }
 
@@ -1293,7 +1309,7 @@ tbody tr {
 
 .add-task-textarea {
 	width: 100%;
-	min-height: calc(var(--base-space-unit) * 15); /* 60px */
+	min-height: calc(var(--base-size) * 15); /* 60px */
 	padding: 0;
 	border: none;
 	background: transparent;
@@ -1352,7 +1368,7 @@ tbody tr {
 .note-edit-textarea,
 .task-edit-textarea {
 	width: 100%;
-	min-height: calc(var(--base-space-unit) * 15); /* 60px */
+	min-height: calc(var(--base-size) * 15); /* 60px */
 	padding: var(--space-2);
 	border: var(--border-width) solid var(--border-color);
 	border-radius: var(--radius-sm);
@@ -1453,9 +1469,14 @@ tbody tr {
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	color: var(--text-light);
+	color: var(--text-lighter); /* More subtle */
 	border-radius: var(--radius-xs);
 	transition: var(--transition-fast);
+	width: var(--action-btn-size); /* Consistent size */
+	height: var(--action-btn-size); /* Consistent size */
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /* Material Icons Sizing */
@@ -1511,23 +1532,26 @@ select.inline-edit {
 
 /* Priority select specific styling */
 .priority-select {
-	min-width: var(--col-12); /* 96px - closer to 100px but systematic */
+	min-width: calc(var(--base-size) * 24); /* 96px - closer to 100px but systematic */
 }
 
 /* Phase select specific styling */
 .phase-select {
-	min-width: var(--col-16); /* 128px - closer to 140px but systematic */
+	min-width: calc(var(--base-size) * 32); /* 128px - closer to 140px but systematic */
 }
 
 /* Save and Cancel buttons */
 .save-btn,
 .cancel-btn {
 	padding: var(--space-1);
-	min-width: var(--btn-height-md); /* 32px */
-	height: var(--btn-height-md); /* 32px */
+	min-width: var(--action-btn-size); /* 32px - consistent with action buttons */
+	height: var(--action-btn-size); /* 32px - consistent with action buttons */
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	border: none; /* Ghost button style */
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
 }
 
 .save-btn {
@@ -1647,7 +1671,7 @@ tr.editing .actions-cell button {
 	letter-spacing: 0.01em;
 }
 
-@media (max-width: calc(var(--col-48) * 2.5)) {
+@media (max-width: calc(var(--base-size) * 120)) {
 	/* 480px */
 	.footer-text {
 		font-size: var(--font-size-xs);
