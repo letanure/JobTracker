@@ -69,9 +69,9 @@ function createOption(value, text, selected = false) {
 // Helper function for task status text
 const getTaskStatusText = (statusKey) => {
 	const statusMap = {
-		'todo': 'To Do',
-		'in-progress': 'In Progress', 
-		'done': 'Done'
+		'todo': I18n.t('modals.tasks.statusTodo'),
+		'in-progress': I18n.t('modals.tasks.statusInProgress'), 
+		'done': I18n.t('modals.tasks.statusDone')
 	};
 	return statusMap[statusKey] || statusKey;
 };

@@ -61,7 +61,7 @@ const NoteItem = ({ note, job }) => {
 		
 		const saveBtn = h("button", {
 			className: "action-btn edit-btn edit-save-btn",
-			textContent: "Save",
+			textContent: I18n.t("modals.common.save"),
 			onclick: () => {
 				const newText = textarea.value.trim();
 				if (!newText) return;
@@ -86,7 +86,7 @@ const NoteItem = ({ note, job }) => {
 		
 		const cancelBtn = h("button", {
 			className: "action-btn cancel-btn edit-cancel-btn",
-			textContent: "Cancel",
+			textContent: I18n.t("modals.common.cancel"),
 			onclick: () => {
 				// Cancel editing - restore original text
 				noteTextElement.innerHTML = "";
@@ -122,13 +122,13 @@ const NoteItem = ({ note, job }) => {
 				{ className: "note-actions modal-actions-row" },
 				h("button", {
 					className: "action-btn edit-note-btn icon-btn-transparent",
-					title: "Edit note",
+					title: I18n.t("modals.notes.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
 					className: "action-btn archive-btn icon-btn-transparent",
-					title: isArchived ? "Unarchive note" : "Archive note",
+					title: isArchived ? I18n.t("modals.notes.unarchiveTitle") : I18n.t("modals.notes.archiveTitle"),
 					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
@@ -212,7 +212,7 @@ const NotesModal = ({ job, onClose }) => {
 				h(
 					"h3",
 					{ className: "modal-title" },
-					`Notes for ${job.position} at ${job.company}`,
+					I18n.t("modals.notes.title", { position: job.position, company: job.company }),
 				),
 				h("button", { className: "modal-close", onclick: onClose }, "×"),
 			),
@@ -224,7 +224,7 @@ const NotesModal = ({ job, onClose }) => {
 					? [
 						h("h4", { 
 							className: "modal-section-header"
-						}, "Active Notes"),
+						}, I18n.t("modals.notes.activeSection")),
 						...sortedActiveNotes.map((note) => NoteItem({ note, job }))
 					]
 					: [
@@ -233,7 +233,7 @@ const NotesModal = ({ job, onClose }) => {
 								{
 									className: "modal-empty-message"
 								},
-								"No notes yet. Add your first note below.",
+								I18n.t("modals.notes.emptyState"),
 							),
 						]),
 				// Archived notes section
@@ -254,7 +254,7 @@ const NotesModal = ({ job, onClose }) => {
 							}
 						}, 
 							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-notes-icon' }, 'expand_less'),
-							`Archived Notes (${sortedArchivedNotes.length})`
+							I18n.t("modals.notes.archivedSection", { count: sortedArchivedNotes.length })
 						),
 						h("div", { 
 							id: "archived-notes-content"
@@ -265,7 +265,7 @@ const NotesModal = ({ job, onClose }) => {
 				h(
 					"div",
 					{ className: "add-note-section" },
-					h("h4", { className: "add-note-title" }, "Add New Note"),
+					h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
 					h(
 						"div",
 						{ className: "note-form-info" },
@@ -277,12 +277,12 @@ const NotesModal = ({ job, onClose }) => {
 								{ className: "material-symbols-outlined" },
 								"assignment",
 							),
-							` Phase: ${getPhaseText(job.currentPhase)}`,
+							I18n.t("modals.notes.phaseLabelPrefix") + getPhaseText(job.currentPhase),
 						),
 					),
 					h("textarea", {
 						className: "add-note-textarea",
-						placeholder: "Enter your note here...",
+						placeholder: I18n.t("modals.notes.placeholder"),
 						rows: 3,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
@@ -302,12 +302,12 @@ const NotesModal = ({ job, onClose }) => {
 						className: "action-btn edit-btn",
 						onclick: handleAddNote,
 					},
-					"Add Note",
+					I18n.t("modals.notes.addButton"),
 				),
 				h(
 					"button",
 					{ className: "action-btn cancel-btn", onclick: onClose },
-					"Close",
+					I18n.t("modals.common.close"),
 				),
 			),
 		),

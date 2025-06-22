@@ -141,7 +141,7 @@ const TaskItem = ({ task, job }) => {
 		
 		const saveBtn = h("button", {
 			className: "action-btn edit-btn edit-save-btn",
-			textContent: "Save",
+			textContent: I18n.t("modals.common.save"),
 			onclick: () => {
 				const newText = textarea.value.trim();
 				if (!newText) return;
@@ -166,7 +166,7 @@ const TaskItem = ({ task, job }) => {
 		
 		const cancelBtn = h("button", {
 			className: "action-btn cancel-btn edit-cancel-btn",
-			textContent: "Cancel",
+			textContent: I18n.t("modals.common.cancel"),
 			onclick: () => {
 				// Cancel editing - restore original text
 				taskTextElement.innerHTML = "";
@@ -199,18 +199,18 @@ const TaskItem = ({ task, job }) => {
 					value: task.status,
 					onchange: (e) => handleStatusChange(e.target.value)
 				}, 
-					h("option", { value: "todo" }, "To Do"),
-					h("option", { value: "in-progress" }, "In Progress"),
-					h("option", { value: "done" }, "Done")
+					h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
+					h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
+					h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
 				),
 				h("select", {
 					className: "task-priority inline-select",
 					value: task.priority,
 					onchange: (e) => handlePriorityChange(e.target.value)
 				}, 
-					h("option", { value: "low" }, "Low"),
-					h("option", { value: "medium" }, "Medium"),
-					h("option", { value: "high" }, "High")
+					h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
+					h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
+					h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 				),
 				h("input", {
 					type: "date",
@@ -224,13 +224,13 @@ const TaskItem = ({ task, job }) => {
 				{ className: "task-actions modal-actions-row" },
 				h("button", {
 					className: "action-btn edit-task-btn icon-btn-transparent",
-					title: "Edit task",
+					title: I18n.t("modals.tasks.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
 					className: "action-btn archive-btn icon-btn-transparent",
-					title: isArchived ? "Unarchive task" : "Archive task",
+					title: isArchived ? I18n.t("modals.tasks.unarchiveTitle") : I18n.t("modals.tasks.archiveTitle"),
 					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
@@ -316,7 +316,7 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"h3",
 					{ className: "modal-title" },
-					`Tasks for ${job.position} at ${job.company}`,
+					I18n.t("modals.tasks.title", { position: job.position, company: job.company }),
 				),
 				h("button", { className: "modal-close", onclick: onClose }, "×"),
 			),
@@ -328,7 +328,7 @@ const TasksModal = ({ job, onClose }) => {
 					? [
 						h("h4", { 
 							className: "modal-section-header"
-						}, "Active Tasks"),
+						}, I18n.t("modals.tasks.activeSection")),
 						...sortedActiveTasks.map((task) => TaskItem({ task, job }))
 					]
 					: [
@@ -337,7 +337,7 @@ const TasksModal = ({ job, onClose }) => {
 								{
 									className: "modal-empty-message"
 								},
-								"No tasks yet. Add your first task below.",
+								I18n.t("modals.tasks.emptyState"),
 							),
 						]),
 				// Archived tasks section
@@ -358,7 +358,7 @@ const TasksModal = ({ job, onClose }) => {
 							}
 						}, 
 							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_less'),
-							`Archived Tasks (${sortedArchivedTasks.length})`
+							I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
 						),
 						h("div", { 
 							id: "archived-tasks-content"
@@ -369,10 +369,10 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"div",
 					{ className: "add-task-section" },
-					h("h4", { className: "add-task-title" }, "Add New Task"),
+					h("h4", { className: "add-task-title" }, I18n.t("modals.tasks.addSection")),
 					h("textarea", {
 						className: "add-task-textarea",
-						placeholder: "Enter your task here...",
+						placeholder: I18n.t("modals.tasks.placeholder"),
 						rows: 3,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
@@ -392,12 +392,12 @@ const TasksModal = ({ job, onClose }) => {
 						className: "action-btn edit-btn",
 						onclick: handleAddTask,
 					},
-					"Add Task",
+					I18n.t("modals.tasks.addButton"),
 				),
 				h(
 					"button",
 					{ className: "action-btn cancel-btn", onclick: onClose },
-					"Close",
+					I18n.t("modals.common.close"),
 				),
 			),
 		),

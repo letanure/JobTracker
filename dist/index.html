@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T06:34:45.902Z
+Generated: 2025-06-22T06:44:53.288Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1507,11 +1507,11 @@ tr.editing .actions-cell button {
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="appTitle">JobTracker</h1>
+            <h1 id="appTitle">...</h1>
         </div>
         
         <div class="controls">
-            <button id="addAppBtn" onclick="addRow()">+ Add Application</button>
+            <button id="addAppBtn" onclick="addRow()">...</button>
         </div>
         
         <div class="table-container">
@@ -1520,26 +1520,26 @@ tr.editing .actions-cell button {
                     <tr>
                         <th>
                             <div class="header-with-filter">
-                                <span id="priorityHeader">Priority</span>
+                                <span id="priorityHeader">...</span>
                                 <span class="filter-dropdown-icon" onclick="toggleDropdown('priorityDropdown')">▼</span>
                                 <div class="filter-dropdown" id="priorityDropdown"></div>
                             </div>
                         </th>
-                        <th id="companyHeader">Company</th>
-                        <th id="positionHeader">Position</th>
+                        <th id="companyHeader">...</th>
+                        <th id="positionHeader">...</th>
                         <th>
                             <div class="header-with-filter">
-                                <span id="currentPhaseHeader">Current Phase</span>
+                                <span id="currentPhaseHeader">...</span>
                                 <span class="filter-dropdown-icon" onclick="toggleDropdown('phaseDropdown')">▼</span>
                                 <div class="filter-dropdown" id="phaseDropdown"></div>
                             </div>
                         </th>
-                        <th id="contactPersonHeader">Contact Person</th>
-                        <th id="salaryRangeHeader">Salary Range</th>
-                        <th id="locationHeader">Location</th>
-                        <th id="notesHeader">Notes</th>
-                        <th id="tasksHeader">Tasks</th>
-                        <th id="actionsHeader">Actions</th>
+                        <th id="contactPersonHeader">...</th>
+                        <th id="salaryRangeHeader">...</th>
+                        <th id="locationHeader">...</th>
+                        <th id="notesHeader">...</th>
+                        <th id="tasksHeader">...</th>
+                        <th id="actionsHeader">...</th>
                     </tr>
                 </thead>
                 <tbody id="jobTableBody">
@@ -1550,23 +1550,23 @@ tr.editing .actions-cell button {
         <div class="stats">
             <div class="stat-item">
                 <div class="stat-number" id="totalApps">0</div>
-                <div class="stat-label" id="totalAppsLabel">Total Applications</div>
+                <div class="stat-label" id="totalAppsLabel">...</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="activeApps">0</div>
-                <div class="stat-label" id="activeAppsLabel">Active</div>
+                <div class="stat-label" id="activeAppsLabel">...</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="interviews">0</div>
-                <div class="stat-label" id="interviewsLabel">Interviews</div>
+                <div class="stat-label" id="interviewsLabel">...</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="offers">0</div>
-                <div class="stat-label" id="offersLabel">Offers</div>
+                <div class="stat-label" id="offersLabel">...</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number" id="rejections">0</div>
-                <div class="stat-label" id="rejectionsLabel">Rejections</div>
+                <div class="stat-label" id="rejectionsLabel">...</div>
             </div>
         </div>
     </div>
@@ -1575,11 +1575,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T06:34:45.898Z
+// Generated: 2025-06-22T06:44:53.285Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T06:34:45.898Z");
+console.log("JobTracker - Built at: 2025-06-22T06:44:53.285Z");
 
 
 // ============================================================================
@@ -1902,10 +1902,6 @@ I18n.translations = {
 		},
 		buttons: {
 			addApplication: "+ Add Application",
-			save: "Save",
-			edit: "Edit",
-			delete: "Delete",
-			cancel: "Cancel",
 		},
 		table: {
 			headers: {
@@ -1923,21 +1919,14 @@ I18n.translations = {
 			filters: {
 				allPriorities: "All Priorities",
 				allPhases: "All Phases",
-				highPriority: "High Priority",
-				mediumPriority: "Medium Priority",
-				lowPriority: "Low Priority",
 			},
 			placeholders: {
-				companyName: "Company Name",
 				company: "Company Name",
-				positionTitle: "Position Title",
 				position: "Position Title",
-				nameEmail: "Name & Email",
 				contactPerson: "Contact Name",
 				contactEmail: "Contact Email",
 				salaryRange: "Salary Range",
 				location: "Location",
-				notes: "Notes",
 			},
 		},
 		priorities: {
@@ -1985,14 +1974,10 @@ I18n.translations = {
 		messages: {
 			welcome:
 				"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
-			errorLoading:
-				"There was an error loading your data.\n\nWould you like to start with 2 example job applications?",
 			confirmDelete:
 				"Are you sure you want to delete the application for {position} at {company}?",
 		},
 		demo: {
-			nextTask1: "Prepare system design",
-			nextTask2: "Wait for callback",
 			contactPerson1: "Sarah Chen",
 			contactPerson2: "Mike Rodriguez",
 			notes1:
@@ -2009,6 +1994,67 @@ I18n.translations = {
 			twitterTitle: "JobTracker - Free Job Application Tracker",
 			twitterDescription: "Free job application tracker to organize your job search. Track applications, interviews, and career progress.",
 		},
+		modals: {
+			notes: {
+				title: "Notes for {position} at {company}",
+				activeSection: "Active Notes",
+				archivedSection: "Archived Notes ({count})",
+				emptyState: "No notes yet. Add your first note below.",
+				addSection: "Add New Note",
+				phaseLabelPrefix: " Phase: ",
+				placeholder: "Enter your note here...",
+				editTitle: "Edit note",
+				archiveTitle: "Archive note",
+				unarchiveTitle: "Unarchive note",
+				addButton: "Add Note",
+			},
+			tasks: {
+				title: "Tasks for {position} at {company}",
+				activeSection: "Active Tasks",
+				archivedSection: "Archived Tasks ({count})",
+				emptyState: "No tasks yet. Add your first task below.",
+				addSection: "Add New Task",
+				placeholder: "Enter your task here...",
+				editTitle: "Edit task",
+				archiveTitle: "Archive task",
+				unarchiveTitle: "Unarchive task",
+				addButton: "Add Task",
+				statusTodo: "To Do",
+				statusInProgress: "In Progress",
+				statusDone: "Done",
+				priorityLow: "Low",
+				priorityMedium: "Medium",
+				priorityHigh: "High",
+			},
+			contacts: {
+				title: "Contacts for {position} at {company}",
+				activeSection: "Active Contacts",
+				archivedSection: "Archived Contacts ({count})",
+				emptyState: "No contacts yet. Add your first contact below.",
+				addSection: "Add New Contact",
+				editTitle: "Edit contact",
+				archiveTitle: "Archive contact",
+				unarchiveTitle: "Unarchive contact",
+				addButton: "Add Contact",
+				placeholderName: "Name",
+				placeholderEmail: "Email",
+				placeholderPhone: "Phone",
+				placeholderCompany: "Company",
+				noContacts: "No contacts",
+				defaultContact: "Contact",
+			},
+			common: {
+				save: "Save",
+				cancel: "Cancel",
+				close: "Close",
+			},
+		},
+		forms: {
+			saveChangesTitle: "Save changes",
+			cancelEditingTitle: "Cancel editing",
+			noDueDate: "No due date",
+			placeholderNameEmail: "Name\nEmail",
+		},
 	},
 	pt: {
 		app: {
@@ -2016,10 +2062,6 @@ I18n.translations = {
 		},
 		buttons: {
 			addApplication: "+ Adicionar Candidatura",
-			save: "Salvar",
-			edit: "Editar",
-			delete: "Excluir",
-			cancel: "Cancelar",
 		},
 		table: {
 			headers: {
@@ -2037,21 +2079,14 @@ I18n.translations = {
 			filters: {
 				allPriorities: "Todas as Prioridades",
 				allPhases: "Todas as Fases",
-				highPriority: "Prioridade Alta",
-				mediumPriority: "Prioridade Média",
-				lowPriority: "Prioridade Baixa",
 			},
 			placeholders: {
-				companyName: "Nome da Empresa",
 				company: "Nome da Empresa",
-				positionTitle: "Título do Cargo",
 				position: "Título do Cargo",
-				nameEmail: "Nome e Email",
 				contactPerson: "Nome do Contato",
 				contactEmail: "Email do Contato",
 				salaryRange: "Faixa Salarial",
 				location: "Localização",
-				notes: "Notas",
 			},
 		},
 		priorities: {
@@ -2099,14 +2134,10 @@ I18n.translations = {
 		messages: {
 			welcome:
 				"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
-			errorLoading:
-				"Houve um erro ao carregar seus dados.\n\nGostaria de começar com 2 exemplos de candidaturas?",
 			confirmDelete:
 				"Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
 		},
 		demo: {
-			nextTask1: "Preparar design de sistema",
-			nextTask2: "Aguardar retorno",
 			contactPerson1: "Sarah Chen",
 			contactPerson2: "Mike Rodriguez",
 			notes1:
@@ -2123,6 +2154,67 @@ I18n.translations = {
 			ogDescription: "Organize sua busca por emprego com nosso rastreador de candidaturas gratuito e fácil de usar. Acompanhe candidaturas, entrevistas e tarefas em um só lugar.",
 			twitterTitle: "JobTracker - Rastreador Gratuito de Candidaturas",
 			twitterDescription: "Rastreador gratuito de candidaturas para organizar sua busca por emprego. Acompanhe candidaturas, entrevistas e progresso na carreira.",
+		},
+		modals: {
+			notes: {
+				title: "Notas para {position} na {company}",
+				activeSection: "Notas Ativas",
+				archivedSection: "Notas Arquivadas ({count})",
+				emptyState: "Sem notas ainda. Adicione sua primeira nota abaixo.",
+				addSection: "Adicionar Nova Nota",
+				phaseLabelPrefix: " Fase: ",
+				placeholder: "Digite sua nota aqui...",
+				editTitle: "Editar nota",
+				archiveTitle: "Arquivar nota",
+				unarchiveTitle: "Desarquivar nota",
+				addButton: "Adicionar Nota",
+			},
+			tasks: {
+				title: "Tarefas para {position} na {company}",
+				activeSection: "Tarefas Ativas",
+				archivedSection: "Tarefas Arquivadas ({count})",
+				emptyState: "Sem tarefas ainda. Adicione sua primeira tarefa abaixo.",
+				addSection: "Adicionar Nova Tarefa",
+				placeholder: "Digite sua tarefa aqui...",
+				editTitle: "Editar tarefa",
+				archiveTitle: "Arquivar tarefa",
+				unarchiveTitle: "Desarquivar tarefa",
+				addButton: "Adicionar Tarefa",
+				statusTodo: "A Fazer",
+				statusInProgress: "Em Progresso",
+				statusDone: "Concluída",
+				priorityLow: "Baixa",
+				priorityMedium: "Média",
+				priorityHigh: "Alta",
+			},
+			contacts: {
+				title: "Contatos para {position} na {company}",
+				activeSection: "Contatos Ativos",
+				archivedSection: "Contatos Arquivados ({count})",
+				emptyState: "Sem contatos ainda. Adicione seu primeiro contato abaixo.",
+				addSection: "Adicionar Novo Contato",
+				editTitle: "Editar contato",
+				archiveTitle: "Arquivar contato",
+				unarchiveTitle: "Desarquivar contato",
+				addButton: "Adicionar Contato",
+				placeholderName: "Nome",
+				placeholderEmail: "Email",
+				placeholderPhone: "Telefone",
+				placeholderCompany: "Empresa",
+				noContacts: "Sem contatos",
+				defaultContact: "Contato",
+			},
+			common: {
+				save: "Salvar",
+				cancel: "Cancelar",
+				close: "Fechar",
+			},
+		},
+		forms: {
+			saveChangesTitle: "Salvar alterações",
+			cancelEditingTitle: "Cancelar edição",
+			noDueDate: "Sem data de vencimento",
+			placeholderNameEmail: "Nome\nEmail",
 		},
 	},
 };
@@ -2317,9 +2409,9 @@ function createOption(value, text, selected = false) {
 // Helper function for task status text
 const getTaskStatusText = (statusKey) => {
 	const statusMap = {
-		'todo': 'To Do',
-		'in-progress': 'In Progress', 
-		'done': 'Done'
+		'todo': I18n.t('modals.tasks.statusTodo'),
+		'in-progress': I18n.t('modals.tasks.statusInProgress'), 
+		'done': I18n.t('modals.tasks.statusDone')
 	};
 	return statusMap[statusKey] || statusKey;
 };
@@ -2453,7 +2545,7 @@ const NoteItem = ({ note, job }) => {
 		
 		const saveBtn = h("button", {
 			className: "action-btn edit-btn edit-save-btn",
-			textContent: "Save",
+			textContent: I18n.t("modals.common.save"),
 			onclick: () => {
 				const newText = textarea.value.trim();
 				if (!newText) return;
@@ -2478,7 +2570,7 @@ const NoteItem = ({ note, job }) => {
 		
 		const cancelBtn = h("button", {
 			className: "action-btn cancel-btn edit-cancel-btn",
-			textContent: "Cancel",
+			textContent: I18n.t("modals.common.cancel"),
 			onclick: () => {
 				// Cancel editing - restore original text
 				noteTextElement.innerHTML = "";
@@ -2514,13 +2606,13 @@ const NoteItem = ({ note, job }) => {
 				{ className: "note-actions modal-actions-row" },
 				h("button", {
 					className: "action-btn edit-note-btn icon-btn-transparent",
-					title: "Edit note",
+					title: I18n.t("modals.notes.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
 					className: "action-btn archive-btn icon-btn-transparent",
-					title: isArchived ? "Unarchive note" : "Archive note",
+					title: isArchived ? I18n.t("modals.notes.unarchiveTitle") : I18n.t("modals.notes.archiveTitle"),
 					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
@@ -2604,7 +2696,7 @@ const NotesModal = ({ job, onClose }) => {
 				h(
 					"h3",
 					{ className: "modal-title" },
-					`Notes for ${job.position} at ${job.company}`,
+					I18n.t("modals.notes.title", { position: job.position, company: job.company }),
 				),
 				h("button", { className: "modal-close", onclick: onClose }, "×"),
 			),
@@ -2616,7 +2708,7 @@ const NotesModal = ({ job, onClose }) => {
 					? [
 						h("h4", { 
 							className: "modal-section-header"
-						}, "Active Notes"),
+						}, I18n.t("modals.notes.activeSection")),
 						...sortedActiveNotes.map((note) => NoteItem({ note, job }))
 					]
 					: [
@@ -2625,7 +2717,7 @@ const NotesModal = ({ job, onClose }) => {
 								{
 									className: "modal-empty-message"
 								},
-								"No notes yet. Add your first note below.",
+								I18n.t("modals.notes.emptyState"),
 							),
 						]),
 				// Archived notes section
@@ -2646,7 +2738,7 @@ const NotesModal = ({ job, onClose }) => {
 							}
 						}, 
 							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-notes-icon' }, 'expand_less'),
-							`Archived Notes (${sortedArchivedNotes.length})`
+							I18n.t("modals.notes.archivedSection", { count: sortedArchivedNotes.length })
 						),
 						h("div", { 
 							id: "archived-notes-content"
@@ -2657,7 +2749,7 @@ const NotesModal = ({ job, onClose }) => {
 				h(
 					"div",
 					{ className: "add-note-section" },
-					h("h4", { className: "add-note-title" }, "Add New Note"),
+					h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
 					h(
 						"div",
 						{ className: "note-form-info" },
@@ -2669,12 +2761,12 @@ const NotesModal = ({ job, onClose }) => {
 								{ className: "material-symbols-outlined" },
 								"assignment",
 							),
-							` Phase: ${getPhaseText(job.currentPhase)}`,
+							I18n.t("modals.notes.phaseLabelPrefix") + getPhaseText(job.currentPhase),
 						),
 					),
 					h("textarea", {
 						className: "add-note-textarea",
-						placeholder: "Enter your note here...",
+						placeholder: I18n.t("modals.notes.placeholder"),
 						rows: 3,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
@@ -2694,12 +2786,12 @@ const NotesModal = ({ job, onClose }) => {
 						className: "action-btn edit-btn",
 						onclick: handleAddNote,
 					},
-					"Add Note",
+					I18n.t("modals.notes.addButton"),
 				),
 				h(
 					"button",
 					{ className: "action-btn cancel-btn", onclick: onClose },
-					"Close",
+					I18n.t("modals.common.close"),
 				),
 			),
 		),
@@ -2878,7 +2970,7 @@ const TaskItem = ({ task, job }) => {
 		
 		const saveBtn = h("button", {
 			className: "action-btn edit-btn edit-save-btn",
-			textContent: "Save",
+			textContent: I18n.t("modals.common.save"),
 			onclick: () => {
 				const newText = textarea.value.trim();
 				if (!newText) return;
@@ -2903,7 +2995,7 @@ const TaskItem = ({ task, job }) => {
 		
 		const cancelBtn = h("button", {
 			className: "action-btn cancel-btn edit-cancel-btn",
-			textContent: "Cancel",
+			textContent: I18n.t("modals.common.cancel"),
 			onclick: () => {
 				// Cancel editing - restore original text
 				taskTextElement.innerHTML = "";
@@ -2936,18 +3028,18 @@ const TaskItem = ({ task, job }) => {
 					value: task.status,
 					onchange: (e) => handleStatusChange(e.target.value)
 				}, 
-					h("option", { value: "todo" }, "To Do"),
-					h("option", { value: "in-progress" }, "In Progress"),
-					h("option", { value: "done" }, "Done")
+					h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
+					h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
+					h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
 				),
 				h("select", {
 					className: "task-priority inline-select",
 					value: task.priority,
 					onchange: (e) => handlePriorityChange(e.target.value)
 				}, 
-					h("option", { value: "low" }, "Low"),
-					h("option", { value: "medium" }, "Medium"),
-					h("option", { value: "high" }, "High")
+					h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
+					h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
+					h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 				),
 				h("input", {
 					type: "date",
@@ -2961,13 +3053,13 @@ const TaskItem = ({ task, job }) => {
 				{ className: "task-actions modal-actions-row" },
 				h("button", {
 					className: "action-btn edit-task-btn icon-btn-transparent",
-					title: "Edit task",
+					title: I18n.t("modals.tasks.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
 					className: "action-btn archive-btn icon-btn-transparent",
-					title: isArchived ? "Unarchive task" : "Archive task",
+					title: isArchived ? I18n.t("modals.tasks.unarchiveTitle") : I18n.t("modals.tasks.archiveTitle"),
 					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
@@ -3053,7 +3145,7 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"h3",
 					{ className: "modal-title" },
-					`Tasks for ${job.position} at ${job.company}`,
+					I18n.t("modals.tasks.title", { position: job.position, company: job.company }),
 				),
 				h("button", { className: "modal-close", onclick: onClose }, "×"),
 			),
@@ -3065,7 +3157,7 @@ const TasksModal = ({ job, onClose }) => {
 					? [
 						h("h4", { 
 							className: "modal-section-header"
-						}, "Active Tasks"),
+						}, I18n.t("modals.tasks.activeSection")),
 						...sortedActiveTasks.map((task) => TaskItem({ task, job }))
 					]
 					: [
@@ -3074,7 +3166,7 @@ const TasksModal = ({ job, onClose }) => {
 								{
 									className: "modal-empty-message"
 								},
-								"No tasks yet. Add your first task below.",
+								I18n.t("modals.tasks.emptyState"),
 							),
 						]),
 				// Archived tasks section
@@ -3095,7 +3187,7 @@ const TasksModal = ({ job, onClose }) => {
 							}
 						}, 
 							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_less'),
-							`Archived Tasks (${sortedArchivedTasks.length})`
+							I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
 						),
 						h("div", { 
 							id: "archived-tasks-content"
@@ -3106,10 +3198,10 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"div",
 					{ className: "add-task-section" },
-					h("h4", { className: "add-task-title" }, "Add New Task"),
+					h("h4", { className: "add-task-title" }, I18n.t("modals.tasks.addSection")),
 					h("textarea", {
 						className: "add-task-textarea",
-						placeholder: "Enter your task here...",
+						placeholder: I18n.t("modals.tasks.placeholder"),
 						rows: 3,
 						onkeydown: (e) => {
 							if (e.key === "Enter" && e.shiftKey) {
@@ -3129,12 +3221,12 @@ const TasksModal = ({ job, onClose }) => {
 						className: "action-btn edit-btn",
 						onclick: handleAddTask,
 					},
-					"Add Task",
+					I18n.t("modals.tasks.addButton"),
 				),
 				h(
 					"button",
 					{ className: "action-btn cancel-btn", onclick: onClose },
-					"Close",
+					I18n.t("modals.common.close"),
 				),
 			),
 		),
@@ -3243,7 +3335,7 @@ const ContactItem = ({ contact, job }) => {
 		
 		const saveBtn = h("button", {
 			className: "action-btn edit-btn edit-save-btn",
-			textContent: "Save",
+			textContent: I18n.t("modals.common.save"),
 			onclick: () => {
 				const newName = nameInput.value.trim();
 				const newEmail = emailInput.value.trim();
@@ -3275,7 +3367,7 @@ const ContactItem = ({ contact, job }) => {
 		
 		const cancelBtn = h("button", {
 			className: "action-btn cancel-btn edit-cancel-btn",
-			textContent: "Cancel",
+			textContent: I18n.t("modals.common.cancel"),
 			onclick: () => {
 				// Cancel editing - restore original display
 				contactInfoElement.innerHTML = "";
@@ -3328,13 +3420,13 @@ const ContactItem = ({ contact, job }) => {
 				{ className: "contact-actions modal-actions-row" },
 				h("button", {
 					className: "action-btn edit-contact-btn icon-btn-transparent",
-					title: "Edit contact",
+					title: I18n.t("modals.contacts.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit
 				}),
 				h("button", {
 					className: "action-btn archive-btn icon-btn-transparent",
-					title: isArchived ? "Unarchive contact" : "Archive contact",
+					title: isArchived ? I18n.t("modals.contacts.unarchiveTitle") : I18n.t("modals.contacts.archiveTitle"),
 					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
 					onclick: handleArchiveToggle
 				})
@@ -3430,7 +3522,7 @@ const ContactsModal = ({ job, onClose }) => {
 				h(
 					"h3",
 					{ className: "modal-title" },
-					`Contacts for ${job.position} at ${job.company}`,
+					I18n.t("modals.contacts.title", { position: job.position, company: job.company }),
 				),
 				h("button", { className: "modal-close", onclick: onClose }, "×"),
 			),
@@ -3442,7 +3534,7 @@ const ContactsModal = ({ job, onClose }) => {
 					? [
 						h("h4", { 
 							className: "modal-section-header"
-						}, "Active Contacts"),
+						}, I18n.t("modals.contacts.activeSection")),
 						...sortedActiveContacts.map((contact) => ContactItem({ contact, job }))
 					]
 					: [
@@ -3451,7 +3543,7 @@ const ContactsModal = ({ job, onClose }) => {
 							{
 								className: "modal-empty-message"
 							},
-							"No contacts yet. Add your first contact below.",
+							I18n.t("modals.contacts.emptyState"),
 						),
 					]),
 				// Archived contacts section
@@ -3472,7 +3564,7 @@ const ContactsModal = ({ job, onClose }) => {
 							}
 						}, 
 							h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-contacts-icon' }, 'expand_less'),
-							`Archived Contacts (${sortedArchivedContacts.length})`
+							I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
 						),
 						h("div", { 
 							id: "archived-contacts-content"
@@ -3483,27 +3575,27 @@ const ContactsModal = ({ job, onClose }) => {
 				h(
 					"div",
 					{ className: "add-contact-section" },
-					h("h4", { className: "add-contact-title" }, "Add New Contact"),
+					h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
 					h("div", { className: "contact-form-grid" },
 						h("input", {
 							type: "text",
 							className: "add-contact-name",
-							placeholder: "Name",
+							placeholder: I18n.t("modals.contacts.placeholderName"),
 						}),
 						h("input", {
 							type: "email",
 							className: "add-contact-email",
-							placeholder: "Email",
+							placeholder: I18n.t("modals.contacts.placeholderEmail"),
 						}),
 						h("input", {
 							type: "tel",
 							className: "add-contact-phone",
-							placeholder: "Phone",
+							placeholder: I18n.t("modals.contacts.placeholderPhone"),
 						}),
 						h("input", {
 							type: "text",
 							className: "add-contact-company",
-							placeholder: "Company",
+							placeholder: I18n.t("modals.contacts.placeholderCompany"),
 						})
 					)
 				)
@@ -3517,12 +3609,12 @@ const ContactsModal = ({ job, onClose }) => {
 						className: "action-btn edit-btn",
 						onclick: handleAddContact,
 					},
-					"Add Contact",
+					I18n.t("modals.contacts.addButton"),
 				),
 				h(
 					"button",
 					{ className: "action-btn cancel-btn", onclick: onClose },
-					"Close",
+					I18n.t("modals.common.close"),
 				),
 			),
 		),
@@ -3563,13 +3655,13 @@ const getLatestContact = (contacts = []) => {
 
 // Format contact for table display
 const formatContactForTable = (contact) => {
-	if (!contact) return "No contacts";
+	if (!contact) return I18n.t("modals.contacts.noContacts");
 	
 	const parts = [];
 	if (contact.name) parts.push(contact.name);
 	if (contact.email) parts.push(contact.email);
 	
-	return parts.join("<br>") || "Contact";
+	return parts.join("<br>") || I18n.t("modals.contacts.defaultContact");
 };
 
 // Make contact components and functions available globally for Vite
@@ -3627,7 +3719,7 @@ const ContactTextarea = ({ contactPerson = "", contactEmail = "" }) => {
     const contactText = [contactPerson, contactEmail].filter(Boolean).join("\n");
     return TextareaField({
         value: contactText,
-        placeholder: "Name\nEmail",
+        placeholder: I18n.t("forms.placeholderNameEmail"),
         className: "editable contact-textarea",
     });
 };
@@ -3649,15 +3741,15 @@ const createPrioritySelect = (selectedPriority = "medium", disabled = false, cla
         h("option", { 
             value: "high",
             selected: selectedPriority === "high"
-        }, "High"),
+        }, I18n.t("priorities.high")),
         h("option", { 
             value: "medium",
             selected: selectedPriority === "medium"
-        }, "Medium"),
+        }, I18n.t("priorities.medium")),
         h("option", { 
             value: "low",
             selected: selectedPriority === "low"
-        }, "Low")
+        }, I18n.t("priorities.low"))
     );
 };
 
@@ -3678,35 +3770,35 @@ const createPhaseSelect = (selectedPhase = "wishlist", disabled = false, classNa
         h("option", { 
             value: "wishlist",
             selected: selectedPhase === "wishlist"
-        }, "Wishlist"),
+        }, I18n.t("phases.wishlist")),
         h("option", { 
             value: "applied",
             selected: selectedPhase === "applied"
-        }, "Applied"),
+        }, I18n.t("phases.applied")),
         h("option", { 
             value: "phone_screening",
             selected: selectedPhase === "phone_screening"
-        }, "Phone Screening"),
+        }, I18n.t("phases.phone_screening")),
         h("option", { 
             value: "interview",
             selected: selectedPhase === "interview"
-        }, "Interview"),
+        }, I18n.t("phases.interview")),
         h("option", { 
             value: "final_round",
             selected: selectedPhase === "final_round"
-        }, "Final Round"),
+        }, I18n.t("phases.final_round")),
         h("option", { 
             value: "offer",
             selected: selectedPhase === "offer"
-        }, "Offer"),
+        }, I18n.t("phases.offer")),
         h("option", { 
             value: "rejected",
             selected: selectedPhase === "rejected"
-        }, "Rejected"),
+        }, I18n.t("phases.rejected")),
         h("option", { 
             value: "withdrawn",
             selected: selectedPhase === "withdrawn"
-        }, "Withdrawn")
+        }, I18n.t("phases.withdrawn"))
     );
 };
 
@@ -3720,7 +3812,7 @@ const EditActionsCell = ({ jobId, onSave, onCancel }) => {
             {
                 className: "action-btn edit-btn",
                 onclick: (e) => onSave(e.target.closest('button')),
-                title: "Save changes"
+                title: I18n.t("forms.saveChangesTitle")
             },
             h("span", { className: "material-symbols-outlined" }, "save")
         ),
@@ -3729,7 +3821,7 @@ const EditActionsCell = ({ jobId, onSave, onCancel }) => {
             {
                 className: "action-btn cancel-btn",
                 onclick: (e) => onCancel(e.target.closest('button')),
-                title: "Cancel editing"
+                title: I18n.t("forms.cancelEditingTitle")
             },
             h("span", { className: "material-symbols-outlined" }, "close")
         )
