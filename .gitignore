@@ -1,7 +1,3 @@
-# Build output (allow dist/index.html for development, exclude minified)
-dist/
-!dist/index.html
-dist/index.min.html
 
 # Don't ignore gitignore itself
 !.gitignore

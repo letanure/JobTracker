@@ -46,7 +46,7 @@ const NoteItem = ({ note, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleEdit = () => {
@@ -80,7 +80,7 @@ const NoteItem = ({ note, job }) => {
 				noteTextElement.textContent = newText;
 				
 				// Update interface
-				updateStats();
+				refreshInterface();
 			}
 		});
 		
@@ -194,7 +194,7 @@ const NotesModal = ({ job, onClose }) => {
 		textarea.value = "";
 
 		// Update the notes count in the table (refresh interface for count update)
-		updateStats();
+		refreshInterface();
 	};
 
 	return h(

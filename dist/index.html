@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T12:25:36.051Z
+Generated: 2025-06-22T12:29:18.289Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1840,11 +1840,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T12:25:36.048Z
+// Generated: 2025-06-22T12:29:18.284Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T12:25:36.048Z");
+console.log("JobTracker - Built at: 2025-06-22T12:29:18.284Z");
 
 
 // ============================================================================
@@ -2807,7 +2807,7 @@ const NoteItem = ({ note, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleEdit = () => {
@@ -2841,7 +2841,7 @@ const NoteItem = ({ note, job }) => {
 				noteTextElement.textContent = newText;
 				
 				// Update interface
-				updateStats();
+				refreshInterface();
 			}
 		});
 		
@@ -2955,7 +2955,7 @@ const NotesModal = ({ job, onClose }) => {
 		textarea.value = "";
 
 		// Update the notes count in the table (refresh interface for count update)
-		updateStats();
+		refreshInterface();
 	};
 
 	return h(
@@ -3170,7 +3170,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleStatusChange = (newStatus) => {
@@ -3191,7 +3191,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handlePriorityChange = (newPriority) => {
@@ -3212,7 +3212,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleDueDateChange = (newDueDate) => {
@@ -3232,7 +3232,7 @@ const TaskItem = ({ task, job }) => {
 		}
 		
 		// Update interface
-		updateStats();
+		refreshInterface();
 	};
 	
 	const handleEdit = () => {
@@ -3266,7 +3266,7 @@ const TaskItem = ({ task, job }) => {
 				taskTextElement.textContent = newText;
 				
 				// Update interface
-				updateStats();
+				refreshInterface();
 			}
 		});
 		
@@ -3404,7 +3404,7 @@ const TasksModal = ({ job, onClose }) => {
 		textarea.value = "";
 
 		// Update the tasks count in the table (refresh interface for count update)
-		updateStats();
+		refreshInterface();
 	};
 
 	return h(
