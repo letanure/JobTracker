@@ -101,4 +101,8 @@ function updateStaticTexts() {
 	$("#interviewsLabel").text(I18n.t("stats.interviews"));
 	$("#offersLabel").text(I18n.t("stats.offers"));
 	$("#rejectionsLabel").text(I18n.t("stats.rejections"));
+
+	// Update footer text
+	$("#footerMadeWith").text(I18n.t("footer.madeWith"));
+	$("#footerBy").text(I18n.t("footer.by"));
 }

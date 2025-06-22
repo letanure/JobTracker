@@ -217,6 +217,10 @@ I18n.translations = {
 			noDueDate: "No due date",
 			placeholderNameEmail: "Name\nEmail",
 		},
+		footer: {
+			madeWith: "Made with",
+			by: "by",
+		},
 	},
 	pt: {
 		app: {
@@ -377,6 +381,10 @@ I18n.translations = {
 			cancelEditingTitle: "Cancelar edição",
 			noDueDate: "Sem data de vencimento",
 			placeholderNameEmail: "Nome\nEmail",
+		},
+		footer: {
+			madeWith: "Feito com",
+			by: "por",
 		},
 	},
 };
