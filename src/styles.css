@@ -463,7 +463,7 @@ table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-xs); /* Even smaller font for table content - 12px */
 }
 
 th {
@@ -476,10 +476,10 @@ th {
     font-weight: var(--font-weight-semibold);
     border-bottom: var(--border-width) solid var(--border-color);
     white-space: nowrap;
-    font-size: var(--font-size-base);
     color: var(--text-color);
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing-wide);
+    /* Inherits font-size from table */
 }
 
 .header-with-filter {
@@ -539,9 +539,9 @@ td {
     border-bottom: var(--border-width) solid var(--border-light);
     vertical-align: middle;
     background: var(--container-background);
-    font-size: var(--font-size-base);
     font-weight: var(--font-weight-normal);
     color: var(--text-color);
+    /* Inherits font-size from table */
 }
 
 tr {
@@ -620,8 +620,6 @@ tbody tr {
     align-items: center;
     height: 100%;
     min-height: var(--col-6); /* 48px */
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-normal);
 }
 
 .priority-high { background: var(--priority-high); }
@@ -630,31 +628,25 @@ tbody tr {
 
 .company-name {
     font-weight: var(--font-weight-semibold);
-    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: var(--col-28); /* 224px */
-    font-size: var(--font-size-base);
 }
 
 .position-name {
     font-weight: var(--font-weight-semibold);
-    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: var(--col-24); /* 192px */
-    font-size: var(--font-size-base);
 }
 
 .current-phase {
-    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: var(--col-20); /* 160px */
-    font-size: var(--font-size-base);
 }
 
 .next-task {
@@ -666,28 +658,16 @@ tbody tr {
     font-weight: 500;
 }
 
-.salary {
-    font-weight: var(--font-weight-normal);
-    color: var(--text-color);
-    font-size: var(--font-size-base);
-}
+/* .salary - using default td styles */
 
-.location {
-    font-weight: var(--font-weight-normal);
-    color: var(--text-color);
-    font-size: var(--font-size-base);
-}
+/* .location - using default td styles */
 
 .notes {
     max-width: var(--max-width-notes);
     word-wrap: break-word;
-    font-size: var(--font-size-base);
-    color: var(--text-color);
 }
 
 .contact {
-    font-size: var(--font-size-base);
-    color: var(--text-color);
     line-height: var(--line-height-normal);
 }
 
@@ -942,7 +922,7 @@ tbody tr {
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-full);
     font-size: var(--font-size-xs);
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -950,7 +930,7 @@ tbody tr {
     gap: var(--space-1);
     transition: var(--transition-fast);
     box-shadow: var(--shadow-sm);
-    min-width: 24px;
+    min-width: var(--col-3); /* 24px */
     text-align: center;
 }
 
@@ -1150,7 +1130,7 @@ tbody tr {
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-full);
     font-size: var(--font-size-xs);
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -1158,7 +1138,7 @@ tbody tr {
     gap: var(--space-1);
     transition: var(--transition-fast);
     box-shadow: var(--shadow-sm);
-    min-width: 24px;
+    min-width: var(--col-3); /* 24px */
     text-align: center;
 }
 
