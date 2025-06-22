@@ -15,7 +15,8 @@ const PT_TRANSLATIONS = {
 	},
 	kanban: {
 		title: "Quadro de Candidaturas",
-		totalJobs: "{count} candidaturas no total"
+		totalJobs: "{count} candidaturas no total",
+		editJob: "Editar Vaga"
 	},
 	table: {
 		headers: {
@@ -23,6 +24,7 @@ const PT_TRANSLATIONS = {
 			company: "Empresa",
 			position: "Cargo",
 			currentPhase: "Fase Atual",
+			substep: "Subetapa",
 			contactPerson: "Contato",
 			salaryRange: "Salario",
 			sourceUrl: "Link",

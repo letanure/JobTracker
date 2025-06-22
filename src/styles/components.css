@@ -928,6 +928,96 @@ textarea {
 	font-weight: 500;
 }
 
+/* ============================================================================ */
+/* KANBAN JOB EDIT MODAL */
+/* ============================================================================ */
+
+.job-edit-modal {
+	max-width: 600px;
+	width: 100%;
+}
+
+.job-edit-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.form-field.full-width {
+	grid-column: span 2;
+}
+
+.form-field label {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.form-field input,
+.form-field select {
+	width: 100%;
+	padding: 8px 12px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: inherit;
+	background: var(--white);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+}
+
+.form-field input:focus,
+.form-field select:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+.btn-secondary {
+	background: var(--gray-50);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+}
+
+.btn-secondary:hover {
+	background: var(--gray-100);
+	border-color: var(--gray-300);
+}
+
+.btn-primary {
+	background: var(--green-500);
+	color: var(--white);
+	border: var(--border-width) solid var(--green-500);
+}
+
+.btn-primary:hover {
+	background: var(--green-600);
+	border-color: var(--green-600);
+}
+
+/* Responsive form */
+@media (max-width: 640px) {
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+	
+	.form-field.full-width {
+		grid-column: span 1;
+	}
+}
+
 /* Responsive kanban board */
 @media (max-width: 768px) {
 	.kanban-container {

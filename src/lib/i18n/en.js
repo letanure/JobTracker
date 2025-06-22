@@ -15,7 +15,8 @@ const EN_TRANSLATIONS = {
 	},
 	kanban: {
 		title: "Applications Board",
-		totalJobs: "{count} total applications"
+		totalJobs: "{count} total applications",
+		editJob: "Edit Job"
 	},
 	table: {
 		headers: {
@@ -23,6 +24,7 @@ const EN_TRANSLATIONS = {
 			company: "Company",
 			position: "Position",
 			currentPhase: "Stage",
+			substep: "Substep",
 			contactPerson: "Contact",
 			salaryRange: "Salary Range",
 			location: "Location",

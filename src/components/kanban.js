@@ -158,10 +158,8 @@ const KanbanBoard = {
 					openContactsModal(job);
 				}
 			} else {
-				// Handle card click to edit job
-				if (typeof editJob === 'function') {
-					editJob(job);
-				}
+				// Handle card click to edit job in modal
+				KanbanBoard.openJobEditModal(job);
 			}
 		});
 		
@@ -241,6 +239,231 @@ const KanbanBoard = {
 				const column = KanbanBoard.createColumn(phase);
 				boardContainer.appendChild(column);
 			});
+		}
+	},
+
+	// Open job editing modal
+	openJobEditModal: (job) => {
+		const modal = KanbanBoard.createJobEditModal(job);
+		document.body.appendChild(modal);
+	},
+
+	// Create job editing modal
+	createJobEditModal: (job) => {
+		const handleSave = () => {
+			const modal = document.querySelector('.kanban-job-edit-modal');
+			const form = modal.querySelector('form');
+			
+			// Get form values manually
+			const updatedJob = {
+				...job,
+				priority: form.priority.value,
+				company: form.company.value.trim(),
+				position: form.position.value.trim(),
+				phase: form.phase.value,
+				substep: form.substep.value,
+				salaryRange: form.salaryRange.value.trim(),
+				location: form.location.value.trim(),
+				sourceUrl: form.sourceUrl.value.trim()
+			};
+
+			// Validation
+			if (!updatedJob.company || !updatedJob.position) {
+				alert(I18n.t('validation.companyPositionRequired') || 'Company and position are required');
+				return;
+			}
+
+			// Update job in data
+			const jobIndex = jobsData.findIndex(j => j.id === job.id);
+			if (jobIndex !== -1) {
+				Object.assign(jobsData[jobIndex], updatedJob);
+				saveToLocalStorage();
+				
+				// Refresh kanban board
+				KanbanBoard.refresh();
+				
+				// Also refresh main table if visible
+				if (typeof refreshInterface === 'function') {
+					refreshInterface();
+				}
+			}
+
+			// Close modal
+			KanbanBoard.closeJobEditModal();
+		};
+
+		const handleClose = () => {
+			KanbanBoard.closeJobEditModal();
+		};
+
+		// Get unique values for autocomplete
+		const companies = [...new Set(jobsData.map(j => j.company).filter(Boolean))];
+		const positions = [...new Set(jobsData.map(j => j.position).filter(Boolean))];
+		const locations = [...new Set(jobsData.map(j => j.location).filter(Boolean))];
+
+		const modal = h("div", {
+			className: "modal-overlay kanban-job-edit-modal",
+			onclick: (e) => e.target === e.currentTarget && handleClose()
+		},
+			h("div", { className: "modal job-edit-modal" },
+				h("div", { className: "modal-header" },
+					h("h3", { className: "modal-title" }, I18n.t("kanban.editJob") || "Edit Job"),
+					h("button", { className: "modal-close", onclick: handleClose }, "×")
+				),
+				h("div", { className: "modal-body" },
+					h("form", { className: "job-edit-form" },
+						// Priority and Phase row
+						h("div", { className: "form-row" },
+							h("div", { className: "form-field" },
+								h("label", {}, I18n.t("table.headers.priority") || "Priority"),
+								h("select", { name: "priority" },
+									h("option", { value: "high" }, I18n.t("priorities.high") || "High"),
+									h("option", { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
+									h("option", { value: "low" }, I18n.t("priorities.low") || "Low")
+								)
+							),
+							h("div", { className: "form-field" },
+								h("label", {}, I18n.t("table.headers.currentPhase") || "Phase"),
+								h("select", { 
+									name: "phase",
+									onchange: (e) => {
+										const substepSelect = e.target.form.substep;
+										const selectedPhase = e.target.value;
+										const substeps = getSubstepsForPhase(selectedPhase);
+										
+										// Update substep options
+										substepSelect.innerHTML = '';
+										const mainOption = h("option", { value: selectedPhase }, getPhaseText(selectedPhase));
+										substepSelect.appendChild(mainOption);
+										substeps.forEach(substep => {
+											const option = h("option", { value: substep }, getSubstepText(substep));
+											substepSelect.appendChild(option);
+										});
+										substepSelect.value = selectedPhase;
+									}
+								},
+									...PHASES.map(phase => 
+										h("option", { value: phase }, getPhaseText(phase))
+									)
+								)
+							)
+						),
+						
+						// Company and Position row
+						h("div", { className: "form-row" },
+							h("div", { className: "form-field" },
+								h("label", {}, I18n.t("table.headers.company") || "Company"),
+								h("input", {
+									type: "text",
+									name: "company",
+									required: true,
+									list: "companies-list"
+								}),
+								h("datalist", { id: "companies-list" },
+									...companies.map(company => h("option", { value: company }))
+								)
+							),
+							h("div", { className: "form-field" },
+								h("label", {}, I18n.t("table.headers.position") || "Position"),
+								h("input", {
+									type: "text",
+									name: "position",
+									required: true,
+									list: "positions-list"
+								}),
+								h("datalist", { id: "positions-list" },
+									...positions.map(position => h("option", { value: position }))
+								)
+							)
+						),
+
+						// Substep
+						h("div", { className: "form-row" },
+							h("div", { className: "form-field full-width" },
+								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
+								h("select", { name: "substep" },
+									h("option", { value: job.phase }, getPhaseText(job.phase)),
+									...getSubstepsForPhase(job.phase).map(substep =>
+										h("option", { value: substep }, getSubstepText(substep))
+									)
+								)
+							)
+						),
+
+						// Salary and Location row
+						h("div", { className: "form-row" },
+							h("div", { className: "form-field" },
+								h("label", {}, I18n.t("table.headers.salaryRange") || "Salary Range"),
+								h("input", {
+									type: "text",
+									name: "salaryRange",
+									placeholder: "e.g. $50k - $70k"
+								})
+							),
+							h("div", { className: "form-field" },
+								h("label", {}, I18n.t("table.headers.location") || "Location"),
+								h("input", {
+									type: "text",
+									name: "location",
+									list: "locations-list"
+								}),
+								h("datalist", { id: "locations-list" },
+									...locations.map(location => h("option", { value: location }))
+								)
+							)
+						),
+
+						// Source URL
+						h("div", { className: "form-row" },
+							h("div", { className: "form-field full-width" },
+								h("label", {}, I18n.t("table.headers.sourceUrl") || "Source URL"),
+								h("input", {
+									type: "url",
+									name: "sourceUrl",
+									placeholder: "https://"
+								})
+							)
+						)
+					)
+				),
+				h("div", { className: "modal-footer" },
+					h("button", {
+						type: "button",
+						className: "btn-secondary",
+						onclick: handleClose
+					}, I18n.t("modals.common.cancel") || "Cancel"),
+					h("button", {
+						type: "button",
+						className: "btn-primary",
+						onclick: handleSave
+					}, I18n.t("modals.common.save") || "Save")
+				)
+			)
+		);
+
+		// Set form values after modal is created
+		setTimeout(() => {
+			const form = modal.querySelector('form');
+			if (form) {
+				form.priority.value = job.priority;
+				form.phase.value = job.phase;
+				form.company.value = job.company;
+				form.position.value = job.position;
+				form.substep.value = job.substep || job.phase;
+				form.salaryRange.value = job.salaryRange || "";
+				form.location.value = job.location || "";
+				form.sourceUrl.value = job.sourceUrl || "";
+			}
+		}, 0);
+
+		return modal;
+	},
+
+	// Close job editing modal
+	closeJobEditModal: () => {
+		const modal = document.querySelector('.kanban-job-edit-modal');
+		if (modal) {
+			modal.remove();
 		}
 	},
 
