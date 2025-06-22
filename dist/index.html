@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T18:20:30.894Z
+Generated: 2025-06-22T18:28:56.737Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1478,6 +1478,288 @@ textarea {
 	font-weight: inherit;
 }
 
+/* ============================================================================ */
+/* GITHUB-STYLE KANBAN BOARD */
+/* ============================================================================ */
+
+.kanban-container {
+	padding: 24px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.kanban-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.kanban-title {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+}
+
+.kanban-stats {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.kanban-total-jobs {
+	font-size: 14px;
+	color: var(--gray-600);
+	background: var(--gray-100);
+	padding: 4px 12px;
+	border-radius: 12px;
+	font-weight: 500;
+}
+
+.kanban-board {
+	display: flex;
+	gap: 16px;
+	overflow-x: auto;
+	padding: 8px 0;
+	flex: 1;
+	align-items: flex-start;
+}
+
+.kanban-column {
+	min-width: 280px;
+	width: 280px;
+	background: var(--gray-50);
+	border-radius: 12px;
+	border: var(--border-width) solid var(--border-color);
+	display: flex;
+	flex-direction: column;
+	max-height: calc(100vh - 200px);
+	transition: var(--transition-fast);
+}
+
+.kanban-column.drag-active {
+	border-color: var(--blue-300);
+}
+
+.kanban-column.drag-over {
+	background: var(--blue-50);
+	border-color: var(--blue-500);
+	transform: scale(1.02);
+}
+
+.kanban-column-header {
+	padding: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+	background: var(--white);
+	border-radius: 12px 12px 0 0;
+}
+
+.kanban-column-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.kanban-column-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.kanban-column-count {
+	background: var(--gray-200);
+	color: var(--gray-700);
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+	min-width: 20px;
+	text-align: center;
+}
+
+.kanban-column-body {
+	padding: 12px;
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 100px;
+}
+
+.kanban-job-card {
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 8px;
+	padding: 12px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-job-card:hover {
+	border-color: var(--blue-300);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-1px);
+}
+
+.kanban-job-card.dragging {
+	opacity: 0.5;
+	transform: rotate(5deg);
+}
+
+.kanban-priority-dot {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.kanban-priority-dot.priority-high {
+	background: var(--red-500);
+}
+
+.kanban-priority-dot.priority-medium {
+	background: var(--orange-500);
+}
+
+.kanban-priority-dot.priority-low {
+	background: var(--green-500);
+}
+
+.kanban-job-company {
+	font-size: 12px;
+	color: var(--gray-600);
+	font-weight: 500;
+	margin-bottom: 2px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.kanban-job-position {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin-bottom: 6px;
+	line-height: 1.3;
+}
+
+.kanban-job-substep {
+	font-size: 11px;
+	color: var(--blue-600);
+	background: var(--blue-50);
+	padding: 2px 6px;
+	border-radius: 4px;
+	display: inline-block;
+	margin-bottom: 8px;
+	font-weight: 500;
+}
+
+.kanban-job-metadata {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin-bottom: 8px;
+}
+
+.kanban-job-salary {
+	font-size: 12px;
+	color: var(--green-600);
+	font-weight: 500;
+}
+
+.kanban-job-location {
+	font-size: 11px;
+	color: var(--gray-500);
+}
+
+.kanban-job-activities {
+	display: flex;
+	gap: 8px;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--gray-200);
+}
+
+.kanban-activity-indicator {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	background: var(--gray-100);
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 10px;
+	color: var(--gray-600);
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.kanban-activity-indicator:hover {
+	background: var(--gray-200);
+}
+
+.kanban-activity-indicator .material-symbols-outlined {
+	font-size: 12px;
+}
+
+.kanban-activity-indicator.notes {
+	background: var(--blue-50);
+	color: var(--blue-600);
+}
+
+.kanban-activity-indicator.notes:hover {
+	background: var(--blue-100);
+}
+
+.kanban-activity-indicator.tasks {
+	background: var(--green-50);
+	color: var(--green-600);
+}
+
+.kanban-activity-indicator.tasks:hover {
+	background: var(--green-100);
+}
+
+.kanban-activity-indicator.contacts {
+	background: var(--orange-50);
+	color: var(--orange-600);
+}
+
+.kanban-activity-indicator.contacts:hover {
+	background: var(--orange-100);
+}
+
+.kanban-activity-count {
+	font-weight: 500;
+}
+
+/* Responsive kanban board */
+@media (max-width: 768px) {
+	.kanban-container {
+		padding: 16px;
+	}
+	
+	.kanban-board {
+		gap: 12px;
+	}
+	
+	.kanban-column {
+		min-width: 240px;
+		width: 240px;
+	}
+	
+	.kanban-job-card {
+		padding: 10px;
+	}
+}
+
 
 /* ============================================================================ */
 /* SRC/STYLES/TABLE.CSS */
@@ -2095,11 +2377,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T18:20:30.889Z
+// Generated: 2025-06-22T18:28:56.733Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T18:20:30.889Z");
+console.log("JobTracker - Built at: 2025-06-22T18:28:56.733Z");
 
 
 // ============================================================================
@@ -2371,6 +2653,10 @@ const EN_TRANSLATIONS = {
 		jobs: "Jobs",
 		applications: "Applications Board"
 	},
+	kanban: {
+		title: "Applications Board",
+		totalJobs: "{count} total applications"
+	},
 	table: {
 		headers: {
 			priority: "Priority",
@@ -2549,6 +2835,10 @@ const PT_TRANSLATIONS = {
 	tabs: {
 		jobs: "Empregos",
 		applications: "Quadro de Candidaturas"
+	},
+	kanban: {
+		title: "Quadro de Candidaturas",
+		totalJobs: "{count} candidaturas no total"
 	},
 	table: {
 		headers: {
@@ -5491,20 +5781,10 @@ const TabNavigation = {
 		}
 	},
 
-	// Initialize applications board (placeholder for now)
+	// Initialize applications board with kanban
 	initializeApplicationsBoard: () => {
-		const boardContainer = document.querySelector('[data-tab="applications"]');
-		if (boardContainer && !boardContainer.hasChildNodes()) {
-			const placeholder = document.createElement("div");
-			placeholder.className = "board-placeholder";
-			placeholder.innerHTML = `
-				<div class="placeholder-content">
-					<span class="material-symbols-outlined placeholder-icon">view_kanban</span>
-					<h3>Applications Board</h3>
-					<p>Kanban-style board view coming soon...</p>
-				</div>
-			`;
-			boardContainer.appendChild(placeholder);
+		if (typeof KanbanBoard !== 'undefined') {
+			KanbanBoard.init();
 		}
 	},
 
@@ -5532,6 +5812,289 @@ const TabNavigation = {
 		TabNavigation.switchTo(initialTab, true);
 	}
 };
+
+// ============================================================================
+// SRC/COMPONENTS/KANBAN.JS
+// ============================================================================
+
+// ============================================================================
+// KANBAN BOARD COMPONENT
+// ============================================================================
+
+const KanbanBoard = {
+	// Create the kanban board
+	create: () => {
+		const boardContainer = h("div", { className: "kanban-board" });
+		
+		// Create columns for each phase
+		PHASES.forEach(phase => {
+			const column = KanbanBoard.createColumn(phase);
+			boardContainer.appendChild(column);
+		});
+		
+		return boardContainer;
+	},
+
+	// Create a column for a specific phase
+	createColumn: (phase) => {
+		const phaseJobs = jobsData.filter(job => job.phase === phase);
+		const columnTitle = getPhaseText(phase);
+		
+		const column = h("div", { 
+			className: "kanban-column",
+			"data-phase": phase
+		});
+		
+		// Column header with title and count
+		const header = h("div", { className: "kanban-column-header" },
+			h("div", { className: "kanban-column-title" },
+				h("span", { className: "kanban-column-name" }, columnTitle),
+				h("span", { className: "kanban-column-count" }, phaseJobs.length.toString())
+			)
+		);
+		
+		// Column body with job cards
+		const body = h("div", { className: "kanban-column-body" });
+		
+		phaseJobs.forEach(job => {
+			const card = KanbanBoard.createJobCard(job);
+			body.appendChild(card);
+		});
+		
+		// Add drop zone styling
+		body.addEventListener('dragover', KanbanBoard.handleDragOver);
+		body.addEventListener('drop', (e) => KanbanBoard.handleDrop(e, phase));
+		
+		column.appendChild(header);
+		column.appendChild(body);
+		
+		return column;
+	},
+
+	// Create a job card
+	createJobCard: (job) => {
+		const card = h("div", { 
+			className: "kanban-job-card",
+			draggable: true,
+			"data-job-id": job.id
+		});
+		
+		// Add drag event listeners
+		card.addEventListener('dragstart', (e) => KanbanBoard.handleDragStart(e, job));
+		card.addEventListener('dragend', KanbanBoard.handleDragEnd);
+		
+		// Priority indicator
+		const priorityDot = h("div", { 
+			className: `kanban-priority-dot priority-${job.priority}` 
+		});
+		
+		// Company name
+		const company = h("div", { className: "kanban-job-company" }, job.company);
+		
+		// Position title
+		const position = h("div", { className: "kanban-job-position" }, job.position);
+		
+		// Substep if available
+		let substep = null;
+		if (job.substep && job.substep !== job.phase) {
+			substep = h("div", { className: "kanban-job-substep" }, getSubstepText(job.substep));
+		}
+		
+		// Job metadata (salary, location)
+		const metadata = [];
+		if (job.salaryRange) {
+			metadata.push(h("span", { className: "kanban-job-salary" }, job.salaryRange));
+		}
+		if (job.location) {
+			metadata.push(h("span", { className: "kanban-job-location" }, job.location));
+		}
+		
+		const metadataRow = metadata.length > 0 ? 
+			h("div", { className: "kanban-job-metadata" }, ...metadata) : null;
+		
+		// Activity indicators (notes, tasks, contacts)
+		const activities = [];
+		
+		if (job.notes && job.notes.length > 0) {
+			const activeNotes = job.notes.filter(note => !note.archived);
+			if (activeNotes.length > 0) {
+				activities.push(
+					h("span", { 
+						className: "kanban-activity-indicator notes",
+						title: `${activeNotes.length} note${activeNotes.length !== 1 ? 's' : ''}`
+					},
+						h("span", { className: "material-symbols-outlined" }, "note"),
+						h("span", { className: "kanban-activity-count" }, activeNotes.length.toString())
+					)
+				);
+			}
+		}
+		
+		if (job.tasks && job.tasks.length > 0) {
+			const activeTasks = job.tasks.filter(task => !task.archived);
+			const doneTasks = activeTasks.filter(task => task.status === 'done');
+			if (activeTasks.length > 0) {
+				activities.push(
+					h("span", { 
+						className: "kanban-activity-indicator tasks",
+						title: `${doneTasks.length}/${activeTasks.length} tasks completed`
+					},
+						h("span", { className: "material-symbols-outlined" }, "task_alt"),
+						h("span", { className: "kanban-activity-count" }, `${doneTasks.length}/${activeTasks.length}`)
+					)
+				);
+			}
+		}
+		
+		if (job.contacts && job.contacts.length > 0) {
+			const activeContacts = job.contacts.filter(contact => !contact.archived);
+			if (activeContacts.length > 0) {
+				activities.push(
+					h("span", { 
+						className: "kanban-activity-indicator contacts",
+						title: `${activeContacts.length} contact${activeContacts.length !== 1 ? 's' : ''}`
+					},
+						h("span", { className: "material-symbols-outlined" }, "person"),
+						h("span", { className: "kanban-activity-count" }, activeContacts.length.toString())
+					)
+				);
+			}
+		}
+		
+		const activitiesRow = activities.length > 0 ? 
+			h("div", { className: "kanban-job-activities" }, ...activities) : null;
+		
+		// Card click handler to view/edit job
+		card.addEventListener('click', (e) => {
+			if (e.target.closest('.kanban-activity-indicator')) {
+				// Handle activity indicator clicks
+				const indicator = e.target.closest('.kanban-activity-indicator');
+				if (indicator.classList.contains('notes')) {
+					openNotesModal(job);
+				} else if (indicator.classList.contains('tasks')) {
+					openTasksModal(job);
+				} else if (indicator.classList.contains('contacts')) {
+					openContactsModal(job);
+				}
+			} else {
+				// Handle card click to edit job
+				if (typeof editJob === 'function') {
+					editJob(job);
+				}
+			}
+		});
+		
+		// Assemble card
+		card.appendChild(priorityDot);
+		card.appendChild(company);
+		card.appendChild(position);
+		if (substep) card.appendChild(substep);
+		if (metadataRow) card.appendChild(metadataRow);
+		if (activitiesRow) card.appendChild(activitiesRow);
+		
+		return card;
+	},
+
+	// Drag and drop handlers
+	handleDragStart: (e, job) => {
+		e.dataTransfer.setData('text/plain', job.id.toString());
+		e.target.classList.add('dragging');
+		document.querySelectorAll('.kanban-column').forEach(col => {
+			col.classList.add('drag-active');
+		});
+	},
+
+	handleDragEnd: (e) => {
+		e.target.classList.remove('dragging');
+		document.querySelectorAll('.kanban-column').forEach(col => {
+			col.classList.remove('drag-active', 'drag-over');
+		});
+	},
+
+	handleDragOver: (e) => {
+		e.preventDefault();
+		const column = e.currentTarget.closest('.kanban-column');
+		column.classList.add('drag-over');
+	},
+
+	handleDrop: (e, targetPhase) => {
+		e.preventDefault();
+		const jobId = parseInt(e.dataTransfer.getData('text/plain'));
+		const job = jobsData.find(j => j.id === jobId);
+		
+		if (job && job.phase !== targetPhase) {
+			// Update job phase
+			job.phase = targetPhase;
+			// Clear substep if moving to a different phase that doesn't support it
+			if (!getSubstepsForPhase(targetPhase).includes(job.substep)) {
+				job.substep = targetPhase;
+			}
+			
+			// Save changes
+			saveToLocalStorage();
+			
+			// Refresh the kanban board
+			KanbanBoard.refresh();
+			
+			// Also refresh the main table if it's visible
+			if (typeof refreshInterface === 'function') {
+				refreshInterface();
+			}
+		}
+		
+		// Clean up drag styling
+		document.querySelectorAll('.kanban-column').forEach(col => {
+			col.classList.remove('drag-active', 'drag-over');
+		});
+	},
+
+	// Refresh the kanban board
+	refresh: () => {
+		const boardContainer = document.querySelector('.kanban-board');
+		if (boardContainer) {
+			// Clear existing content
+			boardContainer.innerHTML = '';
+			
+			// Recreate columns
+			PHASES.forEach(phase => {
+				const column = KanbanBoard.createColumn(phase);
+				boardContainer.appendChild(column);
+			});
+		}
+	},
+
+	// Initialize the kanban board in the applications tab
+	init: () => {
+		const applicationsTab = document.querySelector('[data-tab="applications"]');
+		if (applicationsTab) {
+			// Clear existing content
+			applicationsTab.innerHTML = '';
+			
+			// Create board header
+			const header = h("div", { className: "kanban-header" },
+				h("h2", { className: "kanban-title" }, I18n.t("kanban.title")),
+				h("div", { className: "kanban-stats" },
+					h("span", { className: "kanban-total-jobs" }, 
+						I18n.t("kanban.totalJobs", { count: jobsData.length })
+					)
+				)
+			);
+			
+			// Create the kanban board
+			const board = KanbanBoard.create();
+			
+			// Add to container
+			const container = h("div", { className: "kanban-container" });
+			container.appendChild(header);
+			container.appendChild(board);
+			
+			applicationsTab.appendChild(container);
+		}
+	}
+};
+
+// Make kanban board available globally
+window.KanbanBoard = KanbanBoard;
 
 // ============================================================================
 // SRC/COMPONENTS/TABLE.JS
@@ -6142,6 +6705,12 @@ function filterByPhase(phase) {
 function refreshInterface() {
 	updateStats();
 	renderJobTable();
+	
+	// Also refresh kanban board if it exists and applications tab is active
+	if (typeof KanbanBoard !== 'undefined' && 
+		TabNavigation && TabNavigation.activeTab === 'applications') {
+		KanbanBoard.refresh();
+	}
 }
 
 // Render job table

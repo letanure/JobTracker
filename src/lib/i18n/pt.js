@@ -13,6 +13,10 @@ const PT_TRANSLATIONS = {
 		jobs: "Empregos",
 		applications: "Quadro de Candidaturas"
 	},
+	kanban: {
+		title: "Quadro de Candidaturas",
+		totalJobs: "{count} candidaturas no total"
+	},
 	table: {
 		headers: {
 			priority: "Prioridade",

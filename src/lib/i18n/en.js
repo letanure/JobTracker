@@ -13,6 +13,10 @@ const EN_TRANSLATIONS = {
 		jobs: "Jobs",
 		applications: "Applications Board"
 	},
+	kanban: {
+		title: "Applications Board",
+		totalJobs: "{count} total applications"
+	},
 	table: {
 		headers: {
 			priority: "Priority",

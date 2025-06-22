@@ -114,20 +114,10 @@ const TabNavigation = {
 		}
 	},
 
-	// Initialize applications board (placeholder for now)
+	// Initialize applications board with kanban
 	initializeApplicationsBoard: () => {
-		const boardContainer = document.querySelector('[data-tab="applications"]');
-		if (boardContainer && !boardContainer.hasChildNodes()) {
-			const placeholder = document.createElement("div");
-			placeholder.className = "board-placeholder";
-			placeholder.innerHTML = `
-				<div class="placeholder-content">
-					<span class="material-symbols-outlined placeholder-icon">view_kanban</span>
-					<h3>Applications Board</h3>
-					<p>Kanban-style board view coming soon...</p>
-				</div>
-			`;
-			boardContainer.appendChild(placeholder);
+		if (typeof KanbanBoard !== 'undefined') {
+			KanbanBoard.init();
 		}
 	},
 

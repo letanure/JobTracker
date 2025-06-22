@@ -139,6 +139,12 @@ function filterByPhase(phase) {
 function refreshInterface() {
 	updateStats();
 	renderJobTable();
+	
+	// Also refresh kanban board if it exists and applications tab is active
+	if (typeof KanbanBoard !== 'undefined' && 
+		TabNavigation && TabNavigation.activeTab === 'applications') {
+		KanbanBoard.refresh();
+	}
 }
 
 // Render job table

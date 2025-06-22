@@ -665,3 +665,285 @@ textarea {
 .tab-text {
 	font-weight: inherit;
 }
+
+/* ============================================================================ */
+/* GITHUB-STYLE KANBAN BOARD */
+/* ============================================================================ */
+
+.kanban-container {
+	padding: 24px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.kanban-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.kanban-title {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+}
+
+.kanban-stats {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.kanban-total-jobs {
+	font-size: 14px;
+	color: var(--gray-600);
+	background: var(--gray-100);
+	padding: 4px 12px;
+	border-radius: 12px;
+	font-weight: 500;
+}
+
+.kanban-board {
+	display: flex;
+	gap: 16px;
+	overflow-x: auto;
+	padding: 8px 0;
+	flex: 1;
+	align-items: flex-start;
+}
+
+.kanban-column {
+	min-width: 280px;
+	width: 280px;
+	background: var(--gray-50);
+	border-radius: 12px;
+	border: var(--border-width) solid var(--border-color);
+	display: flex;
+	flex-direction: column;
+	max-height: calc(100vh - 200px);
+	transition: var(--transition-fast);
+}
+
+.kanban-column.drag-active {
+	border-color: var(--blue-300);
+}
+
+.kanban-column.drag-over {
+	background: var(--blue-50);
+	border-color: var(--blue-500);
+	transform: scale(1.02);
+}
+
+.kanban-column-header {
+	padding: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+	background: var(--white);
+	border-radius: 12px 12px 0 0;
+}
+
+.kanban-column-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.kanban-column-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.kanban-column-count {
+	background: var(--gray-200);
+	color: var(--gray-700);
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+	min-width: 20px;
+	text-align: center;
+}
+
+.kanban-column-body {
+	padding: 12px;
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 100px;
+}
+
+.kanban-job-card {
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 8px;
+	padding: 12px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-job-card:hover {
+	border-color: var(--blue-300);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-1px);
+}
+
+.kanban-job-card.dragging {
+	opacity: 0.5;
+	transform: rotate(5deg);
+}
+
+.kanban-priority-dot {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.kanban-priority-dot.priority-high {
+	background: var(--red-500);
+}
+
+.kanban-priority-dot.priority-medium {
+	background: var(--orange-500);
+}
+
+.kanban-priority-dot.priority-low {
+	background: var(--green-500);
+}
+
+.kanban-job-company {
+	font-size: 12px;
+	color: var(--gray-600);
+	font-weight: 500;
+	margin-bottom: 2px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.kanban-job-position {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin-bottom: 6px;
+	line-height: 1.3;
+}
+
+.kanban-job-substep {
+	font-size: 11px;
+	color: var(--blue-600);
+	background: var(--blue-50);
+	padding: 2px 6px;
+	border-radius: 4px;
+	display: inline-block;
+	margin-bottom: 8px;
+	font-weight: 500;
+}
+
+.kanban-job-metadata {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin-bottom: 8px;
+}
+
+.kanban-job-salary {
+	font-size: 12px;
+	color: var(--green-600);
+	font-weight: 500;
+}
+
+.kanban-job-location {
+	font-size: 11px;
+	color: var(--gray-500);
+}
+
+.kanban-job-activities {
+	display: flex;
+	gap: 8px;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--gray-200);
+}
+
+.kanban-activity-indicator {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	background: var(--gray-100);
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 10px;
+	color: var(--gray-600);
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.kanban-activity-indicator:hover {
+	background: var(--gray-200);
+}
+
+.kanban-activity-indicator .material-symbols-outlined {
+	font-size: 12px;
+}
+
+.kanban-activity-indicator.notes {
+	background: var(--blue-50);
+	color: var(--blue-600);
+}
+
+.kanban-activity-indicator.notes:hover {
+	background: var(--blue-100);
+}
+
+.kanban-activity-indicator.tasks {
+	background: var(--green-50);
+	color: var(--green-600);
+}
+
+.kanban-activity-indicator.tasks:hover {
+	background: var(--green-100);
+}
+
+.kanban-activity-indicator.contacts {
+	background: var(--orange-50);
+	color: var(--orange-600);
+}
+
+.kanban-activity-indicator.contacts:hover {
+	background: var(--orange-100);
+}
+
+.kanban-activity-count {
+	font-weight: 500;
+}
+
+/* Responsive kanban board */
+@media (max-width: 768px) {
+	.kanban-container {
+		padding: 16px;
+	}
+	
+	.kanban-board {
+		gap: 12px;
+	}
+	
+	.kanban-column {
+		min-width: 240px;
+		width: 240px;
+	}
+	
+	.kanban-job-card {
+		padding: 10px;
+	}
+}
