@@ -18,7 +18,7 @@ const KanbanBoard = {
 
 	// Create a column for a specific phase
 	createColumn: (phase) => {
-		const phaseJobs = jobsData.filter(job => job.phase === phase);
+		const phaseJobs = jobsData.filter(job => job.currentPhase === phase);
 		const columnTitle = getPhaseText(phase);
 		
 		const column = h("div", { 
@@ -77,8 +77,8 @@ const KanbanBoard = {
 		
 		// Substep if available
 		let substep = null;
-		if (job.substep && job.substep !== job.phase) {
-			substep = h("div", { className: "kanban-job-substep" }, getSubstepText(job.substep));
+		if (job.currentSubstep && job.currentSubstep !== job.currentPhase) {
+			substep = h("div", { className: "kanban-job-substep" }, getSubstepText(job.currentSubstep));
 		}
 		
 		// Job metadata (salary, location)
@@ -201,12 +201,12 @@ const KanbanBoard = {
 		const jobId = parseInt(e.dataTransfer.getData('text/plain'));
 		const job = jobsData.find(j => j.id === jobId);
 		
-		if (job && job.phase !== targetPhase) {
+		if (job && job.currentPhase !== targetPhase) {
 			// Update job phase
-			job.phase = targetPhase;
+			job.currentPhase = targetPhase;
 			// Clear substep if moving to a different phase that doesn't support it
-			if (!getSubstepsForPhase(targetPhase).includes(job.substep)) {
-				job.substep = targetPhase;
+			if (!getSubstepsForPhase(targetPhase).includes(job.currentSubstep)) {
+				job.currentSubstep = targetPhase;
 			}
 			
 			// Save changes
@@ -260,8 +260,8 @@ const KanbanBoard = {
 				priority: form.priority.value,
 				company: form.company.value.trim(),
 				position: form.position.value.trim(),
-				phase: form.phase.value,
-				substep: form.substep.value,
+				currentPhase: form.phase.value,
+				currentSubstep: form.substep.value,
 				salaryRange: form.salaryRange.value.trim(),
 				location: form.location.value.trim(),
 				sourceUrl: form.sourceUrl.value.trim()
@@ -382,8 +382,8 @@ const KanbanBoard = {
 							h("div", { className: "form-field full-width" },
 								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
 								h("select", { name: "substep" },
-									h("option", { value: job.phase }, getPhaseText(job.phase)),
-									...getSubstepsForPhase(job.phase).map(substep =>
+									h("option", { value: job.currentPhase }, getPhaseText(job.currentPhase)),
+									...getSubstepsForPhase(job.currentPhase).map(substep =>
 										h("option", { value: substep }, getSubstepText(substep))
 									)
 								)
@@ -446,10 +446,10 @@ const KanbanBoard = {
 			const form = modal.querySelector('form');
 			if (form) {
 				form.priority.value = job.priority;
-				form.phase.value = job.phase;
+				form.phase.value = job.currentPhase;
 				form.company.value = job.company;
 				form.position.value = job.position;
-				form.substep.value = job.substep || job.phase;
+				form.substep.value = job.currentSubstep || job.currentPhase;
 				form.salaryRange.value = job.salaryRange || "";
 				form.location.value = job.location || "";
 				form.sourceUrl.value = job.sourceUrl || "";

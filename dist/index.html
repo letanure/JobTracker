@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T18:35:54.415Z
+Generated: 2025-06-22T18:49:51.748Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1824,7 +1824,7 @@ textarea {
 	.form-row {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.form-field.full-width {
 		grid-column: span 1;
 	}
@@ -1835,16 +1835,16 @@ textarea {
 	.kanban-container {
 		padding: 16px;
 	}
-	
+
 	.kanban-board {
 		gap: 12px;
 	}
-	
+
 	.kanban-column {
 		min-width: 240px;
 		width: 240px;
 	}
-	
+
 	.kanban-job-card {
 		padding: 10px;
 	}
@@ -2467,11 +2467,11 @@ tr.editing .actions-cell button {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T18:35:54.410Z
+// Generated: 2025-06-22T18:49:51.744Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T18:35:54.410Z");
+console.log("JobTracker - Built at: 2025-06-22T18:49:51.744Z");
 
 
 // ============================================================================
@@ -5931,7 +5931,7 @@ const KanbanBoard = {
 
 	// Create a column for a specific phase
 	createColumn: (phase) => {
-		const phaseJobs = jobsData.filter(job => job.phase === phase);
+		const phaseJobs = jobsData.filter(job => job.currentPhase === phase);
 		const columnTitle = getPhaseText(phase);
 		
 		const column = h("div", { 
@@ -5990,8 +5990,8 @@ const KanbanBoard = {
 		
 		// Substep if available
 		let substep = null;
-		if (job.substep && job.substep !== job.phase) {
-			substep = h("div", { className: "kanban-job-substep" }, getSubstepText(job.substep));
+		if (job.currentSubstep && job.currentSubstep !== job.currentPhase) {
+			substep = h("div", { className: "kanban-job-substep" }, getSubstepText(job.currentSubstep));
 		}
 		
 		// Job metadata (salary, location)
@@ -6114,12 +6114,12 @@ const KanbanBoard = {
 		const jobId = parseInt(e.dataTransfer.getData('text/plain'));
 		const job = jobsData.find(j => j.id === jobId);
 		
-		if (job && job.phase !== targetPhase) {
+		if (job && job.currentPhase !== targetPhase) {
 			// Update job phase
-			job.phase = targetPhase;
+			job.currentPhase = targetPhase;
 			// Clear substep if moving to a different phase that doesn't support it
-			if (!getSubstepsForPhase(targetPhase).includes(job.substep)) {
-				job.substep = targetPhase;
+			if (!getSubstepsForPhase(targetPhase).includes(job.currentSubstep)) {
+				job.currentSubstep = targetPhase;
 			}
 			
 			// Save changes
@@ -6173,8 +6173,8 @@ const KanbanBoard = {
 				priority: form.priority.value,
 				company: form.company.value.trim(),
 				position: form.position.value.trim(),
-				phase: form.phase.value,
-				substep: form.substep.value,
+				currentPhase: form.phase.value,
+				currentSubstep: form.substep.value,
 				salaryRange: form.salaryRange.value.trim(),
 				location: form.location.value.trim(),
 				sourceUrl: form.sourceUrl.value.trim()
@@ -6295,8 +6295,8 @@ const KanbanBoard = {
 							h("div", { className: "form-field full-width" },
 								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
 								h("select", { name: "substep" },
-									h("option", { value: job.phase }, getPhaseText(job.phase)),
-									...getSubstepsForPhase(job.phase).map(substep =>
+									h("option", { value: job.currentPhase }, getPhaseText(job.currentPhase)),
+									...getSubstepsForPhase(job.currentPhase).map(substep =>
 										h("option", { value: substep }, getSubstepText(substep))
 									)
 								)
@@ -6359,10 +6359,10 @@ const KanbanBoard = {
 			const form = modal.querySelector('form');
 			if (form) {
 				form.priority.value = job.priority;
-				form.phase.value = job.phase;
+				form.phase.value = job.currentPhase;
 				form.company.value = job.company;
 				form.position.value = job.position;
-				form.substep.value = job.substep || job.phase;
+				form.substep.value = job.currentSubstep || job.currentPhase;
 				form.salaryRange.value = job.salaryRange || "";
 				form.location.value = job.location || "";
 				form.sourceUrl.value = job.sourceUrl || "";

@@ -1012,7 +1012,7 @@ textarea {
 	.form-row {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.form-field.full-width {
 		grid-column: span 1;
 	}
@@ -1023,16 +1023,16 @@ textarea {
 	.kanban-container {
 		padding: 16px;
 	}
-	
+
 	.kanban-board {
 		gap: 12px;
 	}
-	
+
 	.kanban-column {
 		min-width: 240px;
 		width: 240px;
 	}
-	
+
 	.kanban-job-card {
 		padding: 10px;
 	}
