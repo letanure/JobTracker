@@ -865,9 +865,10 @@ tbody tr {
 
 /* Modern Notes and Tasks Counters */
 .notes-count {
-    background: var(--primary-color);
-    color: var(--text-on-primary);
-    padding: var(--space-1) var(--space-3);
+    background: var(--background-color);
+    color: var(--text-color);
+    border: var(--border-width) solid var(--border-color);
+    padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-full);
     font-size: var(--font-size-xs);
     font-weight: 600;
@@ -875,30 +876,24 @@ tbody tr {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 24px;
-    height: var(--btn-height-sm);
+    gap: var(--space-1);
     transition: var(--transition-fast);
     box-shadow: var(--shadow-sm);
+    min-width: 24px;
+    text-align: center;
 }
 
 .notes-count:hover {
-    background: var(--primary-hover);
+    background: var(--container-background);
+    border-color: var(--text-light);
     transform: scale(1.05);
     box-shadow: var(--shadow-md);
 }
 
-/* Common zero state for counters */
+/* Common zero state for counters - no special styling */
 .notes-count.zero,
 .tasks-count.zero {
-    background: var(--text-lighter);
-    cursor: default;
-    color: var(--text-on-dark);
-}
-
-.notes-count.zero:hover,
-.tasks-count.zero:hover {
-    background: var(--text-lighter);
-    transform: none;
+    /* Inherits regular counter styling */
 }
 
 /* Common item card styles */
@@ -1076,7 +1071,7 @@ tbody tr {
     font-style: normal;
 }
 
-/* Modern Tasks Counter */
+/* Modern Tasks Counter - same as notes counter */
 .tasks-count {
     background: var(--background-color);
     color: var(--text-color);
@@ -1092,6 +1087,8 @@ tbody tr {
     gap: var(--space-1);
     transition: var(--transition-fast);
     box-shadow: var(--shadow-sm);
+    min-width: 24px;
+    text-align: center;
 }
 
 .tasks-count:hover {
@@ -1107,25 +1104,20 @@ tbody tr {
 .task-count-in-progress,
 .task-count-done {
     font-weight: 700;
-    padding: 2px 6px;
-    border-radius: var(--radius-sm);
-    min-width: 16px;
+    min-width: 8px;
     text-align: center;
 }
 
 .task-count-todo {
-    color: var(--status-applied-text);
-    background: var(--status-applied-bg);
+    color: inherit;
 }
 
 .task-count-in-progress {
-    color: var(--status-interview-text);
-    background: var(--status-interview-bg);
+    color: inherit;
 }
 
 .task-count-done {
-    color: var(--status-offer-text);
-    background: var(--status-offer-bg);
+    color: inherit;
 }
 
 .task-count-separator {
