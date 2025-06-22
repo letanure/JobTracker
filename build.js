@@ -172,7 +172,11 @@ function replaceSEOPlaceholders(html, language = 'en') {
   
   const seo = langTranslations.seo;
   const ogLocale = language === 'pt' ? 'pt_BR' : 'en_US';
-  const canonicalUrl = 'https://letanure.github.io/job-tracker-plain/';
+  const baseUrl = 'https://letanure.github.io/job-tracker-plain/';
+  const canonicalUrl = language === 'en' ? baseUrl : `${baseUrl}?lang=${language}`;
+  
+  // Generate hreflang links
+  const hreflangLinks = generateHreflangLinks(baseUrl, translations);
 
   return html
     .replace(/\{\{LANG\}\}/g, language)
@@ -185,7 +189,27 @@ function replaceSEOPlaceholders(html, language = 'en') {
     .replace(/\{\{SEO_TWITTER_TITLE\}\}/g, seo.twitterTitle)
     .replace(/\{\{SEO_TWITTER_DESCRIPTION\}\}/g, seo.twitterDescription)
     .replace(/\{\{OG_LOCALE\}\}/g, ogLocale)
-    .replace(/\{\{CANONICAL_URL\}\}/g, canonicalUrl);
+    .replace(/\{\{CANONICAL_URL\}\}/g, canonicalUrl)
+    .replace(/\{\{HREFLANG_LINKS\}\}/g, hreflangLinks);
+}
+
+/**
+ * Generate hreflang links for all available languages
+ */
+function generateHreflangLinks(baseUrl, translations) {
+  const languages = Object.keys(translations);
+  const links = [];
+  
+  // Add hreflang links for each language
+  languages.forEach(lang => {
+    const href = lang === 'en' ? baseUrl : `${baseUrl}?lang=${lang}`;
+    links.push(`    <link rel="alternate" hreflang="${lang}" href="${href}">`);
+  });
+  
+  // Add x-default hreflang (English as default)
+  links.push(`    <link rel="alternate" hreflang="x-default" href="${baseUrl}">`);
+  
+  return links.join('\n');
 }
 
 /**

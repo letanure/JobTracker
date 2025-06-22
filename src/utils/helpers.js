@@ -69,9 +69,9 @@ function createOption(value, text, selected = false) {
 // Helper function for task status text
 const getTaskStatusText = (statusKey) => {
 	const statusMap = {
-		'todo': I18n.t('modals.tasks.statusTodo'),
-		'in-progress': I18n.t('modals.tasks.statusInProgress'), 
-		'done': I18n.t('modals.tasks.statusDone')
+		todo: I18n.t("modals.tasks.statusTodo"),
+		"in-progress": I18n.t("modals.tasks.statusInProgress"),
+		done: I18n.t("modals.tasks.statusDone"),
 	};
 	return statusMap[statusKey] || statusKey;
 };
@@ -110,42 +110,124 @@ function updateStaticTexts() {
 
 // Initialize language switcher
 function initializeLanguageSwitcher() {
-	console.log("Initializing language switcher...");
 	const container = $("#languageSwitcher");
-	console.log("Container found:", !!container);
-	
+
 	if (container) {
-		console.log("Creating language switcher...");
 		const switcher = LanguageSwitcher.create();
-		console.log("Switcher created:", !!switcher);
-		
 		container.get().innerHTML = "";
 		container.get().appendChild(switcher);
 		LanguageSwitcher.init();
-		
-		console.log("Language switcher initialized");
-	} else {
-		console.error("Language switcher container not found!");
 	}
+}
+
+// Update meta tags for current language
+function updateMetaTags() {
+	const lang = I18n.currentLanguage;
+	const translations = I18n.translations[lang];
+
+	if (!translations || !translations.seo) return;
+
+	const seo = translations.seo;
+	const ogLocale = lang === "pt" ? "pt_BR" : "en_US";
+	const baseUrl = "http://jobtracker.cv/";
+	const currentUrl = lang === "en" ? baseUrl : `${baseUrl}?lang=${lang}`;
+
+	// Update title
+	document.title = seo.title;
+
+	// Update meta tags
+	updateMetaTag("name", "description", seo.description);
+	updateMetaTag("name", "keywords", seo.keywords);
+	updateMetaTag("name", "author", seo.author);
+	updateMetaTag("name", "language", lang);
+
+	// Update Open Graph tags
+	updateMetaTag("property", "og:title", seo.ogTitle);
+	updateMetaTag("property", "og:description", seo.ogDescription);
+	updateMetaTag("property", "og:url", currentUrl);
+	updateMetaTag("property", "og:locale", ogLocale);
+
+	// Update Twitter Card tags
+	updateMetaTag("name", "twitter:title", seo.twitterTitle);
+	updateMetaTag("name", "twitter:description", seo.twitterDescription);
+
+	// Update canonical URL
+	updateCanonicalUrl(currentUrl);
+
+	// Update hreflang links
+	updateHreflangLinks(baseUrl);
+}
+
+// Helper function to update a meta tag
+function updateMetaTag(attribute, name, content) {
+	let meta = document.querySelector(`meta[${attribute}="${name}"]`);
+	if (!meta) {
+		meta = document.createElement("meta");
+		meta.setAttribute(attribute, name);
+		document.head.appendChild(meta);
+	}
+	meta.setAttribute("content", content);
+}
+
+// Helper function to update canonical URL
+function updateCanonicalUrl(url) {
+	let canonical = document.querySelector('link[rel="canonical"]');
+	if (!canonical) {
+		canonical = document.createElement("link");
+		canonical.setAttribute("rel", "canonical");
+		document.head.appendChild(canonical);
+	}
+	canonical.setAttribute("href", url);
+}
+
+// Helper function to update hreflang links
+function updateHreflangLinks(baseUrl) {
+	// Remove existing hreflang links
+	document.querySelectorAll("link[hreflang]").forEach((link) => link.remove());
+
+	// Add hreflang links for each language
+	CONFIG.languages.forEach((language) => {
+		const link = document.createElement("link");
+		link.setAttribute("rel", "alternate");
+		link.setAttribute("hreflang", language.code);
+
+		if (language.code === "en") {
+			link.setAttribute("href", baseUrl);
+		} else {
+			link.setAttribute("href", `${baseUrl}?lang=${language.code}`);
+		}
+
+		document.head.appendChild(link);
+	});
+
+	// Add x-default hreflang (English as default)
+	const defaultLink = document.createElement("link");
+	defaultLink.setAttribute("rel", "alternate");
+	defaultLink.setAttribute("hreflang", "x-default");
+	defaultLink.setAttribute("href", baseUrl);
+	document.head.appendChild(defaultLink);
 }
 
 // Global function to update UI language - called when language changes
 function updateUILanguage() {
 	// Update all static texts
 	updateStaticTexts();
-	
+
+	// Update meta tags for SEO
+	updateMetaTags();
+
 	// Update language switcher
-	if (typeof LanguageSwitcher !== 'undefined') {
+	if (typeof LanguageSwitcher !== "undefined") {
 		LanguageSwitcher.updateUI();
 	}
-	
+
 	// Update filter dropdowns with new language
-	if (typeof setupFilters === 'function') {
+	if (typeof setupFilters === "function") {
 		setupFilters();
 	}
-	
+
 	// Re-render the table to update all dynamic content
-	if (typeof refreshInterface === 'function') {
+	if (typeof refreshInterface === "function") {
 		refreshInterface();
 	}
 }

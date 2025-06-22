@@ -9,6 +9,7 @@ function initializeApp() {
 	
 	// Always set up UI structure first to prevent blinking
 	updateStaticTexts();
+	updateMetaTags(); // Update meta tags for current language
 	setupEventListeners();
 	setupFilters();
 	

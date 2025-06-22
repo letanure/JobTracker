@@ -5,13 +5,8 @@
 const LanguageSwitcher = {
 	// Create the language switcher HTML
 	create: () => {
-		console.log("Creating language switcher...");
-		console.log("CONFIG.languages:", CONFIG.languages);
-		console.log("I18n.currentLanguage:", I18n.currentLanguage);
-		
 		// Get current language info
 		const currentLang = CONFIG.languages.find(lang => lang.code === I18n.currentLanguage) || CONFIG.languages[0];
-		console.log("Current language:", currentLang);
 		
 		// Create button using simple DOM creation instead of h() function
 		const button = document.createElement("button");
@@ -82,7 +77,6 @@ const LanguageSwitcher = {
 		// Add click event listener to button
 		button.addEventListener('click', () => LanguageSwitcher.toggle());
 
-		console.log("Language switcher DOM created:", container);
 		return container;
 	},
 

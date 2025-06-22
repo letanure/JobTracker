@@ -287,6 +287,7 @@ I18n.translations = {
 				contactEmail: "Email do Contato",
 				salaryRange: "Faixa Salarial",
 				location: "Localização",
+				sourceUrl: "URL da Vaga",
 			},
 		},
 		priorities: {
