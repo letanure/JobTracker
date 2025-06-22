@@ -226,13 +226,40 @@
     
     /* Modern typography */
     --font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-    --font-size-xs: 11px;
-    --font-size-sm: 12px;
-    --font-size-base: 14px;
-    --font-size-lg: 16px;
-    --font-size-xl: 18px;
-    --font-size-2xl: 24px;
-    --font-size-3xl: 30px;
+    
+    /* Typography scale - using rem for better accessibility */
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+    --font-size-3xl: 1.875rem;  /* 30px */
+    
+    /* Line height scale */
+    --line-height-none: 1;
+    --line-height-tight: 1.25;
+    --line-height-snug: 1.375;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.625;
+    --line-height-loose: 2;
+    
+    /* Letter spacing scale */
+    --letter-spacing-tighter: -0.05em;
+    --letter-spacing-tight: -0.025em;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 0.025em;
+    --letter-spacing-wider: 0.05em;
+    --letter-spacing-widest: 0.1em;
+    
+    /* Font weight scale */
+    --font-weight-thin: 100;
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
     
     /* Modern spacing system */
     --space-1: 4px;
@@ -243,6 +270,31 @@
     --space-6: 24px;
     --space-8: 32px;
     --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
+    
+    /* Grid column system - based on 8px grid */
+    --col-1: 8px;    /* 1 × 8px */
+    --col-2: 16px;   /* 2 × 8px */
+    --col-3: 24px;   /* 3 × 8px */
+    --col-4: 32px;   /* 4 × 8px */
+    --col-5: 40px;   /* 5 × 8px */
+    --col-6: 48px;   /* 6 × 8px */
+    --col-8: 64px;   /* 8 × 8px */
+    --col-10: 80px;  /* 10 × 8px */
+    --col-12: 96px;  /* 12 × 8px */
+    --col-16: 128px; /* 16 × 8px */
+    --col-20: 160px; /* 20 × 8px */
+    --col-24: 192px; /* 24 × 8px */
+    --col-28: 224px; /* 28 × 8px */
+    --col-32: 256px; /* 32 × 8px */
+    --col-36: 288px; /* 36 × 8px */
+    --col-40: 320px; /* 40 × 8px */
+    --col-48: 384px; /* 48 × 8px */
+    --col-56: 448px; /* 56 × 8px */
+    --col-64: 512px; /* 64 × 8px */
     
     --padding-xs: 4px 8px;
     --padding-sm: 6px 12px;
@@ -267,7 +319,7 @@
     
     /* Layout constraints */
     --max-width-container: 1200px;
-    --max-width-notes: 240px;
+    --max-width-notes: var(--col-32); /* 256px */
     --max-height-table: 75vh;
     
     /* Enhanced design tokens for better consistency */
@@ -310,13 +362,18 @@
     --priority-dot-size: 8px;
 }
 
+/* Base font size for rem calculations */
+html {
+    font-size: 16px; /* 1rem = 16px */
+}
+
 body {
     font-family: var(--font-family);
     margin: 0;
     padding: var(--space-6);
     background-color: var(--background-color);
     font-size: var(--font-size-base);
-    line-height: 1.5;
+    line-height: var(--line-height-normal);
     color: var(--text-color);
 }
 
@@ -416,13 +473,13 @@ th {
     z-index: var(--z-dropdown);
     padding: var(--space-4) var(--space-3);
     text-align: left;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     border-bottom: var(--border-width) solid var(--border-color);
     white-space: nowrap;
     font-size: var(--font-size-base);
     color: var(--text-color);
     text-transform: uppercase;
-    letter-spacing: 0.025em;
+    letter-spacing: var(--letter-spacing-wide);
 }
 
 .header-with-filter {
@@ -483,7 +540,7 @@ td {
     vertical-align: middle;
     background: var(--container-background);
     font-size: var(--font-size-base);
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
     color: var(--text-color);
 }
 
@@ -562,9 +619,9 @@ tbody tr {
     display: flex;
     align-items: center;
     height: 100%;
-    min-height: 48px;
+    min-height: var(--col-6); /* 48px */
     font-size: var(--font-size-base);
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
 }
 
 .priority-high { background: var(--priority-high); }
@@ -572,22 +629,22 @@ tbody tr {
 .priority-low { background: var(--priority-low); }
 
 .company-name {
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
+    max-width: var(--col-28); /* 224px */
     font-size: var(--font-size-base);
 }
 
 .position-name {
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 180px;
+    max-width: var(--col-24); /* 192px */
     font-size: var(--font-size-base);
 }
 
@@ -596,7 +653,7 @@ tbody tr {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px;
+    max-width: var(--col-20); /* 160px */
     font-size: var(--font-size-base);
 }
 
@@ -610,13 +667,13 @@ tbody tr {
 }
 
 .salary {
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
     color: var(--text-color);
     font-size: var(--font-size-base);
 }
 
 .location {
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
     color: var(--text-color);
     font-size: var(--font-size-base);
 }
@@ -631,7 +688,7 @@ tbody tr {
 .contact {
     font-size: var(--font-size-base);
     color: var(--text-color);
-    line-height: 1.5;
+    line-height: var(--line-height-normal);
 }
 
 .date {
@@ -960,7 +1017,7 @@ tbody tr {
 .note-text,
 .task-text {
     font-size: var(--font-size-base);
-    line-height: 1.5;
+    line-height: var(--line-height-normal);
     white-space: pre-wrap;
     color: var(--text-color);
 }

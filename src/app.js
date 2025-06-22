@@ -358,6 +358,8 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 		// Restore original HTML for non-empty jobs
 		row.innerHTML = atob(originalHTMLBase64);
 		row.classList.remove("editing");
+		// Ensure the data-job-id attribute is preserved
+		row.setAttribute("data-job-id", jobId);
 	}
 }
 
