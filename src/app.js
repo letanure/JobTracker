@@ -241,11 +241,11 @@ function editJob(job) {
 				).join("")}
 			</select>
 		</td>
-		<td>
-			<input type="text" class="inline-edit" data-field="contactPerson" value="${job.contactPerson || ""}" 
-				placeholder="${I18n.t("table.placeholders.contactPerson")}">
-			<input type="email" class="inline-edit" data-field="contactEmail" value="${job.contactEmail || ""}" 
-				placeholder="${I18n.t("table.placeholders.contactEmail")}" style="margin-top: 4px;">
+		<td class="contact" data-job-id="${job.id}">
+			${ContactsCount({
+				contacts: job.contacts || [],
+				onClick: null, // Will be attached after rendering
+			}).outerHTML}
 		</td>
 		<td>
 			<input type="text" class="inline-edit" data-field="salaryRange" value="${job.salaryRange || ""}" 
@@ -288,9 +288,10 @@ function editJob(job) {
 	const firstInput = row.querySelector('input[data-field="company"]');
 	if (firstInput) firstInput.focus();
 	
-	// Attach click handlers for notes and tasks
+	// Attach click handlers for notes, tasks, and contacts
 	const notesCell = row.querySelector('.notes .notes-count');
 	const tasksCell = row.querySelector('.tasks .tasks-count');
+	const contactsCell = row.querySelector('.contact .contacts-count');
 	
 	if (notesCell) {
 		notesCell.addEventListener('click', () => openNotesModal(job));
@@ -298,6 +299,10 @@ function editJob(job) {
 	
 	if (tasksCell) {
 		tasksCell.addEventListener('click', () => openTasksModal(job));
+	}
+	
+	if (contactsCell) {
+		contactsCell.addEventListener('click', () => openContactsModal(job));
 	}
 	
 	// Handle Enter key to save, Escape to cancel
