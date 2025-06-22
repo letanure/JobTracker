@@ -245,7 +245,7 @@
 	/* ============================================================================ */
 
 	/* Core base values for calculations */
-	--base-font-size: 2rem; /* Typography base - scales all fonts */
+	--base-font-size: 1rem; /* Typography base - scales all fonts */
 	--base-line-height: 1.5; /* Line height base - scales all line heights */
 	--base-letter-spacing: 0.025em; /* Letter spacing base - scales all letter spacing */
 	--base-space-unit: 4px; /* Spacing base - scales all spacing/padding/margins */
