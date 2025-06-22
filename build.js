@@ -38,8 +38,11 @@ const BUILD_CONFIG = {
     'src/components/tabs.js',
     'src/components/table.js',
     
-    // Main application
-    'src/app.js'
+    // Application modules
+    'src/app/stats.js',
+    'src/app/events.js',
+    'src/app/editing.js',
+    'src/app/init.js'
   ],
   
   // CSS files to inline
@@ -142,30 +145,41 @@ function minifyHTML(html) {
 
 /**
  * Replace SEO placeholders with translated content
- * Uses translations from i18n.js file
+ * Uses translations from separate language files
  */
 function replaceSEOPlaceholders(html, language = 'en') {
-  // Load i18n module to access translations
-  const i18nPath = path.join(__dirname, 'src/lib/i18n.js');
-  const i18nContent = readFile(i18nPath);
+  // Load translation files directly
+  const enPath = path.join(__dirname, 'src/lib/i18n/en.js');
+  const ptPath = path.join(__dirname, 'src/lib/i18n/pt.js');
   
-  if (!i18nContent) {
-    console.error('❌ Could not load i18n translations for SEO');
-    return html;
-  }
+  const enContent = readFile(enPath);
+  const ptContent = readFile(ptPath);
   
-  // Extract translations object from i18n.js
-  // This is a simple regex-based extraction since we can't require the module directly
-  const translationsMatch = i18nContent.match(/I18n\.translations\s*=\s*(\{[\s\S]*\});/);
-  if (!translationsMatch) {
-    console.error('❌ Could not parse translations from i18n.js');
+  if (!enContent || !ptContent) {
+    console.error('❌ Could not load translation files for SEO');
     return html;
   }
   
   let translations;
   try {
-    // Evaluate the translations object
-    eval(`translations = ${translationsMatch[1]}`);
+    // Extract translation constants from files
+    const enMatch = enContent.match(/const EN_TRANSLATIONS\s*=\s*(\{[\s\S]*\});/);
+    const ptMatch = ptContent.match(/const PT_TRANSLATIONS\s*=\s*(\{[\s\S]*\});/);
+    
+    if (!enMatch || !ptMatch) {
+      console.error('❌ Could not parse translation constants');
+      return html;
+    }
+    
+    // Evaluate the translation objects
+    let EN_TRANSLATIONS, PT_TRANSLATIONS;
+    eval(`EN_TRANSLATIONS = ${enMatch[1]}`);
+    eval(`PT_TRANSLATIONS = ${ptMatch[1]}`);
+    
+    translations = {
+      en: EN_TRANSLATIONS,
+      pt: PT_TRANSLATIONS
+    };
   } catch (error) {
     console.error('❌ Error parsing translations:', error.message);
     return html;
