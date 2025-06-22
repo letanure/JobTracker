@@ -1,7 +1,7 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-22T13:34:30.577Z
+Generated: 2025-06-22T13:39:43.177Z
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -1874,7 +1874,8 @@ body {
 }
 
 .editable-cell:hover::after {
-	content: "✏️";
+	content: "edit";
+	font-family: 'Material Symbols Outlined';
 	position: absolute;
 	right: var(--space-1);
 	top: 50%;
@@ -1960,6 +1961,28 @@ body {
 
 .contact-link:hover {
 	text-decoration: underline;
+}
+
+/* Source URL link styling */
+.source-link {
+	color: var(--primary-color);
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-1);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
+}
+
+.source-link:hover {
+	background: var(--background-color);
+	color: var(--primary-hover);
+}
+
+.source-url {
+	text-align: center;
+	width: 60px;
 }
 
 /* Legacy contact form grid (keep for backward compatibility) */
@@ -2225,6 +2248,7 @@ body {
                         <th id="contactPersonHeader">...</th>
                         <th id="salaryRangeHeader">...</th>
                         <th id="locationHeader">...</th>
+                        <th id="sourceUrlHeader">...</th>
                         <th id="notesHeader">...</th>
                         <th id="tasksHeader">...</th>
                         <th id="actionsHeader">...</th>
@@ -2280,11 +2304,11 @@ body {
     <script>
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-22T13:34:30.575Z
+// Generated: 2025-06-22T13:39:43.174Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-22T13:34:30.575Z");
+console.log("JobTracker - Built at: 2025-06-22T13:39:43.174Z");
 
 
 // ============================================================================
@@ -2617,6 +2641,7 @@ I18n.translations = {
 				contactPerson: "Contact Person",
 				salaryRange: "Salary Range",
 				location: "Location",
+				sourceUrl: "Source",
 				notes: "Notes",
 				tasks: "Tasks",
 				actions: "Actions",
@@ -2632,6 +2657,7 @@ I18n.translations = {
 				contactEmail: "Contact Email",
 				salaryRange: "Salary Range",
 				location: "Location",
+				sourceUrl: "Job Posting URL",
 			},
 		},
 		priorities: {
@@ -3144,6 +3170,7 @@ function updateStaticTexts() {
 	$("#contactPersonHeader").text(I18n.t("table.headers.contactPerson"));
 	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
 	$("#locationHeader").text(I18n.t("table.headers.location"));
+	$("#sourceUrlHeader").text(I18n.t("table.headers.sourceUrl"));
 	$("#notesHeader").text(I18n.t("table.headers.notes"));
 	$("#tasksHeader").text(I18n.t("table.headers.tasks"));
 	$("#actionsHeader").text(I18n.t("table.headers.actions"));
@@ -4930,6 +4957,15 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", { className: "location" }, job.location),
+		h("td", { className: "source-url" }, 
+			job.sourceUrl ? h("a", { 
+				href: job.sourceUrl, 
+				target: "_blank", 
+				rel: "noopener noreferrer",
+				className: "source-link",
+				title: job.sourceUrl
+			}, h("span", { className: "material-symbols-outlined" }, "open_in_new")) : ""
+		),
 		h(
 			"td",
 			{ className: "notes" },
@@ -5238,6 +5274,10 @@ function editJob(job) {
 				${locations.map(l => `<option value="${l}">`).join("")}
 			</datalist>
 		</td>
+		<td>
+			<input type="url" class="inline-edit" data-field="sourceUrl" value="${job.sourceUrl || ""}" 
+				placeholder="${I18n.t("table.placeholders.sourceUrl")}">
+		</td>
 		<td class="notes" data-job-id="${job.id}">
 			${NotesCount({
 				notes: job.notes || [],
@@ -5323,7 +5363,8 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 					!job.contactPerson.trim() && 
 					!job.contactEmail.trim() && 
 					!job.salaryRange.trim() && 
-					!job.location.trim();
+					!job.location.trim() && 
+					!job.sourceUrl.trim();
 	
 	if (isEmpty) {
 		// Remove the empty job from data
@@ -5376,6 +5417,7 @@ function addRow() {
 		contactEmail: "",
 		salaryRange: "",
 		location: "",
+		sourceUrl: "",
 		notes: [],
 		tasks: []
 	};

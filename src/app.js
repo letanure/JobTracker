@@ -258,6 +258,10 @@ function editJob(job) {
 				${locations.map(l => `<option value="${l}">`).join("")}
 			</datalist>
 		</td>
+		<td>
+			<input type="url" class="inline-edit" data-field="sourceUrl" value="${job.sourceUrl || ""}" 
+				placeholder="${I18n.t("table.placeholders.sourceUrl")}">
+		</td>
 		<td class="notes" data-job-id="${job.id}">
 			${NotesCount({
 				notes: job.notes || [],
@@ -343,7 +347,8 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 					!job.contactPerson.trim() && 
 					!job.contactEmail.trim() && 
 					!job.salaryRange.trim() && 
-					!job.location.trim();
+					!job.location.trim() && 
+					!job.sourceUrl.trim();
 	
 	if (isEmpty) {
 		// Remove the empty job from data
@@ -396,6 +401,7 @@ function addRow() {
 		contactEmail: "",
 		salaryRange: "",
 		location: "",
+		sourceUrl: "",
 		notes: [],
 		tasks: []
 	};
