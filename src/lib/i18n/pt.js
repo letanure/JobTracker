@@ -36,7 +36,7 @@ const PT_TRANSLATIONS = {
 			position: "Cargo",
 			currentPhase: "Fase Atual",
 			substep: "Subetapa",
-			contactPerson: "Contato",
+
 			salaryRange: "Salario",
 			sourceUrl: "Link",
 			location: "Localização",
@@ -51,8 +51,7 @@ const PT_TRANSLATIONS = {
 		placeholders: {
 			company: "Nome da Empresa",
 			position: "Cargo",
-			contactPerson: "Nome do Contato",
-			contactEmail: "Email do Contato",
+
 			salaryRange: "Faixa Salarial",
 			location: "Localização",
 			sourceUrl: "URL da Vaga",
@@ -112,8 +111,6 @@ const PT_TRANSLATIONS = {
 		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
 	},
 	demo: {
-		contactPerson1: "Sarah Chen",
-		contactPerson2: "Mike Rodriguez",
 		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
 		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
 	},

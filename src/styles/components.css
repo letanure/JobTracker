@@ -182,7 +182,7 @@ textarea {
 
 .add-contact-title {
 	margin: 0 0 8px 0;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	color: var(--text-color);
 }
@@ -202,7 +202,7 @@ textarea {
 	padding: 6px 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	background: var(--white);
 	min-height: 28px;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -230,7 +230,7 @@ textarea {
 .add-note-title,
 .add-task-title {
 	margin: 0 0 8px 0;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	color: var(--text-color);
 }
@@ -242,7 +242,7 @@ textarea {
 	padding: 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-family: inherit;
 	background: var(--white);
 	line-height: 1.4;
@@ -255,7 +255,9 @@ textarea {
 	outline: none;
 }
 
-.add-task-form {
+.add-task-form,
+.add-note-form,
+.add-contact-form {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -268,7 +270,7 @@ textarea {
 	padding: 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-family: inherit;
 	background: var(--white);
 	line-height: 1.4;
@@ -283,7 +285,7 @@ textarea {
 
 .add-task-form-row {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	gap: 8px;
 	margin-bottom: 8px;
 }
@@ -295,7 +297,7 @@ textarea {
 }
 
 .add-task-field label {
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-weight: 500;
 	color: var(--text-color);
 }
@@ -308,7 +310,7 @@ textarea {
 	padding: 6px 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	background: var(--white);
 	min-height: 28px;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -321,6 +323,18 @@ textarea {
 	border-color: var(--blue-500);
 	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
 	outline: none;
+}
+
+/* Form action buttons */
+.add-task-form-actions,
+.add-note-form-actions,
+.add-contact-form-actions {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--border-light);
 }
 
 .add-task-duration {
@@ -792,7 +806,7 @@ textarea {
 
 .modal-title {
 	margin: 0;
-	font-size: 16px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	color: var(--text-color);
 	line-height: 1.25;
@@ -801,7 +815,7 @@ textarea {
 .modal-close {
 	background: none;
 	border: none;
-	font-size: 16px;
+	font-size: var(--font-size-xs);
 	cursor: pointer;
 	color: var(--gray-500);
 	min-width: auto;
@@ -833,6 +847,20 @@ textarea {
 	gap: 8px;
 	justify-content: flex-end;
 	border-radius: 0 0 12px 12px;
+}
+
+/* Modal content font size standardization */
+.modal-body,
+.modal-body p,
+.modal-empty-message {
+	font-size: var(--font-size-xs);
+}
+
+.modal-empty-message {
+	text-align: center;
+	color: var(--gray-600);
+	font-style: italic;
+	margin: 24px 0;
 }
 
 /* ============================================================================ */

@@ -263,6 +263,8 @@ const TasksModal = ({ job, onClose }) => {
 		const textarea = document.querySelector(".add-task-textarea");
 		const statusSelect = document.querySelector(".add-task-status");
 		const prioritySelect = document.querySelector(".add-task-priority");
+		const dueDateInput = document.querySelector(".add-task-due-date");
+		const durationSelect = document.querySelector(".add-task-duration");
 		const taskText = textarea.value.trim();
 
 		if (!taskText) {
@@ -277,8 +279,8 @@ const TasksModal = ({ job, onClose }) => {
 			text: taskText,
 			status: statusSelect.value || "todo",
 			priority: prioritySelect.value || "medium",
-			dueDate: null,
-			duration: null,
+			dueDate: dueDateInput.value ? `${dueDateInput.value}T00:00:00.000Z` : null,
+			duration: durationSelect.value || null,
 		};
 
 		// Add task to job data
@@ -303,7 +305,10 @@ const TasksModal = ({ job, onClose }) => {
 		statusSelect.value = "todo";
 		prioritySelect.value = "medium";
 		dueDateInput.value = "";
-		durationInput.value = "";
+		durationSelect.value = "";
+
+		// Focus back to the first field (status select)
+		statusSelect.focus();
 
 		// Update the tasks count in the table (refresh interface for count update)
 		refreshInterface();
@@ -873,8 +878,14 @@ const TasksModal = ({ job, onClose }) => {
 				{ className: "add-task-section" },
 				h("h4", { className: "add-task-title" }, I18n.t("modals.tasks.addSection")),
 				h(
-					"div",
-					{ className: "add-task-form" },
+					"form",
+					{ 
+						className: "add-task-form",
+						onsubmit: (e) => {
+							e.preventDefault();
+							handleAddTask();
+						}
+					},
 					h(
 						"div",
 						{ className: "add-task-form-row" },
@@ -907,6 +918,33 @@ const TasksModal = ({ job, onClose }) => {
 								h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 							)
+						),
+						h(
+							"div",
+							{ className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.dueDate")),
+							h("input", {
+								type: "date",
+								className: "add-task-due-date",
+							})
+						),
+						h(
+							"div",
+							{ className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.duration")),
+							h(
+								"select",
+								{
+									className: "add-task-duration",
+								},
+								h("option", { value: "" }, "—"),
+								h("option", { value: "15min" }, "15 min"),
+								h("option", { value: "30min" }, "30 min"),
+								h("option", { value: "1h" }, "1h"),
+								h("option", { value: "1h30" }, "1:30"),
+								h("option", { value: "2h" }, "2h"),
+								h("option", { value: "3h" }, "3h")
+							)
 						)
 					),
 					h("textarea", {
@@ -914,12 +952,24 @@ const TasksModal = ({ job, onClose }) => {
 						placeholder: I18n.t("modals.tasks.placeholder"),
 						rows: 2,
 						onkeydown: (e) => {
-							if (e.key === "Enter" && e.shiftKey) {
+							if (e.key === "Enter" && e.ctrlKey) {
 								e.preventDefault();
 								handleAddTask();
 							}
 						},
-					})
+					}),
+					h(
+						"div",
+						{ className: "add-task-form-actions" },
+						h(
+							"button",
+							{
+								type: "submit",
+								className: "action-btn primary-btn",
+							},
+							I18n.t("modals.tasks.addButton")
+						)
+					)
 				)
 			)
 		);
@@ -975,18 +1025,6 @@ const TasksModal = ({ job, onClose }) => {
 				"div",
 				{ className: "modal-body" },
 				createTasksContent(job, sortedActiveTasks, sortedArchivedTasks)
-			),
-			h(
-				"div",
-				{ className: "modal-footer" },
-				h(
-					"button",
-					{
-						className: "action-btn primary-btn",
-						onclick: handleAddTask,
-					},
-					I18n.t("modals.tasks.addButton")
-				)
 			)
 		)
 	);

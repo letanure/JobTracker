@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T14:03:43.701Z
-Cache Version: 1750687423701
+Generated: 2025-06-23T14:32:31.593Z
+Cache Version: 1750689151593
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750687423701
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750687423701">
-    <meta name="build-date" content="2025-06-23T14:03:43.701Z">
+    <meta name="build-version" content="1750689151593">
+    <meta name="build-date" content="2025-06-23T14:32:31.593Z">
     <style>
 
 /* ============================================================================ */
@@ -1004,7 +1004,7 @@ textarea {
 
 .add-contact-title {
 	margin: 0 0 8px 0;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	color: var(--text-color);
 }
@@ -1024,7 +1024,7 @@ textarea {
 	padding: 6px 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	background: var(--white);
 	min-height: 28px;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -1052,7 +1052,7 @@ textarea {
 .add-note-title,
 .add-task-title {
 	margin: 0 0 8px 0;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	color: var(--text-color);
 }
@@ -1064,7 +1064,7 @@ textarea {
 	padding: 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-family: inherit;
 	background: var(--white);
 	line-height: 1.4;
@@ -1077,7 +1077,9 @@ textarea {
 	outline: none;
 }
 
-.add-task-form {
+.add-task-form,
+.add-note-form,
+.add-contact-form {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -1090,7 +1092,7 @@ textarea {
 	padding: 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-family: inherit;
 	background: var(--white);
 	line-height: 1.4;
@@ -1105,7 +1107,7 @@ textarea {
 
 .add-task-form-row {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	gap: 8px;
 	margin-bottom: 8px;
 }
@@ -1117,7 +1119,7 @@ textarea {
 }
 
 .add-task-field label {
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	font-weight: 500;
 	color: var(--text-color);
 }
@@ -1130,7 +1132,7 @@ textarea {
 	padding: 6px 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	background: var(--white);
 	min-height: 28px;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -1143,6 +1145,18 @@ textarea {
 	border-color: var(--blue-500);
 	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
 	outline: none;
+}
+
+/* Form action buttons */
+.add-task-form-actions,
+.add-note-form-actions,
+.add-contact-form-actions {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--border-light);
 }
 
 .add-task-duration {
@@ -1614,7 +1628,7 @@ textarea {
 
 .modal-title {
 	margin: 0;
-	font-size: 16px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	color: var(--text-color);
 	line-height: 1.25;
@@ -1623,7 +1637,7 @@ textarea {
 .modal-close {
 	background: none;
 	border: none;
-	font-size: 16px;
+	font-size: var(--font-size-xs);
 	cursor: pointer;
 	color: var(--gray-500);
 	min-width: auto;
@@ -1655,6 +1669,20 @@ textarea {
 	gap: 8px;
 	justify-content: flex-end;
 	border-radius: 0 0 12px 12px;
+}
+
+/* Modal content font size standardization */
+.modal-body,
+.modal-body p,
+.modal-empty-message {
+	font-size: var(--font-size-xs);
+}
+
+.modal-empty-message {
+	text-align: center;
+	color: var(--gray-600);
+	font-style: italic;
+	margin: 24px 0;
 }
 
 /* ============================================================================ */
@@ -3569,18 +3597,14 @@ tbody tr {
 .company-name {
 	font-weight: var(--font-weight-medium);
 	color: var(--text-color);
-	max-width: 150px;
 	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	overflow: visible;
 }
 
 .position-name {
 	font-weight: var(--font-weight-medium);
 	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	max-width: 150px;
+	overflow: visible;
 }
 
 .current-phase {
@@ -4241,9 +4265,9 @@ tr.editing .actions-cell button {
 
 .contacts-table th:nth-child(2),
 .contacts-table td:nth-child(2) {
-	width: 220px;
-	min-width: 220px;
-	max-width: 220px;
+	width: 180px;
+	min-width: 180px;
+	max-width: 180px;
 }
 
 .contacts-table th:nth-child(3),
@@ -4255,6 +4279,13 @@ tr.editing .actions-cell button {
 
 .contacts-table th:nth-child(4),
 .contacts-table td:nth-child(4) {
+	width: 140px;
+	min-width: 140px;
+	max-width: 140px;
+}
+
+.contacts-table th:nth-child(5),
+.contacts-table td:nth-child(5) {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
@@ -4304,7 +4335,7 @@ tr.editing .actions-cell button {
 
 	.company-name,
 	.position-name {
-		max-width: var(--col-16);
+		/* No max-width restriction - allow full content display */
 	}
 
 	.current-phase {
@@ -4323,7 +4354,10 @@ tr.editing .actions-cell button {
 	}
 
 	.company-name,
-	.position-name,
+	.position-name {
+		/* No max-width restriction - allow full content display */
+	}
+	
 	.current-phase {
 		max-width: var(--col-10);
 	}
@@ -4407,7 +4441,6 @@ tr.editing .actions-cell button {
                                     <th id="salaryRangeHeader">...</th>
                                     <th id="locationHeader">...</th>
                                     <th id="sourceUrlHeader">...</th>
-                                    <th id="contactPersonHeader">...</th>
                                     <th id="notesHeader">...</th>
                                     <th id="tasksHeader">...</th>
                                     <th id="actionsHeader">...</th>
@@ -4466,16 +4499,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750687423701';
-window.BUILD_DATE = '2025-06-23T14:03:43.701Z';
+window.BUILD_VERSION = '1750689151593';
+window.BUILD_DATE = '2025-06-23T14:32:31.593Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T14:03:43.694Z
+// Generated: 2025-06-23T14:32:31.578Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T14:03:43.694Z");
+console.log("JobTracker - Built at: 2025-06-23T14:32:31.578Z");
 
 
 // ============================================================================
@@ -4778,7 +4811,6 @@ const EN_TRANSLATIONS = {
 			position: "Position",
 			currentPhase: "Stage",
 			substep: "Substep",
-			contactPerson: "Contact",
 			salaryRange: "Salary Range",
 			location: "Location",
 			sourceUrl: "Source",
@@ -4793,8 +4825,7 @@ const EN_TRANSLATIONS = {
 		placeholders: {
 			company: "Company Name",
 			position: "Position Title",
-			contactPerson: "Contact Name",
-			contactEmail: "Contact Email",
+
 			salaryRange: "Salary Range",
 			location: "Location",
 			sourceUrl: "Job Posting URL",
@@ -4854,8 +4885,6 @@ const EN_TRANSLATIONS = {
 		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
 	},
 	demo: {
-		contactPerson1: "Sarah Chen",
-		contactPerson2: "Mike Rodriguez",
 		notes1: "Great culture fit. Need to research their microservices architecture.",
 		notes2: "Early stage startup. High growth potential but risky.",
 	},
@@ -5055,7 +5084,7 @@ const PT_TRANSLATIONS = {
 			position: "Cargo",
 			currentPhase: "Fase Atual",
 			substep: "Subetapa",
-			contactPerson: "Contato",
+
 			salaryRange: "Salario",
 			sourceUrl: "Link",
 			location: "Localização",
@@ -5070,8 +5099,7 @@ const PT_TRANSLATIONS = {
 		placeholders: {
 			company: "Nome da Empresa",
 			position: "Cargo",
-			contactPerson: "Nome do Contato",
-			contactEmail: "Email do Contato",
+
 			salaryRange: "Faixa Salarial",
 			location: "Localização",
 			sourceUrl: "URL da Vaga",
@@ -5131,8 +5159,6 @@ const PT_TRANSLATIONS = {
 		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
 	},
 	demo: {
-		contactPerson1: "Sarah Chen",
-		contactPerson2: "Mike Rodriguez",
 		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
 		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
 	},
@@ -5470,8 +5496,6 @@ const DEMO_DATA = [
 		currentPhase: "interview",
 		currentSubstep: "technical_interview",
 		completedSubsteps: ["phone_screening"],
-		contactPerson: "demo.contactPerson1",
-		contactEmail: "sarah@techcorp.com",
 		salaryRange: "$120k - $150k",
 		location: "San Francisco, CA",
 		notes: "demo.notes1",
@@ -5549,8 +5573,7 @@ const DEMO_DATA = [
 		currentPhase: "applied",
 		currentSubstep: "hr_phone_screen",
 		completedSubsteps: ["application_review"],
-		contactPerson: "demo.contactPerson2",
-		contactEmail: "hiring@startupxyz.com",
+
 		salaryRange: "$90k - $110k + equity",
 		location: "Remote",
 		notes: "demo.notes2",
@@ -5615,9 +5638,7 @@ const DEMO_DATA = [
 const getDemoData = () => {
 	return DEMO_DATA.map((job) => ({
 		...job,
-		contactPerson: job.contactPerson.startsWith("demo.")
-			? I18n.t(job.contactPerson)
-			: job.contactPerson,
+
 		notes: job.notes.startsWith("demo.")
 			? [
 					{
@@ -5727,7 +5748,6 @@ function updateStaticTexts() {
 	$("#companyHeader").text(I18n.t("table.headers.company"));
 	$("#positionHeader").text(I18n.t("table.headers.position"));
 	$("#currentPhaseHeader").text(I18n.t("table.headers.currentPhase"));
-	$("#contactPersonHeader").text(I18n.t("table.headers.contactPerson"));
 	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
 	$("#locationHeader").text(I18n.t("table.headers.location"));
 	$("#sourceUrlHeader").text(I18n.t("table.headers.sourceUrl"));
@@ -6426,6 +6446,12 @@ const NotesModal = ({ job, onClose }) => {
 		// Clear the textarea
 		textarea.value = "";
 
+		// Focus back to the textarea
+		setTimeout(() => {
+			const newTextarea = document.querySelector(".add-note-textarea");
+			if (newTextarea) newTextarea.focus();
+		}, 100);
+
 		// Update the notes count in the table (refresh interface for count update)
 		refreshInterface();
 	};
@@ -6737,17 +6763,39 @@ const NotesModal = ({ job, onClose }) => {
 				"div",
 				{ className: "add-note-section" },
 				h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
-				h("textarea", {
-					className: "add-note-textarea",
-					placeholder: I18n.t("modals.notes.placeholder"),
-					rows: 2,
-					onkeydown: (e) => {
-						if (e.key === "Enter" && e.shiftKey) {
+				h(
+					"form",
+					{
+						className: "add-note-form",
+						onsubmit: (e) => {
 							e.preventDefault();
 							handleAddNote();
 						}
 					},
-				})
+					h("textarea", {
+						className: "add-note-textarea",
+						placeholder: I18n.t("modals.notes.placeholder"),
+						rows: 2,
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.ctrlKey) {
+								e.preventDefault();
+								handleAddNote();
+							}
+						},
+					}),
+					h(
+						"div",
+						{ className: "add-note-form-actions" },
+						h(
+							"button",
+							{
+								type: "submit",
+								className: "action-btn primary-btn",
+							},
+							I18n.t("modals.notes.addButton")
+						)
+					)
+				)
 			)
 		);
 	};
@@ -6802,18 +6850,6 @@ const NotesModal = ({ job, onClose }) => {
 				"div",
 				{ className: "modal-body" },
 				createNotesContent(job, sortedActiveNotes, sortedArchivedNotes)
-			),
-			h(
-				"div",
-				{ className: "modal-footer" },
-				h(
-					"button",
-					{
-						className: "action-btn primary-btn",
-						onclick: handleAddNote,
-					},
-					I18n.t("modals.notes.addButton")
-				)
 			)
 		)
 	);
@@ -7114,6 +7150,8 @@ const TasksModal = ({ job, onClose }) => {
 		const textarea = document.querySelector(".add-task-textarea");
 		const statusSelect = document.querySelector(".add-task-status");
 		const prioritySelect = document.querySelector(".add-task-priority");
+		const dueDateInput = document.querySelector(".add-task-due-date");
+		const durationSelect = document.querySelector(".add-task-duration");
 		const taskText = textarea.value.trim();
 
 		if (!taskText) {
@@ -7128,8 +7166,8 @@ const TasksModal = ({ job, onClose }) => {
 			text: taskText,
 			status: statusSelect.value || "todo",
 			priority: prioritySelect.value || "medium",
-			dueDate: null,
-			duration: null,
+			dueDate: dueDateInput.value ? `${dueDateInput.value}T00:00:00.000Z` : null,
+			duration: durationSelect.value || null,
 		};
 
 		// Add task to job data
@@ -7154,7 +7192,10 @@ const TasksModal = ({ job, onClose }) => {
 		statusSelect.value = "todo";
 		prioritySelect.value = "medium";
 		dueDateInput.value = "";
-		durationInput.value = "";
+		durationSelect.value = "";
+
+		// Focus back to the first field (status select)
+		statusSelect.focus();
 
 		// Update the tasks count in the table (refresh interface for count update)
 		refreshInterface();
@@ -7724,8 +7765,14 @@ const TasksModal = ({ job, onClose }) => {
 				{ className: "add-task-section" },
 				h("h4", { className: "add-task-title" }, I18n.t("modals.tasks.addSection")),
 				h(
-					"div",
-					{ className: "add-task-form" },
+					"form",
+					{ 
+						className: "add-task-form",
+						onsubmit: (e) => {
+							e.preventDefault();
+							handleAddTask();
+						}
+					},
 					h(
 						"div",
 						{ className: "add-task-form-row" },
@@ -7758,6 +7805,33 @@ const TasksModal = ({ job, onClose }) => {
 								h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 							)
+						),
+						h(
+							"div",
+							{ className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.dueDate")),
+							h("input", {
+								type: "date",
+								className: "add-task-due-date",
+							})
+						),
+						h(
+							"div",
+							{ className: "add-task-field" },
+							h("label", {}, I18n.t("modals.tasks.duration")),
+							h(
+								"select",
+								{
+									className: "add-task-duration",
+								},
+								h("option", { value: "" }, "—"),
+								h("option", { value: "15min" }, "15 min"),
+								h("option", { value: "30min" }, "30 min"),
+								h("option", { value: "1h" }, "1h"),
+								h("option", { value: "1h30" }, "1:30"),
+								h("option", { value: "2h" }, "2h"),
+								h("option", { value: "3h" }, "3h")
+							)
 						)
 					),
 					h("textarea", {
@@ -7765,12 +7839,24 @@ const TasksModal = ({ job, onClose }) => {
 						placeholder: I18n.t("modals.tasks.placeholder"),
 						rows: 2,
 						onkeydown: (e) => {
-							if (e.key === "Enter" && e.shiftKey) {
+							if (e.key === "Enter" && e.ctrlKey) {
 								e.preventDefault();
 								handleAddTask();
 							}
 						},
-					})
+					}),
+					h(
+						"div",
+						{ className: "add-task-form-actions" },
+						h(
+							"button",
+							{
+								type: "submit",
+								className: "action-btn primary-btn",
+							},
+							I18n.t("modals.tasks.addButton")
+						)
+					)
 				)
 			)
 		);
@@ -7826,18 +7912,6 @@ const TasksModal = ({ job, onClose }) => {
 				"div",
 				{ className: "modal-body" },
 				createTasksContent(job, sortedActiveTasks, sortedArchivedTasks)
-			),
-			h(
-				"div",
-				{ className: "modal-footer" },
-				h(
-					"button",
-					{
-						className: "action-btn primary-btn",
-						onclick: handleAddTask,
-					},
-					I18n.t("modals.tasks.addButton")
-				)
 			)
 		)
 	);
@@ -8142,6 +8216,7 @@ const ContactsModal = ({ job, onClose }) => {
 		if (contactIndex === -1) return;
 
 		jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
+		
 		saveToLocalStorage();
 
 		// Refresh the table without flicker
@@ -8164,6 +8239,7 @@ const ContactsModal = ({ job, onClose }) => {
 			type: "text",
 			value: contact.name || "",
 			className: "contact-name-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderName"),
 		});
 		nameCell.innerHTML = "";
 		nameCell.appendChild(nameInput);
@@ -8173,6 +8249,7 @@ const ContactsModal = ({ job, onClose }) => {
 			type: "email",
 			value: contact.email || "",
 			className: "contact-email-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderEmail"),
 		});
 		emailCell.innerHTML = "";
 		emailCell.appendChild(emailInput);
@@ -8182,14 +8259,33 @@ const ContactsModal = ({ job, onClose }) => {
 			type: "tel",
 			value: contact.phone || "",
 			className: "contact-phone-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderPhone"),
 		});
 		phoneCell.innerHTML = "";
 		phoneCell.appendChild(phoneInput);
+
+		const companyCell = contactRow.querySelector(".contact-company-cell");
+		const companyInput = h("input", {
+			type: "text",
+			value: contact.company || "",
+			className: "contact-company-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderCompany"),
+		});
+		companyCell.innerHTML = "";
+		companyCell.appendChild(companyInput);
 
 
 		// Update action buttons
 		const actionsCell = contactRow.querySelector(".contacts-table-actions");
 		const editBtn = actionsCell.querySelector(".edit-contact-btn");
+		const archiveBtn = actionsCell.querySelector(".archive-btn");
+		
+		// Hide archive button during editing
+		if (archiveBtn) {
+			archiveBtn.style.display = "none";
+		}
+		
+		// Change edit button to save
 		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveContactChanges(contact, job);
@@ -8216,9 +8312,21 @@ const ContactsModal = ({ job, onClose }) => {
 		const nameInput = contactRow.querySelector(".contact-name-edit");
 		const emailInput = contactRow.querySelector(".contact-email-edit");
 		const phoneInput = contactRow.querySelector(".contact-phone-edit");
+		const companyInput = contactRow.querySelector(".contact-company-edit");
+		
+		console.log("Input elements found:", {
+			nameInput: !!nameInput,
+			emailInput: !!emailInput,
+			phoneInput: !!phoneInput,
+			companyInput: !!companyInput
+		});
+		
 		const name = nameInput?.value.trim() || "";
 		const email = emailInput?.value.trim() || "";
 		const phone = phoneInput?.value.trim() || "";
+		const company = companyInput?.value.trim() || "";
+		
+		console.log("Input values captured:", { name, email, phone, company });
 
 		// Validation
 		if (!name) {
@@ -8233,22 +8341,47 @@ const ContactsModal = ({ job, onClose }) => {
 
 		// Update contact data
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-		if (jobIndex === -1) return;
+		if (jobIndex === -1) {
+			console.error("Job not found in jobsData:", job.id);
+			return;
+		}
 
 		const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
-		if (contactIndex === -1) return;
+		if (contactIndex === -1) {
+			console.error("Contact not found in job contacts:", contact.id);
+			return;
+		}
 
+		console.log("Updating contact:", { name, email, phone, company });
+		console.log("jobsData available:", typeof jobsData !== 'undefined');
+		console.log("saveToLocalStorage available:", typeof saveToLocalStorage !== 'undefined');
+		console.log("Contact before update:", jobsData[jobIndex].contacts[contactIndex]);
+		
 		jobsData[jobIndex].contacts[contactIndex].name = name;
 		jobsData[jobIndex].contacts[contactIndex].email = email;
 		jobsData[jobIndex].contacts[contactIndex].phone = phone;
+		jobsData[jobIndex].contacts[contactIndex].company = company;
 
+		console.log("Contact after update:", jobsData[jobIndex].contacts[contactIndex]);
+
+		// Update the job object passed to modal with latest data
+		job.contacts = jobsData[jobIndex].contacts;
+
+		console.log("Calling saveToLocalStorage...");
 		saveToLocalStorage();
+		console.log("saveToLocalStorage completed");
+		
+		// Verify data is actually saved
+		console.log("Data in localStorage:", localStorage.getItem('jobTrackerData') ? JSON.parse(localStorage.getItem('jobTrackerData'))[jobIndex].contacts[contactIndex] : 'No data');
 
 		// Refresh modal
+		console.log("Calling refreshContactsModal...");
 		refreshContactsModal(job);
 
 		// Update interface
+		console.log("Calling refreshInterface...");
 		refreshInterface();
+		console.log("All updates completed");
 	};
 
 	const disableContactEditing = (contact, job) => {
@@ -8439,6 +8572,11 @@ const ContactsModal = ({ job, onClose }) => {
 									),
 									h(
 										"td",
+										{ className: "contact-company-cell" },
+										contact.company || "—"
+									),
+									h(
+										"td",
 										{ className: "contacts-table-actions" },
 										h("button", {
 											className: "action-btn edit-contact-btn icon-btn-transparent",
@@ -8506,6 +8644,7 @@ const ContactsModal = ({ job, onClose }) => {
 									h("th", {}, I18n.t("modals.contacts.placeholderName")),
 									h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
 									h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+									h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
 									h("th", {}, "Actions")
 								)
 							),
@@ -8564,29 +8703,122 @@ const ContactsModal = ({ job, onClose }) => {
 				{ className: "add-contact-row" },
 				h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
 				h(
-					"div",
-					{ className: "contact-form-row" },
-					h("input", {
-						type: "text",
-						className: "add-contact-name",
-						placeholder: I18n.t("modals.contacts.placeholderName"),
-					}),
-					h("input", {
-						type: "email",
-						className: "add-contact-email",
-						placeholder: I18n.t("modals.contacts.placeholderEmail"),
-					}),
-					h("input", {
-						type: "tel",
-						className: "add-contact-phone",
-						placeholder: I18n.t("modals.contacts.placeholderPhone"),
-					}),
-					h("input", {
-						type: "text",
-						className: "add-contact-company",
-						placeholder: I18n.t("modals.contacts.placeholderCompany"),
-					})
-					// Submit button moved to modal footer
+					"form",
+					{
+						className: "add-contact-form",
+						onsubmit: (e) => {
+							e.preventDefault();
+							const modal = e.target.closest(".modal");
+							if (!modal) return;
+
+							const nameInput = modal.querySelector(".add-contact-name");
+							const emailInput = modal.querySelector(".add-contact-email");
+							const phoneInput = modal.querySelector(".add-contact-phone");
+							const companyInput = modal.querySelector(".add-contact-company");
+
+							const name = nameInput.value.trim();
+							const email = emailInput.value.trim();
+							const phone = phoneInput.value.trim();
+							const company = companyInput.value.trim();
+
+							if (!name) {
+								showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequired"));
+								return;
+							}
+
+							const newContact = {
+								id: Date.now(),
+								date: new Date().toISOString(),
+								name,
+								email,
+								phone,
+								company,
+								isActive: true,
+								lastContactDate: null,
+								notes: "",
+							};
+
+							if (!job.contacts) job.contacts = [];
+							job.contacts.push(newContact);
+
+							// Clear inputs
+							nameInput.value = "";
+							emailInput.value = "";
+							phoneInput.value = "";
+							companyInput.value = "";
+
+							// Focus back to the first field (name input)
+							setTimeout(() => {
+								const newNameInput = modal.querySelector(".add-contact-name");
+								if (newNameInput) newNameInput.focus();
+							}, 100);
+
+							// Save and refresh
+							saveToLocalStorage();
+							refreshContactsModal(job);
+							refreshInterface();
+						}
+					},
+					h(
+						"div",
+						{ className: "contact-form-row" },
+						h("input", {
+							type: "text",
+							className: "add-contact-name",
+							placeholder: I18n.t("modals.contacts.placeholderName"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						}),
+						h("input", {
+							type: "email",
+							className: "add-contact-email",
+							placeholder: I18n.t("modals.contacts.placeholderEmail"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						}),
+						h("input", {
+							type: "tel",
+							className: "add-contact-phone",
+							placeholder: I18n.t("modals.contacts.placeholderPhone"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						}),
+						h("input", {
+							type: "text",
+							className: "add-contact-company",
+							placeholder: I18n.t("modals.contacts.placeholderCompany"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						})
+					),
+					h(
+						"div",
+						{ className: "add-contact-form-actions" },
+						h(
+							"button",
+							{
+								type: "submit",
+								className: "action-btn primary-btn",
+							},
+							I18n.t("modals.contacts.addButton")
+						)
+					)
 				)
 			)
 		);
@@ -8642,70 +8874,6 @@ const ContactsModal = ({ job, onClose }) => {
 				"div",
 				{ className: "modal-body" },
 				createContactsContent(job, sortedActiveContacts, sortedArchivedContacts)
-			),
-			h(
-				"div",
-				{ className: "modal-footer" },
-				h(
-					"button",
-					{
-						className: "action-btn primary-btn",
-						onclick: (e) => {
-							// Find the modal to scope our search
-							const modal = e.target.closest(".modal");
-							if (!modal) return;
-
-							const nameInput = modal.querySelector(".add-contact-name");
-							const emailInput = modal.querySelector(".add-contact-email");
-							const phoneInput = modal.querySelector(".add-contact-phone");
-							const companyInput = modal.querySelector(".add-contact-company");
-
-							if (!nameInput || !emailInput || !phoneInput || !companyInput) {
-								console.error("Contact form inputs not found");
-								return;
-							}
-
-							const name = nameInput.value.trim();
-							const email = emailInput.value.trim();
-							const phone = phoneInput.value.trim();
-							const company = companyInput.value.trim();
-
-							if (!name) {
-								showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequired"));
-								return;
-							}
-
-							const newContact = {
-								id: Date.now(),
-								name,
-								email,
-								phone,
-								company,
-								isActive: true,
-								lastContactDate: null,
-								notes: "",
-							};
-
-							if (!job.contacts) job.contacts = [];
-							job.contacts.push(newContact);
-
-							// Clear inputs
-							nameInput.value = "";
-							emailInput.value = "";
-							phoneInput.value = "";
-							companyInput.value = "";
-
-							// Clear any validation errors
-							modal.querySelectorAll(".validation-error").forEach((error) => error.remove());
-
-							// Save and refresh
-							saveToLocalStorage();
-							refreshContactsModal(job);
-							refreshInterface();
-						},
-					},
-					I18n.t("modals.contacts.addButton")
-				)
 			)
 		)
 	);
@@ -8733,13 +8901,15 @@ const openContactsModal = (job) => {
 	}, 50);
 };
 
+// Legacy sync function removed - contactPerson and contactEmail fields are deprecated
+
 // Get the latest contact for display in table
 const getLatestContact = (contacts = []) => {
 	const activeContacts = contacts.filter((contact) => !contact.archived);
 	if (activeContacts.length === 0) return null;
 
 	// Sort by date and get the most recent
-	const sorted = [...activeContacts].sort((a, b) => new Date(b.date) - new Date(a.date));
+	const sorted = [...activeContacts].sort((a, b) => new Date(b.date || b.id) - new Date(a.date || a.id));
 	return sorted[0];
 };
 
@@ -8800,15 +8970,6 @@ const TextareaField = ({ value = "", className = "editable", placeholder = "", r
 	return h("textarea", props);
 };
 
-// Contact textarea component (for contact person and email)
-const ContactTextarea = ({ contactPerson = "", contactEmail = "" }) => {
-	const contactText = [contactPerson, contactEmail].filter(Boolean).join("\n");
-	return TextareaField({
-		value: contactText,
-		placeholder: I18n.t("forms.placeholderNameEmail"),
-		className: "editable contact-textarea",
-	});
-};
 
 // Priority select component
 const createPrioritySelect = (selectedPriority = "medium", disabled = false, className = "") => {
@@ -8937,7 +9098,6 @@ const EditActionsCell = ({ jobId, onSave, onCancel }) => {
 // Make form field components available globally for Vite
 window.InputField = InputField;
 window.TextareaField = TextareaField;
-window.ContactTextarea = ContactTextarea;
 window.createPrioritySelect = createPrioritySelect;
 window.createPhaseSelect = createPhaseSelect;
 window.EditActionsCell = EditActionsCell;
@@ -12323,11 +12483,10 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 	const isEmpty =
 		!job.company.trim() &&
 		!job.position.trim() &&
-		!job.contactPerson.trim() &&
-		!job.contactEmail.trim() &&
 		!job.salaryRange.trim() &&
 		!job.location.trim() &&
-		!job.sourceUrl.trim();
+		!job.sourceUrl.trim() &&
+		(!job.contacts || job.contacts.length === 0);
 
 	if (isEmpty) {
 		// Remove the empty job from data
@@ -12378,8 +12537,6 @@ function addRow() {
 		currentPhase: "wishlist",
 		currentSubstep: "",
 		completedSubsteps: [],
-		contactPerson: "",
-		contactEmail: "",
 		salaryRange: "",
 		location: "",
 		sourceUrl: "",

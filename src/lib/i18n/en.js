@@ -36,7 +36,6 @@ const EN_TRANSLATIONS = {
 			position: "Position",
 			currentPhase: "Stage",
 			substep: "Substep",
-			contactPerson: "Contact",
 			salaryRange: "Salary Range",
 			location: "Location",
 			sourceUrl: "Source",
@@ -51,8 +50,7 @@ const EN_TRANSLATIONS = {
 		placeholders: {
 			company: "Company Name",
 			position: "Position Title",
-			contactPerson: "Contact Name",
-			contactEmail: "Contact Email",
+
 			salaryRange: "Salary Range",
 			location: "Location",
 			sourceUrl: "Job Posting URL",
@@ -112,8 +110,6 @@ const EN_TRANSLATIONS = {
 		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
 	},
 	demo: {
-		contactPerson1: "Sarah Chen",
-		contactPerson2: "Mike Rodriguez",
 		notes1: "Great culture fit. Need to research their microservices architecture.",
 		notes2: "Early stage startup. High growth potential but risky.",
 	},

@@ -13,8 +13,6 @@ const DEMO_DATA = [
 		currentPhase: "interview",
 		currentSubstep: "technical_interview",
 		completedSubsteps: ["phone_screening"],
-		contactPerson: "demo.contactPerson1",
-		contactEmail: "sarah@techcorp.com",
 		salaryRange: "$120k - $150k",
 		location: "San Francisco, CA",
 		notes: "demo.notes1",
@@ -92,8 +90,7 @@ const DEMO_DATA = [
 		currentPhase: "applied",
 		currentSubstep: "hr_phone_screen",
 		completedSubsteps: ["application_review"],
-		contactPerson: "demo.contactPerson2",
-		contactEmail: "hiring@startupxyz.com",
+
 		salaryRange: "$90k - $110k + equity",
 		location: "Remote",
 		notes: "demo.notes2",
@@ -158,9 +155,7 @@ const DEMO_DATA = [
 const getDemoData = () => {
 	return DEMO_DATA.map((job) => ({
 		...job,
-		contactPerson: job.contactPerson.startsWith("demo.")
-			? I18n.t(job.contactPerson)
-			: job.contactPerson,
+
 		notes: job.notes.startsWith("demo.")
 			? [
 					{

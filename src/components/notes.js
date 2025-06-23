@@ -193,6 +193,12 @@ const NotesModal = ({ job, onClose }) => {
 		// Clear the textarea
 		textarea.value = "";
 
+		// Focus back to the textarea
+		setTimeout(() => {
+			const newTextarea = document.querySelector(".add-note-textarea");
+			if (newTextarea) newTextarea.focus();
+		}, 100);
+
 		// Update the notes count in the table (refresh interface for count update)
 		refreshInterface();
 	};
@@ -504,17 +510,39 @@ const NotesModal = ({ job, onClose }) => {
 				"div",
 				{ className: "add-note-section" },
 				h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
-				h("textarea", {
-					className: "add-note-textarea",
-					placeholder: I18n.t("modals.notes.placeholder"),
-					rows: 2,
-					onkeydown: (e) => {
-						if (e.key === "Enter" && e.shiftKey) {
+				h(
+					"form",
+					{
+						className: "add-note-form",
+						onsubmit: (e) => {
 							e.preventDefault();
 							handleAddNote();
 						}
 					},
-				})
+					h("textarea", {
+						className: "add-note-textarea",
+						placeholder: I18n.t("modals.notes.placeholder"),
+						rows: 2,
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.ctrlKey) {
+								e.preventDefault();
+								handleAddNote();
+							}
+						},
+					}),
+					h(
+						"div",
+						{ className: "add-note-form-actions" },
+						h(
+							"button",
+							{
+								type: "submit",
+								className: "action-btn primary-btn",
+							},
+							I18n.t("modals.notes.addButton")
+						)
+					)
+				)
 			)
 		);
 	};
@@ -569,18 +597,6 @@ const NotesModal = ({ job, onClose }) => {
 				"div",
 				{ className: "modal-body" },
 				createNotesContent(job, sortedActiveNotes, sortedArchivedNotes)
-			),
-			h(
-				"div",
-				{ className: "modal-footer" },
-				h(
-					"button",
-					{
-						className: "action-btn primary-btn",
-						onclick: handleAddNote,
-					},
-					I18n.t("modals.notes.addButton")
-				)
 			)
 		)
 	);

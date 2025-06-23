@@ -71,18 +71,14 @@ tbody tr {
 .company-name {
 	font-weight: var(--font-weight-medium);
 	color: var(--text-color);
-	max-width: 150px;
 	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	overflow: visible;
 }
 
 .position-name {
 	font-weight: var(--font-weight-medium);
 	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	max-width: 150px;
+	overflow: visible;
 }
 
 .current-phase {
@@ -743,9 +739,9 @@ tr.editing .actions-cell button {
 
 .contacts-table th:nth-child(2),
 .contacts-table td:nth-child(2) {
-	width: 220px;
-	min-width: 220px;
-	max-width: 220px;
+	width: 180px;
+	min-width: 180px;
+	max-width: 180px;
 }
 
 .contacts-table th:nth-child(3),
@@ -757,6 +753,13 @@ tr.editing .actions-cell button {
 
 .contacts-table th:nth-child(4),
 .contacts-table td:nth-child(4) {
+	width: 140px;
+	min-width: 140px;
+	max-width: 140px;
+}
+
+.contacts-table th:nth-child(5),
+.contacts-table td:nth-child(5) {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
@@ -806,7 +809,7 @@ tr.editing .actions-cell button {
 
 	.company-name,
 	.position-name {
-		max-width: var(--col-16);
+		/* No max-width restriction - allow full content display */
 	}
 
 	.current-phase {
@@ -825,7 +828,10 @@ tr.editing .actions-cell button {
 	}
 
 	.company-name,
-	.position-name,
+	.position-name {
+		/* No max-width restriction - allow full content display */
+	}
+	
 	.current-phase {
 		max-width: var(--col-10);
 	}

@@ -176,11 +176,10 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 	const isEmpty =
 		!job.company.trim() &&
 		!job.position.trim() &&
-		!job.contactPerson.trim() &&
-		!job.contactEmail.trim() &&
 		!job.salaryRange.trim() &&
 		!job.location.trim() &&
-		!job.sourceUrl.trim();
+		!job.sourceUrl.trim() &&
+		(!job.contacts || job.contacts.length === 0);
 
 	if (isEmpty) {
 		// Remove the empty job from data
@@ -231,8 +230,6 @@ function addRow() {
 		currentPhase: "wishlist",
 		currentSubstep: "",
 		completedSubsteps: [],
-		contactPerson: "",
-		contactEmail: "",
 		salaryRange: "",
 		location: "",
 		sourceUrl: "",

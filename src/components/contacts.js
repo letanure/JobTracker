@@ -280,6 +280,7 @@ const ContactsModal = ({ job, onClose }) => {
 		if (contactIndex === -1) return;
 
 		jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
+		
 		saveToLocalStorage();
 
 		// Refresh the table without flicker
@@ -302,6 +303,7 @@ const ContactsModal = ({ job, onClose }) => {
 			type: "text",
 			value: contact.name || "",
 			className: "contact-name-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderName"),
 		});
 		nameCell.innerHTML = "";
 		nameCell.appendChild(nameInput);
@@ -311,6 +313,7 @@ const ContactsModal = ({ job, onClose }) => {
 			type: "email",
 			value: contact.email || "",
 			className: "contact-email-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderEmail"),
 		});
 		emailCell.innerHTML = "";
 		emailCell.appendChild(emailInput);
@@ -320,14 +323,33 @@ const ContactsModal = ({ job, onClose }) => {
 			type: "tel",
 			value: contact.phone || "",
 			className: "contact-phone-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderPhone"),
 		});
 		phoneCell.innerHTML = "";
 		phoneCell.appendChild(phoneInput);
+
+		const companyCell = contactRow.querySelector(".contact-company-cell");
+		const companyInput = h("input", {
+			type: "text",
+			value: contact.company || "",
+			className: "contact-company-edit inline-edit-input",
+			placeholder: I18n.t("modals.contacts.placeholderCompany"),
+		});
+		companyCell.innerHTML = "";
+		companyCell.appendChild(companyInput);
 
 
 		// Update action buttons
 		const actionsCell = contactRow.querySelector(".contacts-table-actions");
 		const editBtn = actionsCell.querySelector(".edit-contact-btn");
+		const archiveBtn = actionsCell.querySelector(".archive-btn");
+		
+		// Hide archive button during editing
+		if (archiveBtn) {
+			archiveBtn.style.display = "none";
+		}
+		
+		// Change edit button to save
 		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveContactChanges(contact, job);
@@ -354,9 +376,21 @@ const ContactsModal = ({ job, onClose }) => {
 		const nameInput = contactRow.querySelector(".contact-name-edit");
 		const emailInput = contactRow.querySelector(".contact-email-edit");
 		const phoneInput = contactRow.querySelector(".contact-phone-edit");
+		const companyInput = contactRow.querySelector(".contact-company-edit");
+		
+		console.log("Input elements found:", {
+			nameInput: !!nameInput,
+			emailInput: !!emailInput,
+			phoneInput: !!phoneInput,
+			companyInput: !!companyInput
+		});
+		
 		const name = nameInput?.value.trim() || "";
 		const email = emailInput?.value.trim() || "";
 		const phone = phoneInput?.value.trim() || "";
+		const company = companyInput?.value.trim() || "";
+		
+		console.log("Input values captured:", { name, email, phone, company });
 
 		// Validation
 		if (!name) {
@@ -371,22 +405,47 @@ const ContactsModal = ({ job, onClose }) => {
 
 		// Update contact data
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-		if (jobIndex === -1) return;
+		if (jobIndex === -1) {
+			console.error("Job not found in jobsData:", job.id);
+			return;
+		}
 
 		const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
-		if (contactIndex === -1) return;
+		if (contactIndex === -1) {
+			console.error("Contact not found in job contacts:", contact.id);
+			return;
+		}
 
+		console.log("Updating contact:", { name, email, phone, company });
+		console.log("jobsData available:", typeof jobsData !== 'undefined');
+		console.log("saveToLocalStorage available:", typeof saveToLocalStorage !== 'undefined');
+		console.log("Contact before update:", jobsData[jobIndex].contacts[contactIndex]);
+		
 		jobsData[jobIndex].contacts[contactIndex].name = name;
 		jobsData[jobIndex].contacts[contactIndex].email = email;
 		jobsData[jobIndex].contacts[contactIndex].phone = phone;
+		jobsData[jobIndex].contacts[contactIndex].company = company;
 
+		console.log("Contact after update:", jobsData[jobIndex].contacts[contactIndex]);
+
+		// Update the job object passed to modal with latest data
+		job.contacts = jobsData[jobIndex].contacts;
+
+		console.log("Calling saveToLocalStorage...");
 		saveToLocalStorage();
+		console.log("saveToLocalStorage completed");
+		
+		// Verify data is actually saved
+		console.log("Data in localStorage:", localStorage.getItem('jobTrackerData') ? JSON.parse(localStorage.getItem('jobTrackerData'))[jobIndex].contacts[contactIndex] : 'No data');
 
 		// Refresh modal
+		console.log("Calling refreshContactsModal...");
 		refreshContactsModal(job);
 
 		// Update interface
+		console.log("Calling refreshInterface...");
 		refreshInterface();
+		console.log("All updates completed");
 	};
 
 	const disableContactEditing = (contact, job) => {
@@ -577,6 +636,11 @@ const ContactsModal = ({ job, onClose }) => {
 									),
 									h(
 										"td",
+										{ className: "contact-company-cell" },
+										contact.company || "—"
+									),
+									h(
+										"td",
 										{ className: "contacts-table-actions" },
 										h("button", {
 											className: "action-btn edit-contact-btn icon-btn-transparent",
@@ -644,6 +708,7 @@ const ContactsModal = ({ job, onClose }) => {
 									h("th", {}, I18n.t("modals.contacts.placeholderName")),
 									h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
 									h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+									h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
 									h("th", {}, "Actions")
 								)
 							),
@@ -702,29 +767,122 @@ const ContactsModal = ({ job, onClose }) => {
 				{ className: "add-contact-row" },
 				h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
 				h(
-					"div",
-					{ className: "contact-form-row" },
-					h("input", {
-						type: "text",
-						className: "add-contact-name",
-						placeholder: I18n.t("modals.contacts.placeholderName"),
-					}),
-					h("input", {
-						type: "email",
-						className: "add-contact-email",
-						placeholder: I18n.t("modals.contacts.placeholderEmail"),
-					}),
-					h("input", {
-						type: "tel",
-						className: "add-contact-phone",
-						placeholder: I18n.t("modals.contacts.placeholderPhone"),
-					}),
-					h("input", {
-						type: "text",
-						className: "add-contact-company",
-						placeholder: I18n.t("modals.contacts.placeholderCompany"),
-					})
-					// Submit button moved to modal footer
+					"form",
+					{
+						className: "add-contact-form",
+						onsubmit: (e) => {
+							e.preventDefault();
+							const modal = e.target.closest(".modal");
+							if (!modal) return;
+
+							const nameInput = modal.querySelector(".add-contact-name");
+							const emailInput = modal.querySelector(".add-contact-email");
+							const phoneInput = modal.querySelector(".add-contact-phone");
+							const companyInput = modal.querySelector(".add-contact-company");
+
+							const name = nameInput.value.trim();
+							const email = emailInput.value.trim();
+							const phone = phoneInput.value.trim();
+							const company = companyInput.value.trim();
+
+							if (!name) {
+								showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequired"));
+								return;
+							}
+
+							const newContact = {
+								id: Date.now(),
+								date: new Date().toISOString(),
+								name,
+								email,
+								phone,
+								company,
+								isActive: true,
+								lastContactDate: null,
+								notes: "",
+							};
+
+							if (!job.contacts) job.contacts = [];
+							job.contacts.push(newContact);
+
+							// Clear inputs
+							nameInput.value = "";
+							emailInput.value = "";
+							phoneInput.value = "";
+							companyInput.value = "";
+
+							// Focus back to the first field (name input)
+							setTimeout(() => {
+								const newNameInput = modal.querySelector(".add-contact-name");
+								if (newNameInput) newNameInput.focus();
+							}, 100);
+
+							// Save and refresh
+							saveToLocalStorage();
+							refreshContactsModal(job);
+							refreshInterface();
+						}
+					},
+					h(
+						"div",
+						{ className: "contact-form-row" },
+						h("input", {
+							type: "text",
+							className: "add-contact-name",
+							placeholder: I18n.t("modals.contacts.placeholderName"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						}),
+						h("input", {
+							type: "email",
+							className: "add-contact-email",
+							placeholder: I18n.t("modals.contacts.placeholderEmail"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						}),
+						h("input", {
+							type: "tel",
+							className: "add-contact-phone",
+							placeholder: I18n.t("modals.contacts.placeholderPhone"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						}),
+						h("input", {
+							type: "text",
+							className: "add-contact-company",
+							placeholder: I18n.t("modals.contacts.placeholderCompany"),
+							onkeydown: (e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									e.preventDefault();
+									e.target.closest("form").dispatchEvent(new Event("submit"));
+								}
+							}
+						})
+					),
+					h(
+						"div",
+						{ className: "add-contact-form-actions" },
+						h(
+							"button",
+							{
+								type: "submit",
+								className: "action-btn primary-btn",
+							},
+							I18n.t("modals.contacts.addButton")
+						)
+					)
 				)
 			)
 		);
@@ -780,70 +938,6 @@ const ContactsModal = ({ job, onClose }) => {
 				"div",
 				{ className: "modal-body" },
 				createContactsContent(job, sortedActiveContacts, sortedArchivedContacts)
-			),
-			h(
-				"div",
-				{ className: "modal-footer" },
-				h(
-					"button",
-					{
-						className: "action-btn primary-btn",
-						onclick: (e) => {
-							// Find the modal to scope our search
-							const modal = e.target.closest(".modal");
-							if (!modal) return;
-
-							const nameInput = modal.querySelector(".add-contact-name");
-							const emailInput = modal.querySelector(".add-contact-email");
-							const phoneInput = modal.querySelector(".add-contact-phone");
-							const companyInput = modal.querySelector(".add-contact-company");
-
-							if (!nameInput || !emailInput || !phoneInput || !companyInput) {
-								console.error("Contact form inputs not found");
-								return;
-							}
-
-							const name = nameInput.value.trim();
-							const email = emailInput.value.trim();
-							const phone = phoneInput.value.trim();
-							const company = companyInput.value.trim();
-
-							if (!name) {
-								showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequired"));
-								return;
-							}
-
-							const newContact = {
-								id: Date.now(),
-								name,
-								email,
-								phone,
-								company,
-								isActive: true,
-								lastContactDate: null,
-								notes: "",
-							};
-
-							if (!job.contacts) job.contacts = [];
-							job.contacts.push(newContact);
-
-							// Clear inputs
-							nameInput.value = "";
-							emailInput.value = "";
-							phoneInput.value = "";
-							companyInput.value = "";
-
-							// Clear any validation errors
-							modal.querySelectorAll(".validation-error").forEach((error) => error.remove());
-
-							// Save and refresh
-							saveToLocalStorage();
-							refreshContactsModal(job);
-							refreshInterface();
-						},
-					},
-					I18n.t("modals.contacts.addButton")
-				)
 			)
 		)
 	);
@@ -871,13 +965,15 @@ const openContactsModal = (job) => {
 	}, 50);
 };
 
+// Legacy sync function removed - contactPerson and contactEmail fields are deprecated
+
 // Get the latest contact for display in table
 const getLatestContact = (contacts = []) => {
 	const activeContacts = contacts.filter((contact) => !contact.archived);
 	if (activeContacts.length === 0) return null;
 
 	// Sort by date and get the most recent
-	const sorted = [...activeContacts].sort((a, b) => new Date(b.date) - new Date(a.date));
+	const sorted = [...activeContacts].sort((a, b) => new Date(b.date || b.id) - new Date(a.date || a.id));
 	return sorted[0];
 };
 

@@ -31,15 +31,6 @@ const TextareaField = ({ value = "", className = "editable", placeholder = "", r
 	return h("textarea", props);
 };
 
-// Contact textarea component (for contact person and email)
-const ContactTextarea = ({ contactPerson = "", contactEmail = "" }) => {
-	const contactText = [contactPerson, contactEmail].filter(Boolean).join("\n");
-	return TextareaField({
-		value: contactText,
-		placeholder: I18n.t("forms.placeholderNameEmail"),
-		className: "editable contact-textarea",
-	});
-};
 
 // Priority select component
 const createPrioritySelect = (selectedPriority = "medium", disabled = false, className = "") => {
@@ -168,7 +159,6 @@ const EditActionsCell = ({ jobId, onSave, onCancel }) => {
 // Make form field components available globally for Vite
 window.InputField = InputField;
 window.TextareaField = TextareaField;
-window.ContactTextarea = ContactTextarea;
 window.createPrioritySelect = createPrioritySelect;
 window.createPhaseSelect = createPhaseSelect;
 window.EditActionsCell = EditActionsCell;
