@@ -1158,7 +1158,6 @@ td .zero-count:hover {
 	padding: 8px 0;
 	flex: 1;
 	align-items: stretch;
-	min-height: 600px;
 }
 
 .kanban-column {
@@ -1220,7 +1219,6 @@ td .zero-count:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	min-height: 200px;
 }
 
 .kanban-job-card {
@@ -1473,6 +1471,7 @@ a.kanban-source-link {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+	min-height: calc(100vh - 200px); /* Full viewport minus headers/footers */
 }
 
 .tasks-header {
@@ -1500,7 +1499,6 @@ a.kanban-source-link {
 	padding: 8px 0;
 	flex: 1;
 	align-items: stretch;
-	min-height: 600px;
 }
 
 .tasks-column {
@@ -1562,7 +1560,6 @@ a.kanban-source-link {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	min-height: 200px;
 }
 
 .tasks-task-card {

@@ -409,6 +409,7 @@
 /* Base font size for rem calculations */
 html {
 	font-size: calc(var(--base-size) * 4); /* 16px - 1rem = 16px */
+	height: 100%; /* Essential for full-height flexbox layouts */
 }
 
 body {
@@ -421,6 +422,7 @@ body {
 	color: var(--text-color);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	height: 100%; /* Essential for full-height flexbox layouts */
 }
 
 /* Remove default margins and padding from common elements */
