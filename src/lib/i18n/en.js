@@ -220,6 +220,7 @@ const EN_TRANSLATIONS = {
 			save: "Save",
 			cancel: "Cancel",
 			close: "Close",
+			delete: "Delete",
 			ok: "OK",
 			yes: "Yes",
 			no: "No",

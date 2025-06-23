@@ -221,6 +221,7 @@ const PT_TRANSLATIONS = {
 			save: "Salvar",
 			cancel: "Cancelar",
 			close: "Fechar",
+			delete: "Excluir",
 			ok: "OK",
 			yes: "Sim",
 			no: "Não",

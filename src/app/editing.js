@@ -13,9 +13,9 @@ function editJob(job) {
 }
 
 // Delete job function
-function deleteJob(job) {
-	// Confirm deletion
-	const confirmed = confirm(
+async function deleteJob(job) {
+	// Confirm deletion using async confirm dialog
+	const confirmed = await confirm(
 		I18n.t("messages.confirmDelete", { position: job.position, company: job.company }) ||
 		`Are you sure you want to delete the application for ${job.position} at ${job.company}?`
 	);

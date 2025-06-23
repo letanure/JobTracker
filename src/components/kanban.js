@@ -930,6 +930,46 @@ const KanbanBoard = {
 				h(
 					"div",
 					{ className: "modal-footer" },
+					// Delete button - always visible
+					h(
+						"button",
+						{
+							type: "button",
+							className: "btn-danger",
+							onclick: async () => {
+								// Check if this is an existing job (has company and position filled)
+								const isExistingJob = job.company && job.position;
+								
+								if (isExistingJob) {
+									// For existing jobs, confirm deletion
+									const confirmed = await confirm(
+										I18n.t("messages.confirmDelete", { 
+											position: job.position, 
+											company: job.company 
+										}) || `Are you sure you want to delete the application for ${job.position} at ${job.company}?`
+									);
+									if (confirmed) {
+										// Remove from array
+										const index = jobsData.findIndex((j) => j.id === job.id);
+										if (index !== -1) {
+											jobsData.splice(index, 1);
+											saveToLocalStorage();
+											KanbanBoard.refresh();
+											// Also refresh main table if visible
+											if (typeof refreshInterface === "function") {
+												refreshInterface();
+											}
+										}
+										handleClose();
+									}
+								} else {
+									// For new jobs, just close modal (no confirmation needed)
+									handleClose();
+								}
+							},
+						},
+						I18n.t("modals.common.delete") || "Delete"
+					),
 					h(
 						"button",
 						{

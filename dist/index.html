@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T20:14:41.284Z
-Cache Version: 1750709681284
+Generated: 2025-06-23T20:23:00.688Z
+Cache Version: 1750710180688
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750709681284
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750709681284">
-    <meta name="build-date" content="2025-06-23T20:14:41.284Z">
+    <meta name="build-version" content="1750710180688">
+    <meta name="build-date" content="2025-06-23T20:23:00.688Z">
     <style>
 
 /* ============================================================================ */
@@ -2968,6 +2968,17 @@ a.kanban-source-link {
 	border-color: var(--green-600);
 }
 
+.btn-danger {
+	background: var(--red-500);
+	color: var(--white);
+	border: var(--border-width) solid var(--red-500);
+}
+
+.btn-danger:hover {
+	background: var(--red-600);
+	border-color: var(--red-600);
+}
+
 /* Responsive form */
 @media (max-width: 640px) {
 	.form-row {
@@ -4873,16 +4884,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750709681284';
-window.BUILD_DATE = '2025-06-23T20:14:41.284Z';
+window.BUILD_VERSION = '1750710180688';
+window.BUILD_DATE = '2025-06-23T20:23:00.688Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T20:14:41.277Z
+// Generated: 2025-06-23T20:23:00.680Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T20:14:41.277Z");
+console.log("JobTracker - Built at: 2025-06-23T20:23:00.680Z");
 
 
 // ============================================================================
@@ -5369,6 +5380,7 @@ const EN_TRANSLATIONS = {
 			save: "Save",
 			cancel: "Cancel",
 			close: "Close",
+			delete: "Delete",
 			ok: "OK",
 			yes: "Yes",
 			no: "No",
@@ -5679,6 +5691,7 @@ const PT_TRANSLATIONS = {
 			save: "Salvar",
 			cancel: "Cancelar",
 			close: "Fechar",
+			delete: "Excluir",
 			ok: "OK",
 			yes: "Sim",
 			no: "Não",
@@ -11762,6 +11775,46 @@ const KanbanBoard = {
 				h(
 					"div",
 					{ className: "modal-footer" },
+					// Delete button - always visible
+					h(
+						"button",
+						{
+							type: "button",
+							className: "btn-danger",
+							onclick: async () => {
+								// Check if this is an existing job (has company and position filled)
+								const isExistingJob = job.company && job.position;
+								
+								if (isExistingJob) {
+									// For existing jobs, confirm deletion
+									const confirmed = await confirm(
+										I18n.t("messages.confirmDelete", { 
+											position: job.position, 
+											company: job.company 
+										}) || `Are you sure you want to delete the application for ${job.position} at ${job.company}?`
+									);
+									if (confirmed) {
+										// Remove from array
+										const index = jobsData.findIndex((j) => j.id === job.id);
+										if (index !== -1) {
+											jobsData.splice(index, 1);
+											saveToLocalStorage();
+											KanbanBoard.refresh();
+											// Also refresh main table if visible
+											if (typeof refreshInterface === "function") {
+												refreshInterface();
+											}
+										}
+										handleClose();
+									}
+								} else {
+									// For new jobs, just close modal (no confirmation needed)
+									handleClose();
+								}
+							},
+						},
+						I18n.t("modals.common.delete") || "Delete"
+					),
 					h(
 						"button",
 						{
@@ -14382,9 +14435,9 @@ function editJob(job) {
 }
 
 // Delete job function
-function deleteJob(job) {
-	// Confirm deletion
-	const confirmed = confirm(
+async function deleteJob(job) {
+	// Confirm deletion using async confirm dialog
+	const confirmed = await confirm(
 		I18n.t("messages.confirmDelete", { position: job.position, company: job.company }) ||
 		`Are you sure you want to delete the application for ${job.position} at ${job.company}?`
 	);
