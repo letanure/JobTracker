@@ -40,6 +40,7 @@ const PT_TRANSLATIONS = {
 			salaryRange: "Salario",
 			sourceUrl: "Link",
 			location: "Localização",
+			contacts: "Contatos",
 			notes: "Notas",
 			tasks: "Tarefas",
 			actions: "Ações",

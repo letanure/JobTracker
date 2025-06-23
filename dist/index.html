@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T14:32:31.593Z
-Cache Version: 1750689151593
+Generated: 2025-06-23T14:42:20.482Z
+Cache Version: 1750689740482
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750689151593
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750689151593">
-    <meta name="build-date" content="2025-06-23T14:32:31.593Z">
+    <meta name="build-version" content="1750689740482">
+    <meta name="build-date" content="2025-06-23T14:42:20.482Z">
     <style>
 
 /* ============================================================================ */
@@ -1607,7 +1607,7 @@ textarea {
 	border-radius: 12px;
 	box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
 	border: var(--border-width) solid var(--border-color);
-	max-width: 640px;
+	max-width: 800px;
 	width: 100%;
 	max-height: calc(100vh - 80px);
 	overflow: hidden;
@@ -3599,12 +3599,19 @@ tbody tr {
 	color: var(--text-color);
 	white-space: nowrap;
 	overflow: visible;
+	width: 200px;
+}
+
+#companyHeader,
+#positionHeader {
+	width: 200px;
 }
 
 .position-name {
 	font-weight: var(--font-weight-medium);
 	white-space: nowrap;
 	overflow: visible;
+	width: 200px;
 }
 
 .current-phase {
@@ -4333,11 +4340,6 @@ tr.editing .actions-cell button {
 		padding: var(--space-2) var(--space-1);
 	}
 
-	.company-name,
-	.position-name {
-		/* No max-width restriction - allow full content display */
-	}
-
 	.current-phase {
 		max-width: var(--col-12);
 	}
@@ -4353,11 +4355,6 @@ tr.editing .actions-cell button {
 		padding: var(--space-1);
 	}
 
-	.company-name,
-	.position-name {
-		/* No max-width restriction - allow full content display */
-	}
-	
 	.current-phase {
 		max-width: var(--col-10);
 	}
@@ -4441,6 +4438,7 @@ tr.editing .actions-cell button {
                                     <th id="salaryRangeHeader">...</th>
                                     <th id="locationHeader">...</th>
                                     <th id="sourceUrlHeader">...</th>
+                                    <th id="contactsHeader">...</th>
                                     <th id="notesHeader">...</th>
                                     <th id="tasksHeader">...</th>
                                     <th id="actionsHeader">...</th>
@@ -4499,16 +4497,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750689151593';
-window.BUILD_DATE = '2025-06-23T14:32:31.593Z';
+window.BUILD_VERSION = '1750689740482';
+window.BUILD_DATE = '2025-06-23T14:42:20.482Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T14:32:31.578Z
+// Generated: 2025-06-23T14:42:20.477Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T14:32:31.578Z");
+console.log("JobTracker - Built at: 2025-06-23T14:42:20.477Z");
 
 
 // ============================================================================
@@ -4814,6 +4812,7 @@ const EN_TRANSLATIONS = {
 			salaryRange: "Salary Range",
 			location: "Location",
 			sourceUrl: "Source",
+			contacts: "Contacts",
 			notes: "Notes",
 			tasks: "Tasks",
 			actions: "Actions",
@@ -5088,6 +5087,7 @@ const PT_TRANSLATIONS = {
 			salaryRange: "Salario",
 			sourceUrl: "Link",
 			location: "Localização",
+			contacts: "Contatos",
 			notes: "Notas",
 			tasks: "Tarefas",
 			actions: "Ações",
@@ -5751,6 +5751,7 @@ function updateStaticTexts() {
 	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
 	$("#locationHeader").text(I18n.t("table.headers.location"));
 	$("#sourceUrlHeader").text(I18n.t("table.headers.sourceUrl"));
+	$("#contactsHeader").text(I18n.t("table.headers.contacts"));
 	$("#notesHeader").text(I18n.t("table.headers.notes"));
 	$("#tasksHeader").text(I18n.t("table.headers.tasks"));
 	$("#actionsHeader").text(I18n.t("table.headers.actions"));
@@ -8290,14 +8291,17 @@ const ContactsModal = ({ job, onClose }) => {
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveContactChanges(contact, job);
 
-		// Add cancel button
-		const cancelBtn = h("button", {
-			className: "action-btn cancel-btn icon-btn-transparent",
-			title: I18n.t("modals.common.cancel"),
-			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
-			onclick: () => disableContactEditing(contact, job)
-		});
-		actionsCell.appendChild(cancelBtn);
+		// Only add cancel button if it doesn't already exist
+		let cancelBtn = actionsCell.querySelector(".cancel-btn");
+		if (!cancelBtn) {
+			cancelBtn = h("button", {
+				className: "action-btn cancel-btn icon-btn-transparent",
+				title: I18n.t("modals.common.cancel"),
+				innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
+				onclick: () => disableContactEditing(contact, job)
+			});
+			actionsCell.appendChild(cancelBtn);
+		}
 
 		// Focus first input
 		nameInput.focus();
@@ -8314,19 +8318,16 @@ const ContactsModal = ({ job, onClose }) => {
 		const phoneInput = contactRow.querySelector(".contact-phone-edit");
 		const companyInput = contactRow.querySelector(".contact-company-edit");
 		
-		console.log("Input elements found:", {
-			nameInput: !!nameInput,
-			emailInput: !!emailInput,
-			phoneInput: !!phoneInput,
-			companyInput: !!companyInput
-		});
+		// Ensure all inputs exist before proceeding
+		if (!nameInput || !emailInput || !phoneInput || !companyInput) {
+			console.error("Could not find all required input elements");
+			return;
+		}
 		
-		const name = nameInput?.value.trim() || "";
-		const email = emailInput?.value.trim() || "";
-		const phone = phoneInput?.value.trim() || "";
-		const company = companyInput?.value.trim() || "";
-		
-		console.log("Input values captured:", { name, email, phone, company });
+		const name = nameInput.value.trim();
+		const email = emailInput.value.trim();
+		const phone = phoneInput.value.trim();
+		const company = companyInput.value.trim();
 
 		// Validation
 		if (!name) {
@@ -8352,36 +8353,19 @@ const ContactsModal = ({ job, onClose }) => {
 			return;
 		}
 
-		console.log("Updating contact:", { name, email, phone, company });
-		console.log("jobsData available:", typeof jobsData !== 'undefined');
-		console.log("saveToLocalStorage available:", typeof saveToLocalStorage !== 'undefined');
-		console.log("Contact before update:", jobsData[jobIndex].contacts[contactIndex]);
-		
+		// Update contact data
 		jobsData[jobIndex].contacts[contactIndex].name = name;
 		jobsData[jobIndex].contacts[contactIndex].email = email;
 		jobsData[jobIndex].contacts[contactIndex].phone = phone;
 		jobsData[jobIndex].contacts[contactIndex].company = company;
 
-		console.log("Contact after update:", jobsData[jobIndex].contacts[contactIndex]);
-
 		// Update the job object passed to modal with latest data
 		job.contacts = jobsData[jobIndex].contacts;
 
-		console.log("Calling saveToLocalStorage...");
+		// Save and refresh
 		saveToLocalStorage();
-		console.log("saveToLocalStorage completed");
-		
-		// Verify data is actually saved
-		console.log("Data in localStorage:", localStorage.getItem('jobTrackerData') ? JSON.parse(localStorage.getItem('jobTrackerData'))[jobIndex].contacts[contactIndex] : 'No data');
-
-		// Refresh modal
-		console.log("Calling refreshContactsModal...");
 		refreshContactsModal(job);
-
-		// Update interface
-		console.log("Calling refreshInterface...");
 		refreshInterface();
-		console.log("All updates completed");
 	};
 
 	const disableContactEditing = (contact, job) => {

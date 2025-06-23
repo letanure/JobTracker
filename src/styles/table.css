@@ -73,12 +73,19 @@ tbody tr {
 	color: var(--text-color);
 	white-space: nowrap;
 	overflow: visible;
+	width: 200px;
+}
+
+#companyHeader,
+#positionHeader {
+	width: 200px;
 }
 
 .position-name {
 	font-weight: var(--font-weight-medium);
 	white-space: nowrap;
 	overflow: visible;
+	width: 200px;
 }
 
 .current-phase {
@@ -807,11 +814,6 @@ tr.editing .actions-cell button {
 		padding: var(--space-2) var(--space-1);
 	}
 
-	.company-name,
-	.position-name {
-		/* No max-width restriction - allow full content display */
-	}
-
 	.current-phase {
 		max-width: var(--col-12);
 	}
@@ -827,11 +829,6 @@ tr.editing .actions-cell button {
 		padding: var(--space-1);
 	}
 
-	.company-name,
-	.position-name {
-		/* No max-width restriction - allow full content display */
-	}
-	
 	.current-phase {
 		max-width: var(--col-10);
 	}

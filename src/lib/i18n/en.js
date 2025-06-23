@@ -39,6 +39,7 @@ const EN_TRANSLATIONS = {
 			salaryRange: "Salary Range",
 			location: "Location",
 			sourceUrl: "Source",
+			contacts: "Contacts",
 			notes: "Notes",
 			tasks: "Tasks",
 			actions: "Actions",

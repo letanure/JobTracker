@@ -785,7 +785,7 @@ textarea {
 	border-radius: 12px;
 	box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
 	border: var(--border-width) solid var(--border-color);
-	max-width: 640px;
+	max-width: 800px;
 	width: 100%;
 	max-height: calc(100vh - 80px);
 	overflow: hidden;

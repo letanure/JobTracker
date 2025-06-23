@@ -354,14 +354,17 @@ const ContactsModal = ({ job, onClose }) => {
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveContactChanges(contact, job);
 
-		// Add cancel button
-		const cancelBtn = h("button", {
-			className: "action-btn cancel-btn icon-btn-transparent",
-			title: I18n.t("modals.common.cancel"),
-			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
-			onclick: () => disableContactEditing(contact, job)
-		});
-		actionsCell.appendChild(cancelBtn);
+		// Only add cancel button if it doesn't already exist
+		let cancelBtn = actionsCell.querySelector(".cancel-btn");
+		if (!cancelBtn) {
+			cancelBtn = h("button", {
+				className: "action-btn cancel-btn icon-btn-transparent",
+				title: I18n.t("modals.common.cancel"),
+				innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
+				onclick: () => disableContactEditing(contact, job)
+			});
+			actionsCell.appendChild(cancelBtn);
+		}
 
 		// Focus first input
 		nameInput.focus();
@@ -378,19 +381,16 @@ const ContactsModal = ({ job, onClose }) => {
 		const phoneInput = contactRow.querySelector(".contact-phone-edit");
 		const companyInput = contactRow.querySelector(".contact-company-edit");
 		
-		console.log("Input elements found:", {
-			nameInput: !!nameInput,
-			emailInput: !!emailInput,
-			phoneInput: !!phoneInput,
-			companyInput: !!companyInput
-		});
+		// Ensure all inputs exist before proceeding
+		if (!nameInput || !emailInput || !phoneInput || !companyInput) {
+			console.error("Could not find all required input elements");
+			return;
+		}
 		
-		const name = nameInput?.value.trim() || "";
-		const email = emailInput?.value.trim() || "";
-		const phone = phoneInput?.value.trim() || "";
-		const company = companyInput?.value.trim() || "";
-		
-		console.log("Input values captured:", { name, email, phone, company });
+		const name = nameInput.value.trim();
+		const email = emailInput.value.trim();
+		const phone = phoneInput.value.trim();
+		const company = companyInput.value.trim();
 
 		// Validation
 		if (!name) {
@@ -416,36 +416,19 @@ const ContactsModal = ({ job, onClose }) => {
 			return;
 		}
 
-		console.log("Updating contact:", { name, email, phone, company });
-		console.log("jobsData available:", typeof jobsData !== 'undefined');
-		console.log("saveToLocalStorage available:", typeof saveToLocalStorage !== 'undefined');
-		console.log("Contact before update:", jobsData[jobIndex].contacts[contactIndex]);
-		
+		// Update contact data
 		jobsData[jobIndex].contacts[contactIndex].name = name;
 		jobsData[jobIndex].contacts[contactIndex].email = email;
 		jobsData[jobIndex].contacts[contactIndex].phone = phone;
 		jobsData[jobIndex].contacts[contactIndex].company = company;
 
-		console.log("Contact after update:", jobsData[jobIndex].contacts[contactIndex]);
-
 		// Update the job object passed to modal with latest data
 		job.contacts = jobsData[jobIndex].contacts;
 
-		console.log("Calling saveToLocalStorage...");
+		// Save and refresh
 		saveToLocalStorage();
-		console.log("saveToLocalStorage completed");
-		
-		// Verify data is actually saved
-		console.log("Data in localStorage:", localStorage.getItem('jobTrackerData') ? JSON.parse(localStorage.getItem('jobTrackerData'))[jobIndex].contacts[contactIndex] : 'No data');
-
-		// Refresh modal
-		console.log("Calling refreshContactsModal...");
 		refreshContactsModal(job);
-
-		// Update interface
-		console.log("Calling refreshInterface...");
 		refreshInterface();
-		console.log("All updates completed");
 	};
 
 	const disableContactEditing = (contact, job) => {
