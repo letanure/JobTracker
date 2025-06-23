@@ -76,7 +76,6 @@ tbody tr {
 
 .position-name {
 	font-weight: var(--font-weight-medium);
-	color: var(--primary-color);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -188,24 +187,15 @@ tr.editing td {
 
 /* Phase cell for editing */
 .phase-cell {
-	height: 60px;
-	padding: 0;
-	box-sizing: border-box;
-}
-.phase-cell .inline-edit {
-	height: 28px;
-	padding: 0;
-	border: 0;
-}
-/* .phase-cell {
-	
+	display: flex;
+	flex-direction: column;
 	height: 60px;
 	padding: 0;
 	box-sizing: border-box;
 }
 
 .phase-cell .inline-edit {
-	height: 29px;
+	height: 30px;
 	padding: 4px 8px;
 	border: none;
 	border-radius: 0;
@@ -215,21 +205,16 @@ tr.editing td {
 	width: 100%;
 	background: var(--white);
 	color: var(--text-color);
-} */
-
-/* .phase-cell .inline-edit:first-child {
-	border-bottom: 1px solid var(--border-light);
-	height: 30px;
 }
 
-.phase-cell .inline-edit:last-child {
-	height: 29px;
+.phase-cell .inline-edit:first-child {
+	border-bottom: 1px solid var(--border-light);
 }
 
 .phase-cell .inline-edit:focus {
 	outline: 2px solid var(--primary-color);
 	outline-offset: -2px;
-} */
+}
 
 /* General inline edit styling */
 .inline-edit {
@@ -259,6 +244,7 @@ tr.editing td {
 	border: none;
 	border-radius: 0;
 	font-size: var(--font-size-xs);
+	background: var(--white);
 	color: var(--text-color);
 	box-sizing: border-box;
 }
@@ -307,7 +293,8 @@ tr.editing .actions-cell button {
 }
 
 /* Notes and Tasks table layouts */
-.notes-table, .tasks-table {
+.notes-table,
+.tasks-table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
@@ -318,7 +305,8 @@ tr.editing .actions-cell button {
 	overflow: hidden;
 }
 
-.notes-table th, .tasks-table th {
+.notes-table th,
+.tasks-table th {
 	background: var(--background-color);
 	padding: var(--space-2) var(--space-3);
 	text-align: left;
@@ -329,38 +317,45 @@ tr.editing .actions-cell button {
 	position: static;
 }
 
-.notes-table td, .tasks-table td {
+.notes-table td,
+.tasks-table td {
 	padding: var(--space-3);
 	border-bottom: var(--border-width) solid var(--border-light);
 	vertical-align: top;
 	background: var(--container-background);
 }
 
-.notes-table tr:last-child td, .tasks-table tr:last-child td {
+.notes-table tr:last-child td,
+.tasks-table tr:last-child td {
 	border-bottom: none;
 }
 
-.notes-table tr:hover, .tasks-table tr:hover {
+.notes-table tr:hover,
+.tasks-table tr:hover {
 	background: var(--background-color);
 }
 
 /* Prevent line breaking in specific columns */
-.notes-table td:nth-child(2), .tasks-table td:nth-child(2) {
+.notes-table td:nth-child(2),
+.tasks-table td:nth-child(2) {
 	white-space: nowrap;
 	width: 120px;
 }
 
-.notes-table td:nth-child(4), .tasks-table td:nth-child(4) {
+.notes-table td:nth-child(4),
+.tasks-table td:nth-child(4) {
 	white-space: nowrap;
 	width: 80px;
 }
 
-.notes-table-actions, .tasks-table-actions {
+.notes-table-actions,
+.tasks-table-actions {
 	white-space: nowrap;
 }
 
 /* Style task status/priority displays when not editing */
-.task-status-display, .task-priority-display {
+.task-status-display,
+.task-priority-display {
 	border: none;
 	background: transparent;
 	padding: 4px 8px;
@@ -520,15 +515,17 @@ tr.editing .actions-cell button {
 	table {
 		font-size: var(--font-size-xs);
 	}
-	
-	th, td {
+
+	th,
+	td {
 		padding: var(--space-2) var(--space-1);
 	}
-	
-	.company-name, .position-name {
+
+	.company-name,
+	.position-name {
 		max-width: var(--col-16);
 	}
-	
+
 	.current-phase {
 		max-width: var(--col-12);
 	}
@@ -538,16 +535,20 @@ tr.editing .actions-cell button {
 	.table-container {
 		max-height: 60vh;
 	}
-	
-	th, td {
+
+	th,
+	td {
 		padding: var(--space-1);
 	}
-	
-	.company-name, .position-name, .current-phase {
+
+	.company-name,
+	.position-name,
+	.current-phase {
 		max-width: var(--col-10);
 	}
-	
-	.salary, .location {
+
+	.salary,
+	.location {
 		font-size: var(--font-size-2xs);
 	}
 }

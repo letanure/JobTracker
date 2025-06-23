@@ -71,7 +71,6 @@
 	letter-spacing: normal;
 	margin-top: 4px;
 	font-weight: 500;
-	
 }
 
 /* GitHub-Style Footer */
@@ -109,11 +108,21 @@
 }
 
 @keyframes heartbeat {
-	0% { transform: scale(1); }
-	14% { transform: scale(1.1); }
-	28% { transform: scale(1); }
-	42% { transform: scale(1.1); }
-	70% { transform: scale(1); }
+	0% {
+		transform: scale(1);
+	}
+	14% {
+		transform: scale(1.1);
+	}
+	28% {
+		transform: scale(1);
+	}
+	42% {
+		transform: scale(1.1);
+	}
+	70% {
+		transform: scale(1);
+	}
 }
 
 .author-link {
@@ -240,32 +249,32 @@ body {
 	body {
 		padding: var(--space-2);
 	}
-	
+
 	.header {
 		padding: var(--space-4);
 		flex-direction: column;
 		gap: var(--space-3);
 		align-items: stretch;
 	}
-	
+
 	.controls {
 		padding: var(--space-4);
 		flex-direction: column;
 		align-items: stretch;
 		gap: var(--space-2);
 	}
-	
+
 	.stats {
 		grid-template-columns: repeat(auto-fit, minmax(var(--col-12), 1fr));
 		gap: var(--space-2);
 		padding: var(--space-3) var(--space-4);
 	}
-	
+
 	.board-placeholder {
 		margin: var(--space-4);
 		min-height: 300px;
 	}
-	
+
 	.footer-content {
 		flex-direction: column;
 		gap: 8px;

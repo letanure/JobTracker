@@ -189,9 +189,9 @@ const TabNavigation = {
 
 		// Mark tabs as initialized to enable smooth transitions after a brief delay
 		setTimeout(() => {
-			const tabContainer = document.querySelector('.tab-content-container');
+			const tabContainer = document.querySelector(".tab-content-container");
 			if (tabContainer) {
-				tabContainer.classList.add('tabs-initialized');
+				tabContainer.classList.add("tabs-initialized");
 			}
 		}, 50);
 	},

@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T10:14:55.149Z
-Cache Version: 1750673695149
+Generated: 2025-06-23T12:19:19.834Z
+Cache Version: 1750681159834
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750673695149
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750673695149">
-    <meta name="build-date" content="2025-06-23T10:14:55.149Z">
+    <meta name="build-version" content="1750681159834">
+    <meta name="build-date" content="2025-06-23T12:19:19.834Z">
     <style>
 
 /* ============================================================================ */
@@ -271,26 +271,10 @@ Cache Version: 1750673695149
 	/* ============================================================================ */
 
 	/* Gradient system */
-	--gradient-primary: linear-gradient(
-		135deg,
-		var(--primary-color),
-		var(--primary-hover)
-	);
-	--gradient-success: linear-gradient(
-		135deg,
-		var(--success-color),
-		var(--success-hover)
-	);
-	--gradient-warning: linear-gradient(
-		135deg,
-		var(--warning-color),
-		var(--warning-hover)
-	);
-	--gradient-error: linear-gradient(
-		135deg,
-		var(--error-color),
-		var(--error-hover)
-	);
+	--gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+	--gradient-success: linear-gradient(135deg, var(--success-color), var(--success-hover));
+	--gradient-warning: linear-gradient(135deg, var(--warning-color), var(--warning-hover));
+	--gradient-error: linear-gradient(135deg, var(--error-color), var(--error-hover));
 
 	/* Hover states for better interaction feedback */
 	--surface-hover: var(--gray-50);
@@ -322,7 +306,8 @@ Cache Version: 1750673695149
 	--base-button-height: calc(var(--base-size) * 8); /* Button base - scales all button heights */
 
 	/* GitHub Typography System */
-	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial,
+		sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 	--font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 
 	/* Font sizes - calc-based from base */
@@ -411,25 +396,17 @@ Cache Version: 1750673695149
 	--radius-full: calc(var(--base-size) * 2500); /* 9999px equivalent */
 
 	/* Shadow system - calc-based from base blur */
-	--shadow-xs: 0 var(--base-shadow-blur) calc(var(--base-shadow-blur) * 2)
-		rgba(0, 0, 0, 0.04);
-	--shadow-sm: 0 var(--base-shadow-blur) calc(var(--base-shadow-blur) * 1) 0
-		rgba(0, 0, 0, 0.05);
-	--shadow-md: 0 calc(var(--base-shadow-blur) * 2)
-		calc(var(--base-shadow-blur) * 3) calc(var(--base-shadow-blur) * -0.5)
-		rgba(0, 0, 0, 0.1), 0 var(--base-shadow-blur)
-		calc(var(--base-shadow-blur) * 2) calc(var(--base-shadow-blur) * -0.5)
-		rgba(0, 0, 0, 0.06);
-	--shadow-lg: 0 calc(var(--base-shadow-blur) * 5)
-		calc(var(--base-shadow-blur) * 7.5) calc(var(--base-shadow-blur) * -1.5)
-		rgba(0, 0, 0, 0.1), 0 calc(var(--base-shadow-blur) * 2)
-		calc(var(--base-shadow-blur) * 3) calc(var(--base-shadow-blur) * -1)
-		rgba(0, 0, 0, 0.05);
-	--shadow-xl: 0 calc(var(--base-shadow-blur) * 10)
-		calc(var(--base-shadow-blur) * 12.5) calc(var(--base-shadow-blur) * -2.5)
-		rgba(0, 0, 0, 0.1), 0 calc(var(--base-shadow-blur) * 5)
-		calc(var(--base-shadow-blur) * 5) calc(var(--base-shadow-blur) * -2.5)
-		rgba(0, 0, 0, 0.04);
+	--shadow-xs: 0 var(--base-shadow-blur) calc(var(--base-shadow-blur) * 2) rgba(0, 0, 0, 0.04);
+	--shadow-sm: 0 var(--base-shadow-blur) calc(var(--base-shadow-blur) * 1) 0 rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 calc(var(--base-shadow-blur) * 2) calc(var(--base-shadow-blur) * 3)
+		calc(var(--base-shadow-blur) * -0.5) rgba(0, 0, 0, 0.1), 0 var(--base-shadow-blur)
+		calc(var(--base-shadow-blur) * 2) calc(var(--base-shadow-blur) * -0.5) rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 calc(var(--base-shadow-blur) * 5) calc(var(--base-shadow-blur) * 7.5)
+		calc(var(--base-shadow-blur) * -1.5) rgba(0, 0, 0, 0.1), 0 calc(var(--base-shadow-blur) * 2)
+		calc(var(--base-shadow-blur) * 3) calc(var(--base-shadow-blur) * -1) rgba(0, 0, 0, 0.05);
+	--shadow-xl: 0 calc(var(--base-shadow-blur) * 10) calc(var(--base-shadow-blur) * 12.5)
+		calc(var(--base-shadow-blur) * -2.5) rgba(0, 0, 0, 0.1), 0 calc(var(--base-shadow-blur) * 5)
+		calc(var(--base-shadow-blur) * 5) calc(var(--base-shadow-blur) * -2.5) rgba(0, 0, 0, 0.04);
 
 	/* Border system - calc-based from base */
 	--border-width: var(--base-border-width); /* 1px */
@@ -470,10 +447,8 @@ Cache Version: 1750673695149
 
 	/* Focus ring fallbacks for older browsers */
 	--focus-ring-fallback: 0 0 0 var(--focus-ring-width) rgba(35, 131, 226, 0.1);
-	--focus-ring-error-fallback: 0 0 0 var(--focus-ring-width)
-		rgba(224, 62, 62, 0.1);
-	--focus-ring-success-fallback: 0 0 0 var(--focus-ring-width)
-		rgba(15, 123, 15, 0.1);
+	--focus-ring-error-fallback: 0 0 0 var(--focus-ring-width) rgba(224, 62, 62, 0.1);
+	--focus-ring-success-fallback: 0 0 0 var(--focus-ring-width) rgba(15, 123, 15, 0.1);
 
 	/* Z-index scale - calc-based */
 	--z-dropdown: calc(var(--base-size) * 25); /* 100 */
@@ -508,20 +483,38 @@ body {
 }
 
 /* Remove default margins and padding from common elements */
-h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl, dd {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
 	margin: 0;
 	padding: 0;
 }
 
 /* Remove list styles from lists without class */
-ul:not([class]), ol:not([class]) {
+ul:not([class]),
+ol:not([class]) {
 	list-style: none;
 }
 
 /* Box sizing reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
 	box-sizing: border-box;
 }
+
 
 /* ============================================================================ */
 /* SRC/STYLES/LAYOUT.CSS */
@@ -600,7 +593,6 @@ ul:not([class]), ol:not([class]) {
 	letter-spacing: normal;
 	margin-top: 4px;
 	font-weight: 500;
-	
 }
 
 /* GitHub-Style Footer */
@@ -638,11 +630,21 @@ ul:not([class]), ol:not([class]) {
 }
 
 @keyframes heartbeat {
-	0% { transform: scale(1); }
-	14% { transform: scale(1.1); }
-	28% { transform: scale(1); }
-	42% { transform: scale(1.1); }
-	70% { transform: scale(1); }
+	0% {
+		transform: scale(1);
+	}
+	14% {
+		transform: scale(1.1);
+	}
+	28% {
+		transform: scale(1);
+	}
+	42% {
+		transform: scale(1.1);
+	}
+	70% {
+		transform: scale(1);
+	}
 }
 
 .author-link {
@@ -769,32 +771,32 @@ body {
 	body {
 		padding: var(--space-2);
 	}
-	
+
 	.header {
 		padding: var(--space-4);
 		flex-direction: column;
 		gap: var(--space-3);
 		align-items: stretch;
 	}
-	
+
 	.controls {
 		padding: var(--space-4);
 		flex-direction: column;
 		align-items: stretch;
 		gap: var(--space-2);
 	}
-	
+
 	.stats {
 		grid-template-columns: repeat(auto-fit, minmax(var(--col-12), 1fr));
 		gap: var(--space-2);
 		padding: var(--space-3) var(--space-4);
 	}
-	
+
 	.board-placeholder {
 		margin: var(--space-4);
 		min-height: 300px;
 	}
-	
+
 	.footer-content {
 		flex-direction: column;
 		gap: 8px;
@@ -812,6 +814,7 @@ body {
 		justify-content: center;
 	}
 }
+
 
 /* ============================================================================ */
 /* SRC/STYLES/COMPONENTS.CSS */
@@ -845,15 +848,13 @@ button {
 	text-decoration: none;
 	white-space: nowrap;
 	user-select: none;
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0
-		rgba(255, 255, 255, 0.25);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 button:hover {
 	background-color: var(--gray-100);
 	border-color: var(--gray-300);
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0
-		rgba(255, 255, 255, 0.03);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 	transition-duration: 0.1s;
 }
 
@@ -881,8 +882,7 @@ button:disabled {
 	color: var(--white);
 	background-color: var(--green-500);
 	border-color: rgba(27, 31, 35, 0.15);
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0
-		rgba(255, 255, 255, 0.03);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .btn-primary:hover {
@@ -983,31 +983,7 @@ textarea::placeholder {
 	color: var(--text-color);
 }
 
-/* Inline edit inputs */
-.inline-edit {
-	width: 100%;
-	padding: 8px;
-	border: none;
-	border-radius: 0;
-	font-size: var(--font-size-xs);
-	background: var(--white);
-	color: var(--text-color);
-	transition: var(--transition-fast);
-	height: 40px;
-	box-sizing: border-box;
-	border: 0px solid transparent;
-	background-color: transparent;
-}
-/* .inline-edit.phase-select  select{
-	height: 30px;
-} */
-
-.inline-edit:focus {
-	outline: 2px solid var(--blue-500);
-	outline-offset: -2px;
-	border-color: var(--blue-500);
-	box-shadow: none;
-}
+/* Note: Main inline-edit styles are in table.css */
 
 /* Common textarea styles */
 textarea {
@@ -1229,9 +1205,9 @@ textarea {
 
 .contacts-container {
 	padding: 24px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
 }
 
 .contacts-header {
@@ -1246,10 +1222,6 @@ textarea {
 	font-size: 20px;
 	font-weight: 600;
 	color: var(--text-color);
-}
-
-	border-radius: 12px;
-	font-weight: 500;
 }
 
 .contacts-table-container {
@@ -1478,21 +1450,21 @@ textarea {
 	.contacts-container {
 		padding: 16px;
 	}
-	
+
 	.contacts-header {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 12px;
 	}
-	
+
 	.contacts-title {
 		font-size: 18px;
 	}
-	
+
 	.contact-form-row {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.contact-form-field.full-width {
 		grid-column: span 1;
 	}
@@ -1663,9 +1635,9 @@ textarea {
 /* GITHUB-STYLE COUNTERS AND BADGES */
 /* ============================================================================ */
 
-.notes-count,
-.tasks-count,
-.contacts-count {
+.table .notes-count,
+.table .tasks-count,
+.actions-cell .contacts-count {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -1682,7 +1654,6 @@ textarea {
 	user-select: none;
 	border: 1px solid var(--gray-300);
 }
-
 
 .zero-count {
 	background: var(--gray-100);
@@ -1809,16 +1780,14 @@ textarea {
 	font-weight: 500;
 	transition: var(--transition-fast);
 	cursor: pointer;
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0
-		rgba(255, 255, 255, 0.25);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 	height: 32px;
 }
 
 .language-button:hover {
 	background-color: var(--gray-100);
 	border-color: var(--gray-300);
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0
-		rgba(255, 255, 255, 0.03);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .language-button.active {
@@ -1922,7 +1891,6 @@ textarea {
 	box-shadow: none;
 }
 
-
 .tab-button.active {
 	color: var(--text-color);
 	border-bottom-color: #fd8c73;
@@ -1968,12 +1936,10 @@ textarea {
 	margin: 0;
 }
 
-	border-radius: 12px;
-	font-weight: 500;
-}
-
 .kanban-board {
-	display: flex;
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
 	gap: 16px;
 	overflow-x: auto;
 	padding: 8px 0;
@@ -2263,7 +2229,6 @@ textarea {
 	line-height: 1.2;
 }
 
-
 /* ============================================================================ */
 /* TASKS BOARD */
 /* ============================================================================ */
@@ -2291,12 +2256,10 @@ textarea {
 	margin: 0;
 }
 
-	border-radius: 12px;
-	font-weight: 500;
-}
-
 .tasks-board {
-	display: flex;
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
 	gap: 16px;
 	overflow-x: auto;
 	padding: 8px 0;
@@ -3185,43 +3148,43 @@ textarea {
 	.calendar-container {
 		padding: 16px;
 	}
-	
+
 	.calendar-header {
 		flex-direction: column;
 		gap: 16px;
 		align-items: stretch;
 	}
-	
+
 	.calendar-controls {
 		flex-direction: column;
 		gap: 12px;
 	}
-	
+
 	.calendar-view-selector,
 	.calendar-nav {
 		width: 100%;
 		justify-content: center;
 	}
-	
+
 	.calendar-day {
 		min-height: 80px;
 		padding: 6px;
 	}
-	
+
 	.calendar-week,
 	.calendar-day-view {
 		height: 400px;
 	}
-	
+
 	.calendar-week-times,
 	.calendar-day-times {
 		display: none;
 	}
-	
+
 	.calendar-week {
 		grid-template-columns: repeat(7, 1fr);
 	}
-	
+
 	.calendar-day-view {
 		grid-template-columns: 1fr;
 	}
@@ -3308,10 +3271,13 @@ textarea {
 	display: flex;
 	background: var(--gray-100);
 	border-radius: 6px;
-	padding: 1px;
+	padding: 2px;
 }
 
-.jobs-stats .stat-item {
+.jobs-stats .stat-item,
+.kanban-stats .kanban-total-jobs,
+.tasks-stats .tasks-total-count,
+.contacts-stats .contacts-count {
 	padding: 6px 16px;
 	background: transparent;
 	border: none;
@@ -3327,6 +3293,21 @@ textarea {
 	white-space: nowrap;
 }
 
+.jobs-stats .stat-item:hover,
+.kanban-stats .kanban-total-jobs:hover,
+.tasks-stats .tasks-total-count:hover,
+.contacts-stats .contacts-count:hover {
+	color: var(--text-color);
+}
+
+.jobs-stats .stat-item.active,
+.kanban-stats .kanban-total-jobs.active,
+.tasks-stats .tasks-total-count.active,
+.contacts-stats .contacts-count.active {
+	background: var(--white);
+	color: var(--text-color);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
 /* Responsive headers */
 @media (max-width: 768px) {
@@ -3336,16 +3317,16 @@ textarea {
 		align-items: stretch;
 		gap: var(--space-3);
 	}
-	
+
 	.tab-title,
 	.jobs-title {
 		text-align: center;
 	}
-	
+
 	.jobs-container {
 		padding: 16px;
 	}
-	
+
 	.jobs-stats,
 	.kanban-stats,
 	.tasks-stats,
@@ -3472,11 +3453,11 @@ textarea {
 		max-width: 95%;
 		margin: var(--space-4);
 	}
-	
+
 	.dialog-footer {
 		flex-direction: column;
 	}
-	
+
 	.dialog-footer .action-btn {
 		width: 100%;
 		justify-content: center;
@@ -3566,7 +3547,6 @@ tbody tr {
 
 .position-name {
 	font-weight: var(--font-weight-medium);
-	color: var(--primary-color);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -3678,24 +3658,15 @@ tr.editing td {
 
 /* Phase cell for editing */
 .phase-cell {
-	height: 60px;
-	padding: 0;
-	box-sizing: border-box;
-}
-.phase-cell .inline-edit {
-	height: 28px;
-	padding: 0;
-	border: 0;
-}
-/* .phase-cell {
-	
+	display: flex;
+	flex-direction: column;
 	height: 60px;
 	padding: 0;
 	box-sizing: border-box;
 }
 
 .phase-cell .inline-edit {
-	height: 29px;
+	height: 30px;
 	padding: 4px 8px;
 	border: none;
 	border-radius: 0;
@@ -3705,21 +3676,16 @@ tr.editing td {
 	width: 100%;
 	background: var(--white);
 	color: var(--text-color);
-} */
-
-/* .phase-cell .inline-edit:first-child {
-	border-bottom: 1px solid var(--border-light);
-	height: 30px;
 }
 
-.phase-cell .inline-edit:last-child {
-	height: 29px;
+.phase-cell .inline-edit:first-child {
+	border-bottom: 1px solid var(--border-light);
 }
 
 .phase-cell .inline-edit:focus {
 	outline: 2px solid var(--primary-color);
 	outline-offset: -2px;
-} */
+}
 
 /* General inline edit styling */
 .inline-edit {
@@ -3749,6 +3715,7 @@ tr.editing td {
 	border: none;
 	border-radius: 0;
 	font-size: var(--font-size-xs);
+	background: var(--white);
 	color: var(--text-color);
 	box-sizing: border-box;
 }
@@ -3797,7 +3764,8 @@ tr.editing .actions-cell button {
 }
 
 /* Notes and Tasks table layouts */
-.notes-table, .tasks-table {
+.notes-table,
+.tasks-table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
@@ -3808,7 +3776,8 @@ tr.editing .actions-cell button {
 	overflow: hidden;
 }
 
-.notes-table th, .tasks-table th {
+.notes-table th,
+.tasks-table th {
 	background: var(--background-color);
 	padding: var(--space-2) var(--space-3);
 	text-align: left;
@@ -3819,38 +3788,45 @@ tr.editing .actions-cell button {
 	position: static;
 }
 
-.notes-table td, .tasks-table td {
+.notes-table td,
+.tasks-table td {
 	padding: var(--space-3);
 	border-bottom: var(--border-width) solid var(--border-light);
 	vertical-align: top;
 	background: var(--container-background);
 }
 
-.notes-table tr:last-child td, .tasks-table tr:last-child td {
+.notes-table tr:last-child td,
+.tasks-table tr:last-child td {
 	border-bottom: none;
 }
 
-.notes-table tr:hover, .tasks-table tr:hover {
+.notes-table tr:hover,
+.tasks-table tr:hover {
 	background: var(--background-color);
 }
 
 /* Prevent line breaking in specific columns */
-.notes-table td:nth-child(2), .tasks-table td:nth-child(2) {
+.notes-table td:nth-child(2),
+.tasks-table td:nth-child(2) {
 	white-space: nowrap;
 	width: 120px;
 }
 
-.notes-table td:nth-child(4), .tasks-table td:nth-child(4) {
+.notes-table td:nth-child(4),
+.tasks-table td:nth-child(4) {
 	white-space: nowrap;
 	width: 80px;
 }
 
-.notes-table-actions, .tasks-table-actions {
+.notes-table-actions,
+.tasks-table-actions {
 	white-space: nowrap;
 }
 
 /* Style task status/priority displays when not editing */
-.task-status-display, .task-priority-display {
+.task-status-display,
+.task-priority-display {
 	border: none;
 	background: transparent;
 	padding: 4px 8px;
@@ -4010,15 +3986,17 @@ tr.editing .actions-cell button {
 	table {
 		font-size: var(--font-size-xs);
 	}
-	
-	th, td {
+
+	th,
+	td {
 		padding: var(--space-2) var(--space-1);
 	}
-	
-	.company-name, .position-name {
+
+	.company-name,
+	.position-name {
 		max-width: var(--col-16);
 	}
-	
+
 	.current-phase {
 		max-width: var(--col-12);
 	}
@@ -4028,19 +4006,24 @@ tr.editing .actions-cell button {
 	.table-container {
 		max-height: 60vh;
 	}
-	
-	th, td {
+
+	th,
+	td {
 		padding: var(--space-1);
 	}
-	
-	.company-name, .position-name, .current-phase {
+
+	.company-name,
+	.position-name,
+	.current-phase {
 		max-width: var(--col-10);
 	}
-	
-	.salary, .location {
+
+	.salary,
+	.location {
 		font-size: var(--font-size-2xs);
 	}
 }
+
     </style>
 </head>
 <body>
@@ -4173,16 +4156,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750673695149';
-window.BUILD_DATE = '2025-06-23T10:14:55.149Z';
+window.BUILD_VERSION = '1750681159834';
+window.BUILD_DATE = '2025-06-23T12:19:19.834Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T10:14:55.143Z
+// Generated: 2025-06-23T12:19:19.827Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T10:14:55.143Z");
+console.log("JobTracker - Built at: 2025-06-23T12:19:19.827Z");
 
 
 // ============================================================================
@@ -5659,12 +5642,12 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(true);
-						}
-					}
+						},
+					},
 				],
-				type: "alert"
+				type: "alert",
 			});
-			
+
 			CustomDialogs.showDialog(modal);
 		});
 	},
@@ -5676,7 +5659,7 @@ const CustomDialogs = {
 				title = null,
 				confirmText = I18n.t("modals.common.ok") || "OK",
 				cancelText = I18n.t("modals.common.cancel") || "Cancel",
-				focusConfirm = false
+				focusConfirm = false,
 			} = options;
 
 			const modal = CustomDialogs.createModal({
@@ -5689,21 +5672,21 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(false);
-						}
+						},
 					},
 					{
 						text: confirmText,
-						className: focusConfirm ? "btn-primary" : "btn-secondary", 
+						className: focusConfirm ? "btn-primary" : "btn-secondary",
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(true);
-						}
-					}
+						},
+					},
 				],
 				type: "confirm",
-				focusConfirm
+				focusConfirm,
 			});
-			
+
 			CustomDialogs.showDialog(modal, focusConfirm);
 		});
 	},
@@ -5712,7 +5695,7 @@ const CustomDialogs = {
 	prompt: (message, defaultValue = "", title = null) => {
 		return new Promise((resolve) => {
 			let inputValue = defaultValue;
-			
+
 			const modal = CustomDialogs.createModal({
 				title: title || I18n.t("modals.dialogs.prompt") || "Input Required",
 				message,
@@ -5722,7 +5705,7 @@ const CustomDialogs = {
 					placeholder: message,
 					onChange: (value) => {
 						inputValue = value;
-					}
+					},
 				},
 				buttons: [
 					{
@@ -5731,7 +5714,7 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(null);
-						}
+						},
 					},
 					{
 						text: I18n.t("modals.common.ok") || "OK",
@@ -5739,12 +5722,12 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(inputValue);
-						}
-					}
+						},
+					},
 				],
-				type: "prompt"
+				type: "prompt",
 			});
-			
+
 			CustomDialogs.showDialog(modal);
 		});
 	},
@@ -5760,61 +5743,69 @@ const CustomDialogs = {
 						// Don't auto-close on backdrop click for dialogs
 						// User must explicitly choose an option
 					}
-				}
+				},
 			},
 			h(
 				"div",
 				{
 					className: `modal custom-dialog-modal dialog-${type}`,
-					onclick: (e) => e.stopPropagation()
+					onclick: (e) => e.stopPropagation(),
 				},
 				// Header
 				h(
 					"div",
 					{ className: "modal-header" },
-					h("h3", { className: "modal-title" }, title),
+					h("h3", { className: "modal-title" }, title)
 					// No close button - force user to choose an option
 				),
-				
+
 				// Body
 				h(
 					"div",
 					{ className: "modal-body custom-dialog-body" },
 					h("div", { className: "dialog-message" }, message),
-					
+
 					// Input field for prompt
-					input ? h("div", { className: "dialog-input-container" },
-						h("input", {
-							type: input.type,
-							value: input.value,
-							placeholder: input.placeholder,
-							className: "dialog-input",
-							oninput: (e) => input.onChange(e.target.value),
-							onkeydown: (e) => {
-								if (e.key === "Enter") {
-									// Trigger the primary button (last button)
-									const primaryBtn = modal.querySelector(".btn-primary");
-									if (primaryBtn) primaryBtn.click();
-								}
-								if (e.key === "Escape") {
-									// Trigger the secondary button (first button)
-									const secondaryBtn = modal.querySelector(".btn-secondary");
-									if (secondaryBtn) secondaryBtn.click();
-								}
-							}
-						})
-					) : null
+					input
+						? h(
+								"div",
+								{ className: "dialog-input-container" },
+								h("input", {
+									type: input.type,
+									value: input.value,
+									placeholder: input.placeholder,
+									className: "dialog-input",
+									oninput: (e) => input.onChange(e.target.value),
+									onkeydown: (e) => {
+										if (e.key === "Enter") {
+											// Trigger the primary button (last button)
+											const primaryBtn = modal.querySelector(".btn-primary");
+											if (primaryBtn) primaryBtn.click();
+										}
+										if (e.key === "Escape") {
+											// Trigger the secondary button (first button)
+											const secondaryBtn = modal.querySelector(".btn-secondary");
+											if (secondaryBtn) secondaryBtn.click();
+										}
+									},
+								})
+							)
+						: null
 				),
-				
+
 				// Footer with buttons
 				h(
 					"div",
 					{ className: "modal-footer dialog-footer" },
-					...buttons.map(button => 
-						h("button", {
-							className: `action-btn ${button.className}`,
-							onclick: button.onClick
-						}, button.text)
+					...buttons.map((button) =>
+						h(
+							"button",
+							{
+								className: `action-btn ${button.className}`,
+								onclick: button.onClick,
+							},
+							button.text
+						)
 					)
 				)
 			)
@@ -5827,22 +5818,22 @@ const CustomDialogs = {
 	showDialog: (modal, focusConfirm = false) => {
 		// Close any existing dialog
 		CustomDialogs.closeDialog();
-		
+
 		// Optimize rendering to reduce flickering
-		modal.style.opacity = '0';
-		modal.style.transform = 'translate(-50%, -60%) scale(0.95)';
-		
+		modal.style.opacity = "0";
+		modal.style.transform = "translate(-50%, -60%) scale(0.95)";
+
 		CustomDialogs.activeDialog = modal;
 		document.body.appendChild(modal);
-		
+
 		// Force browser to calculate layout before showing
 		modal.offsetHeight;
-		
+
 		// Trigger the animation
 		requestAnimationFrame(() => {
-			modal.style.opacity = '';
-			modal.style.transform = '';
-			
+			modal.style.opacity = "";
+			modal.style.transform = "";
+
 			// Focus handling after animation starts
 			setTimeout(() => {
 				const input = modal.querySelector(".dialog-input");
@@ -5859,7 +5850,7 @@ const CustomDialogs = {
 				}
 			}, 50);
 		});
-		
+
 		// Add keyboard event listener for ESC key
 		const handleKeydown = (e) => {
 			if (e.key === "Escape") {
@@ -5874,7 +5865,7 @@ const CustomDialogs = {
 				}
 			}
 		};
-		
+
 		document.addEventListener("keydown", handleKeydown);
 		modal.dataset.keydownHandler = "true";
 	},
@@ -5886,22 +5877,28 @@ const CustomDialogs = {
 			if (CustomDialogs.activeDialog.dataset.keydownHandler) {
 				document.removeEventListener("keydown", CustomDialogs.handleKeydown);
 			}
-			
+
 			if (CustomDialogs.activeDialog.parentNode) {
 				CustomDialogs.activeDialog.parentNode.removeChild(CustomDialogs.activeDialog);
 			}
 			CustomDialogs.activeDialog = null;
 		}
-	}
+	},
 };
 
 // Helper for simple confirm dialogs with custom buttons
-CustomDialogs.confirmCustom = (message, confirmText, cancelText, focusConfirm = false, title = null) => {
+CustomDialogs.confirmCustom = (
+	message,
+	confirmText,
+	cancelText,
+	focusConfirm = false,
+	title = null
+) => {
 	return CustomDialogs.confirm(message, {
 		title,
 		confirmText,
 		cancelText,
-		focusConfirm
+		focusConfirm,
 	});
 };
 
@@ -5920,6 +5917,7 @@ window.nativePrompt = window.prompt;
 window.alert = CustomDialogs.alert;
 window.confirm = CustomDialogs.confirm;
 window.prompt = CustomDialogs.prompt;
+
 
 // ============================================================================
 // SRC/COMPONENTS/NOTES.JS
@@ -8789,9 +8787,9 @@ const TabNavigation = {
 
 		// Mark tabs as initialized to enable smooth transitions after a brief delay
 		setTimeout(() => {
-			const tabContainer = document.querySelector('.tab-content-container');
+			const tabContainer = document.querySelector(".tab-content-container");
 			if (tabContainer) {
-				tabContainer.classList.add('tabs-initialized');
+				tabContainer.classList.add("tabs-initialized");
 			}
 		}, 50);
 	},
@@ -9154,7 +9152,9 @@ const KanbanBoard = {
 
 			// Validation
 			if (!updatedJob.company || !updatedJob.position) {
-				await alert(I18n.t("validation.companyPositionRequired") || "Company and position are required");
+				await alert(
+					I18n.t("validation.companyPositionRequired") || "Company and position are required"
+				);
 				return;
 			}
 
@@ -11961,8 +11961,8 @@ async function initializeApp() {
 		// Show welcome message for new users
 		const showDemo = await confirm(I18n.t("messages.welcome"), {
 			confirmText: I18n.t("messages.welcomeConfirm"),
-			cancelText: I18n.t("messages.welcomeCancel"), 
-			focusConfirm: true
+			cancelText: I18n.t("messages.welcomeCancel"),
+			focusConfirm: true,
 		});
 		if (showDemo) {
 			jobsData = getDemoData();

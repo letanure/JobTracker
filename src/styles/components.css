@@ -26,15 +26,13 @@ button {
 	text-decoration: none;
 	white-space: nowrap;
 	user-select: none;
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0
-		rgba(255, 255, 255, 0.25);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 button:hover {
 	background-color: var(--gray-100);
 	border-color: var(--gray-300);
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0
-		rgba(255, 255, 255, 0.03);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 	transition-duration: 0.1s;
 }
 
@@ -62,8 +60,7 @@ button:disabled {
 	color: var(--white);
 	background-color: var(--green-500);
 	border-color: rgba(27, 31, 35, 0.15);
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0
-		rgba(255, 255, 255, 0.03);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .btn-primary:hover {
@@ -164,31 +161,7 @@ textarea::placeholder {
 	color: var(--text-color);
 }
 
-/* Inline edit inputs */
-.inline-edit {
-	width: 100%;
-	padding: 8px;
-	border: none;
-	border-radius: 0;
-	font-size: var(--font-size-xs);
-	background: var(--white);
-	color: var(--text-color);
-	transition: var(--transition-fast);
-	height: 40px;
-	box-sizing: border-box;
-	border: 0px solid transparent;
-	background-color: transparent;
-}
-/* .inline-edit.phase-select  select{
-	height: 30px;
-} */
-
-.inline-edit:focus {
-	outline: 2px solid var(--blue-500);
-	outline-offset: -2px;
-	border-color: var(--blue-500);
-	box-shadow: none;
-}
+/* Note: Main inline-edit styles are in table.css */
 
 /* Common textarea styles */
 textarea {
@@ -410,9 +383,9 @@ textarea {
 
 .contacts-container {
 	padding: 24px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
 }
 
 .contacts-header {
@@ -427,10 +400,6 @@ textarea {
 	font-size: 20px;
 	font-weight: 600;
 	color: var(--text-color);
-}
-
-	border-radius: 12px;
-	font-weight: 500;
 }
 
 .contacts-table-container {
@@ -659,21 +628,21 @@ textarea {
 	.contacts-container {
 		padding: 16px;
 	}
-	
+
 	.contacts-header {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 12px;
 	}
-	
+
 	.contacts-title {
 		font-size: 18px;
 	}
-	
+
 	.contact-form-row {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.contact-form-field.full-width {
 		grid-column: span 1;
 	}
@@ -844,9 +813,9 @@ textarea {
 /* GITHUB-STYLE COUNTERS AND BADGES */
 /* ============================================================================ */
 
-.notes-count,
-.tasks-count,
-.contacts-count {
+.table .notes-count,
+.table .tasks-count,
+.actions-cell .contacts-count {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -863,7 +832,6 @@ textarea {
 	user-select: none;
 	border: 1px solid var(--gray-300);
 }
-
 
 .zero-count {
 	background: var(--gray-100);
@@ -990,16 +958,14 @@ textarea {
 	font-weight: 500;
 	transition: var(--transition-fast);
 	cursor: pointer;
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0
-		rgba(255, 255, 255, 0.25);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 	height: 32px;
 }
 
 .language-button:hover {
 	background-color: var(--gray-100);
 	border-color: var(--gray-300);
-	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0
-		rgba(255, 255, 255, 0.03);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .language-button.active {
@@ -1103,7 +1069,6 @@ textarea {
 	box-shadow: none;
 }
 
-
 .tab-button.active {
 	color: var(--text-color);
 	border-bottom-color: #fd8c73;
@@ -1149,12 +1114,10 @@ textarea {
 	margin: 0;
 }
 
-	border-radius: 12px;
-	font-weight: 500;
-}
-
 .kanban-board {
-	display: flex;
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
 	gap: 16px;
 	overflow-x: auto;
 	padding: 8px 0;
@@ -1444,7 +1407,6 @@ textarea {
 	line-height: 1.2;
 }
 
-
 /* ============================================================================ */
 /* TASKS BOARD */
 /* ============================================================================ */
@@ -1472,12 +1434,10 @@ textarea {
 	margin: 0;
 }
 
-	border-radius: 12px;
-	font-weight: 500;
-}
-
 .tasks-board {
-	display: flex;
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
 	gap: 16px;
 	overflow-x: auto;
 	padding: 8px 0;
@@ -2366,43 +2326,43 @@ textarea {
 	.calendar-container {
 		padding: 16px;
 	}
-	
+
 	.calendar-header {
 		flex-direction: column;
 		gap: 16px;
 		align-items: stretch;
 	}
-	
+
 	.calendar-controls {
 		flex-direction: column;
 		gap: 12px;
 	}
-	
+
 	.calendar-view-selector,
 	.calendar-nav {
 		width: 100%;
 		justify-content: center;
 	}
-	
+
 	.calendar-day {
 		min-height: 80px;
 		padding: 6px;
 	}
-	
+
 	.calendar-week,
 	.calendar-day-view {
 		height: 400px;
 	}
-	
+
 	.calendar-week-times,
 	.calendar-day-times {
 		display: none;
 	}
-	
+
 	.calendar-week {
 		grid-template-columns: repeat(7, 1fr);
 	}
-	
+
 	.calendar-day-view {
 		grid-template-columns: 1fr;
 	}
@@ -2489,10 +2449,13 @@ textarea {
 	display: flex;
 	background: var(--gray-100);
 	border-radius: 6px;
-	padding: 1px;
+	padding: 2px;
 }
 
-.jobs-stats .stat-item {
+.jobs-stats .stat-item,
+.kanban-stats .kanban-total-jobs,
+.tasks-stats .tasks-total-count,
+.contacts-stats .contacts-count {
 	padding: 6px 16px;
 	background: transparent;
 	border: none;
@@ -2508,6 +2471,21 @@ textarea {
 	white-space: nowrap;
 }
 
+.jobs-stats .stat-item:hover,
+.kanban-stats .kanban-total-jobs:hover,
+.tasks-stats .tasks-total-count:hover,
+.contacts-stats .contacts-count:hover {
+	color: var(--text-color);
+}
+
+.jobs-stats .stat-item.active,
+.kanban-stats .kanban-total-jobs.active,
+.tasks-stats .tasks-total-count.active,
+.contacts-stats .contacts-count.active {
+	background: var(--white);
+	color: var(--text-color);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
 /* Responsive headers */
 @media (max-width: 768px) {
@@ -2517,16 +2495,16 @@ textarea {
 		align-items: stretch;
 		gap: var(--space-3);
 	}
-	
+
 	.tab-title,
 	.jobs-title {
 		text-align: center;
 	}
-	
+
 	.jobs-container {
 		padding: 16px;
 	}
-	
+
 	.jobs-stats,
 	.kanban-stats,
 	.tasks-stats,
@@ -2653,11 +2631,11 @@ textarea {
 		max-width: 95%;
 		margin: var(--space-4);
 	}
-	
+
 	.dialog-footer {
 		flex-direction: column;
 	}
-	
+
 	.dialog-footer .action-btn {
 		width: 100%;
 		justify-content: center;
