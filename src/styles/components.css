@@ -1575,6 +1575,12 @@ a.kanban-source-link {
 	color: var(--text-color);
 }
 
+.tasks-column-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .tasks-column-count {
 	background: var(--gray-200);
 	color: var(--gray-700);
@@ -1584,6 +1590,44 @@ a.kanban-source-link {
 	font-weight: 500;
 	min-width: 20px;
 	text-align: center;
+}
+
+.tasks-add-task-btn {
+	background: var(--gray-50);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+	padding: 2px 6px;
+	border-radius: 6px;
+	font-size: 12px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	height: 20px;
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.tasks-add-task-btn:hover {
+	background-color: var(--gray-100);
+	border-color: var(--gray-300);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.tasks-add-task-btn .material-symbols-outlined {
+	font-size: 12px;
+	font-weight: 400;
+}
+
+/* Task form grid layout */
+.task-form-grid {
+	display: flex;
+	gap: 8px;
+}
+
+.task-form-grid > * {
+	flex: 1;
 }
 
 .tasks-column-body {

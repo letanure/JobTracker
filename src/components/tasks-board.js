@@ -51,7 +51,21 @@ const TasksBoard = {
 				"div",
 				{ className: "tasks-column-title" },
 				h("span", { className: "tasks-column-name" }, columnTitle),
-				h("span", { className: "tasks-column-count" }, statusTasks.length.toString())
+				h(
+					"div",
+					{ className: "tasks-column-actions" },
+					// Add "Add Task" button for todo column (left of counter)
+					status === "todo" && h(
+						"button",
+						{
+							className: "tasks-add-task-btn",
+							onclick: () => TasksBoard.openAddTaskModal(),
+						},
+						h("span", { className: "material-symbols-outlined" }, "add"),
+						I18n.t("modals.tasks.addButton") || "Add Task"
+					),
+					h("span", { className: "tasks-column-count" }, statusTasks.length.toString())
+				)
 			)
 		);
 
@@ -261,6 +275,209 @@ const TasksBoard = {
 		const job = jobsData.find((j) => j.id === task.jobId);
 		if (job) {
 			openTasksModal(job);
+		}
+	},
+
+	// Open add task modal with job selection
+	openAddTaskModal: () => {
+		const modal = TasksBoard.createAddTaskModal();
+		document.body.appendChild(modal);
+	},
+
+	// Create add task modal
+	createAddTaskModal: () => {
+		const handleSave = async () => {
+			const modal = document.querySelector(".tasks-add-task-modal");
+			const form = modal.querySelector("form");
+
+			const jobId = Number.parseInt(form.jobSelect.value);
+			const taskText = form.taskText.value.trim();
+
+			// Validation
+			if (!jobId) {
+				await alert("Please select a job");
+				return;
+			}
+
+			if (!taskText) {
+				await alert("Please enter a task description");
+				return;
+			}
+
+			// Find the job
+			const jobIndex = jobsData.findIndex((j) => j.id === jobId);
+			if (jobIndex === -1) return;
+
+			// Create new task
+			const newTask = {
+				id: Date.now().toString(),
+				task: taskText,
+				status: form.taskStatus.value || "todo",
+				priority: form.taskPriority.value || "medium",
+				dueDate: form.dueDate.value || null,
+				duration: form.duration.value || null,
+				createdAt: new Date().toISOString(),
+				archived: false,
+			};
+
+			// Add to job
+			if (!jobsData[jobIndex].tasks) {
+				jobsData[jobIndex].tasks = [];
+			}
+			jobsData[jobIndex].tasks.push(newTask);
+
+			// Save to localStorage
+			saveToLocalStorage();
+
+			// Close modal
+			TasksBoard.closeAddTaskModal();
+
+			// Refresh tasks board
+			TasksBoard.refresh();
+
+			// Update interface
+			if (typeof refreshInterface === "function") {
+				refreshInterface();
+			}
+		};
+
+		const handleClose = () => {
+			TasksBoard.closeAddTaskModal();
+		};
+
+		// Get jobs for selection
+		const jobOptions = jobsData.map((job) => ({
+			id: job.id,
+			text: `${job.company} - ${job.position}`,
+		}));
+
+		const modal = h(
+			"div",
+			{
+				className: "modal-overlay tasks-add-task-modal",
+				onclick: (e) => e.target === e.currentTarget && handleClose(),
+			},
+			h(
+				"div",
+				{ className: "modal" },
+				h(
+					"div",
+					{ className: "modal-header" },
+					h("h3", { className: "modal-title" }, I18n.t("modals.tasks.addButton") || "Add Task"),
+					h("button", { className: "modal-close", onclick: handleClose }, "×")
+				),
+				h(
+					"div",
+					{ className: "modal-body" },
+					h(
+						"form",
+						{ className: "add-task-form" },
+						// Job selection (full width)
+						h(
+							"div",
+							{ className: "add-task-job-row" },
+							h(
+								"select",
+								{ name: "jobSelect", required: true, className: "add-task-job-select" },
+								h("option", { value: "" }, "Choose a job..."),
+								...jobOptions.map((job) => h("option", { value: job.id }, job.text))
+							)
+						),
+						// Status, Priority, Due Date, Duration (grid layout like existing tasks modal)
+						h(
+							"div",
+							{ className: "task-form-grid" },
+							h(
+								"select",
+								{
+									name: "taskStatus",
+									className: "add-task-status",
+									title: "Status",
+								},
+								h("option", { value: "todo", selected: true }, I18n.t("modals.tasks.statusTodo") || "To Do"),
+								h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress") || "In Progress"),
+								h("option", { value: "done" }, I18n.t("modals.tasks.statusDone") || "Done")
+							),
+							h(
+								"select",
+								{
+									name: "taskPriority",
+									className: "add-task-priority",
+									title: "Priority",
+								},
+								h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow") || "Low"),
+								h("option", { value: "medium", selected: true }, I18n.t("modals.tasks.priorityMedium") || "Medium"),
+								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh") || "High")
+							),
+							h("input", {
+								type: "date",
+								name: "dueDate",
+								className: "add-task-due-date",
+								title: "Due Date",
+							}),
+							h(
+								"select",
+								{
+									name: "duration",
+									className: "add-task-duration",
+									title: "Duration",
+								},
+								h("option", { value: "" }, "—"),
+								h("option", { value: "15min" }, "15 min"),
+								h("option", { value: "30min" }, "30 min"),
+								h("option", { value: "1h" }, "1h"),
+								h("option", { value: "1h30" }, "1:30"),
+								h("option", { value: "2h" }, "2h"),
+								h("option", { value: "3h" }, "3h")
+							)
+						),
+						// Task text (full width)
+						h(
+							"div",
+							{ className: "add-task-text-row" },
+							h("textarea", {
+								name: "taskText",
+								className: "add-task-textarea",
+								placeholder: I18n.t("modals.tasks.placeholder") || "Enter your task here...",
+								required: true,
+								rows: 3,
+							})
+						)
+					)
+				),
+				h(
+					"div",
+					{ className: "modal-footer" },
+					h(
+						"button",
+						{
+							type: "button",
+							className: "btn-secondary",
+							onclick: handleClose,
+						},
+						I18n.t("modals.common.cancel") || "Cancel"
+					),
+					h(
+						"button",
+						{
+							type: "button",
+							className: "btn-primary",
+							onclick: handleSave,
+						},
+						I18n.t("modals.tasks.addButton") || "Add Task"
+					)
+				)
+			)
+		);
+
+		return modal;
+	},
+
+	// Close add task modal
+	closeAddTaskModal: () => {
+		const modal = document.querySelector(".tasks-add-task-modal");
+		if (modal) {
+			modal.remove();
 		}
 	},
 
