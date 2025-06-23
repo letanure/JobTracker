@@ -506,23 +506,36 @@ function buildSingleFile() {
     ''
   );
   
-  // Add build comment
+  // Generate version info for cache busting
+  const buildDate = new Date();
+  const buildTimestamp = buildDate.toISOString();
+  const cacheVersion = buildDate.getTime(); // Unix timestamp for cache busting
+  
+  // Add build comment with version info
   const buildComment = `<!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: ${new Date().toISOString()}
+Generated: ${buildTimestamp}
+Cache Version: ${cacheVersion}
 ============================================================================
 -->
 `;
   
-  // Insert CSS into head
+  // Insert version meta tag and CSS into head
+  const versionMeta = `    <meta name="build-version" content="${cacheVersion}">
+    <meta name="build-date" content="${buildTimestamp}">`;
+  
   const cssBlock = `    <style>
 ${cssResult.content}    </style>`;
   
-  htmlContent = htmlContent.replace('</head>', `${cssBlock}\n</head>`);
+  htmlContent = htmlContent.replace('</head>', `${versionMeta}\n${cssBlock}\n</head>`);
   
-  // Insert JavaScript before closing body tag
+  // Insert JavaScript before closing body tag with version info
   const jsBlock = `    <script>
+// Build version for cache busting
+window.BUILD_VERSION = '${cacheVersion}';
+window.BUILD_DATE = '${buildTimestamp}';
+
 ${jsResult.content}    </script>`;
   
   htmlContent = htmlContent.replace('</body>', `${jsBlock}\n</body>`);
