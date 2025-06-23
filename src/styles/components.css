@@ -1556,6 +1556,8 @@ a.kanban-source-link {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+	height: 100%;
+	min-height: 0;
 }
 
 .tasks-header {
@@ -1583,6 +1585,7 @@ a.kanban-source-link {
 	padding: 8px 0;
 	flex: 1;
 	align-items: stretch;
+	height: 100%;
 }
 
 .tasks-column {
@@ -1593,8 +1596,8 @@ a.kanban-source-link {
 	border: var(--border-width) solid var(--border-color);
 	display: flex;
 	flex-direction: column;
-	height: 100%;
 	transition: var(--transition-fast);
+	max-height: 100%;
 }
 
 .tasks-column.drag-active {
@@ -1926,6 +1929,7 @@ a.kanban-source-link {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+	min-height: 0;
 }
 
 .tasks-task-card {
