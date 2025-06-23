@@ -123,6 +123,20 @@ const KanbanBoard = {
 		const actionIcons = h(
 			"div",
 			{ className: "kanban-action-icons" },
+			// Source link icon if sourceUrl exists (first position)
+			job.sourceUrl && h(
+				"a",
+				{
+					className: "kanban-icon-btn kanban-source-link",
+					href: job.sourceUrl,
+					target: "_blank",
+					rel: "noopener noreferrer",
+					title: "View job posting",
+					onclick: (e) => e.stopPropagation(),
+				},
+				h("span", { className: "material-symbols-outlined" }, "link")
+			),
+			
 			h(
 				"button",
 				{

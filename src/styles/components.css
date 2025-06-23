@@ -1302,6 +1302,12 @@ td .zero-count:hover {
 	word-break: break-word;
 }
 
+/* Source link inherits kanban-icon-btn styles but as an anchor */
+a.kanban-source-link {
+	text-decoration: none;
+	color: inherit;
+}
+
 .kanban-phase-section {
 	margin-bottom: 8px;
 }
