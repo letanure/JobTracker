@@ -579,29 +579,6 @@ textarea {
 	margin-top: 16px;
 }
 
-.add-contact-btn {
-	background: var(--green-500);
-	color: var(--white);
-	border: 1px solid var(--green-500);
-	padding: 8px 16px;
-	border-radius: 6px;
-	font-size: 14px;
-	font-weight: 500;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.add-contact-btn:hover {
-	background: var(--green-600);
-	border-color: var(--green-600);
-}
-
-.add-contact-btn .material-symbols-outlined {
-	font-size: 18px;
-}
 
 /* Empty state */
 .contacts-empty {

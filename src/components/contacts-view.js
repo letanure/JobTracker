@@ -50,7 +50,6 @@ const ContactsView = {
 				h(
 					"button",
 					{
-						className: "add-contact-btn",
 						onclick: () => ContactsView.showAddContactModal(),
 					},
 					h("span", { className: "material-symbols-outlined" }, "person_add"),
