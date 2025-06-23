@@ -273,13 +273,19 @@ const TasksModal = ({ job, onClose }) => {
 			return;
 		}
 
+		// Use datetime-local value directly
+		let dueDate = null;
+		if (dueDateInput.value) {
+			dueDate = new Date(dueDateInput.value).toISOString();
+		}
+
 		const newTask = {
 			id: Date.now(),
 			createdDate: new Date().toISOString(),
 			text: taskText,
 			status: statusSelect.value || "todo",
 			priority: prioritySelect.value || "medium",
-			dueDate: dueDateInput.value ? `${dueDateInput.value}T00:00:00.000Z` : null,
+			dueDate: dueDate,
 			duration: durationSelect.value || null,
 		};
 
@@ -924,8 +930,9 @@ const TasksModal = ({ job, onClose }) => {
 							{ className: "add-task-field" },
 							h("label", {}, I18n.t("modals.tasks.dueDate")),
 							h("input", {
-								type: "date",
+								type: "datetime-local",
 								className: "add-task-due-date",
+								placeholder: "Due date & time (optional)"
 							})
 						),
 						h(

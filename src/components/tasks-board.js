@@ -466,10 +466,10 @@ const TasksBoard = {
 								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh") || "High")
 							),
 							h("input", {
-								type: "date",
+								type: "datetime-local",
 								name: "dueDate",
 								className: "add-task-due-date",
-								title: "Due Date",
+								title: "Due Date & Time",
 							}),
 							h(
 								"select",
