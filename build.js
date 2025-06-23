@@ -134,17 +134,66 @@ function copyFile(srcPath, destPath) {
  * Simple HTML minification
  */
 function minifyHTML(html) {
-  return html
-    // Remove comments (but keep the build comment at the top)
-    .replace(/<!--(?!.*JobTracker)[\s\S]*?-->/g, '')
-    // Remove extra whitespace between tags (but preserve content)
-    .replace(/>\s+</g, '><')
-    // Remove leading/trailing whitespace from lines
-    .replace(/^\s+/gm, '')
-    .replace(/\s+$/gm, '')
-    // Remove empty lines
-    .replace(/\n\s*\n/g, '\n')
-    .trim();
+  // Split HTML into parts to avoid minifying script content
+  const scriptRegex = /(<script[^>]*>)([\s\S]*?)(<\/script>)/gi;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  // Find all script tags and their content
+  while ((match = scriptRegex.exec(html)) !== null) {
+    // Add HTML before script
+    if (match.index > lastIndex) {
+      parts.push({
+        type: 'html',
+        content: html.slice(lastIndex, match.index)
+      });
+    }
+    
+    // Add script parts separately
+    parts.push({
+      type: 'script-open',
+      content: match[1]
+    });
+    parts.push({
+      type: 'script-content', 
+      content: match[2]
+    });
+    parts.push({
+      type: 'script-close',
+      content: match[3]
+    });
+    
+    lastIndex = match.index + match[0].length;
+  }
+  
+  // Add remaining HTML
+  if (lastIndex < html.length) {
+    parts.push({
+      type: 'html',
+      content: html.slice(lastIndex)
+    });
+  }
+
+  // Process each part appropriately
+  return parts.map(part => {
+    if (part.type === 'html' || part.type === 'script-open' || part.type === 'script-close') {
+      // Apply minification to HTML parts only
+      return part.content
+        // Remove comments (but keep the build comment at the top)
+        .replace(/<!--(?!.*JobTracker)[\s\S]*?-->/g, '')
+        // Remove extra whitespace between tags (but preserve content)
+        .replace(/>\s+</g, '><')
+        // Remove leading/trailing whitespace from lines
+        .replace(/^\s+/gm, '')
+        .replace(/\s+$/gm, '')
+        // Remove empty lines
+        .replace(/\n\s*\n/g, '\n');
+    } else {
+      // Keep script content unchanged
+      return part.content;
+    }
+  }).join('').trim();
 }
 
 /**
