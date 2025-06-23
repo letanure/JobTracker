@@ -35,7 +35,9 @@ const TasksBoard = {
 			}
 		});
 
-		const statusTasks = allTasks.filter((task) => task.status === status);
+		const statusTasks = allTasks
+			.filter((task) => task.status === status)
+			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)); // Sort by sortOrder within status
 		const columnTitle = getTaskStatusText(status);
 
 		const column = h("div", {
@@ -77,18 +79,9 @@ const TasksBoard = {
 			body.appendChild(card);
 		});
 
-		// Add drop zone event listeners to both column and body
-		const dragOverHandler = (e) => TasksBoard.handleDragOver(e);
-		const dragLeaveHandler = (e) => TasksBoard.handleDragLeave(e);
-		const dropHandler = (e) => TasksBoard.handleDrop(e, status);
-
-		column.addEventListener("dragover", dragOverHandler);
-		column.addEventListener("dragleave", dragLeaveHandler);
-		column.addEventListener("drop", dropHandler);
-
-		body.addEventListener("dragover", dragOverHandler);
-		body.addEventListener("dragleave", dragLeaveHandler);
-		body.addEventListener("drop", dropHandler);
+		// Add drop zone event listeners only to body (like kanban)
+		body.addEventListener("dragover", TasksBoard.handleDragOver);
+		body.addEventListener("drop", (e) => TasksBoard.handleDrop(e, status));
 
 		column.appendChild(header);
 		column.appendChild(body);
@@ -130,7 +123,7 @@ const TasksBoard = {
 		const content = h(
 			"div",
 			{ className: "tasks-task-content" },
-			h("div", { className: "tasks-task-text" }, task.task || task.description)
+			h("div", { className: "tasks-task-text" }, task.task || task.text || task.description || "Untitled task")
 		);
 
 		// Job context information
@@ -247,7 +240,12 @@ const TasksBoard = {
 	// Drag and drop handlers
 	handleDragStart: (e, task) => {
 		e.dataTransfer.effectAllowed = "move";
-		e.dataTransfer.setData("text/plain", JSON.stringify({ taskId: task.id, jobId: task.jobId }));
+		e.dataTransfer.setData("text/plain", JSON.stringify({ 
+			taskId: task.id, 
+			jobId: task.jobId,
+			sourceStatus: task.status,
+			sourceSortOrder: task.sortOrder || 0
+		}));
 		e.target.classList.add("dragging");
 		document.querySelectorAll(".tasks-column").forEach((col) => {
 			col.classList.add("drag-active");
@@ -259,29 +257,76 @@ const TasksBoard = {
 		document.querySelectorAll(".tasks-column").forEach((col) => {
 			col.classList.remove("drag-active", "drag-over");
 		});
+		// Clean up any remaining placeholders
+		document.querySelectorAll('.drop-placeholder').forEach(placeholder => {
+			placeholder.remove();
+		});
 	},
 
 	handleDragOver: (e) => {
 		e.preventDefault();
 		e.dataTransfer.dropEffect = "move";
 		const column = e.currentTarget.closest(".tasks-column");
-		column.classList.add("drag-over");
+		if (column) {
+			column.classList.add("drag-over");
+		}
+
+		// Add visual drop placeholder
+		TasksBoard.updateDropPlaceholder(e);
 	},
 
-	handleDragLeave: (e) => {
-		// Only remove drag-over if we're leaving the column entirely
-		if (!e.currentTarget.contains(e.relatedTarget)) {
-			const column = e.currentTarget.closest(".tasks-column");
-			column.classList.remove("drag-over");
+	// Add visual placeholder showing where the task will be dropped
+	updateDropPlaceholder: (e) => {
+		const columnBody = e.currentTarget;
+		const cards = Array.from(columnBody.children).filter(card => 
+			card.classList.contains('tasks-task-card') && 
+			!card.classList.contains('dragging') && 
+			!card.classList.contains('drop-placeholder')
+		);
+
+		// Remove existing drop placeholders
+		columnBody.querySelectorAll('.drop-placeholder').forEach(placeholder => {
+			placeholder.remove();
+		});
+
+		const mouseY = e.clientY;
+		let insertIndex = cards.length;
+
+		// Find insertion point based on mouse position relative to existing cards
+		for (let i = 0; i < cards.length; i++) {
+			const cardRect = cards[i].getBoundingClientRect();
+			const cardCenter = cardRect.top + cardRect.height / 2;
+			
+			if (mouseY < cardCenter) {
+				insertIndex = i;
+				break;
+			}
+		}
+
+		// Create placeholder card that matches the dragged card's size
+		const placeholder = h('div', { 
+			className: 'drop-placeholder tasks-task-card',
+			style: 'opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;'
+		}, h('div', { 
+			style: 'height: 120px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;'
+		}, 'Drop here'));
+		
+		if (insertIndex === cards.length) {
+			// Insert at the end
+			columnBody.appendChild(placeholder);
+		} else {
+			// Insert before the card at insertIndex
+			columnBody.insertBefore(placeholder, cards[insertIndex]);
 		}
 	},
+
 
 	handleDrop: (e, targetStatus) => {
 		e.preventDefault();
 
 		try {
 			const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
-			const { taskId, jobId } = dragData;
+			const { taskId, jobId, sourceStatus } = dragData;
 
 			// Find the job and task
 			const jobIndex = jobsData.findIndex((j) => j.id === Number.parseInt(jobId));
@@ -293,29 +338,115 @@ const TasksBoard = {
 			if (taskIndex === -1) return;
 
 			const task = jobsData[jobIndex].tasks[taskIndex];
+			if (!task) return;
 
-			if (task && task.status !== targetStatus) {
-				// Update task status
+			// Calculate drop position based on placeholder location
+			const columnBody = e.currentTarget;
+			const placeholder = columnBody.querySelector('.drop-placeholder');
+			
+			let targetPosition = 0;
+			
+			if (placeholder) {
+				// Get all non-dragging, non-placeholder cards to find the correct position
+				const cards = Array.from(columnBody.children).filter(card => 
+					card.classList.contains('tasks-task-card') && 
+					!card.classList.contains('dragging') && 
+					!card.classList.contains('drop-placeholder')
+				);
+				
+				// Find the position of the placeholder relative to actual cards
+				const allChildren = Array.from(columnBody.children);
+				const placeholderIndex = allChildren.indexOf(placeholder);
+				
+				// Count how many actual task cards are before the placeholder
+				targetPosition = 0;
+				for (let i = 0; i < placeholderIndex; i++) {
+					if (allChildren[i].classList.contains('tasks-task-card') && 
+						!allChildren[i].classList.contains('drop-placeholder') && 
+						!allChildren[i].classList.contains('dragging')) {
+						targetPosition++;
+					}
+				}
+			}
+
+			// Handle status change or reordering
+			if (sourceStatus !== targetStatus) {
+				// Moving between statuses
+				task.status = targetStatus;
 				jobsData[jobIndex].tasks[taskIndex].status = targetStatus;
 
-				// Save changes
-				saveToLocalStorage();
+				// Update positions in target status
+				TasksBoard.updateTaskPositionsInStatus(targetStatus, taskId, targetPosition);
+			} else {
+				// Reordering within same status
+				TasksBoard.updateTaskPositionsInStatus(targetStatus, taskId, targetPosition);
+			}
 
-				// Refresh the tasks board
-				TasksBoard.refresh();
+			// Save changes
+			saveToLocalStorage();
 
-				// Also refresh the main table if it's visible
-				if (typeof refreshInterface === "function") {
-					refreshInterface();
-				}
+			// Refresh the tasks board
+			TasksBoard.refresh();
+
+			// Also refresh the main table if it's visible
+			if (typeof refreshInterface === "function") {
+				refreshInterface();
+			}
+			if (typeof Dashboard !== "undefined" && TabNavigation.activeTab === "dashboard") {
+				Dashboard.refresh();
 			}
 		} catch (error) {
 			console.error("Error in drop handler:", error);
 		}
 
-		// Clean up drag styling
+		// Clean up drag styling and placeholders
 		document.querySelectorAll(".tasks-column").forEach((col) => {
 			col.classList.remove("drag-active", "drag-over");
+		});
+		document.querySelectorAll('.drop-placeholder').forEach(placeholder => {
+			placeholder.remove();
+		});
+	},
+
+	// Update sort orders for tasks within a specific status
+	updateTaskPositionsInStatus: (status, movedTaskId, targetPosition) => {
+		// Get all tasks with this status from all jobs, sorted by current sortOrder
+		const statusTasks = [];
+		jobsData.forEach((job, jobIndex) => {
+			if (job.tasks) {
+				job.tasks.forEach((task, taskIndex) => {
+					if (task.status === status) {
+						statusTasks.push({
+							...task,
+							jobIndex,
+							taskIndex
+						});
+					}
+				});
+			}
+		});
+
+		// Sort by current sortOrder
+		statusTasks.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+		// Find and remove the moved task from its current position
+		const movedTaskIndex = statusTasks.findIndex(task => task.id.toString() === movedTaskId.toString());
+		let movedTask = null;
+		
+		if (movedTaskIndex !== -1) {
+			movedTask = statusTasks.splice(movedTaskIndex, 1)[0];
+		}
+
+		// Insert the moved task at the target position
+		if (movedTask) {
+			statusTasks.splice(targetPosition, 0, movedTask);
+		}
+
+		// Update sortOrder for all tasks in this status
+		statusTasks.forEach((task, index) => {
+			if (task.jobIndex !== undefined && task.taskIndex !== undefined) {
+				jobsData[task.jobIndex].tasks[task.taskIndex].sortOrder = index;
+			}
 		});
 	},
 
@@ -418,6 +549,7 @@ const TasksBoard = {
 					duration: duration,
 					createdAt: new Date().toISOString(),
 					archived: false,
+					sortOrder: 0, // New tasks start at the beginning
 				};
 
 				// Add to job

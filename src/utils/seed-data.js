@@ -32,6 +32,7 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-06-25T10:00:00.000Z",
 				duration: "2h",
+				sortOrder: 0,
 			},
 			{
 				id: "2",
@@ -42,6 +43,7 @@ const DEMO_DATA = [
 				completedAt: "2025-06-16T14:30:00.000Z",
 				dueDate: null,
 				duration: "1h",
+				sortOrder: 0,
 			},
 			{
 				id: "3",
@@ -52,6 +54,7 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-06-28T23:59:00.000Z",
 				duration: "3h",
+				sortOrder: 1,
 			},
 			{
 				id: "4",
@@ -62,6 +65,7 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-07-02T10:00:00.000Z",
 				duration: null,
+				sortOrder: 2,
 			},
 		],
 		contacts: [
@@ -115,6 +119,7 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-06-26T17:00:00.000Z",
 				duration: "30min",
+				sortOrder: 0,
 			},
 			{
 				id: "6",
@@ -125,6 +130,7 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-06-30T17:00:00.000Z",
 				duration: "1h30",
+				sortOrder: 0,
 			},
 			{
 				id: "7",
@@ -135,6 +141,7 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: null,
 				duration: "15min",
+				sortOrder: 1,
 			},
 			{
 				id: "8",
@@ -145,6 +152,7 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-07-10T10:00:00.000Z",
 				duration: null,
+				sortOrder: 2,
 			},
 		],
 		contacts: [
