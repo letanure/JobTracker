@@ -882,6 +882,348 @@ const cancelContactEdits = (contact, job) => {
 	refreshContactsModal(job);
 };
 
+// Refresh contacts modal content
+const refreshContactsModal = (job) => {
+	const modalBody = document.querySelector(".modal-body");
+	if (!modalBody) return;
+
+	// Get updated data
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	job.contacts = jobsData[jobIndex].contacts || [];
+	const contacts = job.contacts;
+	const activeContacts = contacts.filter((contact) => !contact.archived);
+	const archivedContacts = contacts.filter((contact) => contact.archived);
+	const sortedActiveContacts = [...activeContacts].sort(
+		(a, b) => new Date(a.date) - new Date(b.date)
+	);
+	const sortedArchivedContacts = [...archivedContacts].sort(
+		(a, b) => new Date(a.date) - new Date(b.date)
+	);
+
+	// Recreate modal body content
+	modalBody.innerHTML = "";
+	modalBody.appendChild(createContactsContent(job, sortedActiveContacts, sortedArchivedContacts));
+};
+
+// Create contacts content for modal (extracted to fix scope issue)
+const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts) => {
+	return h(
+		"div",
+		{ className: "contacts-table-container" },
+		// Active contacts table
+		sortedActiveContacts.length > 0
+			? h(
+					"table",
+					{ className: "contacts-table" },
+					h(
+						"thead",
+						{},
+						h(
+							"tr",
+							{},
+							h("th", {}, I18n.t("modals.contacts.placeholderName")),
+							h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+							h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+							h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+							h("th", {}, "Actions")
+						)
+					),
+					h(
+						"tbody",
+						{},
+						...sortedActiveContacts.map((contact) =>
+							h(
+								"tr",
+								{ key: contact.id, "data-contact-id": contact.id },
+								h(
+									"td",
+									{ className: "contact-name-cell" },
+									contact.name || "—"
+								),
+								h(
+									"td",
+									{ className: "contact-email-cell" },
+									contact.email
+										? h(
+												"a",
+												{
+													href: `mailto:${contact.email}`,
+													className: "contact-link",
+												},
+												contact.email
+											)
+										: "—"
+								),
+								h(
+									"td",
+									{ className: "contact-phone-cell" },
+									contact.phone
+										? h(
+												"a",
+												{
+													href: `tel:${contact.phone}`,
+													className: "contact-link",
+												},
+												contact.phone
+											)
+										: "—"
+								),
+								h(
+									"td",
+									{ className: "contact-company-cell" },
+									contact.company || "—"
+								),
+								h(
+									"td",
+									{ className: "contacts-table-actions" },
+									h("button", {
+										className: "action-btn edit-contact-btn icon-btn-transparent",
+										title: I18n.t("modals.contacts.editTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
+										onclick: () => enableContactEditing(contact, job),
+									}),
+									h("button", {
+										className: "action-btn archive-btn icon-btn-transparent",
+										title: I18n.t("modals.contacts.archiveTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+										onclick: () => handleArchiveContact(contact),
+									})
+								)
+							)
+						)
+					)
+				)
+			: h("p", { className: "modal-empty-message" }, I18n.t("modals.contacts.emptyState")),
+
+		// Archived contacts section
+		sortedArchivedContacts.length > 0
+			? h(
+					"div",
+					{ className: "archived-contacts-section" },
+					h(
+						"h4",
+						{
+							className: "contacts-archived-header",
+							onclick: () => {
+								const archivedTable = document.getElementById("archived-contacts-table");
+								const expandIcon = document.getElementById("archived-contacts-icon");
+								if (archivedTable.style.display === "none") {
+									archivedTable.style.display = "table";
+									expandIcon.textContent = "expand_less";
+								} else {
+									archivedTable.style.display = "none";
+									expandIcon.textContent = "expand_more";
+								}
+							},
+						},
+						h(
+							"span",
+							{
+								className: "material-symbols-outlined expand-icon",
+								id: "archived-contacts-icon",
+							},
+							"expand_more"
+						),
+						I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
+					),
+					h(
+						"table",
+						{
+							id: "archived-contacts-table",
+							className: "contacts-table archived",
+							style: "display: none",
+						},
+						h(
+							"thead",
+							{},
+							h(
+								"tr",
+								{},
+								h("th", {}, I18n.t("modals.contacts.placeholderName")),
+								h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
+								h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
+								h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
+								h("th", {}, "Actions")
+							)
+						),
+						h(
+							"tbody",
+							{},
+							...sortedArchivedContacts.map((contact) =>
+								h(
+									"tr",
+									{ key: contact.id },
+									h("td", {}, contact.name || "—"),
+									h(
+										"td",
+										{},
+										contact.email
+											? h(
+													"a",
+													{ href: `mailto:${contact.email}`, className: "contact-link" },
+													contact.email
+												)
+											: "—"
+									),
+									h(
+										"td",
+										{},
+										contact.phone
+											? h(
+													"a",
+													{ href: `tel:${contact.phone}`, className: "contact-link" },
+													contact.phone
+												)
+											: "—"
+									),
+									h("td", {}, contact.company || "—"),
+									h(
+										"td",
+										{ className: "contacts-table-actions" },
+										h("button", {
+											className: "action-btn archive-btn icon-btn-transparent",
+											title: I18n.t("modals.contacts.unarchiveTitle"),
+											innerHTML:
+												'<span class="material-symbols-outlined icon-14">unarchive</span>',
+											onclick: () => handleArchiveContact(contact),
+										})
+									)
+								)
+							)
+						)
+					)
+				)
+			: null,
+
+		// Add contact form (like a new table row)
+		h(
+			"div",
+			{ className: "add-contact-row" },
+			h("h4", { className: "add-contact-title" }, I18n.t("modals.contacts.addSection")),
+			h(
+				"form",
+				{
+					className: "add-contact-form",
+					onsubmit: (e) => {
+						e.preventDefault();
+						const modal = e.target.closest(".modal");
+						if (!modal) return;
+
+						const nameInput = modal.querySelector(".add-contact-name");
+						const emailInput = modal.querySelector(".add-contact-email");
+						const phoneInput = modal.querySelector(".add-contact-phone");
+						const companyInput = modal.querySelector(".add-contact-company");
+
+						const name = nameInput.value.trim();
+						const email = emailInput.value.trim();
+						const phone = phoneInput.value.trim();
+						const company = companyInput.value.trim();
+
+						if (!name) {
+							showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequired"));
+							return;
+						}
+
+						const newContact = {
+							id: Date.now(),
+							date: new Date().toISOString(),
+							name,
+							email,
+							phone,
+							company,
+							isActive: true,
+							lastContactDate: null,
+							notes: "",
+						};
+
+						if (!job.contacts) job.contacts = [];
+						job.contacts.push(newContact);
+
+						// Clear inputs
+						nameInput.value = "";
+						emailInput.value = "";
+						phoneInput.value = "";
+						companyInput.value = "";
+
+						// Focus back to the first field (name input)
+						setTimeout(() => {
+							const newNameInput = modal.querySelector(".add-contact-name");
+							if (newNameInput) newNameInput.focus();
+						}, 100);
+
+						// Save and refresh
+						saveToLocalStorage();
+						refreshContactsModal(job);
+						refreshInterface();
+					}
+				},
+				h(
+					"div",
+					{ className: "contact-form-row" },
+					h("input", {
+						type: "text",
+						className: "add-contact-name",
+						placeholder: I18n.t("modals.contacts.placeholderName"),
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.ctrlKey) {
+								e.preventDefault();
+								e.target.closest("form").dispatchEvent(new Event("submit"));
+							}
+						}
+					}),
+					h("input", {
+						type: "email",
+						className: "add-contact-email",
+						placeholder: I18n.t("modals.contacts.placeholderEmail"),
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.ctrlKey) {
+								e.preventDefault();
+								e.target.closest("form").dispatchEvent(new Event("submit"));
+							}
+						}
+					}),
+					h("input", {
+						type: "tel",
+						className: "add-contact-phone",
+						placeholder: I18n.t("modals.contacts.placeholderPhone"),
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.ctrlKey) {
+								e.preventDefault();
+								e.target.closest("form").dispatchEvent(new Event("submit"));
+							}
+						}
+					}),
+					h("input", {
+						type: "text",
+						className: "add-contact-company",
+						placeholder: I18n.t("modals.contacts.placeholderCompany"),
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.ctrlKey) {
+								e.preventDefault();
+								e.target.closest("form").dispatchEvent(new Event("submit"));
+							}
+						}
+					})
+				),
+				h(
+					"div",
+					{ className: "add-contact-form-actions" },
+					h(
+						"button",
+						{
+							type: "submit",
+							className: "action-btn primary-btn",
+						},
+						I18n.t("modals.contacts.addButton")
+					)
+				)
+			)
+		)
+	);
+};
+
 // Update contact row display after editing
 const updateContactRowDisplay = (contactRow, contact, job) => {
 	// Remove editing state
@@ -990,6 +1332,8 @@ window.openContactsModal = openContactsModal;
 window.enableContactEditing = enableContactEditing;
 window.saveContactEdits = saveContactEdits;
 window.cancelContactEdits = cancelContactEdits;
+window.refreshContactsModal = refreshContactsModal;
+window.createContactsContent = createContactsContent;
 window.updateContactRowDisplay = updateContactRowDisplay;
 window.getLatestContact = getLatestContact;
 window.formatContactForTable = formatContactForTable;
