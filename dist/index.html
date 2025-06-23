@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T09:23:52.011Z
-Cache Version: 1750670632011
+Generated: 2025-06-23T09:47:27.862Z
+Cache Version: 1750672047862
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750670632011
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750670632011">
-    <meta name="build-date" content="2025-06-23T09:23:52.011Z">
+    <meta name="build-version" content="1750672047862">
+    <meta name="build-date" content="2025-06-23T09:47:27.862Z">
     <style>
 
 /* ============================================================================ */
@@ -1224,8 +1224,10 @@ textarea {
 /* ============================================================================ */
 
 .contacts-container {
-	padding: 20px;
-	max-width: 100%;
+	padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .contacts-header {
@@ -1242,17 +1244,6 @@ textarea {
 	color: var(--text-color);
 }
 
-.contacts-stats {
-	display: flex;
-	align-items: center;
-	gap: 16px;
-}
-
-.contacts-count {
-	font-size: 14px;
-	color: var(--gray-600);
-	background: var(--gray-100);
-	padding: 4px 12px;
 	border-radius: 12px;
 	font-weight: 500;
 }
@@ -1980,17 +1971,6 @@ textarea {
 	margin: 0;
 }
 
-.kanban-stats {
-	display: flex;
-	align-items: center;
-	gap: 16px;
-}
-
-.kanban-total-jobs {
-	font-size: 14px;
-	color: var(--gray-600);
-	background: var(--gray-100);
-	padding: 4px 12px;
 	border-radius: 12px;
 	font-weight: 500;
 }
@@ -2314,17 +2294,6 @@ textarea {
 	margin: 0;
 }
 
-.tasks-stats {
-	display: flex;
-	align-items: center;
-	gap: 16px;
-}
-
-.tasks-total-count {
-	font-size: 14px;
-	color: var(--gray-600);
-	background: var(--gray-100);
-	padding: 4px 12px;
 	border-radius: 12px;
 	font-weight: 500;
 }
@@ -3308,7 +3277,37 @@ textarea {
 	line-height: var(--line-height-tight);
 }
 
-.jobs-stats {
+.tab-stats {
+	display: flex;
+	background: var(--gray-100);
+	border-radius: 6px;
+	padding: 1px;
+}
+
+.tab-stats .stat-item {
+	padding: 6px 16px;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	color: var(--gray-600);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	white-space: nowrap;
+}
+
+.tab-stats .stat-item:hover {
+	color: var(--text-color);
+}
+
+.jobs-stats,
+.kanban-stats,
+.tasks-stats,
+.contacts-stats {
 	display: flex;
 	background: var(--gray-100);
 	border-radius: 6px;
@@ -3331,7 +3330,29 @@ textarea {
 	white-space: nowrap;
 }
 
-.jobs-stats .stat-item:hover {
+.kanban-total-jobs,
+.tasks-total-count,
+.contacts-count {
+	padding: 6px 16px;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	color: var(--gray-600);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	white-space: nowrap;
+	height: 32px;
+	display: inline-flex;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.jobs-stats .stat-item:hover,
+.kanban-total-jobs:hover,
+.tasks-total-count:hover,
+.contacts-count:hover {
 	color: var(--text-color);
 }
 
@@ -3353,13 +3374,21 @@ textarea {
 		padding: 16px;
 	}
 	
-	.jobs-stats {
+	.jobs-stats,
+	.kanban-stats,
+	.tasks-stats,
+	.contacts-stats,
+	.tab-stats {
 		flex-wrap: wrap;
 	}
 }
 
 @media (max-width: 480px) {
-	.jobs-stats .stat-item {
+	.jobs-stats .stat-item,
+	.kanban-stats .kanban-total-jobs,
+	.tasks-stats .tasks-total-count,
+	.contacts-stats .contacts-count,
+	.tab-stats .stat-item {
 		padding: 4px 8px;
 		font-size: 12px;
 	}
@@ -4119,16 +4148,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750670632011';
-window.BUILD_DATE = '2025-06-23T09:23:52.011Z';
+window.BUILD_VERSION = '1750672047862';
+window.BUILD_DATE = '2025-06-23T09:47:27.862Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T09:23:52.005Z
+// Generated: 2025-06-23T09:47:27.855Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T09:23:52.005Z");
+console.log("JobTracker - Built at: 2025-06-23T09:47:27.855Z");
 
 
 // ============================================================================
