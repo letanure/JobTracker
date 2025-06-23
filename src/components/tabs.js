@@ -4,7 +4,7 @@
 
 const TabNavigation = {
 	// Current active tab
-	activeTab: "jobs",
+	activeTab: CONFIG.defaultTab,
 
 	// Available tabs configuration
 	tabs: [
@@ -29,7 +29,7 @@ const TabNavigation = {
 	// Set tab in URL parameter
 	setTabInURL: (tabId) => {
 		const url = new URL(window.location);
-		if (tabId && tabId !== "jobs") {
+		if (tabId) {
 			url.searchParams.set("tab", tabId);
 		} else {
 			url.searchParams.delete("tab");
@@ -182,7 +182,7 @@ const TabNavigation = {
 	init: () => {
 		// Get tab from URL or use default
 		const urlTab = TabNavigation.getTabFromURL();
-		const initialTab = urlTab || "jobs";
+		const initialTab = urlTab || CONFIG.defaultTab;
 
 		// Force switch to show the correct tab on init
 		TabNavigation.switchTo(initialTab, true);

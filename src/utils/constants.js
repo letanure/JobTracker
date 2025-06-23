@@ -10,6 +10,8 @@ const CONFIG = {
 		{ code: "en", name: "English", flag: "🇺🇸" },
 		{ code: "pt", name: "Português", flag: "🇧🇷" },
 	],
+	// Default tab to show on application load
+	defaultTab: "jobs",
 };
 
 // ============================================================================
