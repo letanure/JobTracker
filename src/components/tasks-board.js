@@ -152,7 +152,7 @@ const TasksBoard = {
 						TasksBoard.openJobModal(task);
 					},
 				},
-				h("span", { className: "material-symbols-outlined" }, "open_in_new")
+				h("span", { className: "material-symbols-outlined" }, "work")
 			)
 		);
 
