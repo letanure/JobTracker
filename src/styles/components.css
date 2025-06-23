@@ -1931,6 +1931,7 @@ td .zero-count:hover {
 	color: var(--gray-600);
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
+	user-select: none; /* Prevent text selection */
 }
 
 .calendar-days {
@@ -1953,6 +1954,7 @@ td .zero-count:hover {
 	flex-direction: column;
 	overflow: hidden;
 	min-width: 0;
+	user-select: none; /* Prevent text selection */
 }
 
 .calendar-day:hover {
@@ -2107,6 +2109,7 @@ td .zero-count:hover {
 	color: var(--gray-600);
 	text-align: right;
 	border-bottom: 1px solid var(--gray-200);
+	user-select: none; /* Prevent text selection */
 }
 
 .calendar-week-day {
@@ -2124,6 +2127,7 @@ td .zero-count:hover {
 	text-align: center;
 	border-bottom: var(--border-width) solid var(--border-color);
 	background: var(--gray-50);
+	user-select: none; /* Prevent text selection */
 }
 
 .calendar-week-day-name {
