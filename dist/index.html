@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T09:03:01.038Z
-Cache Version: 1750669381038
+Generated: 2025-06-23T09:23:52.011Z
+Cache Version: 1750670632011
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750669381038
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750669381038">
-    <meta name="build-date" content="2025-06-23T09:03:01.038Z">
+    <meta name="build-version" content="1750670632011">
+    <meta name="build-date" content="2025-06-23T09:23:52.011Z">
     <style>
 
 /* ============================================================================ */
@@ -585,35 +585,22 @@ ul:not([class]), ol:not([class]) {
 }
 
 /* Stats Section */
-.stats {
-	padding: 16px 24px;
-	background: var(--gray-50);
-	border-bottom: var(--border-width) solid var(--border-color);
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	gap: 16px;
-}
-
-.stat {
-	text-align: center;
-	padding: 8px;
-}
 
 .stat-number {
-	font-size: 24px;
 	font-weight: 600;
 	color: var(--text-color);
-	display: block;
-	line-height: 1.25;
+	margin-right: calc(var(--space-1) * 0.5);
+	display: inline-block;
 }
 
 .stat-label {
 	font-size: 12px;
-	color: var(--text-secondary);
+	color: var(--text-lighter);
 	text-transform: none;
 	letter-spacing: normal;
 	margin-top: 4px;
 	font-weight: 500;
+	
 }
 
 /* GitHub-Style Footer */
@@ -3322,30 +3309,30 @@ textarea {
 }
 
 .jobs-stats {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	gap: var(--space-4);
-	align-items: center;
+	display: flex;
+	background: var(--gray-100);
+	border-radius: 6px;
+	padding: 1px;
 }
 
 .jobs-stats .stat-item {
-	text-align: center;
-	padding: var(--space-2);
-}
-
-.jobs-stats .stat-number {
-	font-size: var(--font-size-lg);
-	font-weight: 600;
-	color: var(--text-color);
-	display: block;
-	line-height: 1.25;
-}
-
-.jobs-stats .stat-label {
-	font-size: var(--font-size-xs);
-	color: var(--text-secondary);
-	margin-top: var(--space-1);
+	padding: 6px 16px;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	color: var(--gray-600);
+	font-size: 14px;
 	font-weight: 500;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	white-space: nowrap;
+}
+
+.jobs-stats .stat-item:hover {
+	color: var(--text-color);
 }
 
 /* Responsive headers */
@@ -3367,27 +3354,14 @@ textarea {
 	}
 	
 	.jobs-stats {
-		grid-template-columns: repeat(3, 1fr);
-		gap: var(--space-2);
+		flex-wrap: wrap;
 	}
 }
 
 @media (max-width: 480px) {
-	.jobs-stats {
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--space-2);
-	}
-	
 	.jobs-stats .stat-item {
-		padding: var(--space-1);
-	}
-	
-	.jobs-stats .stat-number {
-		font-size: var(--font-size-base);
-	}
-	
-	.jobs-stats .stat-label {
-		font-size: 10px;
+		padding: 4px 8px;
+		font-size: 12px;
 	}
 }
 
@@ -4145,16 +4119,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750669381038';
-window.BUILD_DATE = '2025-06-23T09:03:01.038Z';
+window.BUILD_VERSION = '1750670632011';
+window.BUILD_DATE = '2025-06-23T09:23:52.011Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T09:03:01.030Z
+// Generated: 2025-06-23T09:23:52.005Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T09:03:01.030Z");
+console.log("JobTracker - Built at: 2025-06-23T09:23:52.005Z");
 
 
 // ============================================================================
@@ -8759,11 +8733,13 @@ const TabNavigation = {
 		// Force switch to show the correct tab on init
 		TabNavigation.switchTo(initialTab, true);
 
-		// Mark tabs as initialized to enable smooth transitions
-		const tabContainer = document.querySelector('.tab-content-container');
-		if (tabContainer) {
-			tabContainer.classList.add('tabs-initialized');
-		}
+		// Mark tabs as initialized to enable smooth transitions after a brief delay
+		setTimeout(() => {
+			const tabContainer = document.querySelector('.tab-content-container');
+			if (tabContainer) {
+				tabContainer.classList.add('tabs-initialized');
+			}
+		}, 50);
 	},
 };
 

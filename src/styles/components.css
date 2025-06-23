@@ -2490,30 +2490,30 @@ textarea {
 }
 
 .jobs-stats {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	gap: var(--space-4);
-	align-items: center;
+	display: flex;
+	background: var(--gray-100);
+	border-radius: 6px;
+	padding: 1px;
 }
 
 .jobs-stats .stat-item {
-	text-align: center;
-	padding: var(--space-2);
-}
-
-.jobs-stats .stat-number {
-	font-size: var(--font-size-lg);
-	font-weight: 600;
-	color: var(--text-color);
-	display: block;
-	line-height: 1.25;
-}
-
-.jobs-stats .stat-label {
-	font-size: var(--font-size-xs);
-	color: var(--text-secondary);
-	margin-top: var(--space-1);
+	padding: 6px 16px;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	color: var(--gray-600);
+	font-size: 14px;
 	font-weight: 500;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	white-space: nowrap;
+}
+
+.jobs-stats .stat-item:hover {
+	color: var(--text-color);
 }
 
 /* Responsive headers */
@@ -2535,27 +2535,14 @@ textarea {
 	}
 	
 	.jobs-stats {
-		grid-template-columns: repeat(3, 1fr);
-		gap: var(--space-2);
+		flex-wrap: wrap;
 	}
 }
 
 @media (max-width: 480px) {
-	.jobs-stats {
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--space-2);
-	}
-	
 	.jobs-stats .stat-item {
-		padding: var(--space-1);
-	}
-	
-	.jobs-stats .stat-number {
-		font-size: var(--font-size-base);
-	}
-	
-	.jobs-stats .stat-label {
-		font-size: 10px;
+		padding: 4px 8px;
+		font-size: 12px;
 	}
 }
 
