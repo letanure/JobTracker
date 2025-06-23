@@ -88,7 +88,7 @@ tbody tr {
 	width: 200px;
 }
 
-.current-phase {
+td .current-phase {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -827,7 +827,7 @@ tr.editing .actions-cell button {
 		padding: var(--space-2) var(--space-1);
 	}
 
-	.current-phase {
+	td .current-phase {
 		max-width: var(--col-12);
 	}
 }
@@ -842,7 +842,7 @@ tr.editing .actions-cell button {
 		padding: var(--space-1);
 	}
 
-	.current-phase {
+	td .current-phase {
 		max-width: var(--col-10);
 	}
 
