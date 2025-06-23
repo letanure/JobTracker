@@ -81,7 +81,7 @@
 	border-top: var(--border-width) solid var(--border-color);
 	color: var(--text-secondary);
 	font-size: 12px;
-	margin-top: auto;
+	margin-top: 24px;
 }
 
 .footer-content {
