@@ -459,6 +459,14 @@ tr.editing .actions-cell button {
 	vertical-align: middle;
 	background: var(--container-background);
 	font-size: var(--font-size-sm);
+	white-space: nowrap;
+	height: auto;
+	font-size: var(--font-size-xs);
+	vertical-align: top;
+	max-height: 140px;
+}
+.contacts-table td a {
+	color: var(--text-color);
 }
 
 .contacts-table tr:last-child td {
@@ -491,6 +499,11 @@ tr.editing .actions-cell button {
 .contacts-table .contact-company {
 	color: var(--text-light);
 	font-style: italic;
+}
+.contacts-table input {
+	height: 30px;
+	padding: 0;
+	border: none;
 }
 
 /* Add contact form (like a new table row) */

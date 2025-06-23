@@ -402,117 +402,6 @@ textarea {
 	color: var(--text-color);
 }
 
-.contacts-table-container {
-	background: var(--white);
-	border: 1px solid var(--border-color);
-	border-radius: 8px;
-	overflow-x: auto;
-	margin-bottom: 16px;
-}
-
-.contacts-table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 14px;
-	min-width: 800px;
-}
-
-.contacts-table th {
-	background: var(--gray-50);
-	padding: 8px 12px;
-	text-align: left;
-	font-weight: 600;
-	color: var(--gray-700);
-	border-bottom: 1px solid var(--border-color);
-	font-size: 12px;
-	white-space: nowrap;
-}
-
-.contacts-table td {
-	padding: 0;
-	border-bottom: 1px solid var(--border-color);
-	vertical-align: middle;
-}
-
-.contacts-table tbody tr:hover {
-	background: var(--gray-50);
-}
-
-.contact-cell {
-	position: relative;
-}
-
-.contact-field-input {
-	width: 100%;
-	padding: 8px 12px;
-	border: none;
-	background: transparent;
-	font-size: 14px;
-	color: var(--text-color);
-	transition: all 0.2s ease;
-	outline: none;
-	font-family: inherit;
-	border-radius: 0;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.contact-field-input:focus {
-	background: var(--blue-50);
-	box-shadow: inset 2px 0 0 var(--blue-500);
-}
-
-.contact-field-input:not(:focus)::placeholder {
-	color: transparent;
-}
-
-.contact-field-input:focus::placeholder {
-	color: var(--gray-400);
-	font-style: italic;
-}
-
-.contact-company-display,
-.contact-job-display {
-	display: block;
-	padding: 8px 12px;
-	color: var(--gray-600);
-	font-size: 14px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.contact-actions-cell {
-	width: 50px;
-	text-align: center;
-	padding: 4px;
-}
-
-.contact-delete-btn {
-	padding: 4px;
-	width: 28px;
-	height: 28px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 4px;
-	background: transparent;
-	border: 1px solid transparent;
-	color: var(--gray-500);
-	transition: all 0.2s ease;
-	cursor: pointer;
-}
-
-.contact-delete-btn:hover {
-	background: var(--red-50);
-	color: var(--red-600);
-	border-color: var(--red-200);
-}
-
-.contact-delete-btn .material-symbols-outlined {
-	font-size: 14px;
-}
 
 /* Field validation */
 .contact-cell.has-error .contact-field-input {
@@ -532,7 +421,7 @@ textarea {
 	border: 1px solid var(--red-200);
 	z-index: 10;
 	white-space: nowrap;
-}
+} */
 
 /* Table actions */
 .contacts-actions {
