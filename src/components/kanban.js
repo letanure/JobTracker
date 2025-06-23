@@ -350,7 +350,9 @@ const KanbanBoard = {
 
 			// Validation
 			if (!updatedJob.company || !updatedJob.position) {
-				await alert(I18n.t("validation.companyPositionRequired") || "Company and position are required");
+				await alert(
+					I18n.t("validation.companyPositionRequired") || "Company and position are required"
+				);
 				return;
 			}
 

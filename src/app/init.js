@@ -33,8 +33,8 @@ async function initializeApp() {
 		// Show welcome message for new users
 		const showDemo = await confirm(I18n.t("messages.welcome"), {
 			confirmText: I18n.t("messages.welcomeConfirm"),
-			cancelText: I18n.t("messages.welcomeCancel"), 
-			focusConfirm: true
+			cancelText: I18n.t("messages.welcomeCancel"),
+			focusConfirm: true,
 		});
 		if (showDemo) {
 			jobsData = getDemoData();

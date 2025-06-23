@@ -19,12 +19,12 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(true);
-						}
-					}
+						},
+					},
 				],
-				type: "alert"
+				type: "alert",
 			});
-			
+
 			CustomDialogs.showDialog(modal);
 		});
 	},
@@ -36,7 +36,7 @@ const CustomDialogs = {
 				title = null,
 				confirmText = I18n.t("modals.common.ok") || "OK",
 				cancelText = I18n.t("modals.common.cancel") || "Cancel",
-				focusConfirm = false
+				focusConfirm = false,
 			} = options;
 
 			const modal = CustomDialogs.createModal({
@@ -49,21 +49,21 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(false);
-						}
+						},
 					},
 					{
 						text: confirmText,
-						className: focusConfirm ? "btn-primary" : "btn-secondary", 
+						className: focusConfirm ? "btn-primary" : "btn-secondary",
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(true);
-						}
-					}
+						},
+					},
 				],
 				type: "confirm",
-				focusConfirm
+				focusConfirm,
 			});
-			
+
 			CustomDialogs.showDialog(modal, focusConfirm);
 		});
 	},
@@ -72,7 +72,7 @@ const CustomDialogs = {
 	prompt: (message, defaultValue = "", title = null) => {
 		return new Promise((resolve) => {
 			let inputValue = defaultValue;
-			
+
 			const modal = CustomDialogs.createModal({
 				title: title || I18n.t("modals.dialogs.prompt") || "Input Required",
 				message,
@@ -82,7 +82,7 @@ const CustomDialogs = {
 					placeholder: message,
 					onChange: (value) => {
 						inputValue = value;
-					}
+					},
 				},
 				buttons: [
 					{
@@ -91,7 +91,7 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(null);
-						}
+						},
 					},
 					{
 						text: I18n.t("modals.common.ok") || "OK",
@@ -99,12 +99,12 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(inputValue);
-						}
-					}
+						},
+					},
 				],
-				type: "prompt"
+				type: "prompt",
 			});
-			
+
 			CustomDialogs.showDialog(modal);
 		});
 	},
@@ -120,61 +120,69 @@ const CustomDialogs = {
 						// Don't auto-close on backdrop click for dialogs
 						// User must explicitly choose an option
 					}
-				}
+				},
 			},
 			h(
 				"div",
 				{
 					className: `modal custom-dialog-modal dialog-${type}`,
-					onclick: (e) => e.stopPropagation()
+					onclick: (e) => e.stopPropagation(),
 				},
 				// Header
 				h(
 					"div",
 					{ className: "modal-header" },
-					h("h3", { className: "modal-title" }, title),
+					h("h3", { className: "modal-title" }, title)
 					// No close button - force user to choose an option
 				),
-				
+
 				// Body
 				h(
 					"div",
 					{ className: "modal-body custom-dialog-body" },
 					h("div", { className: "dialog-message" }, message),
-					
+
 					// Input field for prompt
-					input ? h("div", { className: "dialog-input-container" },
-						h("input", {
-							type: input.type,
-							value: input.value,
-							placeholder: input.placeholder,
-							className: "dialog-input",
-							oninput: (e) => input.onChange(e.target.value),
-							onkeydown: (e) => {
-								if (e.key === "Enter") {
-									// Trigger the primary button (last button)
-									const primaryBtn = modal.querySelector(".btn-primary");
-									if (primaryBtn) primaryBtn.click();
-								}
-								if (e.key === "Escape") {
-									// Trigger the secondary button (first button)
-									const secondaryBtn = modal.querySelector(".btn-secondary");
-									if (secondaryBtn) secondaryBtn.click();
-								}
-							}
-						})
-					) : null
+					input
+						? h(
+								"div",
+								{ className: "dialog-input-container" },
+								h("input", {
+									type: input.type,
+									value: input.value,
+									placeholder: input.placeholder,
+									className: "dialog-input",
+									oninput: (e) => input.onChange(e.target.value),
+									onkeydown: (e) => {
+										if (e.key === "Enter") {
+											// Trigger the primary button (last button)
+											const primaryBtn = modal.querySelector(".btn-primary");
+											if (primaryBtn) primaryBtn.click();
+										}
+										if (e.key === "Escape") {
+											// Trigger the secondary button (first button)
+											const secondaryBtn = modal.querySelector(".btn-secondary");
+											if (secondaryBtn) secondaryBtn.click();
+										}
+									},
+								})
+							)
+						: null
 				),
-				
+
 				// Footer with buttons
 				h(
 					"div",
 					{ className: "modal-footer dialog-footer" },
-					...buttons.map(button => 
-						h("button", {
-							className: `action-btn ${button.className}`,
-							onclick: button.onClick
-						}, button.text)
+					...buttons.map((button) =>
+						h(
+							"button",
+							{
+								className: `action-btn ${button.className}`,
+								onclick: button.onClick,
+							},
+							button.text
+						)
 					)
 				)
 			)
@@ -187,22 +195,22 @@ const CustomDialogs = {
 	showDialog: (modal, focusConfirm = false) => {
 		// Close any existing dialog
 		CustomDialogs.closeDialog();
-		
+
 		// Optimize rendering to reduce flickering
-		modal.style.opacity = '0';
-		modal.style.transform = 'translate(-50%, -60%) scale(0.95)';
-		
+		modal.style.opacity = "0";
+		modal.style.transform = "translate(-50%, -60%) scale(0.95)";
+
 		CustomDialogs.activeDialog = modal;
 		document.body.appendChild(modal);
-		
+
 		// Force browser to calculate layout before showing
 		modal.offsetHeight;
-		
+
 		// Trigger the animation
 		requestAnimationFrame(() => {
-			modal.style.opacity = '';
-			modal.style.transform = '';
-			
+			modal.style.opacity = "";
+			modal.style.transform = "";
+
 			// Focus handling after animation starts
 			setTimeout(() => {
 				const input = modal.querySelector(".dialog-input");
@@ -219,7 +227,7 @@ const CustomDialogs = {
 				}
 			}, 50);
 		});
-		
+
 		// Add keyboard event listener for ESC key
 		const handleKeydown = (e) => {
 			if (e.key === "Escape") {
@@ -234,7 +242,7 @@ const CustomDialogs = {
 				}
 			}
 		};
-		
+
 		document.addEventListener("keydown", handleKeydown);
 		modal.dataset.keydownHandler = "true";
 	},
@@ -246,22 +254,28 @@ const CustomDialogs = {
 			if (CustomDialogs.activeDialog.dataset.keydownHandler) {
 				document.removeEventListener("keydown", CustomDialogs.handleKeydown);
 			}
-			
+
 			if (CustomDialogs.activeDialog.parentNode) {
 				CustomDialogs.activeDialog.parentNode.removeChild(CustomDialogs.activeDialog);
 			}
 			CustomDialogs.activeDialog = null;
 		}
-	}
+	},
 };
 
 // Helper for simple confirm dialogs with custom buttons
-CustomDialogs.confirmCustom = (message, confirmText, cancelText, focusConfirm = false, title = null) => {
+CustomDialogs.confirmCustom = (
+	message,
+	confirmText,
+	cancelText,
+	focusConfirm = false,
+	title = null
+) => {
 	return CustomDialogs.confirm(message, {
 		title,
 		confirmText,
 		cancelText,
-		focusConfirm
+		focusConfirm,
 	});
 };
 
