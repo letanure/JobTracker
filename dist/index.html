@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T17:43:48.505Z
-Cache Version: 1750700628505
+Generated: 2025-06-23T19:21:45.421Z
+Cache Version: 1750706505421
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750700628505
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750700628505">
-    <meta name="build-date" content="2025-06-23T17:43:48.505Z">
+    <meta name="build-version" content="1750706505421">
+    <meta name="build-date" content="2025-06-23T19:21:45.421Z">
     <style>
 
 /* ============================================================================ */
@@ -2497,6 +2497,153 @@ a.kanban-source-link {
 	border-top: 1px solid var(--gray-200);
 }
 
+/* Workflow Selector Styles */
+.workflow-description {
+	font-size: 12px;
+	color: var(--gray-600);
+	margin-bottom: 12px;
+}
+
+.workflow-selector {
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	background: var(--gray-50);
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.workflow-phase {
+	border-bottom: 1px solid var(--border-color);
+}
+
+.workflow-phase:last-child {
+	border-bottom: none;
+}
+
+.workflow-phase.current-phase {
+	background: var(--blue-50);
+	border-left: 3px solid var(--blue-500);
+}
+
+.workflow-phase-header {
+	padding: 0;
+}
+
+.workflow-phase-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 16px;
+	background: transparent;
+	border: none;
+	text-align: left;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.workflow-phase-toggle:hover {
+	background: var(--gray-100);
+}
+
+.workflow-phase-toggle.has-substeps {
+	color: var(--blue-600);
+}
+
+.workflow-phase-toggle .material-symbols-outlined {
+	font-size: 16px;
+	transition: transform var(--transition-fast);
+}
+
+.workflow-phase.expanded .workflow-phase-toggle .material-symbols-outlined {
+	transform: rotate(180deg);
+}
+
+.workflow-phase-title {
+	flex: 1;
+}
+
+.workflow-phase-count {
+	font-size: 11px;
+	background: var(--gray-200);
+	color: var(--gray-700);
+	padding: 2px 6px;
+	border-radius: 10px;
+	min-width: 30px;
+	text-align: center;
+}
+
+.workflow-phase-toggle.has-substeps .workflow-phase-count {
+	background: var(--blue-100);
+	color: var(--blue-700);
+}
+
+.workflow-substeps-list {
+	background: var(--white);
+	border-top: 1px solid var(--border-color);
+}
+
+.workflow-substep-item {
+	border-bottom: 1px solid var(--gray-100);
+}
+
+.workflow-substep-item:last-child {
+	border-bottom: none;
+}
+
+.workflow-substep-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 20px 8px 32px;
+	background: transparent;
+	border: none;
+	text-align: left;
+	cursor: pointer;
+	font-size: 12px;
+	transition: var(--transition-fast);
+}
+
+.workflow-substep-toggle:hover {
+	background: var(--gray-50);
+}
+
+.workflow-substep-item.selected .workflow-substep-toggle {
+	color: var(--blue-600);
+	background: var(--blue-25);
+}
+
+.workflow-substep-item.current .workflow-substep-toggle {
+	background: var(--blue-50);
+	font-weight: 600;
+}
+
+.workflow-substep-toggle .material-symbols-outlined {
+	font-size: 16px;
+	color: var(--gray-400);
+}
+
+.workflow-substep-item.selected .workflow-substep-toggle .material-symbols-outlined {
+	color: var(--blue-600);
+}
+
+.workflow-substep-text {
+	flex: 1;
+}
+
+.current-indicator {
+	font-size: 10px;
+	background: var(--blue-600);
+	color: var(--white);
+	padding: 1px 4px;
+	border-radius: 2px;
+	text-transform: uppercase;
+	font-weight: 500;
+}
+
 .tasks-column-body {
 	padding: 12px;
 	flex: 1;
@@ -4619,16 +4766,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750700628505';
-window.BUILD_DATE = '2025-06-23T17:43:48.505Z';
+window.BUILD_VERSION = '1750706505421';
+window.BUILD_DATE = '2025-06-23T19:21:45.421Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T17:43:48.498Z
+// Generated: 2025-06-23T19:21:45.415Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T17:43:48.498Z");
+console.log("JobTracker - Built at: 2025-06-23T19:21:45.415Z");
 
 
 // ============================================================================
@@ -4932,6 +5079,8 @@ const EN_TRANSLATIONS = {
 		totalJobs: "{count} total applications",
 		editJob: "Edit Job",
 		addJob: "Add Job",
+		workflowConfig: "Workflow Configuration",
+		workflowDescription: "Select and configure the steps for each phase of this job:",
 	},
 	table: {
 		headers: {
@@ -5231,6 +5380,8 @@ const PT_TRANSLATIONS = {
 		totalJobs: "{count} candidaturas no total",
 		editJob: "Editar Vaga",
 		addJob: "Adicionar Vaga",
+		workflowConfig: "Configuração do Fluxo",
+		workflowDescription: "Selecione e configure as etapas para cada fase desta vaga:",
 	},
 	table: {
 		headers: {
@@ -5634,6 +5785,15 @@ const PHASE_SUBSTEPS = {
 		"final_round",
 	],
 	offer: ["reference_check", "background_check", "offer_discussion", "salary_negotiation"],
+	rejected_withdrawn: ["rejected", "withdrawn"],
+};
+
+// Default substeps that are pre-selected when creating a new job
+const DEFAULT_SELECTED_SUBSTEPS = {
+	applied: ["application_review", "hr_phone_screen"],
+	interview: ["technical_interview", "behavioral_interview"],
+	offer: ["offer_discussion", "salary_negotiation"],
+	rejected_withdrawn: [],
 };
 
 // Helper functions to get translated values
@@ -5670,6 +5830,11 @@ const DEMO_DATA = [
 		currentPhase: "interview",
 		currentSubstep: "technical_interview",
 		completedSubsteps: ["phone_screening"],
+		selectedSubsteps: {
+			applied: ["application_review", "hr_phone_screen"],
+			interview: ["phone_screening", "coding_challenge", "technical_interview", "team_interview"],
+			offer: ["offer_discussion", "salary_negotiation"]
+		},
 		salaryRange: "$120k - $150k",
 		location: "San Francisco, CA",
 		notes: "demo.notes1",
@@ -5747,7 +5912,11 @@ const DEMO_DATA = [
 		currentPhase: "applied",
 		currentSubstep: "hr_phone_screen",
 		completedSubsteps: ["application_review"],
-
+		selectedSubsteps: {
+			applied: ["application_review", "hr_phone_screen", "recruiter_call"],
+			interview: ["take_home_assignment", "technical_interview", "behavioral_interview"],
+			offer: ["reference_check", "offer_discussion"]
+		},
 		salaryRange: "$90k - $110k + equity",
 		location: "Remote",
 		notes: "demo.notes2",
@@ -10768,7 +10937,9 @@ const KanbanBoard = {
 
 		const currentSubstep = job.currentSubstep || currentPhase;
 		const completedSubsteps = job.completedSubsteps || [];
-		const availableSubsteps = getSubstepsForPhase(currentPhase);
+		// Use selected substeps for this phase, fallback to all available substeps
+		const selectedSubsteps = job.selectedSubsteps?.[currentPhase] || [];
+		const availableSubsteps = selectedSubsteps.length > 0 ? selectedSubsteps : getSubstepsForPhase(currentPhase);
 
 		const phaseHeader = h(
 			"div",
@@ -10883,6 +11054,230 @@ const KanbanBoard = {
 		});
 	},
 
+	// Create workflow selector component
+	createWorkflowSelector: (job) => {
+		const workflowContainer = h("div", { className: "workflow-selector" });
+
+		// Create phase sections
+		Object.entries(PHASE_SUBSTEPS).forEach(([phase, substeps]) => {
+			const selectedSubsteps = job.selectedSubsteps?.[phase] || [];
+			const isCurrentPhase = job.currentPhase === phase;
+			
+			const phaseSection = h(
+				"div",
+				{ 
+					className: `workflow-phase ${isCurrentPhase ? 'current-phase' : ''}`,
+					"data-phase": phase
+				},
+				// Phase header
+				h(
+					"div",
+					{ className: "workflow-phase-header" },
+					h(
+						"button",
+						{
+							type: "button",
+							className: `workflow-phase-toggle ${selectedSubsteps.length > 0 ? 'has-substeps' : ''}`,
+							onclick: (e) => KanbanBoard.togglePhaseExpansion(e, phase),
+						},
+						h("span", { className: "material-symbols-outlined" }, "expand_more"),
+						h("span", { className: "workflow-phase-title" }, getPhaseText(phase)),
+						h("span", { className: "workflow-phase-count" }, `${selectedSubsteps.length}/${substeps.length}`)
+					)
+				),
+				// Substeps list (initially collapsed)
+				h(
+					"div",
+					{ 
+						className: "workflow-substeps-list",
+						style: "display: none;"
+					},
+					...substeps.map(substep => {
+						const isSelected = selectedSubsteps.includes(substep);
+						const isCurrent = job.currentSubstep === substep && isCurrentPhase;
+						
+						return h(
+							"div",
+							{ 
+								className: `workflow-substep-item ${isSelected ? 'selected' : ''} ${isCurrent ? 'current' : ''}`,
+								"data-phase": phase,
+								"data-substep": substep
+							},
+							h(
+								"button",
+								{
+									type: "button",
+									className: "workflow-substep-toggle",
+									onclick: (e) => {
+										if (e.shiftKey) {
+											// Shift+click to set as current substep
+											KanbanBoard.setCurrentSubstep(e, job, phase, substep);
+										} else {
+											// Regular click to toggle selection
+											KanbanBoard.toggleSubstep(e, job, phase, substep);
+										}
+									},
+								},
+								h("span", { className: "material-symbols-outlined" }, isSelected ? "check_circle" : "radio_button_unchecked"),
+								h("span", { className: "workflow-substep-text" }, getSubstepText(substep)),
+								isCurrent && h("span", { className: "current-indicator" }, "current")
+							)
+						);
+					})
+				)
+			);
+			
+			workflowContainer.appendChild(phaseSection);
+		});
+
+		return workflowContainer;
+	},
+
+	// Toggle phase expansion in workflow selector
+	togglePhaseExpansion: (e, phase) => {
+		e.preventDefault();
+		const phaseElement = e.target.closest('.workflow-phase');
+		const substepsList = phaseElement.querySelector('.workflow-substeps-list');
+		const toggleIcon = phaseElement.querySelector('.material-symbols-outlined');
+		
+		if (substepsList.style.display === 'none') {
+			substepsList.style.display = 'block';
+			toggleIcon.textContent = 'expand_less';
+			phaseElement.classList.add('expanded');
+		} else {
+			substepsList.style.display = 'none';
+			toggleIcon.textContent = 'expand_more';
+			phaseElement.classList.remove('expanded');
+		}
+	},
+
+	// Toggle substep selection in workflow selector
+	toggleSubstep: (e, job, phase, substep) => {
+		e.preventDefault();
+		
+		// Initialize selectedSubsteps if not exists
+		if (!job.selectedSubsteps) {
+			job.selectedSubsteps = {};
+		}
+		if (!job.selectedSubsteps[phase]) {
+			job.selectedSubsteps[phase] = [];
+		}
+
+		const selectedSubsteps = job.selectedSubsteps[phase];
+		const isSelected = selectedSubsteps.includes(substep);
+		
+		if (isSelected) {
+			// Remove substep
+			job.selectedSubsteps[phase] = selectedSubsteps.filter(s => s !== substep);
+		} else {
+			// Add substep
+			job.selectedSubsteps[phase].push(substep);
+		}
+
+		// Update the visual state
+		const substepElement = e.target.closest('.workflow-substep-item');
+		const icon = substepElement.querySelector('.material-symbols-outlined');
+		
+		if (isSelected) {
+			substepElement.classList.remove('selected');
+			icon.textContent = 'radio_button_unchecked';
+		} else {
+			substepElement.classList.add('selected');
+			icon.textContent = 'check_circle';
+		}
+
+		// Update phase counter
+		const phaseElement = e.target.closest('.workflow-phase');
+		const counter = phaseElement.querySelector('.workflow-phase-count');
+		const totalSubsteps = PHASE_SUBSTEPS[phase].length;
+		const selectedCount = job.selectedSubsteps[phase].length;
+		counter.textContent = `${selectedCount}/${totalSubsteps}`;
+
+		// Update phase toggle styling
+		const phaseToggle = phaseElement.querySelector('.workflow-phase-toggle');
+		if (selectedCount > 0) {
+			phaseToggle.classList.add('has-substeps');
+		} else {
+			phaseToggle.classList.remove('has-substeps');
+		}
+
+		// If this substep was the current one and we're removing it, update current substep
+		if (isSelected && job.currentSubstep === substep) {
+			// Set to phase name as default
+			job.currentSubstep = phase;
+			// Update the input field
+			const modal = e.target.closest('.modal');
+			const substepInput = modal.querySelector('input[name="substep"]');
+			if (substepInput) {
+				substepInput.value = getPhaseText(phase);
+			}
+		}
+
+		// Save changes
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex !== -1) {
+			Object.assign(jobsData[jobIndex], job);
+			saveToLocalStorage();
+			KanbanBoard.refresh();
+		}
+	},
+
+	// Set current substep in workflow selector
+	setCurrentSubstep: (e, job, phase, substep) => {
+		e.preventDefault();
+		
+		// Update current phase and substep
+		job.currentPhase = phase;
+		job.currentSubstep = substep;
+
+		// Update the input fields
+		const modal = e.target.closest('.modal');
+		const phaseSelect = modal.querySelector('select[name="phase"]');
+		const substepInput = modal.querySelector('input[name="substep"]');
+		
+		if (phaseSelect) {
+			phaseSelect.value = phase;
+		}
+		if (substepInput) {
+			substepInput.value = getSubstepText(substep);
+		}
+
+		// Update visual state - remove current indicator from all substeps
+		const allSubsteps = modal.querySelectorAll('.workflow-substep-item');
+		allSubsteps.forEach(item => {
+			item.classList.remove('current');
+			const indicator = item.querySelector('.current-indicator');
+			if (indicator) {
+				indicator.remove();
+			}
+		});
+
+		// Add current indicator to selected substep
+		const substepElement = e.target.closest('.workflow-substep-item');
+		substepElement.classList.add('current');
+		const toggle = substepElement.querySelector('.workflow-substep-toggle');
+		if (!toggle.querySelector('.current-indicator')) {
+			toggle.appendChild(h("span", { className: "current-indicator" }, "current"));
+		}
+
+		// Update current phase highlighting
+		const allPhases = modal.querySelectorAll('.workflow-phase');
+		allPhases.forEach(phaseEl => phaseEl.classList.remove('current-phase'));
+		
+		const currentPhaseElement = modal.querySelector(`[data-phase="${phase}"]`);
+		if (currentPhaseElement) {
+			currentPhaseElement.classList.add('current-phase');
+		}
+
+		// Save changes
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex !== -1) {
+			Object.assign(jobsData[jobIndex], job);
+			saveToLocalStorage();
+			KanbanBoard.refresh();
+		}
+	},
+
 	// Refresh the kanban board
 	refresh: () => {
 		const boardContainer = document.querySelector(".kanban-board");
@@ -10916,6 +11311,7 @@ const KanbanBoard = {
 			currentPhase: "wishlist",
 			currentSubstep: "wishlist",
 			completedSubsteps: [],
+			selectedSubsteps: { ...DEFAULT_SELECTED_SUBSTEPS }, // Pre-populate with default substeps
 			salaryRange: "",
 			location: "",
 			sourceUrl: "",
@@ -10958,6 +11354,10 @@ const KanbanBoard = {
 				location: form.location.value.trim(),
 				sourceUrl: form.sourceUrl.value.trim(),
 			};
+
+			// Selected substeps are already updated in real-time by the workflow selector
+			// Just preserve the existing selectedSubsteps
+			updatedJob.selectedSubsteps = job.selectedSubsteps || {};
 
 			// Validation
 			if (!updatedJob.company || !updatedJob.position) {
@@ -11043,75 +11443,43 @@ const KanbanBoard = {
 							)
 						),
 
-						// Phase and Substep row
+						// Current Phase and Substep Selection
 						h(
 							"div",
 							{ className: "form-row" },
 							h(
 								"div",
 								{ className: "form-field" },
-								h("label", {}, I18n.t("table.headers.currentPhase") || "Phase"),
+								h("label", {}, I18n.t("table.headers.currentPhase") || "Current Phase"),
 								h(
 									"select",
-									{
-										name: "phase",
-										onchange: (e) => {
-											const substepSelect = e.target.form.substep;
-											const selectedPhase = e.target.value;
-											const substeps = getSubstepsForPhase(selectedPhase);
-
-											// Update substep options
-											substepSelect.innerHTML = "";
-											const mainOption = h(
-												"option",
-												{ value: selectedPhase },
-												getPhaseText(selectedPhase)
-											);
-											substepSelect.appendChild(mainOption);
-											substeps.forEach((substep) => {
-												const option = h("option", { value: substep }, getSubstepText(substep));
-												substepSelect.appendChild(option);
-											});
-											substepSelect.value = selectedPhase;
-
-											// Update job phase immediately for real-time kanban update
-											const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-											if (jobIndex !== -1) {
-												jobsData[jobIndex].currentPhase = selectedPhase;
-												jobsData[jobIndex].currentSubstep = selectedPhase;
-												saveToLocalStorage();
-												KanbanBoard.refresh();
-											}
-										},
-									},
+									{ name: "phase" },
 									...PHASES.map((phase) => h("option", { value: phase }, getPhaseText(phase)))
 								)
 							),
 							h(
 								"div",
 								{ className: "form-field" },
-								h("label", {}, I18n.t("table.headers.substep") || "Substep"),
-								h(
-									"select",
-									{
-										name: "substep",
-										onchange: (e) => {
-											const selectedSubstep = e.target.value;
+								h("label", {}, I18n.t("table.headers.substep") || "Current Substep"),
+								h("input", {
+									type: "text",
+									name: "substep",
+									readonly: true,
+									placeholder: "Select from workflow below"
+								})
+							)
+						),
 
-											// Update job substep immediately for real-time kanban update
-											const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-											if (jobIndex !== -1) {
-												jobsData[jobIndex].currentSubstep = selectedSubstep;
-												saveToLocalStorage();
-												KanbanBoard.refresh();
-											}
-										},
-									},
-									h("option", { value: job.currentPhase }, getPhaseText(job.currentPhase)),
-									...getSubstepsForPhase(job.currentPhase).map((substep) =>
-										h("option", { value: substep }, getSubstepText(substep))
-									)
-								)
+						// Workflow Configuration
+						h(
+							"div",
+							{ className: "form-row" },
+							h(
+								"div",
+								{ className: "form-field full-width" },
+								h("label", {}, I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
+								h("div", { className: "workflow-description" }, I18n.t("kanban.workflowDescription") || "Select and configure the steps for each phase of this job:"),
+								KanbanBoard.createWorkflowSelector(job)
 							)
 						),
 
@@ -11184,6 +11552,7 @@ const KanbanBoard = {
 							)
 						),
 
+
 						// Source URL
 						h(
 							"div",
@@ -11234,7 +11603,7 @@ const KanbanBoard = {
 				form.phase.value = job.currentPhase;
 				form.company.value = job.company;
 				form.position.value = job.position;
-				form.substep.value = job.currentSubstep || job.currentPhase;
+				form.substep.value = job.currentSubstep ? getSubstepText(job.currentSubstep) : getPhaseText(job.currentPhase);
 				form.salaryRange.value = job.salaryRange || "";
 				form.location.value = job.location || "";
 				form.sourceUrl.value = job.sourceUrl || "";

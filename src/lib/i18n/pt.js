@@ -37,6 +37,8 @@ const PT_TRANSLATIONS = {
 		totalJobs: "{count} candidaturas no total",
 		editJob: "Editar Vaga",
 		addJob: "Adicionar Vaga",
+		workflowConfig: "Configuração do Fluxo",
+		workflowDescription: "Selecione e configure as etapas para cada fase desta vaga:",
 	},
 	table: {
 		headers: {

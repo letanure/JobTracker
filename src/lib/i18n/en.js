@@ -37,6 +37,8 @@ const EN_TRANSLATIONS = {
 		totalJobs: "{count} total applications",
 		editJob: "Edit Job",
 		addJob: "Add Job",
+		workflowConfig: "Workflow Configuration",
+		workflowDescription: "Select and configure the steps for each phase of this job:",
 	},
 	table: {
 		headers: {

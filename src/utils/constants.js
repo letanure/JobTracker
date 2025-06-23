@@ -43,6 +43,15 @@ const PHASE_SUBSTEPS = {
 		"final_round",
 	],
 	offer: ["reference_check", "background_check", "offer_discussion", "salary_negotiation"],
+	rejected_withdrawn: ["rejected", "withdrawn"],
+};
+
+// Default substeps that are pre-selected when creating a new job
+const DEFAULT_SELECTED_SUBSTEPS = {
+	applied: ["application_review", "hr_phone_screen"],
+	interview: ["technical_interview", "behavioral_interview"],
+	offer: ["offer_discussion", "salary_negotiation"],
+	rejected_withdrawn: [],
 };
 
 // Helper functions to get translated values
