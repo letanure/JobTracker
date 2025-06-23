@@ -47,7 +47,7 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 							className: "source-link",
 							title: job.sourceUrl,
 						},
-						h("span", { className: "material-symbols-outlined" }, "open_in_new")
+						h("span", { className: "material-symbols-outlined" }, "link")
 					)
 				: ""
 		),
