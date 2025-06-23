@@ -114,6 +114,9 @@ const TasksBoard = {
 			className: `tasks-priority-dot priority-${task.priority}`,
 		});
 
+		// Due date indicator
+		const dueDateIndicator = TasksBoard.createDueDateIndicator(task);
+
 		// Task content
 		const content = h(
 			"div",
@@ -139,34 +142,41 @@ const TasksBoard = {
 			)
 		);
 
-		// Action icons
-		const actionIcons = h(
+		// Card footer with due date indicator and action icons
+		const cardFooter = h(
 			"div",
-			{ className: "tasks-action-icons" },
+			{ className: "tasks-card-footer" },
+			// Due date indicator aligned left
+			dueDateIndicator,
+			// Action icons aligned right
 			h(
-				"button",
-				{
-					className: "tasks-icon-btn",
-					title: I18n.t("modals.tasks.editTitle") || "Edit Task",
-					onclick: (e) => {
-						e.stopPropagation();
-						TasksBoard.openTaskEditModal(task);
+				"div",
+				{ className: "tasks-action-icons" },
+				h(
+					"button",
+					{
+						className: "tasks-icon-btn",
+						title: I18n.t("modals.tasks.editTitle") || "Edit Task",
+						onclick: (e) => {
+							e.stopPropagation();
+							TasksBoard.openTaskEditModal(task);
+						},
 					},
-				},
-				h("span", { className: "material-symbols-outlined" }, "edit")
-			),
+					h("span", { className: "material-symbols-outlined" }, "edit")
+				),
 
-			h(
-				"button",
-				{
-					className: "tasks-icon-btn",
-					title: I18n.t("common.viewJob") || "View Job",
-					onclick: (e) => {
-						e.stopPropagation();
-						TasksBoard.openJobModal(task);
+				h(
+					"button",
+					{
+						className: "tasks-icon-btn",
+						title: I18n.t("common.viewJob") || "View Job",
+						onclick: (e) => {
+							e.stopPropagation();
+							TasksBoard.openJobModal(task);
+						},
 					},
-				},
-				h("span", { className: "material-symbols-outlined" }, "work")
+					h("span", { className: "material-symbols-outlined" }, "work")
+				)
 			)
 		);
 
@@ -174,9 +184,55 @@ const TasksBoard = {
 		card.appendChild(priorityDot);
 		card.appendChild(content);
 		card.appendChild(jobContext);
-		card.appendChild(actionIcons);
+		card.appendChild(cardFooter);
 
 		return card;
+	},
+
+	// Create due date indicator
+	createDueDateIndicator: (task) => {
+		if (!task.dueDate) return null;
+
+		const now = new Date();
+		const dueDate = new Date(task.dueDate);
+		const diffTime = dueDate - now;
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+		// Don't show indicator if due date is more than 7 days away
+		if (diffDays > 7) return null;
+
+		let className = "tasks-due-date-indicator";
+		let icon = "schedule";
+		let text = "";
+
+		if (diffDays < 0) {
+			// Overdue
+			className += " overdue";
+			icon = "warning";
+			text = I18n.t("modals.tasks.daysOverdue", {days: Math.abs(diffDays)}) || `${Math.abs(diffDays)} days overdue`;
+		} else if (diffDays === 0) {
+			// Due today
+			className += " due-today";
+			icon = "today";
+			text = I18n.t("modals.tasks.dueToday") || "Due today";
+		} else if (diffDays === 1) {
+			// Due tomorrow
+			className += " due-soon";
+			icon = "schedule";
+			text = I18n.t("modals.tasks.dueTomorrow") || "Due tomorrow";
+		} else {
+			// Due in a few days
+			className += " due-soon";
+			icon = "schedule";
+			text = I18n.t("modals.tasks.dueInDays", {days: diffDays}) || `Due in ${diffDays} days`;
+		}
+
+		return h(
+			"div",
+			{ className, title: `Due: ${dueDate.toLocaleDateString()}` },
+			h("span", { className: "material-symbols-outlined" }, icon),
+			h("span", { className: "due-date-text" }, text)
+		);
 	},
 
 	// Drag and drop handlers
