@@ -52,14 +52,12 @@ const I18n = {
 		}
 
 		if (!translation) {
-			console.warn(
-				`Translation missing for key: ${key} in language: ${I18n.currentLanguage}`,
-			);
+			console.warn(`Translation missing for key: ${key} in language: ${I18n.currentLanguage}`);
 			return key;
 		}
 
 		// If translation is not a string (e.g., array or object), return as is
-		if (typeof translation !== 'string') {
+		if (typeof translation !== "string") {
 			return translation;
 		}
 
@@ -89,5 +87,5 @@ const I18n = {
 // Translation constants
 I18n.translations = {
 	en: EN_TRANSLATIONS,
-	pt: PT_TRANSLATIONS
+	pt: PT_TRANSLATIONS,
 };

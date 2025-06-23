@@ -23,19 +23,15 @@ const formatDate = (dateString) => {
 		case "YYYY-MM-DD":
 			return date.toISOString().split("T")[0];
 		case "DD/MM/YY HH:MM":
-			return (
-				date.toLocaleDateString("en-GB", {
-					year: "2-digit",
-					month: "2-digit",
-					day: "2-digit",
-				}) +
-				" " +
-				date.toLocaleTimeString("en-GB", {
-					hour: "2-digit",
-					minute: "2-digit",
-					hour12: false,
-				})
-			);
+			return `${date.toLocaleDateString("en-GB", {
+				year: "2-digit",
+				month: "2-digit",
+				day: "2-digit",
+			})} ${date.toLocaleTimeString("en-GB", {
+				hour: "2-digit",
+				minute: "2-digit",
+				hour12: false,
+			})}`;
 		default:
 			// Default to DD/MM/YY format
 			return date.toLocaleDateString("en-GB", {
@@ -79,7 +75,7 @@ const getTaskStatusText = (statusKey) => {
 function updateStaticTexts() {
 	// Update header
 	$("#appTitle").text(I18n.t("app.title"));
-	
+
 	// Update jobs header title
 	$("#jobsTitle").text(I18n.t("headers.jobs"));
 
@@ -126,7 +122,7 @@ function initializeLanguageSwitcher() {
 // Initialize tab navigation
 function initializeTabNavigation() {
 	const container = $("#tabNavigation");
-	
+
 	if (container) {
 		const tabNav = TabNavigation.create();
 		container.get().innerHTML = "";
@@ -235,7 +231,7 @@ function updateUILanguage() {
 	if (typeof LanguageSwitcher !== "undefined") {
 		LanguageSwitcher.updateUI();
 	}
-	
+
 	// Update tab navigation language
 	if (typeof TabNavigation !== "undefined") {
 		TabNavigation.updateLanguage();

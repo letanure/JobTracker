@@ -6,30 +6,31 @@ const LanguageSwitcher = {
 	// Create the language switcher HTML
 	create: () => {
 		// Get current language info
-		const currentLang = CONFIG.languages.find(lang => lang.code === I18n.currentLanguage) || CONFIG.languages[0];
-		
+		const currentLang =
+			CONFIG.languages.find((lang) => lang.code === I18n.currentLanguage) || CONFIG.languages[0];
+
 		// Create button using simple DOM creation instead of h() function
 		const button = document.createElement("button");
 		button.className = "language-button";
 		button.id = "languageButton";
-		
+
 		// Create flag span
 		const flagSpan = document.createElement("span");
 		flagSpan.className = "language-flag";
 		flagSpan.id = "currentLanguageFlag";
 		flagSpan.textContent = currentLang.flag;
-		
-		// Create name span  
+
+		// Create name span
 		const nameSpan = document.createElement("span");
 		nameSpan.className = "language-name";
 		nameSpan.id = "currentLanguageName";
 		nameSpan.textContent = currentLang.name;
-		
+
 		// Create arrow span
 		const arrowSpan = document.createElement("span");
 		arrowSpan.className = "language-arrow material-symbols-outlined";
 		arrowSpan.textContent = "expand_more";
-		
+
 		// Append to button
 		button.appendChild(flagSpan);
 		button.appendChild(nameSpan);
@@ -42,24 +43,24 @@ const LanguageSwitcher = {
 		dropdown.style.display = "none";
 
 		// Create dropdown options
-		CONFIG.languages.forEach(lang => {
+		CONFIG.languages.forEach((lang) => {
 			const option = document.createElement("div");
 			option.className = "language-option";
-			
+
 			const optionFlag = document.createElement("span");
 			optionFlag.className = "language-flag";
 			optionFlag.textContent = lang.flag;
-			
+
 			const optionName = document.createElement("span");
 			optionName.className = "language-name";
 			optionName.textContent = lang.name;
-			
+
 			option.appendChild(optionFlag);
 			option.appendChild(optionName);
-			
+
 			// Add click event listener
-			option.addEventListener('click', () => LanguageSwitcher.selectLanguage(lang.code));
-			
+			option.addEventListener("click", () => LanguageSwitcher.selectLanguage(lang.code));
+
 			dropdown.appendChild(option);
 		});
 
@@ -75,7 +76,7 @@ const LanguageSwitcher = {
 		container.appendChild(selector);
 
 		// Add click event listener to button
-		button.addEventListener('click', () => LanguageSwitcher.toggle());
+		button.addEventListener("click", () => LanguageSwitcher.toggle());
 
 		return container;
 	},
@@ -84,10 +85,10 @@ const LanguageSwitcher = {
 	toggle: () => {
 		const dropdown = document.getElementById("languageDropdown");
 		if (!dropdown) return;
-		
+
 		const isVisible = dropdown.style.display !== "none";
 		dropdown.style.display = isVisible ? "none" : "block";
-		
+
 		// Close dropdown when clicking outside
 		if (!isVisible) {
 			document.addEventListener("click", LanguageSwitcher.handleClickOutside);
@@ -111,9 +112,9 @@ const LanguageSwitcher = {
 		if (I18n.setLanguage(langCode)) {
 			LanguageSwitcher.updateUI();
 			LanguageSwitcher.toggle(); // Close dropdown
-			
+
 			// Re-render the app with new language
-			if (typeof updateUILanguage === 'function') {
+			if (typeof updateUILanguage === "function") {
 				updateUILanguage();
 			}
 		}
@@ -121,11 +122,11 @@ const LanguageSwitcher = {
 
 	// Update the switcher UI to reflect current language
 	updateUI: () => {
-		const currentLang = CONFIG.languages.find(lang => lang.code === I18n.currentLanguage);
+		const currentLang = CONFIG.languages.find((lang) => lang.code === I18n.currentLanguage);
 		if (currentLang) {
 			const flagElement = document.getElementById("currentLanguageFlag");
 			const nameElement = document.getElementById("currentLanguageName");
-			
+
 			if (flagElement) flagElement.textContent = currentLang.flag;
 			if (nameElement) nameElement.textContent = currentLang.name;
 		}
@@ -134,5 +135,5 @@ const LanguageSwitcher = {
 	// Initialize the language switcher
 	init: () => {
 		LanguageSwitcher.updateUI();
-	}
+	},
 };

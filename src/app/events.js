@@ -11,12 +11,12 @@ function setupEventListeners() {
 			closeAllDropdowns();
 		}
 	});
-	
+
 	// Close dropdowns when clicking outside
 	document.addEventListener("click", (e) => {
-		const isDropdownIcon = e.target.closest('.filter-dropdown-icon');
-		const isDropdownContent = e.target.closest('.filter-dropdown');
-		
+		const isDropdownIcon = e.target.closest(".filter-dropdown-icon");
+		const isDropdownContent = e.target.closest(".filter-dropdown");
+
 		if (!isDropdownIcon && !isDropdownContent) {
 			closeAllDropdowns();
 		}
@@ -25,8 +25,8 @@ function setupEventListeners() {
 
 // Close all dropdowns
 function closeAllDropdowns() {
-	document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-		dropdown.style.display = 'none';
+	document.querySelectorAll(".filter-dropdown").forEach((dropdown) => {
+		dropdown.style.display = "none";
 	});
 }
 
@@ -34,31 +34,31 @@ function closeAllDropdowns() {
 function toggleDropdown(dropdownId) {
 	const dropdown = document.getElementById(dropdownId);
 	if (!dropdown) return;
-	
+
 	// Close all other dropdowns
-	document.querySelectorAll('.filter-dropdown').forEach(d => {
+	document.querySelectorAll(".filter-dropdown").forEach((d) => {
 		if (d.id !== dropdownId) {
-			d.style.display = 'none';
+			d.style.display = "none";
 		}
 	});
-	
+
 	// Toggle this dropdown
-	dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+	dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 }
 
 // Tab switching function (legacy support)
 function switchTab(tabName) {
-	document.querySelectorAll('.tab-button').forEach(btn => {
-		btn.classList.remove('active');
+	document.querySelectorAll(".tab-button").forEach((btn) => {
+		btn.classList.remove("active");
 	});
-	document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
-	
-	document.querySelectorAll('.tab-content').forEach(content => {
-		content.classList.remove('active');
+	document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add("active");
+
+	document.querySelectorAll(".tab-content").forEach((content) => {
+		content.classList.remove("active");
 	});
-	document.getElementById(`${tabName}Tab`).classList.add('active');
-	
-	if (tabName === 'kanban') {
+	document.getElementById(`${tabName}Tab`).classList.add("active");
+
+	if (tabName === "kanban") {
 		populateKanbanBoard();
 	}
 }

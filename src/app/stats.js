@@ -5,7 +5,7 @@
 // Update statistics
 function updateStats(filteredJobs = null) {
 	const jobs = filteredJobs || jobsData;
-	let total = jobs.length;
+	const total = jobs.length;
 	let active = 0;
 	let interviews = 0;
 	let offers = 0;

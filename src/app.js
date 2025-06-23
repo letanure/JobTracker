@@ -3,14 +3,14 @@
 // ============================================================================
 /*
  * This file serves as the main entry point for the application.
- * 
+ *
  * The app logic has been split into modular files for better maintainability:
- * 
+ *
  * - app/init.js:    Application initialization, setup, filters, rendering
  * - app/editing.js: Inline editing functions, add/edit/delete jobs
  * - app/stats.js:   Statistics calculations and updates
  * - app/events.js:  Event handlers and utility functions
- * 
+ *
  * For development, you can work with individual modules.
  * The build process combines them into a single file for production.
  */

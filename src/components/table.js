@@ -20,22 +20,36 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		PriorityCell({ priority: job.priority }),
 		h("td", { className: "company-name" }, job.company),
 		h("td", { className: "position-name" }, job.position),
-		h("td", { className: "current-phase" }, 
-			h("div", { className: "phase-display" }, 
+		h(
+			"td",
+			{ className: "current-phase" },
+			h(
+				"div",
+				{ className: "phase-display" },
 				h("span", { className: "phase-main" }, getPhaseText(job.currentPhase)),
-				job.currentSubstep ? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep)) : null
+				job.currentSubstep
+					? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep))
+					: null
 			)
 		),
 		h("td", { className: "salary" }, job.salaryRange),
 		h("td", { className: "location" }, job.location),
-		h("td", { className: "source-url" }, 
-			job.sourceUrl ? h("a", { 
-				href: job.sourceUrl, 
-				target: "_blank", 
-				rel: "noopener noreferrer",
-				className: "source-link",
-				title: job.sourceUrl
-			}, h("span", { className: "material-symbols-outlined" }, "open_in_new")) : ""
+		h(
+			"td",
+			{ className: "source-url" },
+			job.sourceUrl
+				? h(
+						"a",
+						{
+							href: job.sourceUrl,
+							target: "_blank",
+							rel: "noopener noreferrer",
+							className: "source-link",
+							title: job.sourceUrl,
+						},
+						h("span", { className: "material-symbols-outlined" }, "open_in_new")
+					)
+				: ""
 		),
 		h(
 			"td",
@@ -67,12 +81,12 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 			h("button", {
 				className: "action-btn edit-btn",
 				onclick: () => onEdit(job),
-				innerHTML: '<span class="material-symbols-outlined">edit</span>'
+				innerHTML: '<span class="material-symbols-outlined">edit</span>',
 			}),
 			h("button", {
 				className: "action-btn delete-btn",
 				onclick: () => onDelete(job),
-				innerHTML: '<span class="material-symbols-outlined">delete</span>'
+				innerHTML: '<span class="material-symbols-outlined">delete</span>',
 			})
 		)
 	);

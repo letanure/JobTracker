@@ -4,11 +4,9 @@
 
 // Tasks count display component with colored counters
 const TasksCount = ({ tasks = [], onClick }) => {
-	const activeTasks = tasks.filter(task => !task.archived);
+	const activeTasks = tasks.filter((task) => !task.archived);
 	const todoCount = activeTasks.filter((task) => task.status === "todo").length;
-	const inProgressCount = activeTasks.filter(
-		(task) => task.status === "in-progress",
-	).length;
+	const inProgressCount = activeTasks.filter((task) => task.status === "in-progress").length;
 	const doneCount = activeTasks.filter((task) => task.status === "done").length;
 	const totalActiveCount = activeTasks.length;
 	const archivedCount = tasks.length - totalActiveCount;
@@ -20,150 +18,146 @@ const TasksCount = ({ tasks = [], onClick }) => {
 		{
 			className,
 			onclick: onClick, // Always allow clicks to open modal
-			title: `${totalActiveCount} active task${totalActiveCount !== 1 ? 's' : ''} (${todoCount} todo, ${inProgressCount} in progress, ${doneCount} done)${archivedCount > 0 ? ` + ${archivedCount} archived` : ''}`
+			title: `${totalActiveCount} active task${totalActiveCount !== 1 ? "s" : ""} (${todoCount} todo, ${inProgressCount} in progress, ${doneCount} done)${archivedCount > 0 ? ` + ${archivedCount} archived` : ""}`,
 		},
 		h("span", { className: "task-count-todo" }, todoCount.toString()),
 		h("span", { className: "task-count-separator" }, "/"),
-		h(
-			"span",
-			{ className: "task-count-in-progress" },
-			inProgressCount.toString(),
-		),
+		h("span", { className: "task-count-in-progress" }, inProgressCount.toString()),
 		h("span", { className: "task-count-separator" }, "/"),
-		h("span", { className: "task-count-done" }, doneCount.toString()),
+		h("span", { className: "task-count-done" }, doneCount.toString())
 	);
 };
 
 // Individual task item component
 const TaskItem = ({ task, job }) => {
 	const isArchived = task.archived || false;
-	
+
 	const handleArchiveToggle = () => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		jobsData[jobIndex].tasks[taskIndex].archived = !isArchived;
 		saveToLocalStorage();
-		
+
 		// Update the task element in place
 		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
 		if (taskElement) {
 			const newArchiveStatus = !isArchived;
 			taskElement.style.opacity = newArchiveStatus ? "0.6" : "1";
 			taskElement.style.filter = newArchiveStatus ? "grayscale(0.5)" : "none";
-			taskElement.className = `task-item ${newArchiveStatus ? 'archived' : ''}`;
-			
+			taskElement.className = `task-item ${newArchiveStatus ? "archived" : ""}`;
+
 			// Update archive button
-			const archiveBtn = taskElement.querySelector('.archive-btn');
+			const archiveBtn = taskElement.querySelector(".archive-btn");
 			if (archiveBtn) {
 				archiveBtn.innerHTML = `<span class="material-symbols-outlined icon-14">${newArchiveStatus ? "unarchive" : "archive"}</span>`;
 			}
 		}
-		
+
 		// Update interface
 		refreshInterface();
 	};
-	
+
 	const handleStatusChange = (newStatus) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		jobsData[jobIndex].tasks[taskIndex].status = newStatus;
 		saveToLocalStorage();
-		
+
 		// Update status element in place
 		const statusElement = document.querySelector(`[data-task-id="${task.id}"] .task-status`);
 		if (statusElement) {
 			statusElement.className = `task-status status-${newStatus}`;
 			statusElement.textContent = getTaskStatusText(newStatus);
 		}
-		
+
 		// Update interface
 		refreshInterface();
 	};
-	
+
 	const handlePriorityChange = (newPriority) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		jobsData[jobIndex].tasks[taskIndex].priority = newPriority;
 		saveToLocalStorage();
-		
+
 		// Update priority element in place
 		const priorityElement = document.querySelector(`[data-task-id="${task.id}"] .task-priority`);
 		if (priorityElement) {
 			priorityElement.className = `task-priority priority-${newPriority}`;
 			priorityElement.textContent = getPriorityText(newPriority);
 		}
-		
+
 		// Update interface
 		refreshInterface();
 	};
-	
+
 	const handleDueDateChange = (newDueDate) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		jobsData[jobIndex].tasks[taskIndex].dueDate = newDueDate;
 		saveToLocalStorage();
-		
+
 		// Update due date element in place
 		const dueDateElement = document.querySelector(`[data-task-id="${task.id}"] .task-due-date`);
 		if (dueDateElement) {
 			dueDateElement.textContent = newDueDate ? formatDate(newDueDate) : "No due date";
 		}
-		
+
 		// Update interface
 		refreshInterface();
 	};
-	
+
 	const handleEdit = () => {
 		const taskTextElement = document.querySelector(`[data-task-id="${task.id}"] .task-text`);
 		if (!taskTextElement) return;
-		
+
 		const currentText = task.text;
 		const textarea = h("textarea", {
 			className: "task-edit-textarea",
-			textContent: currentText
+			textContent: currentText,
 		});
-		
+
 		const saveBtn = h("button", {
 			className: "action-btn edit-btn edit-save-btn",
 			textContent: I18n.t("modals.common.save"),
 			onclick: () => {
 				const newText = textarea.value.trim();
 				if (!newText) return;
-				
+
 				const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 				if (jobIndex === -1) return;
-				
+
 				const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 				if (taskIndex === -1) return;
-				
+
 				jobsData[jobIndex].tasks[taskIndex].text = newText;
 				saveToLocalStorage();
-				
+
 				// Update in place - replace textarea with new text
 				taskTextElement.innerHTML = "";
 				taskTextElement.textContent = newText;
-				
+
 				// Update interface
 				refreshInterface();
-			}
+			},
 		});
-		
+
 		const cancelBtn = h("button", {
 			className: "action-btn cancel-btn edit-cancel-btn",
 			textContent: I18n.t("modals.common.cancel"),
@@ -171,43 +165,47 @@ const TaskItem = ({ task, job }) => {
 				// Cancel editing - restore original text
 				taskTextElement.innerHTML = "";
 				taskTextElement.textContent = task.text;
-			}
+			},
 		});
-		
+
 		taskTextElement.innerHTML = "";
 		taskTextElement.appendChild(textarea);
 		taskTextElement.appendChild(h("div", {}, saveBtn, cancelBtn));
 		textarea.focus();
 	};
-	
+
 	return h(
 		"div",
-		{ 
-			className: `task-item ${isArchived ? 'archived' : ''}`,
-			"data-task-id": task.id
+		{
+			className: `task-item ${isArchived ? "archived" : ""}`,
+			"data-task-id": task.id,
 		},
 		h(
 			"div",
-			{ 
-				className: "task-header task-header-layout"
+			{
+				className: "task-header task-header-layout",
 			},
 			h(
 				"div",
 				{ className: "task-controls-row" },
-				h("select", {
-					className: "task-status inline-select",
-					value: task.status,
-					onchange: (e) => handleStatusChange(e.target.value)
-				}, 
+				h(
+					"select",
+					{
+						className: "task-status inline-select",
+						value: task.status,
+						onchange: (e) => handleStatusChange(e.target.value),
+					},
 					h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
 					h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
 					h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
 				),
-				h("select", {
-					className: "task-priority inline-select",
-					value: task.priority,
-					onchange: (e) => handlePriorityChange(e.target.value)
-				}, 
+				h(
+					"select",
+					{
+						className: "task-priority inline-select",
+						value: task.priority,
+						onchange: (e) => handlePriorityChange(e.target.value),
+					},
 					h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
 					h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 					h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
@@ -215,8 +213,9 @@ const TaskItem = ({ task, job }) => {
 				h("input", {
 					type: "date",
 					className: "task-due-date inline-input",
-					value: task.dueDate ? task.dueDate.split('T')[0] : "",
-					onchange: (e) => handleDueDateChange(e.target.value ? e.target.value + 'T00:00:00.000Z' : null)
+					value: task.dueDate ? task.dueDate.split("T")[0] : "",
+					onchange: (e) =>
+						handleDueDateChange(e.target.value ? `${e.target.value}T00:00:00.000Z` : null),
 				})
 			),
 			h(
@@ -226,32 +225,38 @@ const TaskItem = ({ task, job }) => {
 					className: "action-btn edit-task-btn icon-btn-transparent",
 					title: I18n.t("modals.tasks.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-					onclick: handleEdit
+					onclick: handleEdit,
 				}),
 				h("button", {
 					className: "action-btn archive-btn icon-btn-transparent",
-					title: isArchived ? I18n.t("modals.tasks.unarchiveTitle") : I18n.t("modals.tasks.archiveTitle"),
+					title: isArchived
+						? I18n.t("modals.tasks.unarchiveTitle")
+						: I18n.t("modals.tasks.archiveTitle"),
 					innerHTML: `<span class="material-symbols-outlined icon-14">${isArchived ? "unarchive" : "archive"}</span>`,
-					onclick: handleArchiveToggle
+					onclick: handleArchiveToggle,
 				})
 			)
 		),
-		h("div", { 
-			className: "task-text"
-		}, task.text),
+		h(
+			"div",
+			{
+				className: "task-text",
+			},
+			task.text
+		)
 	);
 };
 
 // Unified modal component for viewing and adding tasks
 const TasksModal = ({ job, onClose }) => {
 	const tasks = job.tasks || [];
-	const activeTasks = tasks.filter(task => !task.archived);
-	const archivedTasks = tasks.filter(task => task.archived);
+	const activeTasks = tasks.filter((task) => !task.archived);
+	const archivedTasks = tasks.filter((task) => task.archived);
 	const sortedActiveTasks = [...activeTasks].sort(
-		(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date),
+		(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date)
 	);
 	const sortedArchivedTasks = [...archivedTasks].sort(
-		(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date),
+		(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date)
 	);
 
 	const handleAddTask = () => {
@@ -260,7 +265,7 @@ const TasksModal = ({ job, onClose }) => {
 		const prioritySelect = document.querySelector(".add-task-priority");
 		const dueDateInput = document.querySelector(".add-task-due-date");
 		const durationInput = document.querySelector(".add-task-duration");
-		
+
 		const taskText = textarea.value.trim();
 
 		if (!taskText) {
@@ -275,8 +280,8 @@ const TasksModal = ({ job, onClose }) => {
 			text: taskText,
 			status: statusSelect.value || "todo",
 			priority: prioritySelect.value || "medium",
-			dueDate: dueDateInput.value ? dueDateInput.value + 'T00:00:00.000Z' : null,
-			duration: durationInput.value || null
+			dueDate: dueDateInput.value ? `${dueDateInput.value}T00:00:00.000Z` : null,
+			duration: durationInput.value || null,
 		};
 
 		// Add task to job data
@@ -310,57 +315,63 @@ const TasksModal = ({ job, onClose }) => {
 	const enableTaskEditing = (task, job) => {
 		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
 		if (!taskElement) return;
-		
-		const taskRow = taskElement.closest('tr');
+
+		const taskRow = taskElement.closest("tr");
 		if (!taskRow) return;
-		
+
 		// Store original state
 		taskRow.dataset.editing = "true";
-		
+
 		// Replace status display with select
-		const statusDisplay = taskRow.querySelector('.task-status-display');
-		const statusSelect = h("select", {
-			className: "task-status-edit",
-			value: task.status,
-			onchange: (e) => updateTaskStatus(task, job, e.target.value)
-		}, 
+		const statusDisplay = taskRow.querySelector(".task-status-display");
+		const statusSelect = h(
+			"select",
+			{
+				className: "task-status-edit",
+				value: task.status,
+				onchange: (e) => updateTaskStatus(task, job, e.target.value),
+			},
 			h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
 			h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
 			h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
 		);
 		statusDisplay.parentNode.replaceChild(statusSelect, statusDisplay);
-		
+
 		// Replace priority display with select
-		const priorityDisplay = taskRow.querySelector('.task-priority-display');
-		const prioritySelect = h("select", {
-			className: "task-priority-edit",
-			value: task.priority,
-			onchange: (e) => updateTaskPriority(task, job, e.target.value)
-		}, 
+		const priorityDisplay = taskRow.querySelector(".task-priority-display");
+		const prioritySelect = h(
+			"select",
+			{
+				className: "task-priority-edit",
+				value: task.priority,
+				onchange: (e) => updateTaskPriority(task, job, e.target.value),
+			},
 			h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
 			h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 			h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 		);
 		priorityDisplay.parentNode.replaceChild(prioritySelect, priorityDisplay);
-		
+
 		// Replace due date display with input
-		const dueDateDisplay = taskRow.querySelector('.task-due-date-display');
-		const currentDate = task.dueDate ? task.dueDate.split('T')[0] : "";
+		const dueDateDisplay = taskRow.querySelector(".task-due-date-display");
+		const currentDate = task.dueDate ? task.dueDate.split("T")[0] : "";
 		const dateInput = h("input", {
 			type: "date",
 			value: currentDate,
 			className: "task-due-date-edit",
-			onchange: (e) => updateTaskDueDate(task, job, e.target.value)
+			onchange: (e) => updateTaskDueDate(task, job, e.target.value),
 		});
 		dueDateDisplay.parentNode.replaceChild(dateInput, dueDateDisplay);
-		
+
 		// Replace duration display with select
-		const durationDisplay = taskRow.querySelector('.task-duration-display');
-		const durationSelect = h("select", {
-			className: "task-duration-edit",
-			value: task.duration || "",
-			onchange: (e) => updateTaskDuration(task, job, e.target.value)
-		}, 
+		const durationDisplay = taskRow.querySelector(".task-duration-display");
+		const durationSelect = h(
+			"select",
+			{
+				className: "task-duration-edit",
+				value: task.duration || "",
+				onchange: (e) => updateTaskDuration(task, job, e.target.value),
+			},
 			h("option", { value: "" }, "—"),
 			h("option", { value: "15min" }, "15 min"),
 			h("option", { value: "30min" }, "30 min"),
@@ -370,30 +381,30 @@ const TasksModal = ({ job, onClose }) => {
 			h("option", { value: "3h" }, "3h")
 		);
 		durationDisplay.parentNode.replaceChild(durationSelect, durationDisplay);
-		
+
 		// Update edit button to save/cancel
-		const editBtn = taskRow.querySelector('.edit-task-btn');
+		const editBtn = taskRow.querySelector(".edit-task-btn");
 		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveTaskChanges(task, job);
-		
+
 		// Make task text editable
-		const taskTextCell = taskRow.nextElementSibling?.querySelector('.task-text-cell');
+		const taskTextCell = taskRow.nextElementSibling?.querySelector(".task-text-cell");
 		if (taskTextCell) {
 			const currentText = task.text;
 			const textarea = document.createElement("textarea");
 			textarea.value = currentText;
 			textarea.className = "task-text-edit";
-			textarea.addEventListener('input', (e) => {
+			textarea.addEventListener("input", (e) => {
 				// Store the current value in a data attribute for later retrieval
 				textarea.dataset.currentValue = e.target.value;
 			});
 			taskTextCell.innerHTML = "";
 			taskTextCell.appendChild(textarea);
 			textarea.focus();
-			
+
 			// Store reference to textarea for saving
-			taskRow.dataset.textarea = 'true';
+			taskRow.dataset.textarea = "true";
 		}
 	};
 
@@ -401,13 +412,13 @@ const TasksModal = ({ job, onClose }) => {
 		// Get the textarea value before refreshing the modal
 		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
 		if (taskElement) {
-			const taskRow = taskElement.closest('tr');
-			const textarea = taskRow?.nextElementSibling?.querySelector('.task-text-edit');
-			if (textarea && textarea.value.trim()) {
+			const taskRow = taskElement.closest("tr");
+			const textarea = taskRow?.nextElementSibling?.querySelector(".task-text-edit");
+			if (textarea?.value.trim()) {
 				updateTaskText(task, job, textarea.value);
 			}
 		}
-		
+
 		// Refresh the modal to restore display state
 		refreshTasksModal(job);
 	};
@@ -420,25 +431,25 @@ const TasksModal = ({ job, onClose }) => {
 
 	const saveTaskText = (task, job, newText, cell) => {
 		const trimmedText = newText.trim();
-		
+
 		if (!trimmedText) {
 			showValidationError(cell, "Task text is required");
 			return;
 		}
-		
+
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		// Update the data
 		jobsData[jobIndex].tasks[taskIndex].text = trimmedText;
 		saveToLocalStorage();
-		
+
 		// Update the cell display
 		restoreTaskCell(jobsData[jobIndex].tasks[taskIndex], cell);
-		
+
 		// Update interface
 		refreshInterface();
 	};
@@ -446,17 +457,17 @@ const TasksModal = ({ job, onClose }) => {
 	const updateTaskText = (task, job, newText) => {
 		const trimmedText = newText.trim();
 		if (!trimmedText) return;
-		
+
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		// Update the data
 		jobsData[jobIndex].tasks[taskIndex].text = trimmedText;
 		saveToLocalStorage();
-		
+
 		// Update interface
 		refreshInterface();
 	};
@@ -464,14 +475,14 @@ const TasksModal = ({ job, onClose }) => {
 	const updateTaskDueDate = (task, job, newDate) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		// Update the data
-		jobsData[jobIndex].tasks[taskIndex].dueDate = newDate ? newDate + 'T00:00:00.000Z' : null;
+		jobsData[jobIndex].tasks[taskIndex].dueDate = newDate ? `${newDate}T00:00:00.000Z` : null;
 		saveToLocalStorage();
-		
+
 		// Update interface
 		refreshInterface();
 	};
@@ -479,63 +490,63 @@ const TasksModal = ({ job, onClose }) => {
 	const updateTaskDuration = (task, job, newDuration) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		// Update the data
 		jobsData[jobIndex].tasks[taskIndex].duration = newDuration || null;
 		saveToLocalStorage();
-		
+
 		// Update interface
 		refreshInterface();
 	};
 
 	const formatDuration = (duration) => {
 		if (!duration) return "—";
-		
+
 		// Map duration values to display text
 		const durationMap = {
 			"15min": "15 min",
-			"30min": "30 min", 
+			"30min": "30 min",
 			"1h": "1h",
 			"1h30": "1:30",
 			"2h": "2h",
-			"3h": "3h"
+			"3h": "3h",
 		};
-		
+
 		return durationMap[duration] || duration;
 	};
 
 	const archiveTask = (task, job) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		// Store archived section state before refresh
-		const archivedTable = document.getElementById('archived-tasks-table');
-		const wasExpanded = archivedTable && archivedTable.style.display === 'table';
-		
+		const archivedTable = document.getElementById("archived-tasks-table");
+		const wasExpanded = archivedTable && archivedTable.style.display === "table";
+
 		jobsData[jobIndex].tasks[taskIndex].archived = !task.archived;
 		saveToLocalStorage();
-		
+
 		// Refresh modal without flicker
 		refreshTasksModal(job);
-		
+
 		// Restore archived section state after refresh
 		if (wasExpanded) {
 			setTimeout(() => {
-				const newArchivedTable = document.getElementById('archived-tasks-table');
-				const expandIcon = document.getElementById('archived-tasks-icon');
+				const newArchivedTable = document.getElementById("archived-tasks-table");
+				const expandIcon = document.getElementById("archived-tasks-icon");
 				if (newArchivedTable) {
-					newArchivedTable.style.display = 'table';
-					if (expandIcon) expandIcon.textContent = 'expand_less';
+					newArchivedTable.style.display = "table";
+					if (expandIcon) expandIcon.textContent = "expand_less";
 				}
 			}, 0);
 		}
-		
+
 		// Update interface
 		refreshInterface();
 	};
@@ -543,16 +554,16 @@ const TasksModal = ({ job, onClose }) => {
 	const updateTaskStatus = (task, job, newStatus) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		jobsData[jobIndex].tasks[taskIndex].status = newStatus;
 		saveToLocalStorage();
-		
+
 		// Refresh modal without flicker
 		refreshTasksModal(job);
-		
+
 		// Update interface
 		refreshInterface();
 	};
@@ -560,16 +571,16 @@ const TasksModal = ({ job, onClose }) => {
 	const updateTaskPriority = (task, job, newPriority) => {
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
-		
+
 		jobsData[jobIndex].tasks[taskIndex].priority = newPriority;
 		saveToLocalStorage();
-		
+
 		// Refresh modal without flicker
 		refreshTasksModal(job);
-		
+
 		// Update interface
 		refreshInterface();
 	};
@@ -577,152 +588,231 @@ const TasksModal = ({ job, onClose }) => {
 	const refreshTasksModal = (job) => {
 		const modalBody = document.querySelector(".modal-body");
 		if (!modalBody) return;
-		
+
 		// Get updated data
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
-		
+
 		job.tasks = jobsData[jobIndex].tasks || [];
 		const tasks = job.tasks;
-		const activeTasks = tasks.filter(task => !task.archived);
-		const archivedTasks = tasks.filter(task => task.archived);
-		const sortedActiveTasks = [...activeTasks].sort((a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date));
-		const sortedArchivedTasks = [...archivedTasks].sort((a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date));
-		
+		const activeTasks = tasks.filter((task) => !task.archived);
+		const archivedTasks = tasks.filter((task) => task.archived);
+		const sortedActiveTasks = [...activeTasks].sort(
+			(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date)
+		);
+		const sortedArchivedTasks = [...archivedTasks].sort(
+			(a, b) => new Date(a.createdDate || a.date) - new Date(b.createdDate || b.date)
+		);
+
 		// Recreate modal body content
 		modalBody.innerHTML = "";
 		modalBody.appendChild(createTasksContent(job, sortedActiveTasks, sortedArchivedTasks));
 	};
 
 	const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
-		return h("div", {},
+		return h(
+			"div",
+			{},
 			// Active tasks table
-			sortedActiveTasks.length > 0 ? h("div", { className: "tasks-table-container" },
-				h("table", { className: "tasks-table" },
-					h("thead", {},
-						h("tr", {},
-							h("th", {}, "Status"),
-							h("th", {}, "Priority"),
-							h("th", {}, "Due Date"),
-							h("th", {}, "Duration"),
-							h("th", {}, "Actions")
-						)
-					),
-					h("tbody", {},
-						...sortedActiveTasks.flatMap((task) => [
-							h("tr", { key: task.id, className: "task-info-row" },
-								h("td", { className: "task-status-cell" },
-									h("span", {
-										className: "task-status-display",
-										"data-task-id": task.id,
-										"data-field": "status"
-									}, getTaskStatusText(task.status))
-								),
-								h("td", { className: "task-priority-cell" },
-									h("span", {
-										className: "task-priority-display",
-										"data-task-id": task.id,
-										"data-field": "priority"
-									}, getPriorityText(task.priority))
-								),
-								h("td", { className: "task-due-date-cell" },
-									h("span", {
-										className: "task-due-date-display",
-										"data-task-id": task.id,
-										"data-field": "dueDate"
-									}, task.dueDate ? formatDate(task.dueDate) : "—")
-								),
-								h("td", { className: "task-duration-cell" },
-									h("span", {
-										className: "task-duration-display", 
-										"data-task-id": task.id,
-										"data-field": "duration"
-									}, formatDuration(task.duration))
-								),
-								h("td", { className: "tasks-table-actions" },
-									h("button", {
-										className: "action-btn edit-task-btn icon-btn-transparent",
-										title: I18n.t("modals.tasks.editTitle"),
-										innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-										onclick: () => enableTaskEditing(task, job)
-									}),
-									h("button", {
-										className: "action-btn archive-btn icon-btn-transparent",
-										title: I18n.t("modals.tasks.archiveTitle"),
-										innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
-										onclick: () => archiveTask(task, job)
-									})
+			sortedActiveTasks.length > 0
+				? h(
+						"div",
+						{ className: "tasks-table-container" },
+						h(
+							"table",
+							{ className: "tasks-table" },
+							h(
+								"thead",
+								{},
+								h(
+									"tr",
+									{},
+									h("th", {}, "Status"),
+									h("th", {}, "Priority"),
+									h("th", {}, "Due Date"),
+									h("th", {}, "Duration"),
+									h("th", {}, "Actions")
 								)
 							),
-							h("tr", { key: `${task.id}-text`, className: "task-text-row" },
-								h("td", { 
-									colspan: 5,
-									className: "task-text-cell"
-								}, task.text)
+							h(
+								"tbody",
+								{},
+								...sortedActiveTasks.flatMap((task) => [
+									h(
+										"tr",
+										{ key: task.id, className: "task-info-row" },
+										h(
+											"td",
+											{ className: "task-status-cell" },
+											h(
+												"span",
+												{
+													className: "task-status-display",
+													"data-task-id": task.id,
+													"data-field": "status",
+												},
+												getTaskStatusText(task.status)
+											)
+										),
+										h(
+											"td",
+											{ className: "task-priority-cell" },
+											h(
+												"span",
+												{
+													className: "task-priority-display",
+													"data-task-id": task.id,
+													"data-field": "priority",
+												},
+												getPriorityText(task.priority)
+											)
+										),
+										h(
+											"td",
+											{ className: "task-due-date-cell" },
+											h(
+												"span",
+												{
+													className: "task-due-date-display",
+													"data-task-id": task.id,
+													"data-field": "dueDate",
+												},
+												task.dueDate ? formatDate(task.dueDate) : "—"
+											)
+										),
+										h(
+											"td",
+											{ className: "task-duration-cell" },
+											h(
+												"span",
+												{
+													className: "task-duration-display",
+													"data-task-id": task.id,
+													"data-field": "duration",
+												},
+												formatDuration(task.duration)
+											)
+										),
+										h(
+											"td",
+											{ className: "tasks-table-actions" },
+											h("button", {
+												className: "action-btn edit-task-btn icon-btn-transparent",
+												title: I18n.t("modals.tasks.editTitle"),
+												innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
+												onclick: () => enableTaskEditing(task, job),
+											}),
+											h("button", {
+												className: "action-btn archive-btn icon-btn-transparent",
+												title: I18n.t("modals.tasks.archiveTitle"),
+												innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+												onclick: () => archiveTask(task, job),
+											})
+										)
+									),
+									h(
+										"tr",
+										{ key: `${task.id}-text`, className: "task-text-row" },
+										h(
+											"td",
+											{
+												colspan: 5,
+												className: "task-text-cell",
+											},
+											task.text
+										)
+									),
+								])
 							)
-						])
-					)
-				)
-			) : h("p", { className: "modal-empty-message" }, I18n.t("modals.tasks.emptyState")),
-			
-			// Archived tasks section
-			sortedArchivedTasks.length > 0 ? h("div", { className: "archived-tasks-section" },
-				h("h4", { 
-					className: "tasks-archived-header",
-					onclick: () => {
-						const archivedTable = document.getElementById('archived-tasks-table');
-						const expandIcon = document.getElementById('archived-tasks-icon');
-						if (archivedTable.style.display === 'none') {
-							archivedTable.style.display = 'table';
-							expandIcon.textContent = 'expand_less';
-						} else {
-							archivedTable.style.display = 'none';
-							expandIcon.textContent = 'expand_more';
-						}
-					}
-				}, 
-					h('span', { className: 'material-symbols-outlined expand-icon', id: 'archived-tasks-icon' }, 'expand_more'),
-					I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
-				),
-				h("table", { 
-					id: "archived-tasks-table",
-					className: "tasks-table archived",
-					style: "display: none"
-				},
-					h("thead", {},
-						h("tr", {},
-							h("th", {}, "Status"),
-							h("th", {}, "Priority"),
-							h("th", {}, "Task"),
-							h("th", {}, "Due Date"),
-							h("th", {}, "Actions")
 						)
-					),
-					h("tbody", {},
-						...sortedArchivedTasks.map((task) => 
-							h("tr", { key: task.id },
-								h("td", {}, getTaskStatusText(task.status)),
-								h("td", {}, getPriorityText(task.priority)),
-								h("td", { className: "archived-task-text-cell" }, task.text),
-								h("td", {}, task.dueDate ? formatDate(task.dueDate) : "—"),
-								h("td", { className: "tasks-table-actions" },
-									h("button", {
-										className: "action-btn archive-btn icon-btn-transparent",
-										title: I18n.t("modals.tasks.unarchiveTitle"),
-										innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
-										onclick: () => archiveTask(task, job)
-									})
+					)
+				: h("p", { className: "modal-empty-message" }, I18n.t("modals.tasks.emptyState")),
+
+			// Archived tasks section
+			sortedArchivedTasks.length > 0
+				? h(
+						"div",
+						{ className: "archived-tasks-section" },
+						h(
+							"h4",
+							{
+								className: "tasks-archived-header",
+								onclick: () => {
+									const archivedTable = document.getElementById("archived-tasks-table");
+									const expandIcon = document.getElementById("archived-tasks-icon");
+									if (archivedTable.style.display === "none") {
+										archivedTable.style.display = "table";
+										expandIcon.textContent = "expand_less";
+									} else {
+										archivedTable.style.display = "none";
+										expandIcon.textContent = "expand_more";
+									}
+								},
+							},
+							h(
+								"span",
+								{ className: "material-symbols-outlined expand-icon", id: "archived-tasks-icon" },
+								"expand_more"
+							),
+							I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
+						),
+						h(
+							"table",
+							{
+								id: "archived-tasks-table",
+								className: "tasks-table archived",
+								style: "display: none",
+							},
+							h(
+								"thead",
+								{},
+								h(
+									"tr",
+									{},
+									h("th", {}, "Status"),
+									h("th", {}, "Priority"),
+									h("th", {}, "Task"),
+									h("th", {}, "Due Date"),
+									h("th", {}, "Actions")
+								)
+							),
+							h(
+								"tbody",
+								{},
+								...sortedArchivedTasks.map((task) =>
+									h(
+										"tr",
+										{ key: task.id },
+										h("td", {}, getTaskStatusText(task.status)),
+										h("td", {}, getPriorityText(task.priority)),
+										h("td", { className: "archived-task-text-cell" }, task.text),
+										h("td", {}, task.dueDate ? formatDate(task.dueDate) : "—"),
+										h(
+											"td",
+											{ className: "tasks-table-actions" },
+											h("button", {
+												className: "action-btn archive-btn icon-btn-transparent",
+												title: I18n.t("modals.tasks.unarchiveTitle"),
+												innerHTML:
+													'<span class="material-symbols-outlined icon-14">unarchive</span>',
+												onclick: () => archiveTask(task, job),
+											})
+										)
+									)
 								)
 							)
 						)
 					)
-				)
-			) : null,
-			
+				: null,
+
 			// Add task form section
-			h("div", { className: "add-task-section" },
+			h(
+				"div",
+				{ className: "add-task-section" },
 				h("h4", { className: "add-task-title" }, I18n.t("modals.tasks.addSection")),
-				h("div", { className: "add-task-form" },
+				h(
+					"div",
+					{ className: "add-task-form" },
 					h("textarea", {
 						className: "add-task-textarea",
 						placeholder: I18n.t("modals.tasks.placeholder"),
@@ -732,45 +822,63 @@ const TasksModal = ({ job, onClose }) => {
 								e.preventDefault();
 								handleAddTask();
 							}
-						}
+						},
 					}),
-					h("div", { className: "add-task-form-row" },
-						h("div", { className: "add-task-field" },
+					h(
+						"div",
+						{ className: "add-task-form-row" },
+						h(
+							"div",
+							{ className: "add-task-field" },
 							h("label", {}, I18n.t("modals.tasks.status")),
-							h("select", {
-								className: "add-task-status",
-								value: "todo"
-							}, 
+							h(
+								"select",
+								{
+									className: "add-task-status",
+									value: "todo",
+								},
 								h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
 								h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
 								h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
 							)
 						),
-						h("div", { className: "add-task-field" },
+						h(
+							"div",
+							{ className: "add-task-field" },
 							h("label", {}, I18n.t("modals.tasks.priority")),
-							h("select", {
-								className: "add-task-priority",
-								value: "medium"
-							}, 
+							h(
+								"select",
+								{
+									className: "add-task-priority",
+									value: "medium",
+								},
 								h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
 								h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 							)
 						)
 					),
-					h("div", { className: "add-task-form-row" },
-						h("div", { className: "add-task-field" },
+					h(
+						"div",
+						{ className: "add-task-form-row" },
+						h(
+							"div",
+							{ className: "add-task-field" },
 							h("label", {}, I18n.t("modals.tasks.dueDate")),
 							h("input", {
 								type: "date",
-								className: "add-task-due-date"
+								className: "add-task-due-date",
 							})
 						),
-						h("div", { className: "add-task-field" },
+						h(
+							"div",
+							{ className: "add-task-field" },
 							h("label", {}, I18n.t("modals.tasks.duration")),
-							h("select", {
-								className: "add-task-duration"
-							}, 
+							h(
+								"select",
+								{
+									className: "add-task-duration",
+								},
 								h("option", { value: "" }, "—"),
 								h("option", { value: "15min" }, "15 min"),
 								h("option", { value: "30min" }, "30 min"),
@@ -788,19 +896,23 @@ const TasksModal = ({ job, onClose }) => {
 
 	const showValidationError = (element, message) => {
 		// Remove existing error
-		const existingError = element.parentNode.querySelector('.validation-error');
+		const existingError = element.parentNode.querySelector(".validation-error");
 		if (existingError) {
 			existingError.remove();
 		}
-		
+
 		// Add error message
-		const errorElement = h("div", { 
-			className: "validation-error" 
-		}, message);
-		
+		const errorElement = h(
+			"div",
+			{
+				className: "validation-error",
+			},
+			message
+		);
+
 		element.parentNode.appendChild(errorElement);
 		element.focus();
-		
+
 		// Remove error after 3 seconds
 		setTimeout(() => {
 			if (errorElement.parentNode) {
@@ -824,9 +936,9 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"h3",
 					{ className: "modal-title" },
-					I18n.t("modals.tasks.title", { position: job.position, company: job.company }),
+					I18n.t("modals.tasks.title", { position: job.position, company: job.company })
 				),
-				h("button", { className: "modal-close", onclick: onClose }, "×"),
+				h("button", { className: "modal-close", onclick: onClose }, "×")
 			),
 			h(
 				"div",
@@ -842,10 +954,10 @@ const TasksModal = ({ job, onClose }) => {
 						className: "action-btn primary-btn",
 						onclick: handleAddTask,
 					},
-					I18n.t("modals.tasks.addButton"),
-				),
-			),
-		),
+					I18n.t("modals.tasks.addButton")
+				)
+			)
+		)
 	);
 };
 

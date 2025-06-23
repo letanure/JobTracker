@@ -4,10 +4,10 @@
 
 const PT_TRANSLATIONS = {
 	app: {
-		title: "JobTracker"
+		title: "JobTracker",
 	},
 	buttons: {
-		addApplication: "+ Adicionar Candidatura"
+		addApplication: "+ Adicionar Candidatura",
 	},
 	tabs: {
 		jobs: "Empregos",
@@ -15,19 +15,19 @@ const PT_TRANSLATIONS = {
 		tasks: "Quadro de Tarefas",
 		calendar: "Calendário",
 		contacts: "Contatos",
-		profile: "Perfil"
+		profile: "Perfil",
 	},
 	headers: {
 		jobs: "Candidaturas a Empregos",
 		applications: "Quadro de Candidaturas",
 		tasks: "Quadro de Tarefas",
 		calendar: "Vista do Calendário",
-		contacts: "Todos os Contatos"
+		contacts: "Todos os Contatos",
 	},
 	kanban: {
 		title: "Quadro de Candidaturas",
 		totalJobs: "{count} candidaturas no total",
-		editJob: "Editar Vaga"
+		editJob: "Editar Vaga",
 	},
 	table: {
 		headers: {
@@ -42,11 +42,11 @@ const PT_TRANSLATIONS = {
 			location: "Localização",
 			notes: "Notas",
 			tasks: "Tarefas",
-			actions: "Ações"
+			actions: "Ações",
 		},
 		filters: {
 			allPriorities: "Todas as Prioridades",
-			allPhases: "Todas as Fases"
+			allPhases: "Todas as Fases",
 		},
 		placeholders: {
 			company: "Nome da Empresa",
@@ -55,20 +55,20 @@ const PT_TRANSLATIONS = {
 			contactEmail: "Email do Contato",
 			salaryRange: "Faixa Salarial",
 			location: "Localização",
-			sourceUrl: "URL da Vaga"
-		}
+			sourceUrl: "URL da Vaga",
+		},
 	},
 	priorities: {
 		high: "Alta",
 		medium: "Média",
-		low: "Baixa"
+		low: "Baixa",
 	},
 	phases: {
 		wishlist: "Lista de Desejos",
 		applied: "Candidatura Enviada",
 		interview: "Entrevista",
 		offer: "Oferta",
-		rejected_withdrawn: "Rejeitado / Retirado"
+		rejected_withdrawn: "Rejeitado / Retirado",
 	},
 	substeps: {
 		none: "Nenhuma subetapa",
@@ -95,34 +95,39 @@ const PT_TRANSLATIONS = {
 		reference_check: "Verificação de Referências",
 		background_check: "Verificação de Antecedentes",
 		offer_discussion: "Discussão da Oferta",
-		salary_negotiation: "Negociação Salarial"
+		salary_negotiation: "Negociação Salarial",
 	},
 	stats: {
 		totalApplications: "Total de Candidaturas",
 		active: "Ativas",
 		interviews: "Entrevistas",
 		offers: "Ofertas",
-		rejections: "Rejeições"
+		rejections: "Rejeições",
 	},
 	messages: {
-		welcome: "Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
-		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?"
+		welcome:
+			"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
+		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
 	},
 	demo: {
 		contactPerson1: "Sarah Chen",
 		contactPerson2: "Mike Rodriguez",
 		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
-		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado."
+		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
 	},
 	seo: {
 		title: "JobTracker - Rastreador Local Gratuito | Sem Login, Sem Rastreamento, Dados Privados",
-		description: "Rastreador de candidaturas 100% gratuito que funciona localmente no seu navegador. Sem login necessário, sem rastreamento de dados, sem servidores. Seus dados de busca de emprego ficam completamente privados no seu dispositivo.",
-		keywords: "rastreador gratuito de empregos, rastreador local de candidaturas, busca de emprego privada, rastreador sem login, rastreador offline de empregos, candidaturas com privacidade, gestão de carreira sem rastreamento, busca de emprego local",
+		description:
+			"Rastreador de candidaturas 100% gratuito que funciona localmente no seu navegador. Sem login necessário, sem rastreamento de dados, sem servidores. Seus dados de busca de emprego ficam completamente privados no seu dispositivo.",
+		keywords:
+			"rastreador gratuito de empregos, rastreador local de candidaturas, busca de emprego privada, rastreador sem login, rastreador offline de empregos, candidaturas com privacidade, gestão de carreira sem rastreamento, busca de emprego local",
 		author: "Equipe JobTracker",
 		ogTitle: "JobTracker - Rastreador Local Gratuito (Sem Login Necessário)",
-		ogDescription: "Acompanhe candidaturas de forma privada no seu navegador. 100% gratuito, sem login, sem rastreamento, seus dados nunca saem do seu dispositivo.",
+		ogDescription:
+			"Acompanhe candidaturas de forma privada no seu navegador. 100% gratuito, sem login, sem rastreamento, seus dados nunca saem do seu dispositivo.",
 		twitterTitle: "JobTracker - Rastreador Privado de Candidaturas",
-		twitterDescription: "Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo."
+		twitterDescription:
+			"Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo.",
 	},
 	modals: {
 		notes: {
@@ -136,7 +141,7 @@ const PT_TRANSLATIONS = {
 			editTitle: "Editar nota",
 			archiveTitle: "Arquivar nota",
 			unarchiveTitle: "Desarquivar nota",
-			addButton: "Adicionar Nota"
+			addButton: "Adicionar Nota",
 		},
 		tasks: {
 			title: "Tarefas para {position} na {company}",
@@ -158,7 +163,7 @@ const PT_TRANSLATIONS = {
 			statusDone: "Concluída",
 			priorityLow: "Baixa",
 			priorityMedium: "Média",
-			priorityHigh: "Alta"
+			priorityHigh: "Alta",
 		},
 		contacts: {
 			title: "Contatos para {position} na {company}",
@@ -178,24 +183,24 @@ const PT_TRANSLATIONS = {
 			defaultContact: "Contato",
 			validation: {
 				nameRequired: "Nome é obrigatório",
-				emailRequired: "Email é obrigatório"
-			}
+				emailRequired: "Email é obrigatório",
+			},
 		},
 		common: {
 			save: "Salvar",
 			cancel: "Cancelar",
-			close: "Fechar"
-		}
+			close: "Fechar",
+		},
 	},
 	forms: {
 		saveChangesTitle: "Salvar alterações",
 		cancelEditingTitle: "Cancelar edição",
 		noDueDate: "Sem data de vencimento",
-		placeholderNameEmail: "Nome\nEmail"
+		placeholderNameEmail: "Nome\nEmail",
 	},
 	footer: {
 		madeWith: "Feito com",
-		by: "por"
+		by: "por",
 	},
 	calendar: {
 		title: "Visualização de Calendário",
@@ -212,11 +217,21 @@ const PT_TRANSLATIONS = {
 		interview: "Entrevista",
 		followUp: "Acompanhamento",
 		months: [
-			"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-			"Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+			"Janeiro",
+			"Fevereiro",
+			"Março",
+			"Abril",
+			"Maio",
+			"Junho",
+			"Julho",
+			"Agosto",
+			"Setembro",
+			"Outubro",
+			"Novembro",
+			"Dezembro",
 		],
 		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
+		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
 	},
 	contactsView: {
 		title: "Todos os Contatos",
@@ -241,7 +256,7 @@ const PT_TRANSLATIONS = {
 		deleteConfirmation: "Tem certeza que deseja deletar {name}?",
 		validation: {
 			nameRequired: "Nome é obrigatório",
-			jobRequired: "Por favor selecione uma vaga"
-		}
-	}
+			jobRequired: "Por favor selecione uma vaga",
+		},
+	},
 };

@@ -17,8 +17,18 @@
     "serve:python": "cd dist && python3 -m http.server 8000 || python -m http.server 8000 || echo 'No Python found - open dist/index.html manually'",
     "setup-hooks": "./setup-hooks.sh",
     "deploy": "./deploy-gh-pages.sh",
-    "postinstall": "[ -f setup-hooks.sh ] && ./setup-hooks.sh || echo 'Git hooks setup skipped'"
+    "postinstall": "[ -f setup-hooks.sh ] && ./setup-hooks.sh || echo 'Git hooks setup skipped'",
+    "lint": "biome check src/",
+    "lint:fix": "biome check --write src/",
+    "format": "biome format --write src/",
+    "format:check": "biome format src/",
+    "check": "biome check src/",
+    "check:fix": "biome check --write src/",
+    "pre-commit": "npm run format && npm run lint && npm run build"
   },
   "keywords": ["job-tracker", "plain-js", "no-dependencies"],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3"
+  }
 }

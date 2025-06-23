@@ -8,8 +8,8 @@ const CONFIG = {
 	// Language configuration
 	languages: [
 		{ code: "en", name: "English", flag: "🇺🇸" },
-		{ code: "pt", name: "Português", flag: "🇧🇷" }
-	]
+		{ code: "pt", name: "Português", flag: "🇧🇷" },
+	],
 };
 
 // ============================================================================
@@ -19,32 +19,17 @@ const CONFIG = {
 const PRIORITIES = ["high", "medium", "low"];
 
 // Task statuses for task management
-const TASK_STATUSES = [
-	"todo",
-	"in-progress", 
-	"done"
-];
+const TASK_STATUSES = ["todo", "in-progress", "done"];
 
 // Basic phases for main workflow
-const PHASES = [
-	"wishlist",
-	"applied",
-	"interview",
-	"offer",
-	"rejected_withdrawn"
-];
+const PHASES = ["wishlist", "applied", "interview", "offer", "rejected_withdrawn"];
 
 // Sub-steps that can be used within phases
 const PHASE_SUBSTEPS = {
-	applied: [
-		"application_review",
-		"initial_screening",
-		"hr_phone_screen",
-		"recruiter_call"
-	],
+	applied: ["application_review", "initial_screening", "hr_phone_screen", "recruiter_call"],
 	interview: [
 		"phone_screening",
-		"technical_phone_screen", 
+		"technical_phone_screen",
 		"coding_challenge",
 		"take_home_assignment",
 		"technical_interview",
@@ -53,14 +38,9 @@ const PHASE_SUBSTEPS = {
 		"team_interview",
 		"hiring_manager_interview",
 		"panel_interview",
-		"final_round"
+		"final_round",
 	],
-	offer: [
-		"reference_check",
-		"background_check", 
-		"offer_discussion",
-		"salary_negotiation"
-	]
+	offer: ["reference_check", "background_check", "offer_discussion", "salary_negotiation"],
 };
 
 // Helper functions to get translated values
@@ -71,7 +51,8 @@ const getSubstepText = (substepKey) => I18n.t(`substeps.${substepKey}`);
 // Helper function to get all substeps for a phase
 const getSubstepsForPhase = (phaseKey) => PHASE_SUBSTEPS[phaseKey] || [];
 
-
 // Global state variables
+// biome-ignore lint/style/useConst: global jobs data
 let jobsData = [];
+// biome-ignore lint/style/useConst: global original data
 let originalData = [];

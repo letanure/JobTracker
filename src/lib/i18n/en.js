@@ -4,10 +4,10 @@
 
 const EN_TRANSLATIONS = {
 	app: {
-		title: "JobTracker"
+		title: "JobTracker",
 	},
 	buttons: {
-		addApplication: "+ Add Application"
+		addApplication: "+ Add Application",
 	},
 	tabs: {
 		jobs: "Jobs",
@@ -15,19 +15,19 @@ const EN_TRANSLATIONS = {
 		tasks: "Tasks Board",
 		calendar: "Calendar",
 		contacts: "Contacts",
-		profile: "Profile"
+		profile: "Profile",
 	},
 	headers: {
 		jobs: "Job Applications",
 		applications: "Applications Board",
 		tasks: "Tasks Board",
 		calendar: "Calendar View",
-		contacts: "All Contacts"
+		contacts: "All Contacts",
 	},
 	kanban: {
 		title: "Applications Board",
 		totalJobs: "{count} total applications",
-		editJob: "Edit Job"
+		editJob: "Edit Job",
 	},
 	table: {
 		headers: {
@@ -42,11 +42,11 @@ const EN_TRANSLATIONS = {
 			sourceUrl: "Source",
 			notes: "Notes",
 			tasks: "Tasks",
-			actions: "Actions"
+			actions: "Actions",
 		},
 		filters: {
 			allPriorities: "All Priorities",
-			allPhases: "All Phases"
+			allPhases: "All Phases",
 		},
 		placeholders: {
 			company: "Company Name",
@@ -55,20 +55,20 @@ const EN_TRANSLATIONS = {
 			contactEmail: "Contact Email",
 			salaryRange: "Salary Range",
 			location: "Location",
-			sourceUrl: "Job Posting URL"
-		}
+			sourceUrl: "Job Posting URL",
+		},
 	},
 	priorities: {
 		high: "High",
 		medium: "Medium",
-		low: "Low"
+		low: "Low",
 	},
 	phases: {
 		wishlist: "Wishlist",
 		applied: "Applied",
 		interview: "Interview",
 		offer: "Offer",
-		rejected_withdrawn: "Rejected / Withdrawn"
+		rejected_withdrawn: "Rejected / Withdrawn",
 	},
 	substeps: {
 		none: "No substep",
@@ -95,34 +95,39 @@ const EN_TRANSLATIONS = {
 		reference_check: "Reference Check",
 		background_check: "Background Check",
 		offer_discussion: "Offer Discussion",
-		salary_negotiation: "Salary Negotiation"
+		salary_negotiation: "Salary Negotiation",
 	},
 	stats: {
 		totalApplications: "Total Applications",
 		active: "Active",
 		interviews: "Interviews",
 		offers: "Offers",
-		rejections: "Rejections"
+		rejections: "Rejections",
 	},
 	messages: {
-		welcome: "Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
-		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?"
+		welcome:
+			"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
+		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
 	},
 	demo: {
 		contactPerson1: "Sarah Chen",
 		contactPerson2: "Mike Rodriguez",
 		notes1: "Great culture fit. Need to research their microservices architecture.",
-		notes2: "Early stage startup. High growth potential but risky."
+		notes2: "Early stage startup. High growth potential but risky.",
 	},
 	seo: {
 		title: "JobTracker - Free Local Job Tracker | No Login, No Tracking, Your Data Stays Private",
-		description: "100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.",
-		keywords: "free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search",
+		description:
+			"100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.",
+		keywords:
+			"free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search",
 		author: "JobTracker Team",
 		ogTitle: "JobTracker - Free Local Job Tracker (No Login Required)",
-		ogDescription: "Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.",
+		ogDescription:
+			"Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.",
 		twitterTitle: "JobTracker - Private Job Application Tracker",
-		twitterDescription: "Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device."
+		twitterDescription:
+			"Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device.",
 	},
 	modals: {
 		notes: {
@@ -136,7 +141,7 @@ const EN_TRANSLATIONS = {
 			editTitle: "Edit note",
 			archiveTitle: "Archive note",
 			unarchiveTitle: "Unarchive note",
-			addButton: "Add Note"
+			addButton: "Add Note",
 		},
 		tasks: {
 			title: "Tasks for {position} at {company}",
@@ -158,7 +163,7 @@ const EN_TRANSLATIONS = {
 			statusDone: "Done",
 			priorityLow: "Low",
 			priorityMedium: "Medium",
-			priorityHigh: "High"
+			priorityHigh: "High",
 		},
 		contacts: {
 			title: "Contacts for {position} at {company}",
@@ -178,24 +183,24 @@ const EN_TRANSLATIONS = {
 			defaultContact: "Contact",
 			validation: {
 				nameRequired: "Name is required",
-				emailRequired: "Email is required"
-			}
+				emailRequired: "Email is required",
+			},
 		},
 		common: {
 			save: "Save",
 			cancel: "Cancel",
-			close: "Close"
-		}
+			close: "Close",
+		},
 	},
 	forms: {
 		saveChangesTitle: "Save changes",
 		cancelEditingTitle: "Cancel editing",
 		noDueDate: "No due date",
-		placeholderNameEmail: "Name\nEmail"
+		placeholderNameEmail: "Name\nEmail",
 	},
 	footer: {
 		madeWith: "Made with",
-		by: "by"
+		by: "by",
 	},
 	calendar: {
 		title: "Calendar View",
@@ -212,11 +217,21 @@ const EN_TRANSLATIONS = {
 		interview: "Interview",
 		followUp: "Follow-up",
 		months: [
-			"January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December"
+			"January",
+			"February",
+			"March",
+			"April",
+			"May",
+			"June",
+			"July",
+			"August",
+			"September",
+			"October",
+			"November",
+			"December",
 		],
 		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 	},
 	contactsView: {
 		title: "All Contacts",
@@ -241,7 +256,7 @@ const EN_TRANSLATIONS = {
 		deleteConfirmation: "Are you sure you want to delete {name}?",
 		validation: {
 			nameRequired: "Name is required",
-			jobRequired: "Please select a job"
-		}
-	}
+			jobRequired: "Please select a job",
+		},
+	},
 };

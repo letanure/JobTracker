@@ -104,12 +104,12 @@ const $ = (selector) => {
 			// ID selector
 			const element = document.getElementById(selector.slice(1));
 			return element ? new DOMElement(element) : null;
-		} else {
-			// CSS selector
-			const element = document.querySelector(selector);
-			return element ? new DOMElement(element) : null;
 		}
-	} else if (selector instanceof Element) {
+		// CSS selector
+		const element = document.querySelector(selector);
+		return element ? new DOMElement(element) : null;
+	}
+	if (selector instanceof Element) {
 		// Wrap existing element
 		return new DOMElement(selector);
 	}
@@ -137,16 +137,22 @@ Object.assign($, {
 
 	// Add event listener (static)
 	on: (element, event, handler) => element.addEventListener(event, handler),
-
 	// Set innerHTML (static)
-	html: (element, html) => (element.innerHTML = html),
+	html: (element, html) => {
+		element.innerHTML = html;
+	},
 
 	// Set textContent (static)
-	text: (element, text) => (element.textContent = text),
-
+	text: (element, text) => {
+		element.textContent = text;
+	},
 	// Show/hide element (static)
-	show: (element) => (element.style.display = "block"),
-	hide: (element) => (element.style.display = "none"),
+	show: (element) => {
+		element.style.display = "block";
+	},
+	hide: (element) => {
+		element.style.display = "none";
+	},
 
 	// Toggle display (static)
 	toggle: (element) => {
