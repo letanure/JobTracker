@@ -42,13 +42,13 @@
 
 .table-container {
 	overflow-x: auto;
-	max-height: var(--max-height-table);
+	max-height: calc(100vh - 400px);
 	overflow-y: auto;
 	background: var(--container-background);
 }
 
 .table-actions {
-	padding: 16px 24px;
+	padding: 16px 0 16px 24px;
 	background: var(--white);
 	border-top: var(--border-width) solid var(--border-color);
 	display: flex;

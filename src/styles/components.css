@@ -813,9 +813,10 @@ textarea {
 /* GITHUB-STYLE COUNTERS AND BADGES */
 /* ============================================================================ */
 
-.table .notes-count,
-.table .tasks-count,
-.actions-cell .contacts-count {
+/* Count badges in table cells (not stats) */
+td .notes-count,
+td .tasks-count,
+td .contacts-count {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -830,20 +831,18 @@ textarea {
 	cursor: pointer;
 	transition: var(--transition-fast);
 	user-select: none;
-	border: 1px solid var(--gray-300);
+	border: none;
 }
 
-.zero-count {
+td .zero-count {
 	background: var(--gray-100);
 	color: var(--gray-500);
 	cursor: default;
-	border-color: var(--gray-200);
 }
 
-.zero-count:hover {
+td .zero-count:hover {
 	background: var(--gray-100);
 	color: var(--gray-500);
-	border-color: var(--gray-200);
 }
 
 /* Priority indicators */

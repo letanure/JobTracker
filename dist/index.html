@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T12:19:27.136Z
-Cache Version: 1750681167136
+Generated: 2025-06-23T12:30:57.760Z
+Cache Version: 1750681857760
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750681167136
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750681167136">
-    <meta name="build-date" content="2025-06-23T12:19:27.136Z">
+    <meta name="build-version" content="1750681857760">
+    <meta name="build-date" content="2025-06-23T12:30:57.760Z">
     <style>
 
 /* ============================================================================ */
@@ -564,13 +564,13 @@ ol:not([class]) {
 
 .table-container {
 	overflow-x: auto;
-	max-height: var(--max-height-table);
+	max-height: calc(100vh - 400px);
 	overflow-y: auto;
 	background: var(--container-background);
 }
 
 .table-actions {
-	padding: 16px 24px;
+	padding: 16px 0 16px 24px;
 	background: var(--white);
 	border-top: var(--border-width) solid var(--border-color);
 	display: flex;
@@ -1635,9 +1635,10 @@ textarea {
 /* GITHUB-STYLE COUNTERS AND BADGES */
 /* ============================================================================ */
 
-.table .notes-count,
-.table .tasks-count,
-.actions-cell .contacts-count {
+/* Count badges in table cells (not stats) */
+td .notes-count,
+td .tasks-count,
+td .contacts-count {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -1652,20 +1653,18 @@ textarea {
 	cursor: pointer;
 	transition: var(--transition-fast);
 	user-select: none;
-	border: 1px solid var(--gray-300);
+	border: none;
 }
 
-.zero-count {
+td .zero-count {
 	background: var(--gray-100);
 	color: var(--gray-500);
 	cursor: default;
-	border-color: var(--gray-200);
 }
 
-.zero-count:hover {
+td .zero-count:hover {
 	background: var(--gray-100);
 	color: var(--gray-500);
-	border-color: var(--gray-200);
 }
 
 /* Priority indicators */
@@ -3510,7 +3509,9 @@ td {
 	color: var(--text-color);
 	font-size: 14px;
 	height: 60px;
+	max-height: 60px;
 	box-sizing: border-box;
+	overflow: hidden;
 }
 
 tr {
@@ -3539,7 +3540,7 @@ tbody tr {
 .company-name {
 	font-weight: var(--font-weight-medium);
 	color: var(--text-color);
-	max-width: var(--col-24);
+	max-width: 150px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -3550,14 +3551,14 @@ tbody tr {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: var(--col-24);
+	max-width: 150px;
 }
 
 .current-phase {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: var(--col-20);
+	max-width: 120px;
 }
 
 .phase-display {
@@ -3579,13 +3580,17 @@ tbody tr {
 
 .salary {
 	color: var(--text-color);
-	font-weight: var(--font-weight-medium);
+	font-weight: 400;
+	max-width: 120px;
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 14px;
 }
 
 .location {
 	color: var(--text-light);
-	font-size: var(--font-size-xs);
+	font-size: 14px;
 }
 
 .contact {
@@ -3658,11 +3663,13 @@ tr.editing td {
 
 /* Phase cell for editing */
 .phase-cell {
-	display: flex;
-	flex-direction: column;
 	height: 60px;
+	max-height: 60px;
 	padding: 0;
 	box-sizing: border-box;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 }
 
 .phase-cell .inline-edit {
@@ -4156,16 +4163,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750681167136';
-window.BUILD_DATE = '2025-06-23T12:19:27.136Z';
+window.BUILD_VERSION = '1750681857760';
+window.BUILD_DATE = '2025-06-23T12:30:57.760Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T12:19:27.131Z
+// Generated: 2025-06-23T12:30:57.755Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T12:19:27.131Z");
+console.log("JobTracker - Built at: 2025-06-23T12:30:57.755Z");
 
 
 // ============================================================================
