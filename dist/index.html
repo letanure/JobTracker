@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T19:36:33.768Z
-Cache Version: 1750707393768
+Generated: 2025-06-23T20:02:01.496Z
+Cache Version: 1750708921496
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750707393768
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750707393768">
-    <meta name="build-date" content="2025-06-23T19:36:33.768Z">
+    <meta name="build-version" content="1750708921496">
+    <meta name="build-date" content="2025-06-23T20:02:01.496Z">
     <style>
 
 /* ============================================================================ */
@@ -2497,18 +2497,18 @@ a.kanban-source-link {
 	border-top: 1px solid var(--gray-200);
 }
 
-/* Workflow Selector Styles */
+/* Workflow Selector Styles - Compact */
 .workflow-description {
-	font-size: 12px;
+	font-size: 11px;
 	color: var(--gray-600);
-	margin-bottom: 12px;
+	margin-bottom: 6px;
 }
 
 .workflow-selector {
 	border: 1px solid var(--border-color);
-	border-radius: 6px;
+	border-radius: 4px;
 	background: var(--gray-50);
-	max-height: 400px;
+	max-height: 200px;
 	overflow-y: auto;
 }
 
@@ -2533,14 +2533,14 @@ a.kanban-source-link {
 	width: 100%;
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	padding: 12px 16px;
+	gap: 6px;
+	padding: 8px 12px;
 	background: transparent;
 	border: none;
 	text-align: left;
 	cursor: pointer;
 	transition: var(--transition-fast);
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: 500;
 }
 
@@ -2553,7 +2553,7 @@ a.kanban-source-link {
 }
 
 .workflow-phase-toggle .material-symbols-outlined {
-	font-size: 16px;
+	font-size: 14px;
 	transition: transform var(--transition-fast);
 }
 
@@ -2566,12 +2566,12 @@ a.kanban-source-link {
 }
 
 .workflow-phase-count {
-	font-size: 11px;
+	font-size: 10px;
 	background: var(--gray-200);
 	color: var(--gray-700);
-	padding: 2px 6px;
-	border-radius: 10px;
-	min-width: 30px;
+	padding: 1px 4px;
+	border-radius: 8px;
+	min-width: 24px;
 	text-align: center;
 }
 
@@ -2597,13 +2597,13 @@ a.kanban-source-link {
 	width: 100%;
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	padding: 8px 20px 8px 32px;
+	gap: 6px;
+	padding: 4px 12px 4px 24px;
 	background: transparent;
 	border: none;
 	text-align: left;
 	cursor: pointer;
-	font-size: 12px;
+	font-size: 11px;
 	transition: var(--transition-fast);
 }
 
@@ -2622,7 +2622,7 @@ a.kanban-source-link {
 }
 
 .workflow-substep-toggle .material-symbols-outlined {
-	font-size: 16px;
+	font-size: 14px;
 	color: var(--gray-400);
 }
 
@@ -2635,13 +2635,61 @@ a.kanban-source-link {
 }
 
 .current-indicator {
-	font-size: 10px;
+	font-size: 9px;
 	background: var(--blue-600);
 	color: var(--white);
-	padding: 1px 4px;
+	padding: 1px 3px;
 	border-radius: 2px;
 	text-transform: uppercase;
 	font-weight: 500;
+}
+
+/* Compact Job Edit Form */
+.job-edit-form .form-row {
+	margin-bottom: 8px;
+}
+
+.job-edit-form .form-field {
+	margin-bottom: 0;
+}
+
+.job-edit-form label {
+	font-size: var(--font-size-xs);
+	font-weight: 500;
+	margin-bottom: 2px;
+	display: block;
+}
+
+.job-edit-form input,
+.job-edit-form select {
+	padding: 4px 6px;
+	font-size: 13px;
+	height: 28px;
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+}
+
+.job-edit-form input[readonly] {
+	background: var(--gray-50);
+	color: var(--gray-600);
+}
+
+/* Compact modal */
+.modal {
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+.modal-body {
+	padding: 12px 16px;
+}
+
+.modal-header {
+	padding: 8px 16px;
+}
+
+.modal-footer {
+	padding: 8px 16px;
 }
 
 .tasks-column-body {
@@ -2803,7 +2851,7 @@ a.kanban-source-link {
 .job-edit-form {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 0px;
 }
 
 .form-row {
@@ -2831,7 +2879,7 @@ a.kanban-source-link {
 .form-field input,
 .form-field select {
 	width: 100%;
-	padding: 8px 12px;
+	padding: 4px 12px;
 	border: var(--border-width) solid var(--border-color);
 	border-radius: 6px;
 	font-size: 14px;
@@ -4766,16 +4814,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750707393768';
-window.BUILD_DATE = '2025-06-23T19:36:33.768Z';
+window.BUILD_VERSION = '1750708921496';
+window.BUILD_DATE = '2025-06-23T20:02:01.496Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T19:36:33.759Z
+// Generated: 2025-06-23T20:02:01.493Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T19:36:33.759Z");
+console.log("JobTracker - Built at: 2025-06-23T20:02:01.493Z");
 
 
 // ============================================================================
@@ -5129,6 +5177,9 @@ const EN_TRANSLATIONS = {
 		interview: "Interview",
 		offer: "Offer",
 		rejected_withdrawn: "Rejected / Withdrawn",
+		assess_job: "Assess Job",
+		research_company: "Research Company",
+		prepare_application: "Prepare Application",
 		application_review: "Application Review",
 		initial_screening: "Initial Screening",
 		hr_phone_screen: "HR Phone Screen",
@@ -5148,6 +5199,8 @@ const EN_TRANSLATIONS = {
 		background_check: "Background Check",
 		offer_discussion: "Offer Discussion",
 		salary_negotiation: "Salary Negotiation",
+		rejected: "Rejected",
+		withdrawn: "Withdrawn",
 	},
 	stats: {
 		totalApplications: "Total Applications",
@@ -5308,6 +5361,9 @@ const EN_TRANSLATIONS = {
 		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 	},
+	validation: {
+		companyPositionRequired: "Company and position are required",
+	},
 	contactsView: {
 		title: "All Contacts",
 		totalContacts: "{count} total contacts",
@@ -5431,6 +5487,9 @@ const PT_TRANSLATIONS = {
 		interview: "Entrevista",
 		offer: "Oferta",
 		rejected_withdrawn: "Rejeitado / Retirado",
+		assess_job: "Avaliar Vaga",
+		research_company: "Pesquisar Empresa",
+		prepare_application: "Preparar Candidatura",
 		application_review: "Análise da Candidatura",
 		initial_screening: "Triagem Inicial",
 		hr_phone_screen: "Triagem por Telefone - RH",
@@ -5450,6 +5509,8 @@ const PT_TRANSLATIONS = {
 		background_check: "Verificação de Antecedentes",
 		offer_discussion: "Discussão da Oferta",
 		salary_negotiation: "Negociação Salarial",
+		rejected: "Rejeitado",
+		withdrawn: "Retirado",
 	},
 	stats: {
 		totalApplications: "Total de Candidaturas",
@@ -5609,6 +5670,9 @@ const PT_TRANSLATIONS = {
 		],
 		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
 		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+	},
+	validation: {
+		companyPositionRequired: "Empresa e posição são obrigatórias",
 	},
 	contactsView: {
 		title: "Todos os Contatos",
@@ -5770,6 +5834,7 @@ const PHASES = ["wishlist", "applied", "interview", "offer", "rejected_withdrawn
 
 // Sub-steps that can be used within phases
 const PHASE_SUBSTEPS = {
+	wishlist: ["assess_job", "research_company", "prepare_application"],
 	applied: ["application_review", "initial_screening", "hr_phone_screen", "recruiter_call"],
 	interview: [
 		"phone_screening",
@@ -5790,6 +5855,7 @@ const PHASE_SUBSTEPS = {
 
 // Default substeps that are pre-selected when creating a new job
 const DEFAULT_SELECTED_SUBSTEPS = {
+	wishlist: ["assess_job"],
 	applied: ["application_review", "hr_phone_screen"],
 	interview: ["technical_interview", "behavioral_interview"],
 	offer: ["offer_discussion", "salary_negotiation"],
@@ -11054,6 +11120,92 @@ const KanbanBoard = {
 		});
 	},
 
+	// Create current step selector with optgroups
+	createCurrentStepSelector: (job) => {
+		const select = h("select", { 
+			name: "currentStep",
+			className: "current-step-selector",
+			onchange: (e) => KanbanBoard.handleCurrentStepChange(e, job)
+		});
+
+		// Add option groups for each phase
+		PHASES.forEach(phase => {
+			const selectedSubsteps = job.selectedSubsteps?.[phase] || [];
+			const availableSubsteps = selectedSubsteps.length > 0 ? selectedSubsteps : getSubstepsForPhase(phase);
+			
+			// Only show phases that have substeps
+			if (availableSubsteps.length > 0) {
+				// Create optgroup for this phase
+				const optgroup = h("optgroup", { label: getPhaseText(phase) });
+				
+				// Add substep options only (no phase-level option)
+				availableSubsteps.forEach(substep => {
+					const substepOption = h("option", { 
+						value: `${phase}:${substep}`,
+						selected: job.currentPhase === phase && job.currentSubstep === substep
+					}, getSubstepText(substep));
+					optgroup.appendChild(substepOption);
+				});
+
+				select.appendChild(optgroup);
+			}
+		});
+
+		return select;
+	},
+
+	// Handle current step change
+	handleCurrentStepChange: (e, job) => {
+		const [phase, substep] = e.target.value.split(':');
+		
+		// Update job current phase and substep
+		job.currentPhase = phase;
+		job.currentSubstep = substep;
+
+		// Update workflow selector visual state
+		const modal = e.target.closest('.modal');
+		
+		// Remove current indicators from all substeps
+		const allSubsteps = modal.querySelectorAll('.workflow-substep-item');
+		allSubsteps.forEach(item => {
+			item.classList.remove('current');
+			const indicator = item.querySelector('.current-indicator');
+			if (indicator) {
+				indicator.remove();
+			}
+		});
+
+		// Remove current phase highlighting
+		const allPhases = modal.querySelectorAll('.workflow-phase');
+		allPhases.forEach(phaseEl => phaseEl.classList.remove('current-phase'));
+
+		// Add current phase highlighting
+		const currentPhaseElement = modal.querySelector(`[data-phase="${phase}"]`);
+		if (currentPhaseElement) {
+			currentPhaseElement.classList.add('current-phase');
+		}
+
+		// Add current substep highlighting if it's not the phase itself
+		if (substep !== phase) {
+			const currentSubstepElement = modal.querySelector(`[data-phase="${phase}"][data-substep="${substep}"]`);
+			if (currentSubstepElement) {
+				currentSubstepElement.classList.add('current');
+				const toggle = currentSubstepElement.querySelector('.workflow-substep-toggle');
+				if (toggle && !toggle.querySelector('.current-indicator')) {
+					toggle.appendChild(h("span", { className: "current-indicator" }, "current"));
+				}
+			}
+		}
+
+		// Save changes
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex !== -1) {
+			Object.assign(jobsData[jobIndex], job);
+			saveToLocalStorage();
+			KanbanBoard.refresh();
+		}
+	},
+
 	// Create workflow selector component
 	createWorkflowSelector: (job) => {
 		const workflowContainer = h("div", { className: "workflow-selector" });
@@ -11342,14 +11494,18 @@ const KanbanBoard = {
 			const modal = document.querySelector(".kanban-job-edit-modal");
 			const form = modal.querySelector("form");
 
+			// Get current step from selector
+			const currentStepSelect = form.querySelector('.current-step-selector');
+			const [currentPhase, currentSubstep] = currentStepSelect ? currentStepSelect.value.split(':') : [job.currentPhase, job.currentSubstep];
+
 			// Get form values manually
 			const updatedJob = {
 				...job,
 				priority: form.priority.value,
 				company: form.company.value.trim(),
 				position: form.position.value.trim(),
-				currentPhase: form.phase.value,
-				currentSubstep: form.substep.value,
+				currentPhase: currentPhase,
+				currentSubstep: currentSubstep,
 				salaryRange: form.salaryRange.value.trim(),
 				location: form.location.value.trim(),
 				sourceUrl: form.sourceUrl.value.trim(),
@@ -11425,65 +11581,7 @@ const KanbanBoard = {
 					h(
 						"form",
 						{ className: "job-edit-form" },
-						// Priority row
-						h(
-							"div",
-							{ className: "form-row" },
-							h(
-								"div",
-								{ className: "form-field full-width" },
-								h("label", {}, I18n.t("table.headers.priority") || "Priority"),
-								h(
-									"select",
-									{ name: "priority" },
-									h("option", { value: "high" }, I18n.t("priorities.high") || "High"),
-									h("option", { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
-									h("option", { value: "low" }, I18n.t("priorities.low") || "Low")
-								)
-							)
-						),
-
-						// Current Phase and Substep Selection
-						h(
-							"div",
-							{ className: "form-row" },
-							h(
-								"div",
-								{ className: "form-field" },
-								h("label", {}, I18n.t("table.headers.currentPhase") || "Current Phase"),
-								h(
-									"select",
-									{ name: "phase" },
-									...PHASES.map((phase) => h("option", { value: phase }, getPhaseText(phase)))
-								)
-							),
-							h(
-								"div",
-								{ className: "form-field" },
-								h("label", {}, I18n.t("table.headers.substep") || "Current Substep"),
-								h("input", {
-									type: "text",
-									name: "substep",
-									readonly: true,
-									placeholder: "Select from workflow below"
-								})
-							)
-						),
-
-						// Workflow Configuration
-						h(
-							"div",
-							{ className: "form-row" },
-							h(
-								"div",
-								{ className: "form-field full-width" },
-								h("label", {}, I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
-								h("div", { className: "workflow-description" }, I18n.t("kanban.workflowDescription") || "Select and configure the steps for each phase of this job:"),
-								KanbanBoard.createWorkflowSelector(job)
-							)
-						),
-
-						// Company and Position row
+						// Company and Position row (FIRST)
 						h(
 							"div",
 							{ className: "form-row" },
@@ -11552,20 +11650,56 @@ const KanbanBoard = {
 							)
 						),
 
-
-						// Source URL
+						// Source URL and Priority row
 						h(
 							"div",
 							{ className: "form-row" },
 							h(
 								"div",
-								{ className: "form-field full-width" },
+								{ className: "form-field" },
 								h("label", {}, I18n.t("table.headers.sourceUrl") || "Source URL"),
 								h("input", {
 									type: "url",
 									name: "sourceUrl",
 									placeholder: "https://",
 								})
+							),
+							h(
+								"div",
+								{ className: "form-field" },
+								h("label", {}, I18n.t("table.headers.priority") || "Priority"),
+								h(
+									"select",
+									{ name: "priority" },
+									h("option", { value: "high" }, I18n.t("priorities.high") || "High"),
+									h("option", { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
+									h("option", { value: "low" }, I18n.t("priorities.low") || "Low")
+								)
+							)
+						),
+
+						// Current Step Selection
+						h(
+							"div",
+							{ className: "form-row" },
+							h(
+								"div",
+								{ className: "form-field full-width" },
+								h("label", {}, "Current Step"),
+								KanbanBoard.createCurrentStepSelector(job)
+							)
+						),
+
+						// Workflow Configuration
+						h(
+							"div",
+							{ className: "form-row" },
+							h(
+								"div",
+								{ className: "form-field full-width" },
+								h("label", {}, I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
+								h("div", { className: "workflow-description" }, I18n.t("kanban.workflowDescription") || "Select and configure the steps for each phase of this job:"),
+								KanbanBoard.createWorkflowSelector(job)
 							)
 						)
 					)
@@ -11600,13 +11734,18 @@ const KanbanBoard = {
 			const form = modal.querySelector("form");
 			if (form) {
 				form.priority.value = job.priority;
-				form.phase.value = job.currentPhase;
 				form.company.value = job.company;
 				form.position.value = job.position;
-				form.substep.value = job.currentSubstep ? getSubstepText(job.currentSubstep) : getPhaseText(job.currentPhase);
 				form.salaryRange.value = job.salaryRange || "";
 				form.location.value = job.location || "";
 				form.sourceUrl.value = job.sourceUrl || "";
+				
+				// Set current step selector value
+				const currentStepValue = `${job.currentPhase}:${job.currentSubstep || job.currentPhase}`;
+				const currentStepSelect = form.querySelector('.current-step-selector');
+				if (currentStepSelect) {
+					currentStepSelect.value = currentStepValue;
+				}
 			}
 		}, 0);
 
@@ -13941,35 +14080,24 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		h("td", { className: "position-name", title: job.position }, job.position),
 		h(
 			"td",
-			{ className: "current-phase", title: `${getPhaseText(job.currentPhase)}${job.currentSubstep ? ` - ${getSubstepText(job.currentSubstep)}` : ''}` },
+			{ className: "current-phase" },
 			h(
 				"div",
 				{ className: "phase-display" },
-				h("span", { className: "phase-main" }, getPhaseText(job.currentPhase)),
-				job.currentSubstep
-					? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep))
+				h("span", { className: "phase-main" }, (() => {
+					const phaseText = getPhaseText(job.currentPhase);
+					return phaseText && !phaseText.startsWith('phases.') ? phaseText : job.currentPhase;
+				})()),
+				job.currentSubstep && job.currentSubstep !== job.currentPhase
+					? h("span", { className: "phase-substep" }, (() => {
+						const substepText = getSubstepText(job.currentSubstep);
+						return substepText && !substepText.startsWith('substeps.') ? substepText : job.currentSubstep;
+					})())
 					: null
 			)
 		),
 		h("td", { className: "salary", title: job.salaryRange }, job.salaryRange),
 		h("td", { className: "location", title: job.location }, job.location),
-		h(
-			"td",
-			{ className: "source-url" },
-			job.sourceUrl
-				? h(
-						"a",
-						{
-							href: job.sourceUrl,
-							target: "_blank",
-							rel: "noopener noreferrer",
-							className: "source-link",
-							title: job.sourceUrl,
-						},
-						h("span", { className: "material-symbols-outlined" }, "link")
-					)
-				: ""
-		),
 		h(
 			"td",
 			{ className: "contact" },
@@ -13997,6 +14125,20 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		h(
 			"td",
 			{ className: "actions-cell" },
+			// Source link icon - enabled/disabled based on sourceUrl
+			job.sourceUrl
+				? h("a", {
+					href: job.sourceUrl,
+					target: "_blank",
+					rel: "noopener noreferrer",
+					className: "action-btn source-btn",
+					title: job.sourceUrl,
+					onclick: (e) => e.stopPropagation(),
+				}, h("span", { className: "material-symbols-outlined" }, "link"))
+				: h("span", {
+					className: "action-btn source-btn disabled",
+					title: "No source URL",
+				}, h("span", { className: "material-symbols-outlined" }, "link")),
 			h("button", {
 				className: "action-btn edit-btn",
 				onclick: () => onEdit(job),

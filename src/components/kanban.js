@@ -343,6 +343,92 @@ const KanbanBoard = {
 		});
 	},
 
+	// Create current step selector with optgroups
+	createCurrentStepSelector: (job) => {
+		const select = h("select", { 
+			name: "currentStep",
+			className: "current-step-selector",
+			onchange: (e) => KanbanBoard.handleCurrentStepChange(e, job)
+		});
+
+		// Add option groups for each phase
+		PHASES.forEach(phase => {
+			const selectedSubsteps = job.selectedSubsteps?.[phase] || [];
+			const availableSubsteps = selectedSubsteps.length > 0 ? selectedSubsteps : getSubstepsForPhase(phase);
+			
+			// Only show phases that have substeps
+			if (availableSubsteps.length > 0) {
+				// Create optgroup for this phase
+				const optgroup = h("optgroup", { label: getPhaseText(phase) });
+				
+				// Add substep options only (no phase-level option)
+				availableSubsteps.forEach(substep => {
+					const substepOption = h("option", { 
+						value: `${phase}:${substep}`,
+						selected: job.currentPhase === phase && job.currentSubstep === substep
+					}, getSubstepText(substep));
+					optgroup.appendChild(substepOption);
+				});
+
+				select.appendChild(optgroup);
+			}
+		});
+
+		return select;
+	},
+
+	// Handle current step change
+	handleCurrentStepChange: (e, job) => {
+		const [phase, substep] = e.target.value.split(':');
+		
+		// Update job current phase and substep
+		job.currentPhase = phase;
+		job.currentSubstep = substep;
+
+		// Update workflow selector visual state
+		const modal = e.target.closest('.modal');
+		
+		// Remove current indicators from all substeps
+		const allSubsteps = modal.querySelectorAll('.workflow-substep-item');
+		allSubsteps.forEach(item => {
+			item.classList.remove('current');
+			const indicator = item.querySelector('.current-indicator');
+			if (indicator) {
+				indicator.remove();
+			}
+		});
+
+		// Remove current phase highlighting
+		const allPhases = modal.querySelectorAll('.workflow-phase');
+		allPhases.forEach(phaseEl => phaseEl.classList.remove('current-phase'));
+
+		// Add current phase highlighting
+		const currentPhaseElement = modal.querySelector(`[data-phase="${phase}"]`);
+		if (currentPhaseElement) {
+			currentPhaseElement.classList.add('current-phase');
+		}
+
+		// Add current substep highlighting if it's not the phase itself
+		if (substep !== phase) {
+			const currentSubstepElement = modal.querySelector(`[data-phase="${phase}"][data-substep="${substep}"]`);
+			if (currentSubstepElement) {
+				currentSubstepElement.classList.add('current');
+				const toggle = currentSubstepElement.querySelector('.workflow-substep-toggle');
+				if (toggle && !toggle.querySelector('.current-indicator')) {
+					toggle.appendChild(h("span", { className: "current-indicator" }, "current"));
+				}
+			}
+		}
+
+		// Save changes
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex !== -1) {
+			Object.assign(jobsData[jobIndex], job);
+			saveToLocalStorage();
+			KanbanBoard.refresh();
+		}
+	},
+
 	// Create workflow selector component
 	createWorkflowSelector: (job) => {
 		const workflowContainer = h("div", { className: "workflow-selector" });
@@ -631,14 +717,18 @@ const KanbanBoard = {
 			const modal = document.querySelector(".kanban-job-edit-modal");
 			const form = modal.querySelector("form");
 
+			// Get current step from selector
+			const currentStepSelect = form.querySelector('.current-step-selector');
+			const [currentPhase, currentSubstep] = currentStepSelect ? currentStepSelect.value.split(':') : [job.currentPhase, job.currentSubstep];
+
 			// Get form values manually
 			const updatedJob = {
 				...job,
 				priority: form.priority.value,
 				company: form.company.value.trim(),
 				position: form.position.value.trim(),
-				currentPhase: form.phase.value,
-				currentSubstep: form.substep.value,
+				currentPhase: currentPhase,
+				currentSubstep: currentSubstep,
 				salaryRange: form.salaryRange.value.trim(),
 				location: form.location.value.trim(),
 				sourceUrl: form.sourceUrl.value.trim(),
@@ -714,65 +804,7 @@ const KanbanBoard = {
 					h(
 						"form",
 						{ className: "job-edit-form" },
-						// Priority row
-						h(
-							"div",
-							{ className: "form-row" },
-							h(
-								"div",
-								{ className: "form-field full-width" },
-								h("label", {}, I18n.t("table.headers.priority") || "Priority"),
-								h(
-									"select",
-									{ name: "priority" },
-									h("option", { value: "high" }, I18n.t("priorities.high") || "High"),
-									h("option", { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
-									h("option", { value: "low" }, I18n.t("priorities.low") || "Low")
-								)
-							)
-						),
-
-						// Current Phase and Substep Selection
-						h(
-							"div",
-							{ className: "form-row" },
-							h(
-								"div",
-								{ className: "form-field" },
-								h("label", {}, I18n.t("table.headers.currentPhase") || "Current Phase"),
-								h(
-									"select",
-									{ name: "phase" },
-									...PHASES.map((phase) => h("option", { value: phase }, getPhaseText(phase)))
-								)
-							),
-							h(
-								"div",
-								{ className: "form-field" },
-								h("label", {}, I18n.t("table.headers.substep") || "Current Substep"),
-								h("input", {
-									type: "text",
-									name: "substep",
-									readonly: true,
-									placeholder: "Select from workflow below"
-								})
-							)
-						),
-
-						// Workflow Configuration
-						h(
-							"div",
-							{ className: "form-row" },
-							h(
-								"div",
-								{ className: "form-field full-width" },
-								h("label", {}, I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
-								h("div", { className: "workflow-description" }, I18n.t("kanban.workflowDescription") || "Select and configure the steps for each phase of this job:"),
-								KanbanBoard.createWorkflowSelector(job)
-							)
-						),
-
-						// Company and Position row
+						// Company and Position row (FIRST)
 						h(
 							"div",
 							{ className: "form-row" },
@@ -841,20 +873,56 @@ const KanbanBoard = {
 							)
 						),
 
-
-						// Source URL
+						// Source URL and Priority row
 						h(
 							"div",
 							{ className: "form-row" },
 							h(
 								"div",
-								{ className: "form-field full-width" },
+								{ className: "form-field" },
 								h("label", {}, I18n.t("table.headers.sourceUrl") || "Source URL"),
 								h("input", {
 									type: "url",
 									name: "sourceUrl",
 									placeholder: "https://",
 								})
+							),
+							h(
+								"div",
+								{ className: "form-field" },
+								h("label", {}, I18n.t("table.headers.priority") || "Priority"),
+								h(
+									"select",
+									{ name: "priority" },
+									h("option", { value: "high" }, I18n.t("priorities.high") || "High"),
+									h("option", { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
+									h("option", { value: "low" }, I18n.t("priorities.low") || "Low")
+								)
+							)
+						),
+
+						// Current Step Selection
+						h(
+							"div",
+							{ className: "form-row" },
+							h(
+								"div",
+								{ className: "form-field full-width" },
+								h("label", {}, "Current Step"),
+								KanbanBoard.createCurrentStepSelector(job)
+							)
+						),
+
+						// Workflow Configuration
+						h(
+							"div",
+							{ className: "form-row" },
+							h(
+								"div",
+								{ className: "form-field full-width" },
+								h("label", {}, I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
+								h("div", { className: "workflow-description" }, I18n.t("kanban.workflowDescription") || "Select and configure the steps for each phase of this job:"),
+								KanbanBoard.createWorkflowSelector(job)
 							)
 						)
 					)
@@ -889,13 +957,18 @@ const KanbanBoard = {
 			const form = modal.querySelector("form");
 			if (form) {
 				form.priority.value = job.priority;
-				form.phase.value = job.currentPhase;
 				form.company.value = job.company;
 				form.position.value = job.position;
-				form.substep.value = job.currentSubstep ? getSubstepText(job.currentSubstep) : getPhaseText(job.currentPhase);
 				form.salaryRange.value = job.salaryRange || "";
 				form.location.value = job.location || "";
 				form.sourceUrl.value = job.sourceUrl || "";
+				
+				// Set current step selector value
+				const currentStepValue = `${job.currentPhase}:${job.currentSubstep || job.currentPhase}`;
+				const currentStepSelect = form.querySelector('.current-step-selector');
+				if (currentStepSelect) {
+					currentStepSelect.value = currentStepValue;
+				}
 			}
 		}, 0);
 

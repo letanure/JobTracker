@@ -88,6 +88,9 @@ const PT_TRANSLATIONS = {
 		interview: "Entrevista",
 		offer: "Oferta",
 		rejected_withdrawn: "Rejeitado / Retirado",
+		assess_job: "Avaliar Vaga",
+		research_company: "Pesquisar Empresa",
+		prepare_application: "Preparar Candidatura",
 		application_review: "Análise da Candidatura",
 		initial_screening: "Triagem Inicial",
 		hr_phone_screen: "Triagem por Telefone - RH",
@@ -107,6 +110,8 @@ const PT_TRANSLATIONS = {
 		background_check: "Verificação de Antecedentes",
 		offer_discussion: "Discussão da Oferta",
 		salary_negotiation: "Negociação Salarial",
+		rejected: "Rejeitado",
+		withdrawn: "Retirado",
 	},
 	stats: {
 		totalApplications: "Total de Candidaturas",
@@ -266,6 +271,9 @@ const PT_TRANSLATIONS = {
 		],
 		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
 		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+	},
+	validation: {
+		companyPositionRequired: "Empresa e posição são obrigatórias",
 	},
 	contactsView: {
 		title: "Todos os Contatos",

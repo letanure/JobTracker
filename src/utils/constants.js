@@ -28,6 +28,7 @@ const PHASES = ["wishlist", "applied", "interview", "offer", "rejected_withdrawn
 
 // Sub-steps that can be used within phases
 const PHASE_SUBSTEPS = {
+	wishlist: ["assess_job", "research_company", "prepare_application"],
 	applied: ["application_review", "initial_screening", "hr_phone_screen", "recruiter_call"],
 	interview: [
 		"phone_screening",
@@ -48,6 +49,7 @@ const PHASE_SUBSTEPS = {
 
 // Default substeps that are pre-selected when creating a new job
 const DEFAULT_SELECTED_SUBSTEPS = {
+	wishlist: ["assess_job"],
 	applied: ["application_review", "hr_phone_screen"],
 	interview: ["technical_interview", "behavioral_interview"],
 	offer: ["offer_discussion", "salary_negotiation"],

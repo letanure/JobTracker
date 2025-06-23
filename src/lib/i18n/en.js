@@ -87,6 +87,9 @@ const EN_TRANSLATIONS = {
 		interview: "Interview",
 		offer: "Offer",
 		rejected_withdrawn: "Rejected / Withdrawn",
+		assess_job: "Assess Job",
+		research_company: "Research Company",
+		prepare_application: "Prepare Application",
 		application_review: "Application Review",
 		initial_screening: "Initial Screening",
 		hr_phone_screen: "HR Phone Screen",
@@ -106,6 +109,8 @@ const EN_TRANSLATIONS = {
 		background_check: "Background Check",
 		offer_discussion: "Offer Discussion",
 		salary_negotiation: "Salary Negotiation",
+		rejected: "Rejected",
+		withdrawn: "Withdrawn",
 	},
 	stats: {
 		totalApplications: "Total Applications",
@@ -265,6 +270,9 @@ const EN_TRANSLATIONS = {
 		],
 		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+	},
+	validation: {
+		companyPositionRequired: "Company and position are required",
 	},
 	contactsView: {
 		title: "All Contacts",

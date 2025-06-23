@@ -22,35 +22,24 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		h("td", { className: "position-name", title: job.position }, job.position),
 		h(
 			"td",
-			{ className: "current-phase", title: `${getPhaseText(job.currentPhase)}${job.currentSubstep ? ` - ${getSubstepText(job.currentSubstep)}` : ''}` },
+			{ className: "current-phase" },
 			h(
 				"div",
 				{ className: "phase-display" },
-				h("span", { className: "phase-main" }, getPhaseText(job.currentPhase)),
-				job.currentSubstep
-					? h("span", { className: "phase-substep" }, getSubstepText(job.currentSubstep))
+				h("span", { className: "phase-main" }, (() => {
+					const phaseText = getPhaseText(job.currentPhase);
+					return phaseText && !phaseText.startsWith('phases.') ? phaseText : job.currentPhase;
+				})()),
+				job.currentSubstep && job.currentSubstep !== job.currentPhase
+					? h("span", { className: "phase-substep" }, (() => {
+						const substepText = getSubstepText(job.currentSubstep);
+						return substepText && !substepText.startsWith('substeps.') ? substepText : job.currentSubstep;
+					})())
 					: null
 			)
 		),
 		h("td", { className: "salary", title: job.salaryRange }, job.salaryRange),
 		h("td", { className: "location", title: job.location }, job.location),
-		h(
-			"td",
-			{ className: "source-url" },
-			job.sourceUrl
-				? h(
-						"a",
-						{
-							href: job.sourceUrl,
-							target: "_blank",
-							rel: "noopener noreferrer",
-							className: "source-link",
-							title: job.sourceUrl,
-						},
-						h("span", { className: "material-symbols-outlined" }, "link")
-					)
-				: ""
-		),
 		h(
 			"td",
 			{ className: "contact" },
