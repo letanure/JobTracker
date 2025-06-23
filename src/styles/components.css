@@ -172,54 +172,119 @@ textarea {
 }
 
 /* Modal form layouts */
+.add-contact-row {
+	margin-top: 16px;
+	padding: 16px;
+	background: var(--gray-50);
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+}
+
+.add-contact-title {
+	margin: 0 0 12px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
 .contact-form-row {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 12px;
-	margin-bottom: 16px;
+	margin-bottom: 0;
 }
 
 .add-contact-name,
-.add-contact-email {
-	width: 100%;
-}
-
+.add-contact-email,
 .add-contact-phone,
 .add-contact-company {
 	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	background: var(--white);
+	min-height: 32px;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.add-note-textarea,
+.add-contact-name:focus,
+.add-contact-email:focus,
+.add-contact-phone:focus,
+.add-contact-company:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
+}
+
+/* GitHub-style add forms */
+.add-note-section,
 .add-task-section {
-	margin-top: 24px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border-color);
+	margin-top: 16px;
+	padding: 16px;
+	background: var(--gray-50);
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
 }
 
+.add-note-title,
 .add-task-title {
-	margin: 0 0 16px 0;
-	font-size: 16px;
+	margin: 0 0 12px 0;
+	font-size: 14px;
 	font-weight: 600;
 	color: var(--text-color);
+}
+
+.add-note-textarea {
+	width: 100%;
+	resize: vertical;
+	min-height: 80px;
+	padding: 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: inherit;
+	background: var(--white);
+	line-height: 1.4;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.add-note-textarea:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
 }
 
 .add-task-form {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 12px;
 }
 
 .add-task-textarea {
 	width: 100%;
 	resize: vertical;
 	min-height: 80px;
-	field-sizing: content;
+	padding: 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: inherit;
+	background: var(--white);
+	line-height: 1.4;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.add-task-textarea:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
 }
 
 .add-task-form-row {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 16px;
+	gap: 12px;
 }
 
 .add-task-field {
@@ -240,10 +305,21 @@ textarea {
 .add-task-duration {
 	width: 100%;
 	padding: 8px 12px;
-	border: var(--border-width) solid var(--border-color);
+	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	font-size: 14px;
 	background: var(--white);
+	min-height: 32px;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.add-task-status:focus,
+.add-task-priority:focus,
+.add-task-due-date:focus,
+.add-task-duration:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
 }
 
 .add-task-duration {
@@ -297,27 +373,69 @@ textarea {
 	line-height: 18px;
 }
 
-/* Task field edit inputs - match display padding to prevent jump */
+/* Excel-like inline editing for tasks */
 .task-status-edit,
-.task-priority-edit,
-.task-due-date-edit,
-.task-duration-edit,
-.task-text-edit {
+.task-priority-edit {
 	display: block;
-	padding: 8px 12px;
-	border: 1px solid var(--blue-500);
-	border-radius: 6px;
-	background: var(--white);
-	font-size: 14px;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 11px;
 	width: 100%;
-	min-height: 18px;
-	line-height: 18px;
+	height: 32px;
+	box-sizing: border-box;
+	appearance: none;
+	outline: none;
+	box-shadow: none;
+}
+
+.task-status-edit:focus,
+.task-priority-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
+}
+
+.task-due-date-edit,
+.task-duration-edit {
+	display: block;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 12px;
+	font-family: var(--font-mono, monospace);
+	width: 100%;
+	height: 32px;
+	box-sizing: border-box;
+	outline: none;
+}
+
+.task-due-date-edit:focus,
+.task-duration-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
 }
 
 .task-text-edit {
-	resize: vertical;
-	min-height: 60px;
-	font-family: inherit;
+	display: block;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 13px;
+	font-style: italic;
+	color: var(--gray-600);
+	width: 100%;
+	height: 32px;
+	box-sizing: border-box;
+	resize: none;
+	outline: none;
+}
+
+.task-text-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
 }
 
 /* Archived tasks section */
@@ -402,7 +520,6 @@ textarea {
 	color: var(--text-color);
 }
 
-
 /* Field validation */
 .contact-cell.has-error .contact-field-input {
 	background: var(--red-50);
@@ -421,7 +538,26 @@ textarea {
 	border: 1px solid var(--red-200);
 	z-index: 10;
 	white-space: nowrap;
-} */
+}
+
+/* Validation error for forms */
+.validation-error {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+	padding: 8px 12px;
+	background: var(--red-50);
+	border: 1px solid var(--red-200);
+	border-radius: 6px;
+	font-size: 13px;
+	color: var(--red-700);
+}
+
+.validation-error .material-symbols-outlined {
+	font-size: 16px;
+	color: var(--red-600);
+}
 
 /* Table actions */
 .contacts-actions {

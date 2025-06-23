@@ -138,7 +138,6 @@ const PT_TRANSLATIONS = {
 			archivedSection: "Notas Arquivadas ({count})",
 			emptyState: "Sem notas ainda. Adicione sua primeira nota abaixo.",
 			addSection: "Adicionar Nova Nota",
-			phaseLabelPrefix: " Fase: ",
 			placeholder: "Digite sua nota aqui...",
 			editTitle: "Editar nota",
 			archiveTitle: "Arquivar nota",

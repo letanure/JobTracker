@@ -429,16 +429,6 @@ const NotesModal = ({ job, onClose }) => {
 				"div",
 				{ className: "add-note-section" },
 				h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
-				h(
-					"div",
-					{ className: "note-form-info" },
-					h(
-						"span",
-						{},
-						h("span", { className: "material-symbols-outlined" }, "assignment"),
-						I18n.t("modals.notes.phaseLabelPrefix") + getPhaseText(job.currentPhase)
-					)
-				),
 				h("textarea", {
 					className: "add-note-textarea",
 					placeholder: I18n.t("modals.notes.placeholder"),

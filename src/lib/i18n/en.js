@@ -138,7 +138,6 @@ const EN_TRANSLATIONS = {
 			archivedSection: "Archived Notes ({count})",
 			emptyState: "No notes yet. Add your first note below.",
 			addSection: "Add New Note",
-			phaseLabelPrefix: " Phase: ",
 			placeholder: "Enter your note here...",
 			editTitle: "Edit note",
 			archiveTitle: "Archive note",

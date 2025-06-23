@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T12:58:34.415Z
-Cache Version: 1750683514415
+Generated: 2025-06-23T13:26:03.684Z
+Cache Version: 1750685163684
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750683514415
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750683514415">
-    <meta name="build-date" content="2025-06-23T12:58:34.415Z">
+    <meta name="build-version" content="1750685163684">
+    <meta name="build-date" content="2025-06-23T13:26:03.684Z">
     <style>
 
 /* ============================================================================ */
@@ -994,54 +994,119 @@ textarea {
 }
 
 /* Modal form layouts */
+.add-contact-row {
+	margin-top: 16px;
+	padding: 16px;
+	background: var(--gray-50);
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+}
+
+.add-contact-title {
+	margin: 0 0 12px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
 .contact-form-row {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 12px;
-	margin-bottom: 16px;
+	margin-bottom: 0;
 }
 
 .add-contact-name,
-.add-contact-email {
-	width: 100%;
-}
-
+.add-contact-email,
 .add-contact-phone,
 .add-contact-company {
 	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	background: var(--white);
+	min-height: 32px;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.add-note-textarea,
+.add-contact-name:focus,
+.add-contact-email:focus,
+.add-contact-phone:focus,
+.add-contact-company:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
+}
+
+/* GitHub-style add forms */
+.add-note-section,
 .add-task-section {
-	margin-top: 24px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border-color);
+	margin-top: 16px;
+	padding: 16px;
+	background: var(--gray-50);
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
 }
 
+.add-note-title,
 .add-task-title {
-	margin: 0 0 16px 0;
-	font-size: 16px;
+	margin: 0 0 12px 0;
+	font-size: 14px;
 	font-weight: 600;
 	color: var(--text-color);
+}
+
+.add-note-textarea {
+	width: 100%;
+	resize: vertical;
+	min-height: 80px;
+	padding: 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: inherit;
+	background: var(--white);
+	line-height: 1.4;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.add-note-textarea:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
 }
 
 .add-task-form {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 12px;
 }
 
 .add-task-textarea {
 	width: 100%;
 	resize: vertical;
 	min-height: 80px;
-	field-sizing: content;
+	padding: 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: inherit;
+	background: var(--white);
+	line-height: 1.4;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.add-task-textarea:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
 }
 
 .add-task-form-row {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 16px;
+	gap: 12px;
 }
 
 .add-task-field {
@@ -1062,10 +1127,21 @@ textarea {
 .add-task-duration {
 	width: 100%;
 	padding: 8px 12px;
-	border: var(--border-width) solid var(--border-color);
+	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	font-size: 14px;
 	background: var(--white);
+	min-height: 32px;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.add-task-status:focus,
+.add-task-priority:focus,
+.add-task-due-date:focus,
+.add-task-duration:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
 }
 
 .add-task-duration {
@@ -1119,27 +1195,69 @@ textarea {
 	line-height: 18px;
 }
 
-/* Task field edit inputs - match display padding to prevent jump */
+/* Excel-like inline editing for tasks */
 .task-status-edit,
-.task-priority-edit,
-.task-due-date-edit,
-.task-duration-edit,
-.task-text-edit {
+.task-priority-edit {
 	display: block;
-	padding: 8px 12px;
-	border: 1px solid var(--blue-500);
-	border-radius: 6px;
-	background: var(--white);
-	font-size: 14px;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 11px;
 	width: 100%;
-	min-height: 18px;
-	line-height: 18px;
+	height: 32px;
+	box-sizing: border-box;
+	appearance: none;
+	outline: none;
+	box-shadow: none;
+}
+
+.task-status-edit:focus,
+.task-priority-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
+}
+
+.task-due-date-edit,
+.task-duration-edit {
+	display: block;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 12px;
+	font-family: var(--font-mono, monospace);
+	width: 100%;
+	height: 32px;
+	box-sizing: border-box;
+	outline: none;
+}
+
+.task-due-date-edit:focus,
+.task-duration-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
 }
 
 .task-text-edit {
-	resize: vertical;
-	min-height: 60px;
-	font-family: inherit;
+	display: block;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 13px;
+	font-style: italic;
+	color: var(--gray-600);
+	width: 100%;
+	height: 32px;
+	box-sizing: border-box;
+	resize: none;
+	outline: none;
+}
+
+.task-text-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
 }
 
 /* Archived tasks section */
@@ -1224,7 +1342,6 @@ textarea {
 	color: var(--text-color);
 }
 
-
 /* Field validation */
 .contact-cell.has-error .contact-field-input {
 	background: var(--red-50);
@@ -1243,7 +1360,26 @@ textarea {
 	border: 1px solid var(--red-200);
 	z-index: 10;
 	white-space: nowrap;
-} */
+}
+
+/* Validation error for forms */
+.validation-error {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+	padding: 8px 12px;
+	background: var(--red-50);
+	border: 1px solid var(--red-200);
+	border-radius: 6px;
+	font-size: 13px;
+	color: var(--red-700);
+}
+
+.validation-error .material-symbols-outlined {
+	font-size: 16px;
+	color: var(--red-600);
+}
 
 /* Table actions */
 .contacts-actions {
@@ -3664,37 +3800,42 @@ tr.editing .actions-cell button {
 	font-size: var(--font-size-sm);
 }
 
-/* Notes and Tasks table layouts */
+/* Notes and Tasks table layouts - GitHub style */
 .notes-table,
 .tasks-table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
-	margin-bottom: var(--space-4);
-	background: var(--container-background);
-	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-md);
+	margin-bottom: 16px;
+	background: var(--white);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
 	overflow: hidden;
+	font-size: 14px;
 }
 
 .notes-table th,
 .tasks-table th {
-	background: var(--background-color);
-	padding: var(--space-2) var(--space-3);
+	background: var(--gray-50);
+	padding: 8px 12px;
 	text-align: left;
-	font-weight: var(--font-weight-semibold);
-	font-size: var(--font-size-xs);
-	color: var(--text-light);
-	border-bottom: var(--border-width) solid var(--border-color);
-	position: static;
+	font-weight: 600;
+	font-size: 12px;
+	color: var(--gray-700);
+	border-bottom: 1px solid var(--border-color);
+	position: sticky;
+	top: 0;
+	white-space: nowrap;
 }
 
 .notes-table td,
 .tasks-table td {
-	padding: var(--space-3);
-	border-bottom: var(--border-width) solid var(--border-light);
-	vertical-align: top;
-	background: var(--container-background);
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--border-light);
+	vertical-align: middle;
+	background: var(--white);
+	font-size: 14px;
+	height: 44px;
 }
 
 .notes-table tr:last-child td,
@@ -3725,17 +3866,42 @@ tr.editing .actions-cell button {
 	white-space: nowrap;
 }
 
-/* Style task status/priority displays when not editing */
+/* Task two-row layout - GitHub style */
+.tasks-table .task-info-row {
+	height: 32px;
+}
+
+.tasks-table .task-info-row td {
+	height: 32px;
+	padding: 4px 8px;
+	border-bottom: none;
+}
+
+.tasks-table .task-text-row {
+	border-top: none;
+}
+
+.tasks-table .task-text-row td {
+	height: 32px;
+	padding: 4px 8px;
+	border-bottom: 1px solid var(--border-light);
+	color: var(--gray-600);
+	font-size: 13px;
+	font-style: italic;
+}
+
+/* Task status/priority badges - GitHub style */
 .task-status-display,
 .task-priority-display {
-	border: none;
-	background: transparent;
-	padding: 4px 8px;
+	display: inline-block;
+	padding: 2px 8px;
 	border-radius: 12px;
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: 500;
+	border: none;
 	cursor: default;
-	appearance: none;
+	min-width: 60px;
+	text-align: center;
 }
 
 .task-status-display {
@@ -3749,28 +3915,42 @@ tr.editing .actions-cell button {
 }
 
 .task-status-display.status-done {
-	background: var(--green-50);
-	color: var(--green-600);
+	background: var(--green-100);
+	color: var(--green-700);
 }
 
 .task-status-display.status-in-progress {
-	background: var(--blue-50);
-	color: var(--blue-600);
+	background: var(--blue-100);
+	color: var(--blue-700);
 }
 
 .task-priority-display.priority-high {
-	background: var(--red-50);
-	color: var(--red-600);
+	background: var(--red-100);
+	color: var(--red-700);
 }
 
 .task-priority-display.priority-medium {
-	background: var(--orange-50);
-	color: var(--orange-600);
+	background: var(--orange-100);
+	color: var(--orange-700);
 }
 
 .task-priority-display.priority-low {
-	background: var(--green-50);
-	color: var(--green-600);
+	background: var(--green-100);
+	color: var(--green-700);
+}
+
+/* Task date and duration styling */
+.task-due-date-display, .task-duration-display {
+	font-family: var(--font-mono, monospace);
+	font-size: 12px;
+	color: var(--gray-600);
+}
+
+.task-duration-display {
+	background: var(--gray-50);
+	padding: 2px 6px;
+	border-radius: 4px;
+	border: 1px solid var(--gray-200);
 }
 
 /* Task text row styling */
@@ -3790,41 +3970,102 @@ tr.editing .actions-cell button {
 	border-top: none;
 }
 
-/* Contacts table layout (Excel-like) */
+/* Excel-like inline editing for tasks and notes tables */
+.notes-table tr.editing,
+.tasks-table tr.editing {
+	background-color: var(--blue-50) !important;
+}
+
+.notes-table tr.editing td,
+.tasks-table tr.editing td {
+	background-color: transparent;
+	padding: 0;
+}
+
+.notes-table .inline-edit,
+.tasks-table .inline-edit {
+	width: 100%;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 0;
+	font-size: 14px;
+	background: transparent;
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	height: 32px;
+	min-height: 32px;
+	box-sizing: border-box;
+}
+
+.notes-table .inline-edit:focus,
+.tasks-table .inline-edit:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	background: var(--white);
+}
+
+/* Task select styling for 32px minimum height */
+.tasks-table select.inline-edit {
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+	background-position: right 8px center;
+	background-repeat: no-repeat;
+	background-size: 16px;
+	padding-right: 32px;
+	cursor: pointer;
+}
+
+/* Notes textarea specific styling */
+.notes-table textarea.inline-edit {
+	resize: none;
+	height: auto;
+	min-height: 32px;
+	line-height: 1.4;
+	overflow: hidden;
+}
+
+/* Task description textarea in second row */
+.tasks-table .task-text-row textarea.inline-edit {
+	height: 28px;
+	min-height: 28px;
+	font-style: italic;
+	color: var(--gray-600);
+	padding: 2px 8px;
+}
+
+/* Contacts table layout (Excel-like) - GitHub style */
 .contacts-table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
-	margin-bottom: var(--space-4);
-	background: var(--container-background);
-	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-md);
+	margin-bottom: 16px;
+	background: var(--white);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
 	overflow: hidden;
+	font-size: 14px;
 }
 
 .contacts-table th {
-	background: var(--background-color);
-	padding: var(--space-2) var(--space-3);
+	background: var(--gray-50);
+	padding: 8px 12px;
 	text-align: left;
-	font-weight: var(--font-weight-semibold);
-	font-size: var(--font-size-xs);
-	color: var(--text-light);
-	border-bottom: var(--border-width) solid var(--border-color);
+	font-weight: 600;
+	font-size: 12px;
+	color: var(--gray-700);
+	border-bottom: 1px solid var(--border-color);
+	position: sticky;
+	top: 0;
 	white-space: nowrap;
-	position: static;
 }
 
 .contacts-table td {
-	padding: var(--space-2) var(--space-3);
-	border-bottom: var(--border-width) solid var(--border-light);
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--border-light);
 	vertical-align: middle;
-	background: var(--container-background);
-	font-size: var(--font-size-sm);
-	white-space: nowrap;
-	height: auto;
-	font-size: var(--font-size-xs);
-	vertical-align: top;
-	max-height: 140px;
+	background: var(--white);
+	font-size: 14px;
+	height: 44px;
 }
 .contacts-table td a {
 	color: var(--text-color);
@@ -3838,58 +4079,93 @@ tr.editing .actions-cell button {
 	background: var(--background-color);
 }
 
+/* Contacts table inline editing */
+.contacts-table .editable-cell {
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.contacts-table .editable-cell:hover {
+	background: var(--gray-50);
+}
+
+.contacts-table tr.editing {
+	background-color: var(--blue-50) !important;
+}
+
+.contacts-table tr.editing td {
+	background-color: transparent;
+	padding: 0;
+}
+
+.contacts-table .inline-edit-input {
+	width: 100%;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 0;
+	font-size: 14px;
+	background: transparent;
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	height: 44px;
+	box-sizing: border-box;
+}
+
+.contacts-table .inline-edit-input:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	background: var(--white);
+}
+
 .contacts-table .contact-name {
-	font-weight: var(--font-weight-medium);
+	font-weight: 500;
 	color: var(--text-color);
 }
 
-.contacts-table .contact-email {
-	color: var(--primary-color);
+.contacts-table .contact-link {
+	color: var(--blue-600);
 	text-decoration: none;
 }
 
-.contacts-table .contact-email:hover {
+.contacts-table .contact-link:hover {
 	text-decoration: underline;
 }
 
 .contacts-table .contact-phone {
-	color: var(--text-light);
-	font-family: monospace;
+	font-family: var(--font-mono, monospace);
 }
 
 .contacts-table .contact-company {
-	color: var(--text-light);
+	color: var(--gray-600);
 	font-style: italic;
 }
-.contacts-table input {
-	height: 30px;
-	padding: 0;
-	border: none;
+
+/* Archived contacts section */
+.archived-contacts-section {
+	margin-top: 16px;
 }
 
-/* Add contact form (like a new table row) */
-.add-contact-form {
-	display: contents;
+.contacts-archived-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 8px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--gray-600);
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 6px;
+	transition: background-color 0.15s ease;
 }
 
-.add-contact-form td {
-	padding: var(--space-2) var(--space-3);
-	background: var(--primary-bg);
-	border-bottom: var(--border-width) solid var(--border-color);
+.contacts-archived-header:hover {
+	background: var(--gray-50);
 }
 
-.add-contact-form input {
-	width: 100%;
-	padding: var(--space-1) var(--space-2);
-	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-xs);
-	font-size: var(--font-size-sm);
-	background: var(--container-background);
-}
-
-.add-contact-form input:focus {
-	border-color: var(--primary-color);
-	box-shadow: var(--focus-ring);
+.contacts-archived-header .expand-icon {
+	font-size: 16px;
+	color: var(--gray-500);
 }
 
 /* ============================================================================ */
@@ -4070,16 +4346,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750683514415';
-window.BUILD_DATE = '2025-06-23T12:58:34.415Z';
+window.BUILD_VERSION = '1750685163684';
+window.BUILD_DATE = '2025-06-23T13:26:03.684Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T12:58:34.408Z
+// Generated: 2025-06-23T13:26:03.678Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T12:58:34.408Z");
+console.log("JobTracker - Built at: 2025-06-23T13:26:03.678Z");
 
 
 // ============================================================================
@@ -4484,7 +4760,6 @@ const EN_TRANSLATIONS = {
 			archivedSection: "Archived Notes ({count})",
 			emptyState: "No notes yet. Add your first note below.",
 			addSection: "Add New Note",
-			phaseLabelPrefix: " Phase: ",
 			placeholder: "Enter your note here...",
 			editTitle: "Edit note",
 			archiveTitle: "Archive note",
@@ -4762,7 +5037,6 @@ const PT_TRANSLATIONS = {
 			archivedSection: "Notas Arquivadas ({count})",
 			emptyState: "Sem notas ainda. Adicione sua primeira nota abaixo.",
 			addSection: "Adicionar Nova Nota",
-			phaseLabelPrefix: " Fase: ",
 			placeholder: "Digite sua nota aqui...",
 			editTitle: "Editar nota",
 			archiveTitle: "Arquivar nota",
@@ -6268,16 +6542,6 @@ const NotesModal = ({ job, onClose }) => {
 				"div",
 				{ className: "add-note-section" },
 				h("h4", { className: "add-note-title" }, I18n.t("modals.notes.addSection")),
-				h(
-					"div",
-					{ className: "note-form-info" },
-					h(
-						"span",
-						{},
-						h("span", { className: "material-symbols-outlined" }, "assignment"),
-						I18n.t("modals.notes.phaseLabelPrefix") + getPhaseText(job.currentPhase)
-					)
-				),
 				h("textarea", {
 					className: "add-note-textarea",
 					placeholder: I18n.t("modals.notes.placeholder"),
