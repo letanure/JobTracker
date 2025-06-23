@@ -89,10 +89,6 @@ function updateStaticTexts() {
 	$("#currentPhaseHeader").text(I18n.t("table.headers.currentPhase"));
 	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
 	$("#locationHeader").text(I18n.t("table.headers.location"));
-	$("#sourceUrlHeader").text(I18n.t("table.headers.sourceUrl"));
-	$("#contactsHeader").text(I18n.t("table.headers.contacts"));
-	$("#notesHeader").text(I18n.t("table.headers.notes"));
-	$("#tasksHeader").text(I18n.t("table.headers.tasks"));
 	$("#actionsHeader").text(I18n.t("table.headers.actions"));
 
 	// Update stats labels

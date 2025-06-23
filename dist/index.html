@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T20:02:01.496Z
-Cache Version: 1750708921496
+Generated: 2025-06-23T20:14:41.284Z
+Cache Version: 1750709681284
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750708921496
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750708921496">
-    <meta name="build-date" content="2025-06-23T20:02:01.496Z">
+    <meta name="build-version" content="1750709681284">
+    <meta name="build-date" content="2025-06-23T20:14:41.284Z">
     <style>
 
 /* ============================================================================ */
@@ -935,6 +935,56 @@ button:disabled {
 .cancel-btn:hover {
 	background: var(--gray-100);
 	color: var(--gray-700);
+}
+
+.source-btn:hover {
+	background: var(--green-50);
+	color: var(--green-600);
+}
+
+.source-btn.disabled {
+	color: var(--gray-400);
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+.source-btn.disabled:hover {
+	background: transparent;
+	color: var(--gray-400);
+}
+
+.contacts-btn:hover {
+	background: var(--blue-50);
+	color: var(--blue-600);
+}
+
+.notes-btn:hover {
+	background: var(--yellow-50);
+	color: var(--yellow-600);
+}
+
+.tasks-btn:hover {
+	background: var(--purple-50);
+	color: var(--purple-600);
+}
+
+.action-count-badge {
+	position: absolute;
+	top: -4px;
+	right: -4px;
+	background: var(--gray-200);
+	color: var(--gray-700);
+	font-size: 10px;
+	font-weight: 500;
+	min-width: 16px;
+	height: 16px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 4px;
+	border: 1px solid var(--gray-300);
+	z-index: 1;
 }
 
 /* ============================================================================ */
@@ -3991,8 +4041,21 @@ tbody tr {
 
 .actions-cell {
 	text-align: center;
-	width: var(--col-16);
+	width: auto;
+	min-width: 200px;
 	padding: var(--space-2);
+	white-space: nowrap;
+}
+
+.actions-cell .action-btn {
+	margin: 0 2px;
+	position: relative;
+}
+
+.actions-cell .kanban-action-icons {
+	border-top: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .source-url {
@@ -4754,10 +4817,6 @@ tr.editing .actions-cell button {
                                     </th>
                                     <th id="salaryRangeHeader">...</th>
                                     <th id="locationHeader">...</th>
-                                    <th id="sourceUrlHeader">...</th>
-                                    <th id="contactsHeader">...</th>
-                                    <th id="notesHeader">...</th>
-                                    <th id="tasksHeader">...</th>
                                     <th id="actionsHeader">...</th>
                                 </tr>
                             </thead>
@@ -4814,16 +4873,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750708921496';
-window.BUILD_DATE = '2025-06-23T20:02:01.496Z';
+window.BUILD_VERSION = '1750709681284';
+window.BUILD_DATE = '2025-06-23T20:14:41.284Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T20:02:01.493Z
+// Generated: 2025-06-23T20:14:41.277Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T20:02:01.493Z");
+console.log("JobTracker - Built at: 2025-06-23T20:14:41.277Z");
 
 
 // ============================================================================
@@ -6159,10 +6218,6 @@ function updateStaticTexts() {
 	$("#currentPhaseHeader").text(I18n.t("table.headers.currentPhase"));
 	$("#salaryRangeHeader").text(I18n.t("table.headers.salaryRange"));
 	$("#locationHeader").text(I18n.t("table.headers.location"));
-	$("#sourceUrlHeader").text(I18n.t("table.headers.sourceUrl"));
-	$("#contactsHeader").text(I18n.t("table.headers.contacts"));
-	$("#notesHeader").text(I18n.t("table.headers.notes"));
-	$("#tasksHeader").text(I18n.t("table.headers.tasks"));
 	$("#actionsHeader").text(I18n.t("table.headers.actions"));
 
 	// Update stats labels
@@ -14100,55 +14155,89 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		h("td", { className: "location", title: job.location }, job.location),
 		h(
 			"td",
-			{ className: "contact" },
-			ContactsCount({
-				contacts: job.contacts || [],
-				onClick: () => openContactsModal(job),
-			})
-		),
-		h(
-			"td",
-			{ className: "notes" },
-			NotesCount({
-				notes: job.notes || [],
-				onClick: () => openNotesModal(job),
-			})
-		),
-		h(
-			"td",
-			{ className: "tasks" },
-			TasksCount({
-				tasks: job.tasks || [],
-				onClick: () => openTasksModal(job),
-			})
-		),
-		h(
-			"td",
 			{ className: "actions-cell" },
-			// Source link icon - enabled/disabled based on sourceUrl
-			job.sourceUrl
-				? h("a", {
-					href: job.sourceUrl,
-					target: "_blank",
-					rel: "noopener noreferrer",
-					className: "action-btn source-btn",
-					title: job.sourceUrl,
-					onclick: (e) => e.stopPropagation(),
-				}, h("span", { className: "material-symbols-outlined" }, "link"))
-				: h("span", {
-					className: "action-btn source-btn disabled",
-					title: "No source URL",
-				}, h("span", { className: "material-symbols-outlined" }, "link")),
-			h("button", {
-				className: "action-btn edit-btn",
-				onclick: () => onEdit(job),
-				innerHTML: '<span class="material-symbols-outlined">edit</span>',
-			}),
-			h("button", {
-				className: "action-btn delete-btn",
-				onclick: () => onDelete(job),
-				innerHTML: '<span class="material-symbols-outlined">delete</span>',
-			})
+			h(
+				"div",
+				{ className: "kanban-action-icons" },
+				// Source link icon if sourceUrl exists  
+				job.sourceUrl && h(
+					"a",
+					{
+						className: "kanban-icon-btn kanban-source-link",
+						href: job.sourceUrl,
+						target: "_blank",
+						rel: "noopener noreferrer",
+						title: "View job posting",
+						onclick: (e) => e.stopPropagation(),
+					},
+					h("span", { className: "material-symbols-outlined" }, "link")
+				),
+				
+				// Notes icon with counter
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: `Notes (${(job.notes || []).length})`,
+						onclick: (e) => {
+							e.stopPropagation();
+							openNotesModal(job);
+						},
+					},
+					h("span", { className: "material-symbols-outlined" }, "note"),
+					(job.notes || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.notes || []).length.toString())
+				),
+				
+				// Tasks icon with counter  
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: `Tasks (${(job.tasks || []).length})`,
+						onclick: (e) => {
+							e.stopPropagation();
+							openTasksModal(job);
+						},
+					},
+					h("span", { className: "material-symbols-outlined" }, "task_alt"),
+					(job.tasks || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.tasks || []).length.toString())
+				),
+				
+				// Contacts icon with counter
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: `Contacts (${(job.contacts || []).length})`,
+						onclick: (e) => {
+							e.stopPropagation();
+							openContactsModal(job);
+						},
+					},
+					h("span", { className: "material-symbols-outlined" }, "person"),
+					(job.contacts || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.contacts || []).length.toString())
+				),
+				
+				// Edit button
+				h("button", {
+					className: "kanban-icon-btn",
+					title: "Edit job",
+					onclick: (e) => {
+						e.stopPropagation();
+						onEdit(job);
+					},
+				}, h("span", { className: "material-symbols-outlined" }, "edit")),
+				
+				// Delete button
+				h("button", {
+					className: "kanban-icon-btn",
+					title: "Delete job", 
+					onclick: (e) => {
+						e.stopPropagation();
+						onDelete(job);
+					},
+				}, h("span", { className: "material-symbols-outlined" }, "delete"))
+			)
 		)
 	);
 

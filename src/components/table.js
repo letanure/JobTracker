@@ -42,41 +42,89 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		h("td", { className: "location", title: job.location }, job.location),
 		h(
 			"td",
-			{ className: "contact" },
-			ContactsCount({
-				contacts: job.contacts || [],
-				onClick: () => openContactsModal(job),
-			})
-		),
-		h(
-			"td",
-			{ className: "notes" },
-			NotesCount({
-				notes: job.notes || [],
-				onClick: () => openNotesModal(job),
-			})
-		),
-		h(
-			"td",
-			{ className: "tasks" },
-			TasksCount({
-				tasks: job.tasks || [],
-				onClick: () => openTasksModal(job),
-			})
-		),
-		h(
-			"td",
 			{ className: "actions-cell" },
-			h("button", {
-				className: "action-btn edit-btn",
-				onclick: () => onEdit(job),
-				innerHTML: '<span class="material-symbols-outlined">edit</span>',
-			}),
-			h("button", {
-				className: "action-btn delete-btn",
-				onclick: () => onDelete(job),
-				innerHTML: '<span class="material-symbols-outlined">delete</span>',
-			})
+			h(
+				"div",
+				{ className: "kanban-action-icons" },
+				// Source link icon if sourceUrl exists  
+				job.sourceUrl && h(
+					"a",
+					{
+						className: "kanban-icon-btn kanban-source-link",
+						href: job.sourceUrl,
+						target: "_blank",
+						rel: "noopener noreferrer",
+						title: "View job posting",
+						onclick: (e) => e.stopPropagation(),
+					},
+					h("span", { className: "material-symbols-outlined" }, "link")
+				),
+				
+				// Notes icon with counter
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: `Notes (${(job.notes || []).length})`,
+						onclick: (e) => {
+							e.stopPropagation();
+							openNotesModal(job);
+						},
+					},
+					h("span", { className: "material-symbols-outlined" }, "note"),
+					(job.notes || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.notes || []).length.toString())
+				),
+				
+				// Tasks icon with counter  
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: `Tasks (${(job.tasks || []).length})`,
+						onclick: (e) => {
+							e.stopPropagation();
+							openTasksModal(job);
+						},
+					},
+					h("span", { className: "material-symbols-outlined" }, "task_alt"),
+					(job.tasks || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.tasks || []).length.toString())
+				),
+				
+				// Contacts icon with counter
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: `Contacts (${(job.contacts || []).length})`,
+						onclick: (e) => {
+							e.stopPropagation();
+							openContactsModal(job);
+						},
+					},
+					h("span", { className: "material-symbols-outlined" }, "person"),
+					(job.contacts || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.contacts || []).length.toString())
+				),
+				
+				// Edit button
+				h("button", {
+					className: "kanban-icon-btn",
+					title: "Edit job",
+					onclick: (e) => {
+						e.stopPropagation();
+						onEdit(job);
+					},
+				}, h("span", { className: "material-symbols-outlined" }, "edit")),
+				
+				// Delete button
+				h("button", {
+					className: "kanban-icon-btn",
+					title: "Delete job", 
+					onclick: (e) => {
+						e.stopPropagation();
+						onDelete(job);
+					},
+				}, h("span", { className: "material-symbols-outlined" }, "delete"))
+			)
 		)
 	);
 

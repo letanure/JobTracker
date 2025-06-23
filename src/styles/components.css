@@ -113,6 +113,56 @@ button:disabled {
 	color: var(--gray-700);
 }
 
+.source-btn:hover {
+	background: var(--green-50);
+	color: var(--green-600);
+}
+
+.source-btn.disabled {
+	color: var(--gray-400);
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+.source-btn.disabled:hover {
+	background: transparent;
+	color: var(--gray-400);
+}
+
+.contacts-btn:hover {
+	background: var(--blue-50);
+	color: var(--blue-600);
+}
+
+.notes-btn:hover {
+	background: var(--yellow-50);
+	color: var(--yellow-600);
+}
+
+.tasks-btn:hover {
+	background: var(--purple-50);
+	color: var(--purple-600);
+}
+
+.action-count-badge {
+	position: absolute;
+	top: -4px;
+	right: -4px;
+	background: var(--gray-200);
+	color: var(--gray-700);
+	font-size: 10px;
+	font-weight: 500;
+	min-width: 16px;
+	height: 16px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 4px;
+	border: 1px solid var(--gray-300);
+	z-index: 1;
+}
+
 /* ============================================================================ */
 /* GITHUB-STYLE FORMS AND INPUTS */
 /* ============================================================================ */
