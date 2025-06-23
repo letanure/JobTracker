@@ -2554,3 +2554,120 @@ textarea {
 		font-size: 10px;
 	}
 }
+
+/* ============================================================================ */
+/* CUSTOM DIALOG SYSTEM */
+/* ============================================================================ */
+
+/* Dialog specific modal overlay with higher z-index */
+.modal-overlay.custom-dialog {
+	z-index: 10000; /* Higher than regular modals */
+	background-color: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */
+	animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Dialog modal styling */
+.custom-dialog-modal {
+	max-width: 400px;
+	width: 90%;
+	transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+	will-change: opacity, transform;
+}
+
+/* Dialog body spacing */
+.custom-dialog-body {
+	padding: var(--space-4);
+	text-align: center;
+}
+
+/* Dialog message styling */
+.dialog-message {
+	margin-bottom: var(--space-4);
+	font-size: var(--font-size-base);
+	line-height: 1.5;
+	color: var(--text-color);
+}
+
+/* Dialog input container */
+.dialog-input-container {
+	margin-top: var(--space-4);
+	margin-bottom: var(--space-2);
+}
+
+/* Dialog input field */
+.dialog-input {
+	width: 100%;
+	padding: var(--space-3);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-base);
+	background: var(--white);
+	color: var(--text-color);
+	box-sizing: border-box;
+}
+
+.dialog-input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 3px var(--primary-bg);
+}
+
+/* Dialog footer - GitHub style */
+.dialog-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--space-2);
+	padding: var(--space-4);
+	border-top: var(--border-width) solid var(--border-color);
+	background: var(--gray-50);
+}
+
+/* Dialog buttons inherit the same styling as main app buttons */
+.custom-dialog .action-btn {
+	min-height: 32px;
+	padding: 5px 16px;
+	font-size: var(--font-size-sm);
+	font-weight: 500;
+}
+
+/* Dialog type specific styling - Keep headers neutral like GitHub */
+.custom-dialog-modal .modal-header {
+	background: var(--white);
+	color: var(--text-color);
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+/* Dialog icons (optional - can be added later) */
+.dialog-icon {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-right: var(--space-2);
+	vertical-align: middle;
+}
+
+/* Responsive dialog */
+@media (max-width: 480px) {
+	.custom-dialog-modal {
+		max-width: 95%;
+		margin: var(--space-4);
+	}
+	
+	.dialog-footer {
+		flex-direction: column;
+	}
+	
+	.dialog-footer .action-btn {
+		width: 100%;
+		justify-content: center;
+	}
+}

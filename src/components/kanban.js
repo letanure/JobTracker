@@ -331,7 +331,7 @@ const KanbanBoard = {
 
 	// Create job editing modal
 	createJobEditModal: (job) => {
-		const handleSave = () => {
+		const handleSave = async () => {
 			const modal = document.querySelector(".kanban-job-edit-modal");
 			const form = modal.querySelector("form");
 
@@ -350,7 +350,7 @@ const KanbanBoard = {
 
 			// Validation
 			if (!updatedJob.company || !updatedJob.position) {
-				alert(I18n.t("validation.companyPositionRequired") || "Company and position are required");
+				await alert(I18n.t("validation.companyPositionRequired") || "Company and position are required");
 				return;
 			}
 

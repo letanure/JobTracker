@@ -106,7 +106,9 @@ const PT_TRANSLATIONS = {
 	},
 	messages: {
 		welcome:
-			"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?\n\nClique OK para adicionar exemplos, ou Cancelar para começar com um rastreador vazio.",
+			"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?",
+		welcomeConfirm: "Sim, adicionar exemplos",
+		welcomeCancel: "Não, deixar vazio",
 		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
 	},
 	demo: {
@@ -190,6 +192,14 @@ const PT_TRANSLATIONS = {
 			save: "Salvar",
 			cancel: "Cancelar",
 			close: "Fechar",
+			ok: "OK",
+			yes: "Sim",
+			no: "Não",
+		},
+		dialogs: {
+			alert: "Alerta",
+			confirm: "Confirmar",
+			prompt: "Entrada Necessária",
 		},
 	},
 	forms: {

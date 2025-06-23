@@ -200,8 +200,8 @@ function cancelInlineEdit(jobId, originalHTMLBase64) {
 }
 
 // Delete job function
-function deleteJob(job) {
-	const confirmed = confirm(
+async function deleteJob(job) {
+	const confirmed = await confirm(
 		I18n.t("messages.confirmDelete", {
 			position: job.position,
 			company: job.company,

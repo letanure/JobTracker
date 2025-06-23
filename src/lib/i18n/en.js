@@ -106,7 +106,9 @@ const EN_TRANSLATIONS = {
 	},
 	messages: {
 		welcome:
-			"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?\n\nClick OK to add examples, or Cancel to start with an empty tracker.",
+			"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?",
+		welcomeConfirm: "Yes, add examples",
+		welcomeCancel: "No, leave empty",
 		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
 	},
 	demo: {
@@ -190,6 +192,14 @@ const EN_TRANSLATIONS = {
 			save: "Save",
 			cancel: "Cancel",
 			close: "Close",
+			ok: "OK",
+			yes: "Yes",
+			no: "No",
+		},
+		dialogs: {
+			alert: "Alert",
+			confirm: "Confirm",
+			prompt: "Input Required",
 		},
 	},
 	forms: {

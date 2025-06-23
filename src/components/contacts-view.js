@@ -240,12 +240,12 @@ const ContactsView = {
 	},
 
 	// Delete contact with confirmation
-	deleteContact: (contact) => {
+	deleteContact: async (contact) => {
 		const confirmMessage = I18n.t("contactsView.deleteConfirmation", {
 			name: contact.name || "this contact",
 		});
 
-		if (confirm(confirmMessage)) {
+		if (await confirm(confirmMessage)) {
 			const jobIndex = jobsData.findIndex((j) => j.id === contact.jobId);
 			if (jobIndex === -1) return;
 
@@ -310,7 +310,7 @@ const ContactsView = {
 	},
 
 	// Show add contact modal
-	showAddContactModal: () => {
+	showAddContactModal: async () => {
 		// Get all jobs for the dropdown
 		const jobOptions = jobsData.map((job) => ({
 			id: job.id,
@@ -318,7 +318,7 @@ const ContactsView = {
 		}));
 
 		if (jobOptions.length === 0) {
-			alert(I18n.t("contactsView.noJobsAvailable"));
+			await alert(I18n.t("contactsView.noJobsAvailable"));
 			return;
 		}
 
@@ -450,7 +450,7 @@ const ContactsView = {
 	},
 
 	// Add new contact
-	addContact: () => {
+	addContact: async () => {
 		const nameInput = document.querySelector(".add-contact-name");
 		const emailInput = document.querySelector(".add-contact-email");
 		const phoneInput = document.querySelector(".add-contact-phone");
@@ -465,13 +465,13 @@ const ContactsView = {
 
 		// Validation
 		if (!name) {
-			alert(I18n.t("contactsView.validation.nameRequired"));
+			await alert(I18n.t("contactsView.validation.nameRequired"));
 			nameInput.focus();
 			return;
 		}
 
 		if (!jobId) {
-			alert(I18n.t("contactsView.validation.jobRequired"));
+			await alert(I18n.t("contactsView.validation.jobRequired"));
 			jobSelect.focus();
 			return;
 		}

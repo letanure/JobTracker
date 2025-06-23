@@ -3,7 +3,7 @@
 // ============================================================================
 
 // Main application initialization
-function initializeApp() {
+async function initializeApp() {
 	// Initialize i18n
 	I18n.init();
 
@@ -31,7 +31,11 @@ function initializeApp() {
 		refreshInterface();
 
 		// Show welcome message for new users
-		const showDemo = confirm(I18n.t("messages.welcome"));
+		const showDemo = await confirm(I18n.t("messages.welcome"), {
+			confirmText: I18n.t("messages.welcomeConfirm"),
+			cancelText: I18n.t("messages.welcomeCancel"), 
+			focusConfirm: true
+		});
 		if (showDemo) {
 			jobsData = getDemoData();
 			originalData = [...jobsData];

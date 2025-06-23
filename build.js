@@ -30,6 +30,7 @@ const BUILD_CONFIG = {
     'src/utils/data.js',
     
     // Components
+    'src/components/dialogs.js',
     'src/components/notes.js',
     'src/components/tasks.js',
     'src/components/contacts.js',
