@@ -34,7 +34,21 @@ const KanbanBoard = {
 				"div",
 				{ className: "kanban-column-title" },
 				h("span", { className: "kanban-column-name" }, columnTitle),
-				h("span", { className: "kanban-column-count" }, phaseJobs.length.toString())
+				h(
+					"div",
+					{ className: "kanban-column-actions" },
+					// Add "Add Job" button for wishlist column (left of counter)
+					phase === "wishlist" && h(
+						"button",
+						{
+							className: "kanban-add-job-btn",
+							onclick: () => KanbanBoard.openAddJobModal(),
+						},
+						h("span", { className: "material-symbols-outlined" }, "add"),
+						I18n.t("kanban.addJob") || "Add Job"
+					),
+					h("span", { className: "kanban-column-count" }, phaseJobs.length.toString())
+				)
 			)
 		);
 
@@ -348,6 +362,42 @@ const KanbanBoard = {
 		document.body.appendChild(modal);
 	},
 
+	// Open add job modal
+	openAddJobModal: () => {
+		// Create a new job object with default values
+		const newJob = {
+			id: Date.now(),
+			priority: "medium",
+			company: "",
+			position: "",
+			appliedDate: new Date().toISOString(),
+			currentPhase: "wishlist",
+			currentSubstep: "wishlist",
+			completedSubsteps: [],
+			salaryRange: "",
+			location: "",
+			sourceUrl: "",
+			notes: [],
+			tasks: [],
+			contacts: [],
+		};
+
+		// Add to jobsData temporarily
+		jobsData.push(newJob);
+
+		// Open the edit modal for the new job
+		const modal = KanbanBoard.createJobEditModal(newJob);
+		modal.classList.add("add-job-modal");
+		
+		// Modify the modal title
+		const title = modal.querySelector(".modal-title");
+		if (title) {
+			title.textContent = I18n.t("kanban.addJob") || "Add Job";
+		}
+
+		document.body.appendChild(modal);
+	},
+
 	// Create job editing modal
 	createJobEditModal: (job) => {
 		const handleSave = async () => {
@@ -656,6 +706,31 @@ const KanbanBoard = {
 	closeJobEditModal: () => {
 		const modal = document.querySelector(".kanban-job-edit-modal");
 		if (modal) {
+			// If this is an add job modal, check if the job should be removed
+			if (modal.classList.contains("add-job-modal")) {
+				// Find the job that was being added
+				const form = modal.querySelector("form");
+				if (form) {
+					const company = form.company?.value?.trim() || "";
+					const position = form.position?.value?.trim() || "";
+					
+					// If both company and position are empty, remove the job
+					if (!company && !position) {
+						// Find the job in jobsData by looking for recent entries with empty fields
+						const jobToRemove = jobsData.find(job => 
+							!job.company && !job.position && job.currentPhase === "wishlist"
+						);
+						if (jobToRemove) {
+							const index = jobsData.findIndex(j => j.id === jobToRemove.id);
+							if (index !== -1) {
+								jobsData.splice(index, 1);
+								saveToLocalStorage();
+								KanbanBoard.refresh();
+							}
+						}
+					}
+				}
+			}
 			modal.remove();
 		}
 	},

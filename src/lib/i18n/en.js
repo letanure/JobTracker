@@ -28,6 +28,7 @@ const EN_TRANSLATIONS = {
 		title: "Applications Board",
 		totalJobs: "{count} total applications",
 		editJob: "Edit Job",
+		addJob: "Add Job",
 	},
 	table: {
 		headers: {

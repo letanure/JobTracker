@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T16:52:55.322Z
-Cache Version: 1750697575322
+Generated: 2025-06-23T16:58:16.123Z
+Cache Version: 1750697896123
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750697575322
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750697575322">
-    <meta name="build-date" content="2025-06-23T16:52:55.322Z">
+    <meta name="build-version" content="1750697896123">
+    <meta name="build-date" content="2025-06-23T16:58:16.123Z">
     <style>
 
 /* ============================================================================ */
@@ -2025,6 +2025,12 @@ td .zero-count:hover {
 	color: var(--text-color);
 }
 
+.kanban-column-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .kanban-column-count {
 	background: var(--gray-200);
 	color: var(--gray-700);
@@ -2034,6 +2040,34 @@ td .zero-count:hover {
 	font-weight: 500;
 	min-width: 20px;
 	text-align: center;
+}
+
+.kanban-add-job-btn {
+	background: var(--gray-50);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+	padding: 2px 6px;
+	border-radius: 6px;
+	font-size: 12px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	height: 20px;
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.kanban-add-job-btn:hover {
+	background-color: var(--gray-100);
+	border-color: var(--gray-300);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.kanban-add-job-btn .material-symbols-outlined {
+	font-size: 12px;
+	font-weight: 400;
 }
 
 .kanban-column-body {
@@ -4501,16 +4535,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750697575322';
-window.BUILD_DATE = '2025-06-23T16:52:55.322Z';
+window.BUILD_VERSION = '1750697896123';
+window.BUILD_DATE = '2025-06-23T16:58:16.123Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T16:52:55.316Z
+// Generated: 2025-06-23T16:58:16.117Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T16:52:55.316Z");
+console.log("JobTracker - Built at: 2025-06-23T16:58:16.117Z");
 
 
 // ============================================================================
@@ -4805,6 +4839,7 @@ const EN_TRANSLATIONS = {
 		title: "Applications Board",
 		totalJobs: "{count} total applications",
 		editJob: "Edit Job",
+		addJob: "Add Job",
 	},
 	table: {
 		headers: {
@@ -5079,6 +5114,7 @@ const PT_TRANSLATIONS = {
 		title: "Quadro de Candidaturas",
 		totalJobs: "{count} candidaturas no total",
 		editJob: "Editar Vaga",
+		addJob: "Adicionar Vaga",
 	},
 	table: {
 		headers: {
@@ -10408,7 +10444,21 @@ const KanbanBoard = {
 				"div",
 				{ className: "kanban-column-title" },
 				h("span", { className: "kanban-column-name" }, columnTitle),
-				h("span", { className: "kanban-column-count" }, phaseJobs.length.toString())
+				h(
+					"div",
+					{ className: "kanban-column-actions" },
+					// Add "Add Job" button for wishlist column (left of counter)
+					phase === "wishlist" && h(
+						"button",
+						{
+							className: "kanban-add-job-btn",
+							onclick: () => KanbanBoard.openAddJobModal(),
+						},
+						h("span", { className: "material-symbols-outlined" }, "add"),
+						I18n.t("kanban.addJob") || "Add Job"
+					),
+					h("span", { className: "kanban-column-count" }, phaseJobs.length.toString())
+				)
 			)
 		);
 
@@ -10722,6 +10772,42 @@ const KanbanBoard = {
 		document.body.appendChild(modal);
 	},
 
+	// Open add job modal
+	openAddJobModal: () => {
+		// Create a new job object with default values
+		const newJob = {
+			id: Date.now(),
+			priority: "medium",
+			company: "",
+			position: "",
+			appliedDate: new Date().toISOString(),
+			currentPhase: "wishlist",
+			currentSubstep: "wishlist",
+			completedSubsteps: [],
+			salaryRange: "",
+			location: "",
+			sourceUrl: "",
+			notes: [],
+			tasks: [],
+			contacts: [],
+		};
+
+		// Add to jobsData temporarily
+		jobsData.push(newJob);
+
+		// Open the edit modal for the new job
+		const modal = KanbanBoard.createJobEditModal(newJob);
+		modal.classList.add("add-job-modal");
+		
+		// Modify the modal title
+		const title = modal.querySelector(".modal-title");
+		if (title) {
+			title.textContent = I18n.t("kanban.addJob") || "Add Job";
+		}
+
+		document.body.appendChild(modal);
+	},
+
 	// Create job editing modal
 	createJobEditModal: (job) => {
 		const handleSave = async () => {
@@ -11030,6 +11116,31 @@ const KanbanBoard = {
 	closeJobEditModal: () => {
 		const modal = document.querySelector(".kanban-job-edit-modal");
 		if (modal) {
+			// If this is an add job modal, check if the job should be removed
+			if (modal.classList.contains("add-job-modal")) {
+				// Find the job that was being added
+				const form = modal.querySelector("form");
+				if (form) {
+					const company = form.company?.value?.trim() || "";
+					const position = form.position?.value?.trim() || "";
+					
+					// If both company and position are empty, remove the job
+					if (!company && !position) {
+						// Find the job in jobsData by looking for recent entries with empty fields
+						const jobToRemove = jobsData.find(job => 
+							!job.company && !job.position && job.currentPhase === "wishlist"
+						);
+						if (jobToRemove) {
+							const index = jobsData.findIndex(j => j.id === jobToRemove.id);
+							if (index !== -1) {
+								jobsData.splice(index, 1);
+								saveToLocalStorage();
+								KanbanBoard.refresh();
+							}
+						}
+					}
+				}
+			}
 			modal.remove();
 		}
 	},

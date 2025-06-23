@@ -28,6 +28,7 @@ const PT_TRANSLATIONS = {
 		title: "Quadro de Candidaturas",
 		totalJobs: "{count} candidaturas no total",
 		editJob: "Editar Vaga",
+		addJob: "Adicionar Vaga",
 	},
 	table: {
 		headers: {
