@@ -1182,6 +1182,8 @@ td .zero-count:hover {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+	height: 100%;
+	overflow: hidden;
 }
 
 .kanban-header {
@@ -1209,6 +1211,7 @@ td .zero-count:hover {
 	padding: 8px 0;
 	flex: 1;
 	align-items: stretch;
+	height: 100%;
 }
 
 .kanban-column {
@@ -1219,8 +1222,8 @@ td .zero-count:hover {
 	border: var(--border-width) solid var(--border-color);
 	display: flex;
 	flex-direction: column;
-	height: 100%;
 	transition: var(--transition-fast);
+	max-height: 100%;
 }
 
 .kanban-column.drag-active {
@@ -1304,6 +1307,7 @@ td .zero-count:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+	min-height: 0;
 }
 
 .kanban-job-card {
