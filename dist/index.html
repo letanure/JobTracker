@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T21:24:46.875Z
-Cache Version: 1750713886875
+Generated: 2025-06-23T21:27:47.997Z
+Cache Version: 1750714067997
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750713886875
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750713886875">
-    <meta name="build-date" content="2025-06-23T21:24:46.875Z">
+    <meta name="build-version" content="1750714067997">
+    <meta name="build-date" content="2025-06-23T21:27:47.997Z">
     <style>
 
 /* ============================================================================ */
@@ -5186,16 +5186,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750713886875';
-window.BUILD_DATE = '2025-06-23T21:24:46.875Z';
+window.BUILD_VERSION = '1750714067997';
+window.BUILD_DATE = '2025-06-23T21:27:47.997Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T21:24:46.867Z
+// Generated: 2025-06-23T21:27:47.989Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T21:24:46.867Z");
+console.log("JobTracker - Built at: 2025-06-23T21:27:47.989Z");
 
 
 // ============================================================================
@@ -12465,6 +12465,15 @@ const TasksBoard = {
 			draggable: true,
 			"data-task-id": task.id,
 			"data-job-id": task.jobId,
+		});
+
+		// Add click event listener to open task editing
+		card.addEventListener("click", (e) => {
+			// Don't trigger if clicking on action buttons
+			if (e.target.closest('.tasks-icon-btn')) {
+				return;
+			}
+			TasksBoard.openTaskEditModal(task);
 		});
 
 		// Add drag event listeners

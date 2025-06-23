@@ -105,6 +105,15 @@ const TasksBoard = {
 			"data-job-id": task.jobId,
 		});
 
+		// Add click event listener to open task editing
+		card.addEventListener("click", (e) => {
+			// Don't trigger if clicking on action buttons
+			if (e.target.closest('.tasks-icon-btn')) {
+				return;
+			}
+			TasksBoard.openTaskEditModal(task);
+		});
+
 		// Add drag event listeners
 		card.addEventListener("dragstart", (e) => TasksBoard.handleDragStart(e, task));
 		card.addEventListener("dragend", TasksBoard.handleDragEnd);
