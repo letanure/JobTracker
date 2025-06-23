@@ -354,15 +354,14 @@ const KanbanBoard = {
 		// Add option groups for each phase
 		PHASES.forEach(phase => {
 			const selectedSubsteps = job.selectedSubsteps?.[phase] || [];
-			const availableSubsteps = selectedSubsteps.length > 0 ? selectedSubsteps : getSubstepsForPhase(phase);
 			
-			// Only show phases that have substeps
-			if (availableSubsteps.length > 0) {
+			// Only show phases that have selected substeps
+			if (selectedSubsteps.length > 0) {
 				// Create optgroup for this phase
 				const optgroup = h("optgroup", { label: getPhaseText(phase) });
 				
 				// Add substep options only (no phase-level option)
-				availableSubsteps.forEach(substep => {
+				selectedSubsteps.forEach(substep => {
 					const substepOption = h("option", { 
 						value: `${phase}:${substep}`,
 						selected: job.currentPhase === phase && job.currentSubstep === substep
@@ -375,6 +374,43 @@ const KanbanBoard = {
 		});
 
 		return select;
+	},
+
+	// Refresh current step selector when workflow changes
+	refreshCurrentStepSelector: (modal, job) => {
+		const currentStepSelector = modal.querySelector('.current-step-selector');
+		if (currentStepSelector) {
+			// Store the current value before replacement
+			const currentValue = currentStepSelector.value;
+			
+			// Create new selector
+			const newSelector = KanbanBoard.createCurrentStepSelector(job);
+			
+			// Check if the current value is still valid in the new selector
+			const isCurrentValueStillValid = newSelector.querySelector(`option[value="${currentValue}"]`);
+			
+			// If current value is still valid, preserve it; otherwise go to first available
+			if (isCurrentValueStillValid) {
+				newSelector.value = currentValue;
+			} else {
+				// Find the first available option and select it
+				const firstOption = newSelector.querySelector('option[value]');
+				if (firstOption) {
+					newSelector.value = firstOption.value;
+					// Update the job's current step to match the first available option
+					const [phase, substep] = firstOption.value.split(':');
+					job.currentPhase = phase;
+					job.currentSubstep = substep;
+				} else {
+					// No options available, clear current step
+					job.currentPhase = null;
+					job.currentSubstep = null;
+				}
+			}
+			
+			// Replace the old one
+			currentStepSelector.parentNode.replaceChild(newSelector, currentStepSelector);
+		}
 	},
 
 	// Handle current step change
@@ -576,17 +612,15 @@ const KanbanBoard = {
 			phaseToggle.classList.remove('has-substeps');
 		}
 
-		// If this substep was the current one and we're removing it, update current substep
+		// If this substep was the current one and we're removing it, clear current substep
 		if (isSelected && job.currentSubstep === substep) {
-			// Set to phase name as default
-			job.currentSubstep = phase;
-			// Update the input field
-			const modal = e.target.closest('.modal');
-			const substepInput = modal.querySelector('input[name="substep"]');
-			if (substepInput) {
-				substepInput.value = getPhaseText(phase);
-			}
+			// Clear current substep
+			job.currentSubstep = null;
+			job.currentPhase = null;
 		}
+
+		// Refresh the current step selector to reflect new available substeps
+		KanbanBoard.refreshCurrentStepSelector(e.target.closest('.modal'), job);
 
 		// Save changes
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
@@ -643,6 +677,9 @@ const KanbanBoard = {
 		if (currentPhaseElement) {
 			currentPhaseElement.classList.add('current-phase');
 		}
+
+		// Refresh the current step selector to reflect the new selection
+		KanbanBoard.refreshCurrentStepSelector(modal, job);
 
 		// Save changes
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
