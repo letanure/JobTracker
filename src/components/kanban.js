@@ -78,7 +78,12 @@ const KanbanBoard = {
 			"div",
 			{ className: "kanban-job-header" },
 			h("span", { className: "material-symbols-outlined kanban-job-icon" }, "business"),
-			h("span", { className: "kanban-job-title" }, `${job.company} — ${job.position}`)
+			h(
+				"div",
+				{ className: "kanban-job-title" },
+				h("div", { className: "kanban-job-company" }, job.company),
+				h("div", { className: "kanban-job-position" }, job.position)
+			)
 		);
 
 		// Current phase with substeps progression

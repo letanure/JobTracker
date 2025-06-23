@@ -1280,10 +1280,26 @@ td .zero-count:hover {
 }
 
 .kanban-job-title {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	flex: 1;
+}
+
+.kanban-job-company {
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--text-color);
 	line-height: 1.3;
+	word-break: break-word;
+}
+
+.kanban-job-position {
+	font-size: 13px;
+	font-weight: 400;
+	color: var(--gray-600);
+	line-height: 1.3;
+	word-break: break-word;
 }
 
 .kanban-phase-section {
