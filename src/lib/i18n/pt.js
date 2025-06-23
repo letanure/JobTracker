@@ -18,6 +18,7 @@ const PT_TRANSLATIONS = {
 		taskRequired: "Por favor, digite uma descrição da tarefa",
 	},
 	tabs: {
+		dashboard: "Painel",
 		jobs: "Empregos",
 		applications: "Quadro de Candidaturas",
 		tasks: "Quadro de Tarefas",
@@ -26,6 +27,7 @@ const PT_TRANSLATIONS = {
 		profile: "Perfil",
 	},
 	headers: {
+		dashboard: "Painel",
 		jobs: "Candidaturas a Empregos",
 		applications: "Quadro de Candidaturas",
 		tasks: "Quadro de Tarefas",
@@ -300,6 +302,31 @@ const PT_TRANSLATIONS = {
 		validation: {
 			nameRequired: "Nome é obrigatório",
 			jobRequired: "Por favor selecione uma vaga",
+		},
+	},
+	dashboard: {
+		stats: {
+			title: "Visão Geral",
+			totalJobs: "Total de Vagas",
+			activeTasks: "Tarefas Ativas",
+			totalContacts: "Total de Contatos",
+			totalNotes: "Total de Notas",
+			activeApplications: "Candidaturas Ativas",
+			interviews: "Entrevistas",
+			offers: "Ofertas",
+			thisWeek: "Esta Semana",
+		},
+		todayTasks: {
+			title: "Tarefas de Hoje",
+			noTasks: "Nenhuma tarefa agendada para hoje",
+		},
+		tomorrowTasks: {
+			title: "Tarefas de Amanhã",
+			noTasks: "Nenhuma tarefa agendada para amanhã",
+		},
+		recentActivity: {
+			title: "Atividade Recente",
+			noActivity: "Nenhuma atividade recente",
 		},
 	},
 };

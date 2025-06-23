@@ -42,6 +42,7 @@ const BUILD_CONFIG = {
     'src/components/calendar-view.js',
     'src/components/contacts-view.js',
     'src/components/table.js',
+    'src/components/dashboard.js',
     
     // Application modules
     'src/app/stats.js',
@@ -55,7 +56,8 @@ const BUILD_CONFIG = {
     'src/styles/base.css',
     'src/styles/layout.css', 
     'src/styles/components.css',
-    'src/styles/table.css'
+    'src/styles/table.css',
+    'src/styles/dashboard.css'
   ],
   
   // HTML template

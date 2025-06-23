@@ -8,6 +8,7 @@ const TabNavigation = {
 
 	// Available tabs configuration
 	tabs: [
+		{ id: "dashboard", key: "tabs.dashboard", icon: "home" },
 		{ id: "jobs", key: "tabs.jobs", icon: "work" },
 		{ id: "applications", key: "tabs.applications", icon: "dashboard" },
 		{ id: "tasks", key: "tabs.tasks", icon: "task_alt" },
@@ -111,6 +112,10 @@ const TabNavigation = {
 	// Handle tab-specific initialization and updates
 	handleTabSwitch: (tabId) => {
 		switch (tabId) {
+			case "dashboard":
+				// Initialize dashboard if needed
+				TabNavigation.initializeDashboard();
+				break;
 			case "jobs":
 				// Refresh jobs table if needed
 				if (typeof refreshInterface === "function") {
@@ -133,6 +138,13 @@ const TabNavigation = {
 				// Initialize contacts view if needed
 				TabNavigation.initializeContactsView();
 				break;
+		}
+	},
+
+	// Initialize dashboard
+	initializeDashboard: () => {
+		if (typeof Dashboard !== "undefined") {
+			Dashboard.init();
 		}
 	},
 

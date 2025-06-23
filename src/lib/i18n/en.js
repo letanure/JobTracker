@@ -18,6 +18,7 @@ const EN_TRANSLATIONS = {
 		taskRequired: "Please enter a task description",
 	},
 	tabs: {
+		dashboard: "Dashboard",
 		jobs: "Jobs",
 		applications: "Applications Board",
 		tasks: "Tasks Board",
@@ -26,6 +27,7 @@ const EN_TRANSLATIONS = {
 		profile: "Profile",
 	},
 	headers: {
+		dashboard: "Dashboard",
 		jobs: "Job Applications",
 		applications: "Applications Board",
 		tasks: "Tasks Board",
@@ -299,6 +301,31 @@ const EN_TRANSLATIONS = {
 		validation: {
 			nameRequired: "Name is required",
 			jobRequired: "Please select a job",
+		},
+	},
+	dashboard: {
+		stats: {
+			title: "Overview",
+			totalJobs: "Total Jobs",
+			activeTasks: "Active Tasks",
+			totalContacts: "Total Contacts",
+			totalNotes: "Total Notes",
+			activeApplications: "Active Applications",
+			interviews: "Interviews",
+			offers: "Offers",
+			thisWeek: "This Week",
+		},
+		todayTasks: {
+			title: "Today's Tasks",
+			noTasks: "No tasks scheduled for today",
+		},
+		tomorrowTasks: {
+			title: "Tomorrow's Tasks",
+			noTasks: "No tasks scheduled for tomorrow",
+		},
+		recentActivity: {
+			title: "Recent Activity",
+			noActivity: "No recent activity",
 		},
 	},
 };
