@@ -9,6 +9,14 @@ const PT_TRANSLATIONS = {
 	buttons: {
 		addApplication: "+ Adicionar Candidatura",
 	},
+	common: {
+		viewJob: "Ver Vaga",
+		chooseJob: "Escolha uma vaga...",
+	},
+	validation: {
+		jobRequired: "Por favor, selecione uma vaga",
+		taskRequired: "Por favor, digite uma descrição da tarefa",
+	},
 	tabs: {
 		jobs: "Empregos",
 		applications: "Quadro de Candidaturas",

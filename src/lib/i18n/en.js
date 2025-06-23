@@ -9,6 +9,14 @@ const EN_TRANSLATIONS = {
 	buttons: {
 		addApplication: "+ Add Application",
 	},
+	common: {
+		viewJob: "View Job",
+		chooseJob: "Choose a job...",
+	},
+	validation: {
+		jobRequired: "Please select a job",
+		taskRequired: "Please enter a task description",
+	},
 	tabs: {
 		jobs: "Jobs",
 		applications: "Applications Board",

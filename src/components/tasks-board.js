@@ -147,7 +147,7 @@ const TasksBoard = {
 				"button",
 				{
 					className: "tasks-icon-btn",
-					title: "Edit Task",
+					title: I18n.t("modals.tasks.editTitle") || "Edit Task",
 					onclick: (e) => {
 						e.stopPropagation();
 						TasksBoard.openTaskEditModal(task);
@@ -160,7 +160,7 @@ const TasksBoard = {
 				"button",
 				{
 					className: "tasks-icon-btn",
-					title: "View Job",
+					title: I18n.t("common.viewJob") || "View Job",
 					onclick: (e) => {
 						e.stopPropagation();
 						TasksBoard.openJobModal(task);
@@ -295,12 +295,12 @@ const TasksBoard = {
 
 			// Validation
 			if (!jobId) {
-				await alert("Please select a job");
+				await alert(I18n.t("validation.jobRequired") || "Please select a job");
 				return;
 			}
 
 			if (!taskText) {
-				await alert("Please enter a task description");
+				await alert(I18n.t("validation.taskRequired") || "Please enter a task description");
 				return;
 			}
 
@@ -379,7 +379,7 @@ const TasksBoard = {
 							h(
 								"select",
 								{ name: "jobSelect", required: true, className: "add-task-job-select" },
-								h("option", { value: "" }, "Choose a job..."),
+								h("option", { value: "" }, I18n.t("common.chooseJob") || "Choose a job..."),
 								...jobOptions.map((job) => h("option", { value: job.id }, job.text))
 							)
 						),
