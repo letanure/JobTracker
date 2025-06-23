@@ -238,6 +238,11 @@ function updateUILanguage() {
 		setupFilters();
 	}
 
+	// Update dashboard if it's the active tab
+	if (typeof Dashboard !== "undefined" && TabNavigation.activeTab === "dashboard") {
+		Dashboard.refresh();
+	}
+
 	// Re-render the table to update all dynamic content
 	if (typeof refreshInterface === "function") {
 		refreshInterface();
