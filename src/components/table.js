@@ -18,11 +18,11 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		"tr",
 		{ "data-job-id": job.id },
 		PriorityCell({ priority: job.priority }),
-		h("td", { className: "company-name" }, job.company),
-		h("td", { className: "position-name" }, job.position),
+		h("td", { className: "company-name", title: job.company }, job.company),
+		h("td", { className: "position-name", title: job.position }, job.position),
 		h(
 			"td",
-			{ className: "current-phase" },
+			{ className: "current-phase", title: `${getPhaseText(job.currentPhase)}${job.currentSubstep ? ` - ${getSubstepText(job.currentSubstep)}` : ''}` },
 			h(
 				"div",
 				{ className: "phase-display" },
@@ -32,8 +32,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 					: null
 			)
 		),
-		h("td", { className: "salary" }, job.salaryRange),
-		h("td", { className: "location" }, job.location),
+		h("td", { className: "salary", title: job.salaryRange }, job.salaryRange),
+		h("td", { className: "location", title: job.location }, job.location),
 		h(
 			"td",
 			{ className: "source-url" },

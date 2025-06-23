@@ -838,11 +838,13 @@ td .zero-count {
 	background: var(--gray-100);
 	color: var(--gray-500);
 	cursor: default;
+	border-color: var(--gray-200);
 }
 
 td .zero-count:hover {
 	background: var(--gray-100);
 	color: var(--gray-500);
+	border-color: var(--gray-200);
 }
 
 /* Priority indicators */

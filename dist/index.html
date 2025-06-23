@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T12:30:57.760Z
-Cache Version: 1750681857760
+Generated: 2025-06-23T12:49:07.837Z
+Cache Version: 1750682947837
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750681857760
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750681857760">
-    <meta name="build-date" content="2025-06-23T12:30:57.760Z">
+    <meta name="build-version" content="1750682947837">
+    <meta name="build-date" content="2025-06-23T12:49:07.837Z">
     <style>
 
 /* ============================================================================ */
@@ -1660,11 +1660,13 @@ td .zero-count {
 	background: var(--gray-100);
 	color: var(--gray-500);
 	cursor: default;
+	border-color: var(--gray-200);
 }
 
 td .zero-count:hover {
 	background: var(--gray-100);
 	color: var(--gray-500);
+	border-color: var(--gray-200);
 }
 
 /* Priority indicators */
@@ -3508,8 +3510,8 @@ td {
 	font-weight: 400;
 	color: var(--text-color);
 	font-size: 14px;
-	height: 60px;
-	max-height: 60px;
+	height: 64px;
+	max-height: 64px;
 	box-sizing: border-box;
 	overflow: hidden;
 }
@@ -3591,6 +3593,10 @@ tbody tr {
 .location {
 	color: var(--text-light);
 	font-size: 14px;
+	max-width: 120px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .contact {
@@ -3658,18 +3664,16 @@ tr.editing {
 tr.editing td {
 	background-color: transparent;
 	padding: 0;
-	height: 60px;
+	height: 64px;
 }
 
 /* Phase cell for editing */
 .phase-cell {
-	height: 60px;
-	max-height: 60px;
+	height: 64px;
+	max-height: 64px;
 	padding: 0;
-	box-sizing: border-box;
 	overflow: hidden;
-	display: flex;
-	flex-direction: column;
+	box-sizing: border-box;
 }
 
 .phase-cell .inline-edit {
@@ -3681,8 +3685,9 @@ tr.editing td {
 	margin: 0;
 	box-sizing: border-box;
 	width: 100%;
-	background: var(--white);
+	background: transparent;
 	color: var(--text-color);
+	display: block;
 }
 
 .phase-cell .inline-edit:first-child {
@@ -3701,10 +3706,10 @@ tr.editing td {
 	border: none;
 	border-radius: 0;
 	font-size: var(--font-size-xs);
-	background: var(--white);
+	background: transparent;
 	color: var(--text-color);
 	transition: var(--transition-fast);
-	height: 60px;
+	height: 64px;
 	box-sizing: border-box;
 }
 
@@ -3717,12 +3722,12 @@ tr.editing td {
 .priority-select {
 	text-align: center;
 	width: 100%;
-	height: 60px;
+	height: 64px;
 	padding: 12px;
 	border: none;
 	border-radius: 0;
 	font-size: var(--font-size-xs);
-	background: var(--white);
+	background: transparent;
 	color: var(--text-color);
 	box-sizing: border-box;
 }
@@ -4163,16 +4168,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750681857760';
-window.BUILD_DATE = '2025-06-23T12:30:57.760Z';
+window.BUILD_VERSION = '1750682947837';
+window.BUILD_DATE = '2025-06-23T12:49:07.837Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T12:30:57.755Z
+// Generated: 2025-06-23T12:49:07.830Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T12:30:57.755Z");
+console.log("JobTracker - Built at: 2025-06-23T12:49:07.830Z");
 
 
 // ============================================================================
@@ -11457,11 +11462,11 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 		"tr",
 		{ "data-job-id": job.id },
 		PriorityCell({ priority: job.priority }),
-		h("td", { className: "company-name" }, job.company),
-		h("td", { className: "position-name" }, job.position),
+		h("td", { className: "company-name", title: job.company }, job.company),
+		h("td", { className: "position-name", title: job.position }, job.position),
 		h(
 			"td",
-			{ className: "current-phase" },
+			{ className: "current-phase", title: `${getPhaseText(job.currentPhase)}${job.currentSubstep ? ` - ${getSubstepText(job.currentSubstep)}` : ''}` },
 			h(
 				"div",
 				{ className: "phase-display" },
@@ -11471,8 +11476,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 					: null
 			)
 		),
-		h("td", { className: "salary" }, job.salaryRange),
-		h("td", { className: "location" }, job.location),
+		h("td", { className: "salary", title: job.salaryRange }, job.salaryRange),
+		h("td", { className: "location", title: job.location }, job.location),
 		h(
 			"td",
 			{ className: "source-url" },
