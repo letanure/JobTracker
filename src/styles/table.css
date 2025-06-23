@@ -12,6 +12,7 @@ table {
 	border-spacing: 0;
 	font-size: 14px;
 	line-height: 1.45;
+	table-layout: fixed;
 }
 
 th {
@@ -303,9 +304,10 @@ tr.editing .actions-cell button {
 	font-size: var(--font-size-sm);
 }
 
-/* Notes and Tasks table layouts - GitHub style */
+/* Unified table layouts - GitHub style */
 .notes-table,
-.tasks-table {
+.tasks-table,
+.contacts-table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
@@ -314,16 +316,17 @@ tr.editing .actions-cell button {
 	border: 1px solid var(--border-color);
 	border-radius: 8px;
 	overflow: hidden;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 }
 
 .notes-table th,
-.tasks-table th {
+.tasks-table th,
+.contacts-table th {
 	background: var(--gray-50);
 	padding: 8px 12px;
 	text-align: left;
 	font-weight: 600;
-	font-size: 12px;
+	font-size: var(--font-size-xs);
 	color: var(--gray-700);
 	border-bottom: 1px solid var(--border-color);
 	position: sticky;
@@ -332,23 +335,68 @@ tr.editing .actions-cell button {
 }
 
 .notes-table td,
-.tasks-table td {
+.tasks-table td,
+.contacts-table td {
 	padding: 8px 12px;
 	border-bottom: 1px solid var(--border-light);
 	vertical-align: middle;
 	background: var(--white);
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	height: 44px;
 }
 
 .notes-table tr:last-child td,
-.tasks-table tr:last-child td {
+.tasks-table tr:last-child td,
+.contacts-table tr:last-child td {
 	border-bottom: none;
 }
 
 .notes-table tr:hover,
-.tasks-table tr:hover {
+.tasks-table tr:hover,
+.contacts-table tr:hover {
 	background: var(--background-color);
+}
+
+/* Ensure all notes table cells have consistent height behavior */
+.notes-table td {
+	vertical-align: top;
+	height: auto;
+	min-height: 44px;
+}
+
+.notes-table .note-text-cell {
+	word-wrap: break-word;
+	white-space: normal;
+	max-width: 300px;
+	line-height: 1.4;
+}
+
+/* Fixed column widths for notes table */
+.notes-table th:nth-child(1),
+.notes-table td:nth-child(1) {
+	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+}
+
+.notes-table th:nth-child(2),
+.notes-table td:nth-child(2) {
+	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+}
+
+.notes-table th:nth-child(3),
+.notes-table td:nth-child(3) {
+	width: auto;
+	min-width: 200px;
+}
+
+.notes-table th:nth-child(4),
+.notes-table td:nth-child(4) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
 }
 
 /* Prevent line breaking in specific columns */
@@ -365,8 +413,27 @@ tr.editing .actions-cell button {
 }
 
 .notes-table-actions,
-.tasks-table-actions {
+.tasks-table-actions,
+.contacts-table-actions {
 	white-space: nowrap;
+	width: auto;
+	min-width: fit-content;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	justify-content: center;
+	flex-wrap: nowrap;
+	height: 100%;
+	vertical-align: top;
+}
+
+.notes-table-actions .action-btn,
+.tasks-table-actions .action-btn,
+.contacts-table-actions .action-btn {
+	flex-shrink: 0;
+	min-width: 24px;
+	width: 24px;
+	height: 24px;
 }
 
 /* Task two-row layout - GitHub style */
@@ -399,12 +466,48 @@ tr.editing .actions-cell button {
 	display: inline-block;
 	padding: 2px 8px;
 	border-radius: 12px;
-	font-size: 11px;
+	font-size: var(--font-size-xs);
 	font-weight: 500;
 	border: none;
 	cursor: default;
 	min-width: 60px;
 	text-align: center;
+}
+
+/* Fixed column widths to prevent shifting during edit mode */
+.tasks-table th:nth-child(1),
+.tasks-table td:nth-child(1) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
+}
+
+.tasks-table th:nth-child(2),
+.tasks-table td:nth-child(2) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
+}
+
+.tasks-table th:nth-child(3),
+.tasks-table td:nth-child(3) {
+	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+}
+
+.tasks-table th:nth-child(4),
+.tasks-table td:nth-child(4) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
+}
+
+.tasks-table th:nth-child(5),
+.tasks-table td:nth-child(5) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
 }
 
 .task-status-display {
@@ -443,17 +546,11 @@ tr.editing .actions-cell button {
 }
 
 /* Task date and duration styling */
-.task-due-date-display, .task-duration-display {
-	font-family: var(--font-mono, monospace);
-	font-size: 12px;
-	color: var(--gray-600);
-}
-
+.task-due-date-display,
 .task-duration-display {
-	background: var(--gray-50);
-	padding: 2px 6px;
-	border-radius: 4px;
-	border: 1px solid var(--gray-200);
+	font-family: inherit;
+	font-size: 14px;
+	color: var(--text-color);
 }
 
 /* Task text row styling */
@@ -500,6 +597,34 @@ tr.editing .actions-cell button {
 	box-sizing: border-box;
 }
 
+/* Ensure edit inputs maintain column widths */
+.tasks-table .task-status-edit,
+.tasks-table .task-priority-edit,
+.tasks-table .task-due-date-edit,
+.tasks-table .task-duration-edit {
+	width: 100%;
+	padding: 4px 8px;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 14px;
+	box-sizing: border-box;
+	height: 32px;
+}
+
+.contacts-table .inline-edit-input {
+	width: 100%;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 0;
+	font-size: 14px;
+	background: transparent;
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	height: 44px;
+	box-sizing: border-box;
+}
+
 .notes-table .inline-edit:focus,
 .tasks-table .inline-edit:focus {
 	outline: 2px solid var(--blue-500);
@@ -520,66 +645,30 @@ tr.editing .actions-cell button {
 
 /* Notes textarea specific styling */
 .notes-table textarea.inline-edit {
-	resize: none;
+	resize: vertical;
 	height: auto;
-	min-height: 32px;
+	min-height: 44px;
 	line-height: 1.4;
 	overflow: hidden;
+	rows: 2;
 }
 
 /* Task description textarea in second row */
-.tasks-table .task-text-row textarea.inline-edit {
-	height: 28px;
-	min-height: 28px;
+.tasks-table .task-text-row textarea.inline-edit,
+.tasks-table .task-text-edit {
+	height: auto;
+	min-height: 44px;
 	font-style: italic;
 	color: var(--gray-600);
-	padding: 2px 8px;
+	padding: 8px;
+	rows: 2;
+	line-height: 1.4;
+	resize: vertical;
 }
 
-/* Contacts table layout (Excel-like) - GitHub style */
-.contacts-table {
-	width: 100%;
-	border-collapse: separate;
-	border-spacing: 0;
-	margin-bottom: 16px;
-	background: var(--white);
-	border: 1px solid var(--border-color);
-	border-radius: 8px;
-	overflow: hidden;
-	font-size: 14px;
-}
-
-.contacts-table th {
-	background: var(--gray-50);
-	padding: 8px 12px;
-	text-align: left;
-	font-weight: 600;
-	font-size: 12px;
-	color: var(--gray-700);
-	border-bottom: 1px solid var(--border-color);
-	position: sticky;
-	top: 0;
-	white-space: nowrap;
-}
-
-.contacts-table td {
-	padding: 8px 12px;
-	border-bottom: 1px solid var(--border-light);
-	vertical-align: middle;
-	background: var(--white);
-	font-size: 14px;
-	height: 44px;
-}
+/* Contacts table specific styles */
 .contacts-table td a {
 	color: var(--text-color);
-}
-
-.contacts-table tr:last-child td {
-	border-bottom: none;
-}
-
-.contacts-table tr:hover {
-	background: var(--background-color);
 }
 
 /* Contacts table inline editing */
@@ -612,6 +701,7 @@ tr.editing .actions-cell button {
 	transition: var(--transition-fast);
 	height: 44px;
 	box-sizing: border-box;
+	box-shadow: none;
 }
 
 .contacts-table .inline-edit-input:focus {
@@ -641,6 +731,35 @@ tr.editing .actions-cell button {
 .contacts-table .contact-company {
 	color: var(--gray-600);
 	font-style: italic;
+}
+
+/* Fixed column widths for contacts table */
+.contacts-table th:nth-child(1),
+.contacts-table td:nth-child(1) {
+	width: 180px;
+	min-width: 180px;
+	max-width: 180px;
+}
+
+.contacts-table th:nth-child(2),
+.contacts-table td:nth-child(2) {
+	width: 220px;
+	min-width: 220px;
+	max-width: 220px;
+}
+
+.contacts-table th:nth-child(3),
+.contacts-table td:nth-child(3) {
+	width: 140px;
+	min-width: 140px;
+	max-width: 140px;
+}
+
+.contacts-table th:nth-child(4),
+.contacts-table td:nth-child(4) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
 }
 
 /* Archived contacts section */

@@ -289,6 +289,112 @@ const ContactsModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
+	const enableContactEditing = (contact, job) => {
+		const contactRow = document.querySelector(`[data-contact-id="${contact.id}"]`);
+		if (!contactRow) return;
+
+		// Mark row as editing
+		contactRow.dataset.editing = "true";
+
+		// Replace each cell content with input
+		const nameCell = contactRow.querySelector(".contact-name-cell");
+		const nameInput = h("input", {
+			type: "text",
+			value: contact.name || "",
+			className: "contact-name-edit inline-edit-input",
+		});
+		nameCell.innerHTML = "";
+		nameCell.appendChild(nameInput);
+
+		const emailCell = contactRow.querySelector(".contact-email-cell");
+		const emailInput = h("input", {
+			type: "email",
+			value: contact.email || "",
+			className: "contact-email-edit inline-edit-input",
+		});
+		emailCell.innerHTML = "";
+		emailCell.appendChild(emailInput);
+
+		const phoneCell = contactRow.querySelector(".contact-phone-cell");
+		const phoneInput = h("input", {
+			type: "tel",
+			value: contact.phone || "",
+			className: "contact-phone-edit inline-edit-input",
+		});
+		phoneCell.innerHTML = "";
+		phoneCell.appendChild(phoneInput);
+
+
+		// Update action buttons
+		const actionsCell = contactRow.querySelector(".contacts-table-actions");
+		const editBtn = actionsCell.querySelector(".edit-contact-btn");
+		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
+		editBtn.title = I18n.t("modals.common.save");
+		editBtn.onclick = () => saveContactChanges(contact, job);
+
+		// Add cancel button
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn icon-btn-transparent",
+			title: I18n.t("modals.common.cancel"),
+			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
+			onclick: () => disableContactEditing(contact, job)
+		});
+		actionsCell.appendChild(cancelBtn);
+
+		// Focus first input
+		nameInput.focus();
+		nameInput.select();
+	};
+
+	const saveContactChanges = (contact, job) => {
+		const contactRow = document.querySelector(`[data-contact-id="${contact.id}"]`);
+		if (!contactRow) return;
+
+		// Get all input values
+		const nameInput = contactRow.querySelector(".contact-name-edit");
+		const emailInput = contactRow.querySelector(".contact-email-edit");
+		const phoneInput = contactRow.querySelector(".contact-phone-edit");
+		const name = nameInput?.value.trim() || "";
+		const email = emailInput?.value.trim() || "";
+		const phone = phoneInput?.value.trim() || "";
+
+		// Validation
+		if (!name) {
+			showValidationError(nameInput, "Name is required for a contact");
+			return;
+		}
+
+		if (email && !email.includes("@")) {
+			showValidationError(emailInput, "Please enter a valid email address");
+			return;
+		}
+
+		// Update contact data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+
+		const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
+		if (contactIndex === -1) return;
+
+		jobsData[jobIndex].contacts[contactIndex].name = name;
+		jobsData[jobIndex].contacts[contactIndex].email = email;
+		jobsData[jobIndex].contacts[contactIndex].phone = phone;
+
+		saveToLocalStorage();
+
+		// Refresh modal
+		refreshContactsModal(job);
+
+		// Update interface
+		refreshInterface();
+	};
+
+	const disableContactEditing = (contact, job) => {
+		// Just refresh the modal to restore display state
+		refreshContactsModal(job);
+	};
+
+	// Legacy function - kept for backward compatibility
 	const editContactField = (contact, field) => {
 		const cell = event.target.closest("td");
 		const currentValue = contact[field] || "";
@@ -435,28 +541,21 @@ const ContactsModal = ({ job, onClose }) => {
 							...sortedActiveContacts.map((contact) =>
 								h(
 									"tr",
-									{ key: contact.id },
+									{ key: contact.id, "data-contact-id": contact.id },
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "name"),
-										},
+										{ className: "contact-name-cell" },
 										contact.name || "—"
 									),
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "email"),
-										},
+										{ className: "contact-email-cell" },
 										contact.email
 											? h(
 													"a",
 													{
 														href: `mailto:${contact.email}`,
 														className: "contact-link",
-														onclick: (e) => e.stopPropagation(),
 													},
 													contact.email
 												)
@@ -464,17 +563,13 @@ const ContactsModal = ({ job, onClose }) => {
 									),
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "phone"),
-										},
+										{ className: "contact-phone-cell" },
 										contact.phone
 											? h(
 													"a",
 													{
 														href: `tel:${contact.phone}`,
 														className: "contact-link",
-														onclick: (e) => e.stopPropagation(),
 													},
 													contact.phone
 												)
@@ -482,15 +577,13 @@ const ContactsModal = ({ job, onClose }) => {
 									),
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "company"),
-										},
-										contact.company || "—"
-									),
-									h(
-										"td",
 										{ className: "contacts-table-actions" },
+										h("button", {
+											className: "action-btn edit-contact-btn icon-btn-transparent",
+											title: I18n.t("modals.contacts.editTitle"),
+											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
+											onclick: () => enableContactEditing(contact, job),
+										}),
 										h("button", {
 											className: "action-btn archive-btn icon-btn-transparent",
 											title: I18n.t("modals.contacts.archiveTitle"),
@@ -551,7 +644,6 @@ const ContactsModal = ({ job, onClose }) => {
 									h("th", {}, I18n.t("modals.contacts.placeholderName")),
 									h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
 									h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
-									h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
 									h("th", {}, "Actions")
 								)
 							),

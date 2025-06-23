@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T13:28:21.371Z
-Cache Version: 1750685301371
+Generated: 2025-06-23T14:03:43.701Z
+Cache Version: 1750687423701
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750685301371
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750685301371">
-    <meta name="build-date" content="2025-06-23T13:28:21.371Z">
+    <meta name="build-version" content="1750687423701">
+    <meta name="build-date" content="2025-06-23T14:03:43.701Z">
     <style>
 
 /* ============================================================================ */
@@ -995,15 +995,15 @@ textarea {
 
 /* Modal form layouts */
 .add-contact-row {
-	margin-top: 16px;
-	padding: 16px;
+	margin-top: 12px;
+	padding: 12px;
 	background: var(--gray-50);
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 }
 
 .add-contact-title {
-	margin: 0 0 12px 0;
+	margin: 0 0 8px 0;
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--text-color);
@@ -1012,7 +1012,7 @@ textarea {
 .contact-form-row {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 12px;
+	gap: 8px;
 	margin-bottom: 0;
 }
 
@@ -1021,12 +1021,12 @@ textarea {
 .add-contact-phone,
 .add-contact-company {
 	width: 100%;
-	padding: 8px 12px;
+	padding: 6px 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	font-size: 14px;
 	background: var(--white);
-	min-height: 32px;
+	min-height: 28px;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -1042,8 +1042,8 @@ textarea {
 /* GitHub-style add forms */
 .add-note-section,
 .add-task-section {
-	margin-top: 16px;
-	padding: 16px;
+	margin-top: 12px;
+	padding: 12px;
 	background: var(--gray-50);
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
@@ -1051,7 +1051,7 @@ textarea {
 
 .add-note-title,
 .add-task-title {
-	margin: 0 0 12px 0;
+	margin: 0 0 8px 0;
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--text-color);
@@ -1060,8 +1060,8 @@ textarea {
 .add-note-textarea {
 	width: 100%;
 	resize: vertical;
-	min-height: 80px;
-	padding: 12px;
+	min-height: 60px;
+	padding: 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	font-size: 14px;
@@ -1086,8 +1086,8 @@ textarea {
 .add-task-textarea {
 	width: 100%;
 	resize: vertical;
-	min-height: 80px;
-	padding: 12px;
+	min-height: 60px;
+	padding: 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	font-size: 14px;
@@ -1105,15 +1105,15 @@ textarea {
 
 .add-task-form-row {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	gap: 12px;
-	margin-bottom: 12px;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
+	margin-bottom: 8px;
 }
 
 .add-task-field {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 2px;
 }
 
 .add-task-field label {
@@ -1127,12 +1127,12 @@ textarea {
 .add-task-due-date,
 .add-task-duration {
 	width: 100%;
-	padding: 8px 12px;
+	padding: 6px 8px;
 	border: 1px solid var(--border-color);
 	border-radius: 6px;
 	font-size: 14px;
 	background: var(--white);
-	min-height: 32px;
+	min-height: 28px;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -3510,6 +3510,7 @@ table {
 	border-spacing: 0;
 	font-size: 14px;
 	line-height: 1.45;
+	table-layout: fixed;
 }
 
 th {
@@ -3801,9 +3802,10 @@ tr.editing .actions-cell button {
 	font-size: var(--font-size-sm);
 }
 
-/* Notes and Tasks table layouts - GitHub style */
+/* Unified table layouts - GitHub style */
 .notes-table,
-.tasks-table {
+.tasks-table,
+.contacts-table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
@@ -3812,16 +3814,17 @@ tr.editing .actions-cell button {
 	border: 1px solid var(--border-color);
 	border-radius: 8px;
 	overflow: hidden;
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 }
 
 .notes-table th,
-.tasks-table th {
+.tasks-table th,
+.contacts-table th {
 	background: var(--gray-50);
 	padding: 8px 12px;
 	text-align: left;
 	font-weight: 600;
-	font-size: 12px;
+	font-size: var(--font-size-xs);
 	color: var(--gray-700);
 	border-bottom: 1px solid var(--border-color);
 	position: sticky;
@@ -3830,23 +3833,68 @@ tr.editing .actions-cell button {
 }
 
 .notes-table td,
-.tasks-table td {
+.tasks-table td,
+.contacts-table td {
 	padding: 8px 12px;
 	border-bottom: 1px solid var(--border-light);
 	vertical-align: middle;
 	background: var(--white);
-	font-size: 14px;
+	font-size: var(--font-size-xs);
 	height: 44px;
 }
 
 .notes-table tr:last-child td,
-.tasks-table tr:last-child td {
+.tasks-table tr:last-child td,
+.contacts-table tr:last-child td {
 	border-bottom: none;
 }
 
 .notes-table tr:hover,
-.tasks-table tr:hover {
+.tasks-table tr:hover,
+.contacts-table tr:hover {
 	background: var(--background-color);
+}
+
+/* Ensure all notes table cells have consistent height behavior */
+.notes-table td {
+	vertical-align: top;
+	height: auto;
+	min-height: 44px;
+}
+
+.notes-table .note-text-cell {
+	word-wrap: break-word;
+	white-space: normal;
+	max-width: 300px;
+	line-height: 1.4;
+}
+
+/* Fixed column widths for notes table */
+.notes-table th:nth-child(1),
+.notes-table td:nth-child(1) {
+	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+}
+
+.notes-table th:nth-child(2),
+.notes-table td:nth-child(2) {
+	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+}
+
+.notes-table th:nth-child(3),
+.notes-table td:nth-child(3) {
+	width: auto;
+	min-width: 200px;
+}
+
+.notes-table th:nth-child(4),
+.notes-table td:nth-child(4) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
 }
 
 /* Prevent line breaking in specific columns */
@@ -3863,8 +3911,27 @@ tr.editing .actions-cell button {
 }
 
 .notes-table-actions,
-.tasks-table-actions {
+.tasks-table-actions,
+.contacts-table-actions {
 	white-space: nowrap;
+	width: auto;
+	min-width: fit-content;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	justify-content: center;
+	flex-wrap: nowrap;
+	height: 100%;
+	vertical-align: top;
+}
+
+.notes-table-actions .action-btn,
+.tasks-table-actions .action-btn,
+.contacts-table-actions .action-btn {
+	flex-shrink: 0;
+	min-width: 24px;
+	width: 24px;
+	height: 24px;
 }
 
 /* Task two-row layout - GitHub style */
@@ -3897,12 +3964,48 @@ tr.editing .actions-cell button {
 	display: inline-block;
 	padding: 2px 8px;
 	border-radius: 12px;
-	font-size: 11px;
+	font-size: var(--font-size-xs);
 	font-weight: 500;
 	border: none;
 	cursor: default;
 	min-width: 60px;
 	text-align: center;
+}
+
+/* Fixed column widths to prevent shifting during edit mode */
+.tasks-table th:nth-child(1),
+.tasks-table td:nth-child(1) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
+}
+
+.tasks-table th:nth-child(2),
+.tasks-table td:nth-child(2) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
+}
+
+.tasks-table th:nth-child(3),
+.tasks-table td:nth-child(3) {
+	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+}
+
+.tasks-table th:nth-child(4),
+.tasks-table td:nth-child(4) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
+}
+
+.tasks-table th:nth-child(5),
+.tasks-table td:nth-child(5) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
 }
 
 .task-status-display {
@@ -3941,17 +4044,11 @@ tr.editing .actions-cell button {
 }
 
 /* Task date and duration styling */
-.task-due-date-display, .task-duration-display {
-	font-family: var(--font-mono, monospace);
-	font-size: 12px;
-	color: var(--gray-600);
-}
-
+.task-due-date-display,
 .task-duration-display {
-	background: var(--gray-50);
-	padding: 2px 6px;
-	border-radius: 4px;
-	border: 1px solid var(--gray-200);
+	font-family: inherit;
+	font-size: 14px;
+	color: var(--text-color);
 }
 
 /* Task text row styling */
@@ -3998,6 +4095,34 @@ tr.editing .actions-cell button {
 	box-sizing: border-box;
 }
 
+/* Ensure edit inputs maintain column widths */
+.tasks-table .task-status-edit,
+.tasks-table .task-priority-edit,
+.tasks-table .task-due-date-edit,
+.tasks-table .task-duration-edit {
+	width: 100%;
+	padding: 4px 8px;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	font-size: 14px;
+	box-sizing: border-box;
+	height: 32px;
+}
+
+.contacts-table .inline-edit-input {
+	width: 100%;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 0;
+	font-size: 14px;
+	background: transparent;
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	height: 44px;
+	box-sizing: border-box;
+}
+
 .notes-table .inline-edit:focus,
 .tasks-table .inline-edit:focus {
 	outline: 2px solid var(--blue-500);
@@ -4018,66 +4143,30 @@ tr.editing .actions-cell button {
 
 /* Notes textarea specific styling */
 .notes-table textarea.inline-edit {
-	resize: none;
+	resize: vertical;
 	height: auto;
-	min-height: 32px;
+	min-height: 44px;
 	line-height: 1.4;
 	overflow: hidden;
+	rows: 2;
 }
 
 /* Task description textarea in second row */
-.tasks-table .task-text-row textarea.inline-edit {
-	height: 28px;
-	min-height: 28px;
+.tasks-table .task-text-row textarea.inline-edit,
+.tasks-table .task-text-edit {
+	height: auto;
+	min-height: 44px;
 	font-style: italic;
 	color: var(--gray-600);
-	padding: 2px 8px;
+	padding: 8px;
+	rows: 2;
+	line-height: 1.4;
+	resize: vertical;
 }
 
-/* Contacts table layout (Excel-like) - GitHub style */
-.contacts-table {
-	width: 100%;
-	border-collapse: separate;
-	border-spacing: 0;
-	margin-bottom: 16px;
-	background: var(--white);
-	border: 1px solid var(--border-color);
-	border-radius: 8px;
-	overflow: hidden;
-	font-size: 14px;
-}
-
-.contacts-table th {
-	background: var(--gray-50);
-	padding: 8px 12px;
-	text-align: left;
-	font-weight: 600;
-	font-size: 12px;
-	color: var(--gray-700);
-	border-bottom: 1px solid var(--border-color);
-	position: sticky;
-	top: 0;
-	white-space: nowrap;
-}
-
-.contacts-table td {
-	padding: 8px 12px;
-	border-bottom: 1px solid var(--border-light);
-	vertical-align: middle;
-	background: var(--white);
-	font-size: 14px;
-	height: 44px;
-}
+/* Contacts table specific styles */
 .contacts-table td a {
 	color: var(--text-color);
-}
-
-.contacts-table tr:last-child td {
-	border-bottom: none;
-}
-
-.contacts-table tr:hover {
-	background: var(--background-color);
 }
 
 /* Contacts table inline editing */
@@ -4110,6 +4199,7 @@ tr.editing .actions-cell button {
 	transition: var(--transition-fast);
 	height: 44px;
 	box-sizing: border-box;
+	box-shadow: none;
 }
 
 .contacts-table .inline-edit-input:focus {
@@ -4139,6 +4229,35 @@ tr.editing .actions-cell button {
 .contacts-table .contact-company {
 	color: var(--gray-600);
 	font-style: italic;
+}
+
+/* Fixed column widths for contacts table */
+.contacts-table th:nth-child(1),
+.contacts-table td:nth-child(1) {
+	width: 180px;
+	min-width: 180px;
+	max-width: 180px;
+}
+
+.contacts-table th:nth-child(2),
+.contacts-table td:nth-child(2) {
+	width: 220px;
+	min-width: 220px;
+	max-width: 220px;
+}
+
+.contacts-table th:nth-child(3),
+.contacts-table td:nth-child(3) {
+	width: 140px;
+	min-width: 140px;
+	max-width: 140px;
+}
+
+.contacts-table th:nth-child(4),
+.contacts-table td:nth-child(4) {
+	width: 80px;
+	min-width: 80px;
+	max-width: 80px;
 }
 
 /* Archived contacts section */
@@ -4347,16 +4466,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750685301371';
-window.BUILD_DATE = '2025-06-23T13:28:21.371Z';
+window.BUILD_VERSION = '1750687423701';
+window.BUILD_DATE = '2025-06-23T14:03:43.701Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T13:28:21.365Z
+// Generated: 2025-06-23T14:03:43.694Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T13:28:21.365Z");
+console.log("JobTracker - Built at: 2025-06-23T14:03:43.694Z");
 
 
 // ============================================================================
@@ -6311,6 +6430,81 @@ const NotesModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
+	const enableNoteEditing = (note, job) => {
+		const noteRow = document.querySelector(`[data-note-id="${note.id}"]`);
+		if (!noteRow) return;
+
+		// Mark row as editing
+		noteRow.dataset.editing = "true";
+
+		// Replace note text with textarea
+		const textCell = noteRow.querySelector(".note-text-cell");
+		const textarea = h("textarea", {
+			value: note.text || "",
+			className: "note-text-edit inline-edit",
+			rows: 2,
+		});
+		textCell.innerHTML = "";
+		textCell.appendChild(textarea);
+
+		// Update action buttons
+		const actionsCell = noteRow.querySelector(".notes-table-actions");
+		const editBtn = actionsCell.querySelector(".edit-note-btn");
+		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
+		editBtn.title = I18n.t("modals.common.save");
+		editBtn.onclick = () => saveNoteChanges(note, job);
+
+		// Add cancel button
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn icon-btn-transparent",
+			title: I18n.t("modals.common.cancel"),
+			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
+			onclick: () => disableNoteEditing(note, job)
+		});
+		actionsCell.appendChild(cancelBtn);
+
+		// Focus textarea
+		textarea.focus();
+		textarea.select();
+	};
+
+	const saveNoteChanges = (note, job) => {
+		const noteRow = document.querySelector(`[data-note-id="${note.id}"]`);
+		if (!noteRow) return;
+
+		// Get textarea value
+		const textarea = noteRow.querySelector(".note-text-edit");
+		const newText = textarea?.value.trim() || "";
+
+		// Validation
+		if (!newText) {
+			showValidationError(textarea, "Note text is required");
+			return;
+		}
+
+		// Update note data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+
+		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+		if (noteIndex === -1) return;
+
+		jobsData[jobIndex].notes[noteIndex].text = newText;
+		saveToLocalStorage();
+
+		// Refresh modal
+		refreshNotesModal(job);
+
+		// Update interface
+		refreshInterface();
+	};
+
+	const disableNoteEditing = (note, job) => {
+		// Just refresh the modal to restore display state
+		refreshNotesModal(job);
+	};
+
+	// Legacy function - kept for backward compatibility
 	const editNoteInline = (note, job) => {
 		const cell = event.target.closest("tr").querySelector(".note-text-cell");
 		const currentText = note.text;
@@ -6436,9 +6630,9 @@ const NotesModal = ({ job, onClose }) => {
 								...sortedActiveNotes.map((note) =>
 									h(
 										"tr",
-										{ key: note.id },
-										h("td", {}, getPhaseText(note.phase)),
-										h("td", {}, formatDate(note.date)),
+										{ key: note.id, "data-note-id": note.id },
+										h("td", { className: "note-phase-cell" }, getPhaseText(note.phase)),
+										h("td", { className: "note-date-cell" }, formatDate(note.date)),
 										h("td", { className: "note-text-cell" }, note.text),
 										h(
 											"td",
@@ -6447,7 +6641,7 @@ const NotesModal = ({ job, onClose }) => {
 												className: "action-btn edit-note-btn icon-btn-transparent",
 												title: I18n.t("modals.notes.editTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-												onclick: () => editNoteInline(note, job),
+												onclick: () => enableNoteEditing(note, job),
 											}),
 											h("button", {
 												className: "action-btn archive-btn icon-btn-transparent",
@@ -6920,9 +7114,6 @@ const TasksModal = ({ job, onClose }) => {
 		const textarea = document.querySelector(".add-task-textarea");
 		const statusSelect = document.querySelector(".add-task-status");
 		const prioritySelect = document.querySelector(".add-task-priority");
-		const dueDateInput = document.querySelector(".add-task-due-date");
-		const durationInput = document.querySelector(".add-task-duration");
-
 		const taskText = textarea.value.trim();
 
 		if (!taskText) {
@@ -6937,8 +7128,8 @@ const TasksModal = ({ job, onClose }) => {
 			text: taskText,
 			status: statusSelect.value || "todo",
 			priority: prioritySelect.value || "medium",
-			dueDate: dueDateInput.value ? `${dueDateInput.value}T00:00:00.000Z` : null,
-			duration: durationInput.value || null,
+			dueDate: null,
+			duration: null,
 		};
 
 		// Add task to job data
@@ -6986,7 +7177,6 @@ const TasksModal = ({ job, onClose }) => {
 			{
 				className: "task-status-edit",
 				value: task.status,
-				onchange: (e) => updateTaskStatus(task, job, e.target.value),
 			},
 			h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
 			h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
@@ -7001,7 +7191,6 @@ const TasksModal = ({ job, onClose }) => {
 			{
 				className: "task-priority-edit",
 				value: task.priority,
-				onchange: (e) => updateTaskPriority(task, job, e.target.value),
 			},
 			h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
 			h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
@@ -7016,7 +7205,6 @@ const TasksModal = ({ job, onClose }) => {
 			type: "date",
 			value: currentDate,
 			className: "task-due-date-edit",
-			onchange: (e) => updateTaskDueDate(task, job, e.target.value),
 		});
 		dueDateDisplay.parentNode.replaceChild(dateInput, dueDateDisplay);
 
@@ -7026,58 +7214,129 @@ const TasksModal = ({ job, onClose }) => {
 			"select",
 			{
 				className: "task-duration-edit",
-				value: task.duration || "",
-				onchange: (e) => updateTaskDuration(task, job, e.target.value),
 			},
-			h("option", { value: "" }, "—"),
-			h("option", { value: "15min" }, "15 min"),
-			h("option", { value: "30min" }, "30 min"),
-			h("option", { value: "1h" }, "1h"),
-			h("option", { value: "1h30" }, "1:30"),
-			h("option", { value: "2h" }, "2h"),
-			h("option", { value: "3h" }, "3h")
+			h("option", { value: "", selected: !task.duration }, "—"),
+			h("option", { value: "15min", selected: task.duration === "15min" }, "15 min"),
+			h("option", { value: "30min", selected: task.duration === "30min" }, "30 min"),
+			h("option", { value: "1h", selected: task.duration === "1h" }, "1h"),
+			h("option", { value: "1h30", selected: task.duration === "1h30" }, "1:30"),
+			h("option", { value: "2h", selected: task.duration === "2h" }, "2h"),
+			h("option", { value: "3h", selected: task.duration === "3h" }, "3h")
 		);
 		durationDisplay.parentNode.replaceChild(durationSelect, durationDisplay);
 
-		// Update edit button to save/cancel
+		// Update edit button to save and add cancel button
 		const editBtn = taskRow.querySelector(".edit-task-btn");
 		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveTaskChanges(task, job);
+		
+		// Add cancel button next to save button
+		const actionsCell = taskRow.querySelector(".tasks-table-actions");
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn icon-btn-transparent",
+			title: I18n.t("modals.common.cancel"),
+			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
+			onclick: () => disableTaskEditing(task, job)
+		});
+		actionsCell.appendChild(cancelBtn);
 
 		// Make task text editable
-		const taskTextCell = taskRow.nextElementSibling?.querySelector(".task-text-cell");
+		const taskTextRow = taskRow.nextElementSibling;
+		const taskTextCell = taskTextRow?.querySelector(".task-text-cell");
 		if (taskTextCell) {
-			const currentText = task.text;
+			const currentText = task.text || "";
 			const textarea = document.createElement("textarea");
 			textarea.value = currentText;
 			textarea.className = "task-text-edit";
+			textarea.rows = 2;
+			textarea.style.width = "100%";
+			textarea.style.resize = "vertical";
+			
+			// Add better event handling
 			textarea.addEventListener("input", (e) => {
 				// Store the current value in a data attribute for later retrieval
 				textarea.dataset.currentValue = e.target.value;
 			});
+			
+			// Add keyboard shortcuts
+			textarea.addEventListener("keydown", (e) => {
+				if (e.key === "Enter" && e.ctrlKey) {
+					e.preventDefault();
+					saveTaskChanges(task, job);
+				} else if (e.key === "Escape") {
+					e.preventDefault();
+					disableTaskEditing(task, job);
+				}
+			});
+			
 			taskTextCell.innerHTML = "";
 			taskTextCell.appendChild(textarea);
 			textarea.focus();
+			textarea.select(); // Select all text for easy editing
 
 			// Store reference to textarea for saving
 			taskRow.dataset.textarea = "true";
+			taskTextRow.dataset.textEditing = "true";
 		}
 	};
 
 	const saveTaskChanges = (task, job) => {
-		// Get the textarea value before refreshing the modal
+		// Get all form values before refreshing the modal
 		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
-		if (taskElement) {
-			const taskRow = taskElement.closest("tr");
-			const textarea = taskRow?.nextElementSibling?.querySelector(".task-text-edit");
-			if (textarea?.value.trim()) {
-				updateTaskText(task, job, textarea.value);
+		if (!taskElement) return;
+
+		const taskRow = taskElement.closest("tr");
+		const textRow = taskRow?.nextElementSibling;
+		
+		// Get all the form values
+		const statusSelect = taskRow?.querySelector(".task-status-edit");
+		const prioritySelect = taskRow?.querySelector(".task-priority-edit");
+		const dueDateInput = taskRow?.querySelector(".task-due-date-edit");
+		const durationSelect = taskRow?.querySelector(".task-duration-edit");
+		const textarea = textRow?.querySelector(".task-text-edit");
+		
+		// Validate task text
+		if (textarea) {
+			const newText = textarea.value.trim();
+			if (!newText) {
+				showValidationError(textarea, "Task description is required");
+				return; // Don't refresh modal yet, let user fix the error
 			}
 		}
+		
+		// Update all fields in the data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+		if (taskIndex === -1) return;
+
+		// Update each field if the input exists
+		if (statusSelect) {
+			jobsData[jobIndex].tasks[taskIndex].status = statusSelect.value;
+		}
+		if (prioritySelect) {
+			jobsData[jobIndex].tasks[taskIndex].priority = prioritySelect.value;
+		}
+		if (dueDateInput) {
+			jobsData[jobIndex].tasks[taskIndex].dueDate = dueDateInput.value || null;
+		}
+		if (durationSelect) {
+			jobsData[jobIndex].tasks[taskIndex].duration = durationSelect.value || null;
+		}
+		if (textarea) {
+			jobsData[jobIndex].tasks[taskIndex].text = textarea.value.trim();
+		}
+
+		// Save to localStorage
+		saveToLocalStorage();
 
 		// Refresh the modal to restore display state
 		refreshTasksModal(job);
+		
+		// Update interface
+		refreshInterface();
 	};
 
 	const disableTaskEditing = (task, job) => {
@@ -7112,17 +7371,14 @@ const TasksModal = ({ job, onClose }) => {
 	};
 
 	const updateTaskText = (task, job, newText) => {
-		const trimmedText = newText.trim();
-		if (!trimmedText) return;
-
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 		if (jobIndex === -1) return;
 
 		const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
 		if (taskIndex === -1) return;
 
-		// Update the data
-		jobsData[jobIndex].tasks[taskIndex].text = trimmedText;
+		// Update the data (newText is already trimmed from calling function)
+		jobsData[jobIndex].tasks[taskIndex].text = newText;
 		saveToLocalStorage();
 
 		// Update interface
@@ -7501,33 +7757,6 @@ const TasksModal = ({ job, onClose }) => {
 								h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
 								h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
-							)
-						),
-						h(
-							"div",
-							{ className: "add-task-field" },
-							h("label", {}, I18n.t("modals.tasks.dueDate")),
-							h("input", {
-								type: "date",
-								className: "add-task-due-date",
-							})
-						),
-						h(
-							"div",
-							{ className: "add-task-field" },
-							h("label", {}, I18n.t("modals.tasks.duration")),
-							h(
-								"select",
-								{
-									className: "add-task-duration",
-								},
-								h("option", { value: "" }, "—"),
-								h("option", { value: "15min" }, "15 min"),
-								h("option", { value: "30min" }, "30 min"),
-								h("option", { value: "1h" }, "1h"),
-								h("option", { value: "1h30" }, "1:30"),
-								h("option", { value: "2h" }, "2h"),
-								h("option", { value: "3h" }, "3h")
 							)
 						)
 					),
@@ -7922,6 +8151,112 @@ const ContactsModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
+	const enableContactEditing = (contact, job) => {
+		const contactRow = document.querySelector(`[data-contact-id="${contact.id}"]`);
+		if (!contactRow) return;
+
+		// Mark row as editing
+		contactRow.dataset.editing = "true";
+
+		// Replace each cell content with input
+		const nameCell = contactRow.querySelector(".contact-name-cell");
+		const nameInput = h("input", {
+			type: "text",
+			value: contact.name || "",
+			className: "contact-name-edit inline-edit-input",
+		});
+		nameCell.innerHTML = "";
+		nameCell.appendChild(nameInput);
+
+		const emailCell = contactRow.querySelector(".contact-email-cell");
+		const emailInput = h("input", {
+			type: "email",
+			value: contact.email || "",
+			className: "contact-email-edit inline-edit-input",
+		});
+		emailCell.innerHTML = "";
+		emailCell.appendChild(emailInput);
+
+		const phoneCell = contactRow.querySelector(".contact-phone-cell");
+		const phoneInput = h("input", {
+			type: "tel",
+			value: contact.phone || "",
+			className: "contact-phone-edit inline-edit-input",
+		});
+		phoneCell.innerHTML = "";
+		phoneCell.appendChild(phoneInput);
+
+
+		// Update action buttons
+		const actionsCell = contactRow.querySelector(".contacts-table-actions");
+		const editBtn = actionsCell.querySelector(".edit-contact-btn");
+		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
+		editBtn.title = I18n.t("modals.common.save");
+		editBtn.onclick = () => saveContactChanges(contact, job);
+
+		// Add cancel button
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn icon-btn-transparent",
+			title: I18n.t("modals.common.cancel"),
+			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
+			onclick: () => disableContactEditing(contact, job)
+		});
+		actionsCell.appendChild(cancelBtn);
+
+		// Focus first input
+		nameInput.focus();
+		nameInput.select();
+	};
+
+	const saveContactChanges = (contact, job) => {
+		const contactRow = document.querySelector(`[data-contact-id="${contact.id}"]`);
+		if (!contactRow) return;
+
+		// Get all input values
+		const nameInput = contactRow.querySelector(".contact-name-edit");
+		const emailInput = contactRow.querySelector(".contact-email-edit");
+		const phoneInput = contactRow.querySelector(".contact-phone-edit");
+		const name = nameInput?.value.trim() || "";
+		const email = emailInput?.value.trim() || "";
+		const phone = phoneInput?.value.trim() || "";
+
+		// Validation
+		if (!name) {
+			showValidationError(nameInput, "Name is required for a contact");
+			return;
+		}
+
+		if (email && !email.includes("@")) {
+			showValidationError(emailInput, "Please enter a valid email address");
+			return;
+		}
+
+		// Update contact data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+
+		const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
+		if (contactIndex === -1) return;
+
+		jobsData[jobIndex].contacts[contactIndex].name = name;
+		jobsData[jobIndex].contacts[contactIndex].email = email;
+		jobsData[jobIndex].contacts[contactIndex].phone = phone;
+
+		saveToLocalStorage();
+
+		// Refresh modal
+		refreshContactsModal(job);
+
+		// Update interface
+		refreshInterface();
+	};
+
+	const disableContactEditing = (contact, job) => {
+		// Just refresh the modal to restore display state
+		refreshContactsModal(job);
+	};
+
+	// Legacy function - kept for backward compatibility
 	const editContactField = (contact, field) => {
 		const cell = event.target.closest("td");
 		const currentValue = contact[field] || "";
@@ -8068,28 +8403,21 @@ const ContactsModal = ({ job, onClose }) => {
 							...sortedActiveContacts.map((contact) =>
 								h(
 									"tr",
-									{ key: contact.id },
+									{ key: contact.id, "data-contact-id": contact.id },
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "name"),
-										},
+										{ className: "contact-name-cell" },
 										contact.name || "—"
 									),
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "email"),
-										},
+										{ className: "contact-email-cell" },
 										contact.email
 											? h(
 													"a",
 													{
 														href: `mailto:${contact.email}`,
 														className: "contact-link",
-														onclick: (e) => e.stopPropagation(),
 													},
 													contact.email
 												)
@@ -8097,17 +8425,13 @@ const ContactsModal = ({ job, onClose }) => {
 									),
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "phone"),
-										},
+										{ className: "contact-phone-cell" },
 										contact.phone
 											? h(
 													"a",
 													{
 														href: `tel:${contact.phone}`,
 														className: "contact-link",
-														onclick: (e) => e.stopPropagation(),
 													},
 													contact.phone
 												)
@@ -8115,15 +8439,13 @@ const ContactsModal = ({ job, onClose }) => {
 									),
 									h(
 										"td",
-										{
-											className: "editable-cell",
-											onclick: () => editContactField(contact, "company"),
-										},
-										contact.company || "—"
-									),
-									h(
-										"td",
 										{ className: "contacts-table-actions" },
+										h("button", {
+											className: "action-btn edit-contact-btn icon-btn-transparent",
+											title: I18n.t("modals.contacts.editTitle"),
+											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
+											onclick: () => enableContactEditing(contact, job),
+										}),
 										h("button", {
 											className: "action-btn archive-btn icon-btn-transparent",
 											title: I18n.t("modals.contacts.archiveTitle"),
@@ -8184,7 +8506,6 @@ const ContactsModal = ({ job, onClose }) => {
 									h("th", {}, I18n.t("modals.contacts.placeholderName")),
 									h("th", {}, I18n.t("modals.contacts.placeholderEmail")),
 									h("th", {}, I18n.t("modals.contacts.placeholderPhone")),
-									h("th", {}, I18n.t("modals.contacts.placeholderCompany")),
 									h("th", {}, "Actions")
 								)
 							),

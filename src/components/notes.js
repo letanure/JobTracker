@@ -197,6 +197,81 @@ const NotesModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
+	const enableNoteEditing = (note, job) => {
+		const noteRow = document.querySelector(`[data-note-id="${note.id}"]`);
+		if (!noteRow) return;
+
+		// Mark row as editing
+		noteRow.dataset.editing = "true";
+
+		// Replace note text with textarea
+		const textCell = noteRow.querySelector(".note-text-cell");
+		const textarea = h("textarea", {
+			value: note.text || "",
+			className: "note-text-edit inline-edit",
+			rows: 2,
+		});
+		textCell.innerHTML = "";
+		textCell.appendChild(textarea);
+
+		// Update action buttons
+		const actionsCell = noteRow.querySelector(".notes-table-actions");
+		const editBtn = actionsCell.querySelector(".edit-note-btn");
+		editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
+		editBtn.title = I18n.t("modals.common.save");
+		editBtn.onclick = () => saveNoteChanges(note, job);
+
+		// Add cancel button
+		const cancelBtn = h("button", {
+			className: "action-btn cancel-btn icon-btn-transparent",
+			title: I18n.t("modals.common.cancel"),
+			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
+			onclick: () => disableNoteEditing(note, job)
+		});
+		actionsCell.appendChild(cancelBtn);
+
+		// Focus textarea
+		textarea.focus();
+		textarea.select();
+	};
+
+	const saveNoteChanges = (note, job) => {
+		const noteRow = document.querySelector(`[data-note-id="${note.id}"]`);
+		if (!noteRow) return;
+
+		// Get textarea value
+		const textarea = noteRow.querySelector(".note-text-edit");
+		const newText = textarea?.value.trim() || "";
+
+		// Validation
+		if (!newText) {
+			showValidationError(textarea, "Note text is required");
+			return;
+		}
+
+		// Update note data
+		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		if (jobIndex === -1) return;
+
+		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+		if (noteIndex === -1) return;
+
+		jobsData[jobIndex].notes[noteIndex].text = newText;
+		saveToLocalStorage();
+
+		// Refresh modal
+		refreshNotesModal(job);
+
+		// Update interface
+		refreshInterface();
+	};
+
+	const disableNoteEditing = (note, job) => {
+		// Just refresh the modal to restore display state
+		refreshNotesModal(job);
+	};
+
+	// Legacy function - kept for backward compatibility
 	const editNoteInline = (note, job) => {
 		const cell = event.target.closest("tr").querySelector(".note-text-cell");
 		const currentText = note.text;
@@ -322,9 +397,9 @@ const NotesModal = ({ job, onClose }) => {
 								...sortedActiveNotes.map((note) =>
 									h(
 										"tr",
-										{ key: note.id },
-										h("td", {}, getPhaseText(note.phase)),
-										h("td", {}, formatDate(note.date)),
+										{ key: note.id, "data-note-id": note.id },
+										h("td", { className: "note-phase-cell" }, getPhaseText(note.phase)),
+										h("td", { className: "note-date-cell" }, formatDate(note.date)),
 										h("td", { className: "note-text-cell" }, note.text),
 										h(
 											"td",
@@ -333,7 +408,7 @@ const NotesModal = ({ job, onClose }) => {
 												className: "action-btn edit-note-btn icon-btn-transparent",
 												title: I18n.t("modals.notes.editTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-												onclick: () => editNoteInline(note, job),
+												onclick: () => enableNoteEditing(note, job),
 											}),
 											h("button", {
 												className: "action-btn archive-btn icon-btn-transparent",
