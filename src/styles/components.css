@@ -283,8 +283,9 @@ textarea {
 
 .add-task-form-row {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	gap: 12px;
+	margin-bottom: 12px;
 }
 
 .add-task-field {

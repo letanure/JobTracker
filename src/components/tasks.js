@@ -813,17 +813,6 @@ const TasksModal = ({ job, onClose }) => {
 				h(
 					"div",
 					{ className: "add-task-form" },
-					h("textarea", {
-						className: "add-task-textarea",
-						placeholder: I18n.t("modals.tasks.placeholder"),
-						rows: 2,
-						onkeydown: (e) => {
-							if (e.key === "Enter" && e.shiftKey) {
-								e.preventDefault();
-								handleAddTask();
-							}
-						},
-					}),
 					h(
 						"div",
 						{ className: "add-task-form-row" },
@@ -856,11 +845,7 @@ const TasksModal = ({ job, onClose }) => {
 								h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 							)
-						)
-					),
-					h(
-						"div",
-						{ className: "add-task-form-row" },
+						),
 						h(
 							"div",
 							{ className: "add-task-field" },
@@ -888,7 +873,18 @@ const TasksModal = ({ job, onClose }) => {
 								h("option", { value: "3h" }, "3h")
 							)
 						)
-					)
+					),
+					h("textarea", {
+						className: "add-task-textarea",
+						placeholder: I18n.t("modals.tasks.placeholder"),
+						rows: 2,
+						onkeydown: (e) => {
+							if (e.key === "Enter" && e.shiftKey) {
+								e.preventDefault();
+								handleAddTask();
+							}
+						},
+					})
 				)
 			)
 		);

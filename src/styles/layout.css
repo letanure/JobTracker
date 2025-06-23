@@ -48,7 +48,7 @@
 }
 
 .table-actions {
-	padding: 16px 0 16px 24px;
+	padding: 16px 0 16px 0;
 	background: var(--white);
 	border-top: var(--border-width) solid var(--border-color);
 	display: flex;
@@ -286,7 +286,7 @@ body {
 	.tab-navigation {
 		flex-direction: column;
 	}
-	
+
 	.tab-button {
 		width: 100%;
 		justify-content: center;
