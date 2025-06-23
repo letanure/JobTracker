@@ -1471,7 +1471,6 @@ a.kanban-source-link {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
-	min-height: calc(100vh - 200px); /* Full viewport minus headers/footers */
 }
 
 .tasks-header {
