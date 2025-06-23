@@ -1332,6 +1332,43 @@ td .zero-count:hover {
 	transform: rotate(5deg);
 }
 
+/* Drop indicator for reordering */
+.drop-indicator {
+	height: 2px;
+	background: var(--blue-500);
+	margin: 4px 8px;
+	border-radius: 1px;
+	opacity: 0.8;
+	animation: pulse 1s infinite;
+}
+
+/* Drop placeholder showing where card will be placed */
+.drop-placeholder {
+	pointer-events: none; /* Don't interfere with drag events */
+	margin: 8px 0;
+	opacity: 0.4;
+	border: 2px dashed var(--blue-500) !important;
+	background: var(--blue-50) !important;
+	transform: none !important;
+	box-shadow: none !important;
+	animation: placeholderPulse 1.5s infinite ease-in-out;
+}
+
+.drop-placeholder:hover {
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 0.8; }
+	50% { opacity: 0.4; }
+}
+
+@keyframes placeholderPulse {
+	0%, 100% { opacity: 0.4; border-color: var(--blue-500); }
+	50% { opacity: 0.6; border-color: var(--blue-400); }
+}
+
 .kanban-priority-dot {
 	position: absolute;
 	top: 8px;

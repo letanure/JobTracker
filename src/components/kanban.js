@@ -18,7 +18,9 @@ const KanbanBoard = {
 
 	// Create a column for a specific phase
 	createColumn: (phase) => {
-		const phaseJobs = jobsData.filter((job) => job.currentPhase === phase);
+		const phaseJobs = jobsData
+			.filter((job) => job.currentPhase === phase)
+			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)); // Sort by sortOrder within phase
 		const columnTitle = getPhaseText(phase);
 
 		const column = h("div", {
@@ -286,7 +288,11 @@ const KanbanBoard = {
 
 	// Drag and drop handlers
 	handleDragStart: (e, job) => {
-		e.dataTransfer.setData("text/plain", job.id.toString());
+		e.dataTransfer.setData("text/plain", JSON.stringify({
+			jobId: job.id,
+			sourcePhase: job.currentPhase,
+			sourceSortOrder: job.sortOrder || 0
+		}));
 		e.target.classList.add("dragging");
 		document.querySelectorAll(".kanban-column").forEach((col) => {
 			col.classList.add("drag-active");
@@ -298,31 +304,137 @@ const KanbanBoard = {
 		document.querySelectorAll(".kanban-column").forEach((col) => {
 			col.classList.remove("drag-active", "drag-over");
 		});
+		
+		// Clean up all drop indicators and placeholders
+		document.querySelectorAll('.drop-indicator, .drop-placeholder').forEach(element => {
+			element.remove();
+		});
 	},
 
 	handleDragOver: (e) => {
 		e.preventDefault();
 		const column = e.currentTarget.closest(".kanban-column");
 		column.classList.add("drag-over");
+
+		// Add visual drop indicator
+		KanbanBoard.updateDropIndicator(e);
+	},
+
+	// Add visual placeholder showing where the card will be dropped
+	updateDropIndicator: (e) => {
+		const columnBody = e.currentTarget;
+		const cards = Array.from(columnBody.children).filter(card => 
+			card.classList.contains('kanban-job-card') && !card.classList.contains('dragging')
+		);
+
+		// Remove existing drop placeholders and indicators
+		columnBody.querySelectorAll('.drop-indicator, .drop-placeholder').forEach(placeholder => {
+			placeholder.remove();
+		});
+
+		const mouseY = e.clientY;
+		let insertIndex = cards.length;
+
+		// Find insertion point
+		for (let i = 0; i < cards.length; i++) {
+			const cardRect = cards[i].getBoundingClientRect();
+			const cardCenter = cardRect.top + cardRect.height / 2;
+			
+			if (mouseY < cardCenter) {
+				insertIndex = i;
+				break;
+			}
+		}
+
+		// Create placeholder card that matches the dragged card's size
+		const placeholder = h('div', { 
+			className: 'drop-placeholder kanban-job-card',
+			style: 'opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;'
+		}, h('div', { 
+			style: 'height: 80px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;'
+		}, 'Drop here'));
+		
+		if (insertIndex === cards.length) {
+			// Insert at the end
+			columnBody.appendChild(placeholder);
+		} else {
+			// Insert before the card at insertIndex
+			columnBody.insertBefore(placeholder, cards[insertIndex]);
+		}
 	},
 
 	handleDrop: (e, targetPhase) => {
 		e.preventDefault();
-		const jobId = Number.parseInt(e.dataTransfer.getData("text/plain"));
-		const job = jobsData.find((j) => j.id === jobId);
+		
+		try {
+			const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
+			const { jobId, sourcePhase } = dragData;
+			const job = jobsData.find((j) => j.id === jobId);
+			
+			if (!job) return;
 
-		if (job && job.currentPhase !== targetPhase) {
-			// Update job phase
-			job.currentPhase = targetPhase;
-
-			// Track when job moves to applied status
-			if (targetPhase === "applied" && !job.appliedDate) {
-				job.appliedDate = new Date().toISOString();
+			// Calculate drop position based on placeholder location
+			const columnBody = e.currentTarget;
+			const placeholder = columnBody.querySelector('.drop-placeholder');
+			
+			let targetPosition = 0;
+			
+			if (placeholder) {
+				// Find the position of the placeholder among actual job cards
+				const allCards = Array.from(columnBody.children);
+				const placeholderIndex = allCards.indexOf(placeholder);
+				
+				// Count how many actual job cards are before the placeholder
+				targetPosition = 0;
+				for (let i = 0; i < placeholderIndex; i++) {
+					if (allCards[i].classList.contains('kanban-job-card') && 
+						!allCards[i].classList.contains('drop-placeholder') && 
+						!allCards[i].classList.contains('dragging')) {
+						targetPosition++;
+					}
+				}
+			} else {
+				// Fallback: use mouse position if no placeholder found
+				const cards = Array.from(columnBody.children).filter(card => 
+					card.classList.contains('kanban-job-card') && 
+					!card.classList.contains('dragging') && 
+					!card.classList.contains('drop-placeholder')
+				);
+				
+				const mouseY = e.clientY;
+				targetPosition = cards.length;
+				
+				for (let i = 0; i < cards.length; i++) {
+					const cardRect = cards[i].getBoundingClientRect();
+					const cardCenter = cardRect.top + cardRect.height / 2;
+					
+					if (mouseY < cardCenter) {
+						targetPosition = i;
+						break;
+					}
+				}
 			}
 
-			// Clear substep if moving to a different phase that doesn't support it
-			if (!getSubstepsForPhase(targetPhase).includes(job.currentSubstep)) {
-				job.currentSubstep = targetPhase;
+			// Handle phase change or reordering
+			if (sourcePhase !== targetPhase) {
+				// Moving between phases
+				job.currentPhase = targetPhase;
+
+				// Track when job moves to applied status
+				if (targetPhase === "applied" && !job.appliedDate) {
+					job.appliedDate = new Date().toISOString();
+				}
+
+				// Clear substep if moving to a different phase that doesn't support it
+				if (!getSubstepsForPhase(targetPhase).includes(job.currentSubstep)) {
+					job.currentSubstep = targetPhase;
+				}
+
+				// Update positions in target phase
+				KanbanBoard.updatePositionsInPhase(targetPhase, job.id, targetPosition);
+			} else {
+				// Reordering within same phase
+				KanbanBoard.updatePositionsInPhase(targetPhase, job.id, targetPosition);
 			}
 
 			// Save changes
@@ -335,11 +447,45 @@ const KanbanBoard = {
 			if (typeof refreshInterface === "function") {
 				refreshInterface();
 			}
+		} catch (error) {
+			console.error("Error in drop handler:", error);
 		}
 
 		// Clean up drag styling
 		document.querySelectorAll(".kanban-column").forEach((col) => {
 			col.classList.remove("drag-active", "drag-over");
+		});
+		
+		// Clean up all drop indicators and placeholders
+		document.querySelectorAll('.drop-indicator, .drop-placeholder').forEach(element => {
+			element.remove();
+		});
+	},
+
+	// Update sort orders for jobs in a specific phase
+	updatePositionsInPhase: (phase, movedJobId, targetPosition) => {
+		const phaseJobs = jobsData
+			.filter((job) => job.currentPhase === phase)
+			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+		// Remove the moved job from its current position
+		const movedJobIndex = phaseJobs.findIndex(job => job.id === movedJobId);
+		if (movedJobIndex !== -1) {
+			phaseJobs.splice(movedJobIndex, 1);
+		}
+
+		// Insert the moved job at the target position
+		const movedJob = jobsData.find(job => job.id === movedJobId);
+		if (movedJob) {
+			phaseJobs.splice(targetPosition, 0, movedJob);
+		}
+
+		// Update sortOrder for all jobs in this phase
+		phaseJobs.forEach((job, index) => {
+			const jobIndex = jobsData.findIndex(j => j.id === job.id);
+			if (jobIndex !== -1) {
+				jobsData[jobIndex].sortOrder = index;
+			}
 		});
 	},
 

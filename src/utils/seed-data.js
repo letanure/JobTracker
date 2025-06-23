@@ -21,6 +21,7 @@ const DEMO_DATA = [
 		salaryRange: "$120k - $150k",
 		location: "San Francisco, CA",
 		notes: "demo.notes1",
+		sortOrder: 0, // Position within the interview phase
 		tasks: [
 			{
 				id: "1",
@@ -103,6 +104,7 @@ const DEMO_DATA = [
 		salaryRange: "$90k - $110k + equity",
 		location: "Remote",
 		notes: "demo.notes2",
+		sortOrder: 0, // Position within the applied phase
 		tasks: [
 			{
 				id: "5",
