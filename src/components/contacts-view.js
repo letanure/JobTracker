@@ -193,6 +193,18 @@ const ContactsView = {
 				"td",
 				{ className: "contact-cell contact-actions-cell" },
 				h("button", {
+					className: "contact-view-job-btn action-btn",
+					title: `View job: ${contact.jobPosition} at ${contact.jobCompany}`,
+					onclick: () => {
+						// Find the job and open edit modal
+						const job = jobsData.find(j => j.id === contact.jobId);
+						if (job && window.KanbanBoard) {
+							window.KanbanBoard.openJobEditModal(job);
+						}
+					},
+					innerHTML: '<span class="material-symbols-outlined icon-14">work</span>',
+				}),
+				h("button", {
 					className: "contact-delete-btn action-btn delete-btn",
 					title: I18n.t("contactsView.deleteTitle"),
 					onclick: () => ContactsView.deleteContact(contact),
