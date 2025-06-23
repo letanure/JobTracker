@@ -1097,7 +1097,7 @@ textarea {
 	color: var(--gray-600);
 	text-decoration: none;
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: 500;
 	transition: var(--transition-fast);
 	cursor: pointer;
 	min-width: auto;
@@ -1115,11 +1115,15 @@ textarea {
 	box-shadow: none;
 }
 
+
 .tab-button.active {
 	color: var(--text-color);
 	border-bottom-color: #fd8c73;
 	background: transparent;
+	/* Use a slightly bolder weight that's closer to the normal weight */
 	font-weight: 600;
+	/* Compensate for the slight width increase with negative letter-spacing */
+	letter-spacing: -0.01em;
 }
 
 .tab-icon {

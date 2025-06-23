@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T08:39:03.060Z
-Cache Version: 1750667943060
+Generated: 2025-06-23T09:03:01.038Z
+Cache Version: 1750669381038
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750667943060
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750667943060">
-    <meta name="build-date" content="2025-06-23T08:39:03.060Z">
+    <meta name="build-version" content="1750669381038">
+    <meta name="build-date" content="2025-06-23T09:03:01.038Z">
     <style>
 
 /* ============================================================================ */
@@ -708,17 +708,34 @@ body {
 	flex-direction: column;
 	min-height: 600px;
 	width: 100%;
+	position: relative;
 }
 
 .tab-content {
-	display: none;
+	display: flex;
+	flex-direction: column;
 	flex: 1;
 	width: 100%;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* Before JS loads, hide all content to prevent flash */
+.tab-content-container:not(.tabs-initialized) .tab-content {
+	opacity: 0 !important;
+	visibility: hidden !important;
 }
 
 .tab-content.active {
-	display: flex;
-	flex-direction: column;
+	opacity: 1;
+	visibility: visible;
+	position: relative;
 }
 
 /* Applications Board Placeholder */
@@ -1912,7 +1929,7 @@ textarea {
 	color: var(--gray-600);
 	text-decoration: none;
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: 500;
 	transition: var(--transition-fast);
 	cursor: pointer;
 	min-width: auto;
@@ -1930,11 +1947,15 @@ textarea {
 	box-shadow: none;
 }
 
+
 .tab-button.active {
 	color: var(--text-color);
 	border-bottom-color: #fd8c73;
 	background: transparent;
+	/* Use a slightly bolder weight that's closer to the normal weight */
 	font-weight: 600;
+	/* Compensate for the slight width increase with negative letter-spacing */
+	letter-spacing: -0.01em;
 }
 
 .tab-icon {
@@ -4124,16 +4145,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750667943060';
-window.BUILD_DATE = '2025-06-23T08:39:03.060Z';
+window.BUILD_VERSION = '1750669381038';
+window.BUILD_DATE = '2025-06-23T09:03:01.038Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T08:39:03.050Z
+// Generated: 2025-06-23T09:03:01.030Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T08:39:03.050Z");
+console.log("JobTracker - Built at: 2025-06-23T09:03:01.030Z");
 
 
 // ============================================================================
@@ -8737,6 +8758,12 @@ const TabNavigation = {
 
 		// Force switch to show the correct tab on init
 		TabNavigation.switchTo(initialTab, true);
+
+		// Mark tabs as initialized to enable smooth transitions
+		const tabContainer = document.querySelector('.tab-content-container');
+		if (tabContainer) {
+			tabContainer.classList.add('tabs-initialized');
+		}
 	},
 };
 

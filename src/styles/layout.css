@@ -179,17 +179,34 @@ body {
 	flex-direction: column;
 	min-height: 600px;
 	width: 100%;
+	position: relative;
 }
 
 .tab-content {
-	display: none;
+	display: flex;
+	flex-direction: column;
 	flex: 1;
 	width: 100%;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* Before JS loads, hide all content to prevent flash */
+.tab-content-container:not(.tabs-initialized) .tab-content {
+	opacity: 0 !important;
+	visibility: hidden !important;
 }
 
 .tab-content.active {
-	display: flex;
-	flex-direction: column;
+	opacity: 1;
+	visibility: visible;
+	position: relative;
 }
 
 /* Applications Board Placeholder */

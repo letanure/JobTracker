@@ -186,5 +186,11 @@ const TabNavigation = {
 
 		// Force switch to show the correct tab on init
 		TabNavigation.switchTo(initialTab, true);
+
+		// Mark tabs as initialized to enable smooth transitions
+		const tabContainer = document.querySelector('.tab-content-container');
+		if (tabContainer) {
+			tabContainer.classList.add('tabs-initialized');
+		}
 	},
 };
