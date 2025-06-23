@@ -334,68 +334,104 @@ const TasksBoard = {
 		}
 	},
 
-	// Open task edit modal (reuse existing task modal functionality)
+	// Use the TasksBoard version for both create and edit
+
+	// Open add task modal with job selection
+	openAddTaskModal: () => {
+		const modal = TasksBoard.createTaskModal();
+		document.body.appendChild(modal);
+	},
+
+	// Open task edit modal using the same modal but in edit mode
 	openTaskEditModal: (task) => {
 		// Find the job for this task
 		const job = jobsData.find((j) => j.id === task.jobId);
 		if (job) {
-			openTasksModal(job);
+			const modal = TasksBoard.createTaskModal(task, job);
+			document.body.appendChild(modal);
 		}
 	},
 
-	// Open add task modal with job selection
-	openAddTaskModal: () => {
-		const modal = TasksBoard.createAddTaskModal();
-		document.body.appendChild(modal);
-	},
+	// Create unified task modal (for both creating and editing tasks)
+	createTaskModal: (task = null, job = null) => {
+		const isEditMode = !!task;
+		const modalTitle = isEditMode ? 
+			(I18n.t("modals.tasks.editTitle") || "Edit Task") : 
+			(I18n.t("modals.tasks.addButton") || "Add Task");
 
-	// Create add task modal
-	createAddTaskModal: () => {
 		const handleSave = async () => {
 			const modal = document.querySelector(".tasks-add-task-modal");
 			const form = modal.querySelector("form");
 
-			const jobId = Number.parseInt(form.jobSelect.value);
 			const taskText = form.taskText.value.trim();
-
-			// Validation
-			if (!jobId) {
-				await alert(I18n.t("validation.jobRequired") || "Please select a job");
-				return;
-			}
+			const status = form.taskStatus.value;
+			const priority = form.taskPriority.value;
+			const dueDate = form.dueDate.value || null;
+			const duration = form.duration.value || null;
 
 			if (!taskText) {
 				await alert(I18n.t("validation.taskRequired") || "Please enter a task description");
 				return;
 			}
 
-			// Find the job
-			const jobIndex = jobsData.findIndex((j) => j.id === jobId);
-			if (jobIndex === -1) return;
+			if (isEditMode) {
+				// Edit existing task
+				const jobIndex = jobsData.findIndex(j => j.id === job.id);
+				if (jobIndex === -1) return;
 
-			// Create new task
-			const newTask = {
-				id: Date.now().toString(),
-				task: taskText,
-				status: form.taskStatus.value || "todo",
-				priority: form.taskPriority.value || "medium",
-				dueDate: form.dueDate.value || null,
-				duration: form.duration.value || null,
-				createdAt: new Date().toISOString(),
-				archived: false,
-			};
+				const taskIndex = jobsData[jobIndex].tasks.findIndex(t => t.id === task.id);
+				if (taskIndex === -1) return;
 
-			// Add to job
-			if (!jobsData[jobIndex].tasks) {
-				jobsData[jobIndex].tasks = [];
+				// Update task
+				jobsData[jobIndex].tasks[taskIndex] = {
+					...jobsData[jobIndex].tasks[taskIndex],
+					task: taskText,
+					text: taskText,
+					description: taskText,
+					status: status,
+					priority: priority,
+					dueDate: dueDate,
+					duration: duration
+				};
+			} else {
+				// Create new task
+				const jobId = Number.parseInt(form.jobSelect.value);
+
+				if (!jobId) {
+					await alert(I18n.t("validation.jobRequired") || "Please select a job");
+					return;
+				}
+
+				// Find the job
+				const jobIndex = jobsData.findIndex((j) => j.id === jobId);
+				if (jobIndex === -1) return;
+
+				// Create new task
+				const newTask = {
+					id: Date.now().toString(),
+					task: taskText,
+					text: taskText,
+					description: taskText,
+					status: status,
+					priority: priority,
+					dueDate: dueDate,
+					duration: duration,
+					createdAt: new Date().toISOString(),
+					archived: false,
+				};
+
+				// Add to job
+				if (!jobsData[jobIndex].tasks) {
+					jobsData[jobIndex].tasks = [];
+				}
+				jobsData[jobIndex].tasks.push(newTask);
 			}
-			jobsData[jobIndex].tasks.push(newTask);
 
 			// Save to localStorage
 			saveToLocalStorage();
 
 			// Close modal
-			TasksBoard.closeAddTaskModal();
+			TasksBoard.closeTaskModal();
 
 			// Refresh tasks board
 			TasksBoard.refresh();
@@ -404,16 +440,57 @@ const TasksBoard = {
 			if (typeof refreshInterface === "function") {
 				refreshInterface();
 			}
+			if (typeof Dashboard !== "undefined" && TabNavigation.activeTab === "dashboard") {
+				Dashboard.refresh();
+			}
 		};
 
 		const handleClose = () => {
-			TasksBoard.closeAddTaskModal();
+			TasksBoard.closeTaskModal();
+		};
+
+		const handleDelete = async () => {
+			if (!isEditMode) return; // No delete for new tasks
+			
+			const confirmed = await confirm(
+				I18n.t("messages.confirmDelete", { task: task.task || task.text || task.description }) ||
+				`Are you sure you want to delete this task?`
+			);
+
+			if (confirmed) {
+				// Find and remove the task
+				const jobIndex = jobsData.findIndex(j => j.id === job.id);
+				if (jobIndex === -1) return;
+
+				const taskIndex = jobsData[jobIndex].tasks.findIndex(t => t.id === task.id);
+				if (taskIndex === -1) return;
+
+				// Remove task
+				jobsData[jobIndex].tasks.splice(taskIndex, 1);
+
+				// Save to localStorage
+				saveToLocalStorage();
+
+				// Close modal
+				TasksBoard.closeTaskModal();
+
+				// Refresh relevant interfaces
+				if (typeof refreshInterface === "function") {
+					refreshInterface();
+				}
+				if (typeof TasksBoard !== "undefined") {
+					TasksBoard.refresh();
+				}
+				if (typeof Dashboard !== "undefined" && TabNavigation.activeTab === "dashboard") {
+					Dashboard.refresh();
+				}
+			}
 		};
 
 		// Get jobs for selection
-		const jobOptions = jobsData.map((job) => ({
-			id: job.id,
-			text: `${job.company} - ${job.position}`,
+		const jobOptions = jobsData.map((jobOption) => ({
+			id: jobOption.id,
+			text: `${jobOption.company} - ${jobOption.position}`,
 		}));
 
 		const modal = h(
@@ -428,7 +505,7 @@ const TasksBoard = {
 				h(
 					"div",
 					{ className: "modal-header" },
-					h("h3", { className: "modal-title" }, I18n.t("modals.tasks.addButton") || "Add Task"),
+					h("h3", { className: "modal-title" }, modalTitle),
 					h("button", { className: "modal-close", onclick: handleClose }, "×")
 				),
 				h(
@@ -437,76 +514,123 @@ const TasksBoard = {
 					h(
 						"form",
 						{ className: "add-task-form" },
-						// Job selection (full width)
-						h(
-							"div",
-							{ className: "add-task-job-row" },
+						// Job selection (create mode) or job info (edit mode)
+						isEditMode ? 
 							h(
-								"select",
-								{ name: "jobSelect", required: true, className: "add-task-job-select" },
-								h("option", { value: "" }, I18n.t("common.chooseJob") || "Choose a job..."),
-								...jobOptions.map((job) => h("option", { value: job.id }, job.text))
-							)
-						),
+								"div",
+								{ className: "add-task-job-row" },
+								h("div", { className: "job-info-display", style: "padding: 8px 12px; background: var(--gray-50); border-radius: 6px; font-weight: 500;" }, `${job.company} - ${job.position}`)
+							) :
+							h(
+								"div",
+								{ className: "add-task-job-row" },
+								h(
+									"select",
+									{ name: "jobSelect", required: true, className: "add-task-job-select" },
+									h("option", { value: "" }, I18n.t("common.chooseJob") || "Choose a job..."),
+									...jobOptions.map((jobOption) => h("option", { value: jobOption.id }, jobOption.text))
+								)
+							),
 						// Status, Priority, Due Date, Duration (grid layout like existing tasks modal)
 						h(
 							"div",
 							{ className: "task-form-grid" },
-							h(
-								"select",
-								{
-									name: "taskStatus",
-									className: "add-task-status",
-									title: "Status",
-								},
-								h("option", { value: "todo", selected: true }, I18n.t("modals.tasks.statusTodo") || "To Do"),
-								h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress") || "In Progress"),
-								h("option", { value: "done" }, I18n.t("modals.tasks.statusDone") || "Done")
-							),
-							h(
-								"select",
-								{
-									name: "taskPriority",
-									className: "add-task-priority",
-									title: "Priority",
-								},
-								h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow") || "Low"),
-								h("option", { value: "medium", selected: true }, I18n.t("modals.tasks.priorityMedium") || "Medium"),
-								h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh") || "High")
-							),
-							h("input", {
-								type: "datetime-local",
-								name: "dueDate",
-								className: "add-task-due-date",
-								title: "Due Date & Time",
-							}),
-							h(
-								"select",
-								{
-									name: "duration",
-									className: "add-task-duration",
-									title: "Duration",
-								},
-								h("option", { value: "" }, "—"),
-								h("option", { value: "15min" }, "15 min"),
-								h("option", { value: "30min" }, "30 min"),
-								h("option", { value: "1h" }, "1h"),
-								h("option", { value: "1h30" }, "1:30"),
-								h("option", { value: "2h" }, "2h"),
-								h("option", { value: "3h" }, "3h")
-							)
+							(() => {
+								const statusSelect = h(
+									"select",
+									{
+										name: "taskStatus",
+										className: "add-task-status",
+										title: "Status"
+									},
+									h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo") || "To Do"),
+									h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress") || "In Progress"),
+									h("option", { value: "done" }, I18n.t("modals.tasks.statusDone") || "Done")
+								);
+								if (isEditMode) {
+									statusSelect.value = task.status || "todo";
+								} else {
+									statusSelect.value = "todo";
+								}
+								return statusSelect;
+							})(),
+							(() => {
+								const prioritySelect = h(
+									"select",
+									{
+										name: "taskPriority",
+										className: "add-task-priority",
+										title: "Priority"
+									},
+									h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow") || "Low"),
+									h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium") || "Medium"),
+									h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh") || "High")
+								);
+								if (isEditMode) {
+									prioritySelect.value = task.priority || "medium";
+								} else {
+									prioritySelect.value = "medium";
+								}
+								return prioritySelect;
+							})(),
+							(() => {
+								const dueDateInput = h("input", {
+									type: "datetime-local",
+									name: "dueDate",
+									className: "add-task-due-date",
+									title: "Due Date & Time"
+								});
+								if (isEditMode && task.dueDate) {
+									try {
+										dueDateInput.value = new Date(task.dueDate).toISOString().slice(0, 16);
+									} catch (e) {
+										console.warn("Invalid date format:", task.dueDate);
+									}
+								}
+								return dueDateInput;
+							})(),
+							(() => {
+								const durationSelect = h(
+									"select",
+									{
+										name: "duration",
+										className: "add-task-duration",
+										title: "Duration"
+									},
+									h("option", { value: "" }, "—"),
+									h("option", { value: "15min" }, "15 min"),
+									h("option", { value: "30min" }, "30 min"),
+									h("option", { value: "1h" }, "1h"),
+									h("option", { value: "1h30" }, "1:30"),
+									h("option", { value: "2h" }, "2h"),
+									h("option", { value: "3h" }, "3h")
+								);
+								if (isEditMode) {
+									durationSelect.value = task.duration || "";
+								}
+								return durationSelect;
+							})()
 						),
 						// Task text (full width)
 						h(
 							"div",
 							{ className: "add-task-text-row" },
-							h("textarea", {
-								name: "taskText",
-								className: "add-task-textarea",
-								placeholder: I18n.t("modals.tasks.placeholder") || "Enter your task here...",
-								required: true,
-								rows: 3,
-							})
+							(() => {
+								const textarea = h("textarea", {
+									name: "taskText",
+									className: "add-task-textarea",
+									placeholder: I18n.t("modals.tasks.placeholder") || "Enter your task here...",
+									required: true,
+									rows: 3
+								});
+								
+								// Set the text content for edit mode
+								if (isEditMode) {
+									textarea.value = task.task || task.text || task.description || "";
+								}
+								
+								return textarea;
+							})()
 						)
 					)
 				),
@@ -522,6 +646,16 @@ const TasksBoard = {
 						},
 						I18n.t("modals.common.cancel") || "Cancel"
 					),
+					// Show delete button in edit mode
+					isEditMode && h(
+						"button",
+						{
+							type: "button",
+							className: "btn-danger",
+							onclick: handleDelete,
+						},
+						I18n.t("modals.common.delete") || "Delete"
+					),
 					h(
 						"button",
 						{
@@ -529,7 +663,7 @@ const TasksBoard = {
 							className: "btn-primary",
 							onclick: handleSave,
 						},
-						I18n.t("modals.tasks.addButton") || "Add Task"
+						isEditMode ? (I18n.t("modals.common.save") || "Save") : (I18n.t("modals.tasks.addButton") || "Add Task")
 					)
 				)
 			)
@@ -538,8 +672,8 @@ const TasksBoard = {
 		return modal;
 	},
 
-	// Close add task modal
-	closeAddTaskModal: () => {
+	// Close task modal
+	closeTaskModal: () => {
 		const modal = document.querySelector(".tasks-add-task-modal");
 		if (modal) {
 			modal.remove();

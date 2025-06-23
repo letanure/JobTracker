@@ -3081,3 +3081,162 @@ a.kanban-source-link {
 		justify-content: center;
 	}
 }
+
+/* ============================================================================ */
+/* TASK EDIT MODAL */
+/* ============================================================================ */
+
+.task-modal {
+	max-width: 500px;
+	width: 100%;
+}
+
+.task-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.task-job-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px;
+	background: var(--gray-50);
+	border-radius: 6px;
+	border: var(--border-width) solid var(--border-color);
+}
+
+.task-job-info label {
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	color: var(--gray-600);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.job-info-display {
+	font-size: var(--font-size-sm);
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.task-text-field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.task-text-field label {
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.task-edit-textarea {
+	width: 100%;
+	padding: 8px 12px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	font-size: var(--font-size-sm);
+	font-family: inherit;
+	background: var(--white);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	resize: vertical;
+	min-height: 80px;
+}
+
+.task-edit-textarea:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+.task-edit-status,
+.task-edit-priority,
+.task-edit-due-date,
+.task-edit-duration {
+	padding: 6px 12px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	font-size: var(--font-size-sm);
+	font-family: inherit;
+	background: var(--white);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+}
+
+.task-edit-status:focus,
+.task-edit-priority:focus,
+.task-edit-due-date:focus,
+.task-edit-duration:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+.modal-footer-left {
+	flex: 1;
+	display: flex;
+	justify-content: flex-start;
+}
+
+.modal-footer-right {
+	display: flex;
+	gap: 8px;
+}
+
+/* Add job selection styles */
+.task-job-selection {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.task-job-selection label {
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.task-job-select {
+	padding: 8px 12px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	font-size: var(--font-size-sm);
+	font-family: inherit;
+	background: var(--white);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+}
+
+.task-job-select:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+/* Responsive task modal */
+@media (max-width: 480px) {
+	.task-modal {
+		max-width: 95%;
+		margin: 16px;
+	}
+	
+	.modal-footer {
+		flex-direction: column;
+		gap: 12px;
+	}
+	
+	.modal-footer-left,
+	.modal-footer-right {
+		width: 100%;
+		justify-content: center;
+	}
+	
+	.modal-footer-right {
+		flex-direction: column;
+		gap: 8px;
+	}
+}

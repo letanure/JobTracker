@@ -1449,6 +1449,13 @@ const openTasksModal = (job) => {
 const openAddTaskModal = openTasksModal;
 
 // Make task components and functions available globally
+// Use TasksBoard modal for task editing
+const openTaskEditModal = (task, job) => {
+	if (typeof TasksBoard !== "undefined" && TasksBoard.openTaskEditModal) {
+		TasksBoard.openTaskEditModal(task);
+	}
+};
+
 window.TasksCount = TasksCount;
 window.TaskItem = TaskItem;
 window.TasksModal = TasksModal;
@@ -1459,3 +1466,4 @@ window.saveTaskEdits = saveTaskEdits;
 window.cancelTaskEdits = cancelTaskEdits;
 window.refreshTasksModal = refreshTasksModal;
 window.createTasksContent = createTasksContent;
+window.openTaskEditModal = openTaskEditModal;
