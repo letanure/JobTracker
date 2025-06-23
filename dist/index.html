@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-23T09:47:27.862Z
-Cache Version: 1750672047862
+Generated: 2025-06-23T10:14:55.149Z
+Cache Version: 1750673695149
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750672047862
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750672047862">
-    <meta name="build-date" content="2025-06-23T09:47:27.862Z">
+    <meta name="build-version" content="1750673695149">
+    <meta name="build-date" content="2025-06-23T10:14:55.149Z">
     <style>
 
 /* ============================================================================ */
@@ -986,17 +986,21 @@ textarea::placeholder {
 /* Inline edit inputs */
 .inline-edit {
 	width: 100%;
-	padding: 3px 8px;
-	border: var(--border-width) solid var(--border-color);
-	border-radius: 6px;
+	padding: 8px;
+	border: none;
+	border-radius: 0;
 	font-size: var(--font-size-xs);
 	background: var(--white);
 	color: var(--text-color);
 	transition: var(--transition-fast);
-	min-height: auto;
-	height: 24px;
-	box-shadow: inset 0 1px 0 rgba(27, 31, 35, 0.075);
+	height: 40px;
+	box-sizing: border-box;
+	border: 0px solid transparent;
+	background-color: transparent;
 }
+/* .inline-edit.phase-select  select{
+	height: 30px;
+} */
 
 .inline-edit:focus {
 	outline: 2px solid var(--blue-500);
@@ -1679,13 +1683,6 @@ textarea {
 	border: 1px solid var(--gray-300);
 }
 
-.notes-count:hover,
-.tasks-count:hover,
-.contacts-count:hover {
-	background: var(--blue-100);
-	color: var(--blue-700);
-	border-color: var(--blue-300);
-}
 
 .zero-count {
 	background: var(--gray-100);
@@ -3330,31 +3327,6 @@ textarea {
 	white-space: nowrap;
 }
 
-.kanban-total-jobs,
-.tasks-total-count,
-.contacts-count {
-	padding: 6px 16px;
-	background: transparent;
-	border: none;
-	border-radius: 4px;
-	color: var(--gray-600);
-	font-size: 14px;
-	font-weight: 500;
-	cursor: pointer;
-	transition: var(--transition-fast);
-	white-space: nowrap;
-	height: 32px;
-	display: inline-flex;
-	align-items: center;
-	box-sizing: border-box;
-}
-
-.jobs-stats .stat-item:hover,
-.kanban-total-jobs:hover,
-.tasks-total-count:hover,
-.contacts-count:hover {
-	color: var(--text-color);
-}
 
 /* Responsive headers */
 @media (max-width: 768px) {
@@ -3556,6 +3528,8 @@ td {
 	font-weight: 400;
 	color: var(--text-color);
 	font-size: 14px;
+	height: 60px;
+	box-sizing: border-box;
 }
 
 tr {
@@ -3698,39 +3672,90 @@ tr.editing {
 
 tr.editing td {
 	background-color: transparent;
-	padding: var(--space-1);
+	padding: 0;
+	height: 60px;
 }
 
 /* Phase cell for editing */
 .phase-cell {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-1);
+	height: 60px;
+	padding: 0;
+	box-sizing: border-box;
+}
+.phase-cell .inline-edit {
+	height: 28px;
+	padding: 0;
+	border: 0;
+}
+/* .phase-cell {
+	
+	height: 60px;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-.substep-select {
+.phase-cell .inline-edit {
+	height: 29px;
+	padding: 4px 8px;
+	border: none;
+	border-radius: 0;
 	font-size: var(--font-size-xs);
-}
-
-/* Inline edit selects */
-.inline-edit.priority-select {
+	margin: 0;
+	box-sizing: border-box;
 	width: 100%;
-	font-size: var(--font-size-xs);
-	padding: var(--space-1);
-	height: calc(var(--space-4) + var(--space-1));
+	background: var(--white);
+	color: var(--text-color);
+} */
+
+/* .phase-cell .inline-edit:first-child {
+	border-bottom: 1px solid var(--border-light);
+	height: 30px;
 }
 
-.inline-edit.phase-select {
+.phase-cell .inline-edit:last-child {
+	height: 29px;
+}
+
+.phase-cell .inline-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
+} */
+
+/* General inline edit styling */
+.inline-edit {
 	width: 100%;
+	padding: 12px;
+	border: none;
+	border-radius: 0;
 	font-size: var(--font-size-xs);
-	padding: var(--space-1);
-	height: calc(var(--space-4) + var(--space-1));
-	margin-bottom: var(--space-1);
+	background: var(--white);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+	height: 60px;
+	box-sizing: border-box;
+}
+
+.inline-edit:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
 }
 
 /* Priority select specific styling */
 .priority-select {
 	text-align: center;
+	width: 100%;
+	height: 60px;
+	padding: 12px;
+	border: none;
+	border-radius: 0;
+	font-size: var(--font-size-xs);
+	color: var(--text-color);
+	box-sizing: border-box;
+}
+
+.priority-select:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
 }
 
 /* Actions cell in edit mode */
@@ -4148,16 +4173,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750672047862';
-window.BUILD_DATE = '2025-06-23T09:47:27.862Z';
+window.BUILD_VERSION = '1750673695149';
+window.BUILD_DATE = '2025-06-23T10:14:55.149Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-23T09:47:27.855Z
+// Generated: 2025-06-23T10:14:55.143Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-23T09:47:27.855Z");
+console.log("JobTracker - Built at: 2025-06-23T10:14:55.143Z");
 
 
 // ============================================================================
