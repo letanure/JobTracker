@@ -7,6 +7,7 @@
 @import url('./styles/layout.css');
 
 /* Import all component styles */
+@import url('./styles/components/utilities.css');
 @import url('./styles/components/buttons.css');
 @import url('./styles/components/forms.css');
 @import url('./styles/components/contacts.css');

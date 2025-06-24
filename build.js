@@ -56,6 +56,7 @@ const BUILD_CONFIG = {
     'src/styles/base.css',
     'src/styles/layout.css',
     // Component CSS files (in order)
+    'src/styles/components/utilities.css',
     'src/styles/components/buttons.css',
     'src/styles/components/forms.css',
     'src/styles/components/contacts.css',

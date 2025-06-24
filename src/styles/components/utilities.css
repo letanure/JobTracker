@@ -1,0 +1,226 @@
+/* ============================================================================ */
+/* UTILITY CLASSES - SHARED COMPONENTS AND COMMON PATTERNS */
+/* ============================================================================ */
+
+/* Common table cell base */
+.table-cell-base {
+	padding: var(--space-2) var(--space-3);
+	text-align: left;
+	border-bottom: var(--border-width) solid var(--border-color);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-normal);
+}
+
+/* Unified inline editing */
+.inline-edit {
+	width: 100%;
+	padding: var(--space-1) var(--space-2);
+	border: var(--border-width) solid var(--blue-500);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-sm);
+	background: var(--white);
+	transition: var(--transition-fast);
+}
+
+.inline-edit:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+}
+
+/* Shared icon button utility */
+.icon-btn {
+	padding: var(--space-1);
+	min-width: 24px;
+	height: 24px;
+	border-radius: var(--radius-md);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-fast);
+	box-shadow: none;
+	border: var(--border-width) solid transparent;
+	background: transparent;
+	color: var(--gray-500);
+	cursor: pointer;
+}
+
+.icon-btn .material-symbols-outlined {
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.icon-btn:hover {
+	background: var(--gray-100);
+	color: var(--gray-700);
+}
+
+/* Common card base styling */
+.card-base {
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	padding: var(--space-3);
+	transition: var(--transition-fast);
+	box-shadow: var(--shadow-sm);
+}
+
+.card-base:hover {
+	border-color: var(--gray-300);
+	box-shadow: var(--shadow-md);
+}
+
+/* Unified priority indicators */
+.priority-dot {
+	width: var(--priority-dot-size);
+	height: var(--priority-dot-size);
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.priority-dot.high {
+	background-color: var(--priority-high);
+}
+
+.priority-dot.medium {
+	background-color: var(--priority-medium);
+}
+
+.priority-dot.low {
+	background-color: var(--priority-low);
+}
+
+/* Common form field styling */
+.form-field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.form-field label {
+	font-size: var(--font-size-xs);
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+	padding: var(--space-1) var(--space-2);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: var(--radius-md);
+	font-size: var(--font-size-sm);
+	background: var(--white);
+	transition: var(--transition-fast);
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+	outline: none;
+}
+
+/* Common drag and drop states */
+.dragging {
+	opacity: 0.5;
+	transform: scale(0.95);
+	cursor: grabbing;
+}
+
+.drag-over {
+	background-color: var(--blue-50);
+	border: 2px dashed var(--blue-400);
+}
+
+.drop-indicator {
+	position: absolute;
+	height: 2px;
+	background: var(--blue-500);
+	z-index: 10;
+	pointer-events: none;
+}
+
+/* Common responsive grid utilities */
+.grid-responsive {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.grid-2-cols {
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-3-cols {
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.grid-4-cols {
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+/* Common flex utilities */
+.flex-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.flex-start {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--space-2);
+}
+
+/* Common text utilities */
+.text-truncate {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.text-muted {
+	color: var(--text-light);
+}
+
+.text-small {
+	font-size: var(--font-size-xs);
+}
+
+/* Common spacing utilities */
+.gap-sm { gap: var(--space-2); }
+.gap-md { gap: var(--space-4); }
+.gap-lg { gap: var(--space-6); }
+
+.mt-sm { margin-top: var(--space-2); }
+.mt-md { margin-top: var(--space-4); }
+.mt-lg { margin-top: var(--space-6); }
+
+.mb-sm { margin-bottom: var(--space-2); }
+.mb-md { margin-bottom: var(--space-4); }
+.mb-lg { margin-bottom: var(--space-6); }
+
+/* Common width utilities */
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.min-w-0 { min-width: 0; }
+
+/* Common visibility utilities */
+.hidden { display: none; }
+.visible { display: block; }
+
+@media (max-width: 768px) {
+	.hidden-mobile { display: none; }
+	.visible-mobile { display: block; }
+}
+
+@media (min-width: 769px) {
+	.hidden-desktop { display: none; }
+	.visible-desktop { display: block; }
+}
