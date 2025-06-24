@@ -30,7 +30,6 @@
 	gap: var(--space-4);
 	flex: 1;
 	height: calc(100vh - 140px);
-	overflow: hidden;
 }
 
 .resume-form-column {
@@ -43,6 +42,8 @@
 	display: flex;
 	flex-direction: column;
 	background: var(--gray-50);
+	height: 100%;
+	overflow: hidden;
 }
 
 .preview-header {
@@ -52,12 +53,41 @@
 	font-weight: 600;
 	font-size: var(--font-size-sm);
 	color: var(--text-color);
+	flex-shrink: 0;
 }
 
 #resume-html-preview {
 	flex: 1;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background: #f0f2f5;
+	padding: var(--space-4);
+	height: 0; /* Force flex to constrain height */
+}
+
+.cv-paper-container {
 	background: var(--white);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+	border-radius: 4px;
+	overflow: visible;
+	/* A4 ratio: 210mm x 297mm = 1:1.414 */
+	width: 100%;
+	max-width: 595px; /* A4 width in pixels at 72dpi: 21cm = 595px */
+	min-height: 842px; /* A4 height in pixels at 72dpi: 29.7cm = 842px */
+	margin: 0 auto var(--space-4) auto;
+}
+
+#resume-html-preview .cv-resume {
+	transform: none;
+	transform-origin: none;
+	margin: 0;
+	max-width: none;
+	min-height: auto;
+	padding: 30px;
+	width: 100%;
+	height: auto;
+	font-size: 12px;
+	line-height: 1.4;
 }
 
 /* Compact sections without boxes */

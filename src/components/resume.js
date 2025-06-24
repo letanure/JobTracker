@@ -331,29 +331,40 @@ const ResumeBuilder = {
 	generateResumeHTML: () => {
 		const data = ResumeBuilder.data;
 		
-		return h('article.cv-resume',
-			// Header section
-			ResumeBuilder.generateHeaderHTML(data.basics),
-			
-			// Main content sections
-			h('main.cv-main',
-				// Left column
-				h('section.cv-sidebar',
-					ResumeBuilder.generateContactHTML(data.basics),
-					ResumeBuilder.generateLanguagesHTML(data.basics.languages),
-					ResumeBuilder.generateSkillsHTML(data.skills)
-				),
+		// Generate all sections and filter out empty ones
+		const headerSection = ResumeBuilder.generateHeaderHTML(data.basics);
+		
+		// Main content sections
+		const contentSections = [
+			ResumeBuilder.generateSummaryHTML(data.basics),
+			ResumeBuilder.generateExperienceHTML(data.experience),
+			ResumeBuilder.generateEducationHTML(data.education),
+			ResumeBuilder.generateProjectsHTML(data.projects),
+			ResumeBuilder.generateCertificationsHTML(data.certifications),
+			ResumeBuilder.generateAwardsHTML(data.awards),
+			ResumeBuilder.generateVolunteerHTML(data.volunteer)
+		].filter(section => section !== '');
+		
+		// Sidebar sections
+		const sidebarSections = [
+			ResumeBuilder.generateContactHTML(data.basics),
+			ResumeBuilder.generateLanguagesHTML(data.basics.languages),
+			ResumeBuilder.generateSkillsHTML(data.skills)
+		].filter(section => section !== '');
+		
+		return h('div.cv-paper-container',
+			h('article.cv-resume',
+				// Header section (only if exists)
+				headerSection,
 				
-				// Right column
-				h('section.cv-content',
-					ResumeBuilder.generateSummaryHTML(data.basics),
-					ResumeBuilder.generateExperienceHTML(data.experience),
-					ResumeBuilder.generateEducationHTML(data.education),
-					ResumeBuilder.generateProjectsHTML(data.projects),
-					ResumeBuilder.generateCertificationsHTML(data.certifications),
-					ResumeBuilder.generateAwardsHTML(data.awards),
-					ResumeBuilder.generateVolunteerHTML(data.volunteer)
-				)
+				// Main content sections (only if there are any)
+				(contentSections.length > 0 || sidebarSections.length > 0) ? h('main.cv-main',
+					// Left column - Main content
+					contentSections.length > 0 ? h('section.cv-content', ...contentSections) : '',
+					
+					// Right column - Sidebar
+					sidebarSections.length > 0 ? h('section.cv-sidebar', ...sidebarSections) : ''
+				) : ''
 			)
 		);
 	},
