@@ -215,6 +215,7 @@ button:disabled {
 .btn-subtle.btn-primary {
 	color: var(--blue-600);
 	border-color: var(--blue-300);
+	background-color: transparent;
 }
 
 .btn-subtle.btn-primary:hover {

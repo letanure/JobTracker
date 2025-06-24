@@ -148,6 +148,7 @@
 
 .tasks-due-date-indicator .material-symbols-outlined {
 	font-size: 12px;
+	color: inherit !important;
 }
 
 .tasks-due-date-indicator.due-soon {
@@ -392,6 +393,10 @@
 	transition: var(--transition-fast);
 	position: relative;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.tasks-task-card .material-symbols-outlined {
+	font-size: 14px;
+	color: var(--gray-400);
 }
 
 .tasks-task-card:hover {

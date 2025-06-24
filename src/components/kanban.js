@@ -5,7 +5,7 @@
 const KanbanBoard = {
 	// Create the kanban board
 	create: () => {
-		const boardContainer = h('div.kanban-board');
+		const boardContainer = h("div.kanban-board");
 
 		// Create columns for each phase
 		PHASES.forEach((phase) => {
@@ -23,28 +23,35 @@ const KanbanBoard = {
 			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)); // Sort by sortOrder within phase
 		const columnTitle = getPhaseText(phase);
 
-		const column = h('div.kanban-column', {
-			"data-phase": phase});
+		const column = h("div.kanban-column", {
+			"data-phase": phase,
+		});
 
 		// Column header with title and count
-		const header = h('div.kanban-column-header',
-			h('div.kanban-column-title',
-				h('span.kanban-column-name', columnTitle),
-				h('div.kanban-column-actions',
+		const header = h(
+			"div.kanban-column-header",
+			h(
+				"div.kanban-column-title",
+				h("span.kanban-column-name", columnTitle),
+				h(
+					"div.kanban-column-actions",
 					// Add "Add Job" button for wishlist column (left of counter)
 					phase === "wishlist" &&
-						h('button.kanban-add-job-btn', {
-								onclick: () => KanbanBoard.openAddJobModal()},
-							h('span.material-symbols-outlined', "add"),
+						h(
+							"button.kanban-add-job-btn",
+							{
+								onclick: () => KanbanBoard.openAddJobModal(),
+							},
+							h("span.material-symbols-outlined", "add"),
 							I18n.t("kanban.addJob") || "Add Job"
 						),
-					h('span.kanban-column-count', phaseJobs.length.toString())
+					h("span.kanban-column-count", phaseJobs.length.toString())
 				)
 			)
 		);
 
 		// Column body with job cards
-		const body = h('div.kanban-column-body');
+		const body = h("div.kanban-column-body");
 
 		phaseJobs.forEach((job) => {
 			const card = KanbanBoard.createJobCard(job);
@@ -63,24 +70,28 @@ const KanbanBoard = {
 
 	// Create a job card
 	createJobCard: (job) => {
-		const card = h('div.kanban-job-card', {
+		const card = h("div.kanban-job-card", {
 			draggable: true,
-			"data-job-id": job.id});
+			"data-job-id": job.id,
+		});
 
 		// Add drag event listeners
 		card.addEventListener("dragstart", (e) => KanbanBoard.handleDragStart(e, job));
 		card.addEventListener("dragend", KanbanBoard.handleDragEnd);
 
 		// Priority indicator
-		const priorityDot = h('div', {
-			className: `kanban-priority-dot priority-${job.priority}`});
+		const priorityDot = h("div", {
+			className: `kanban-priority-dot priority-${job.priority}`,
+		});
 
 		// Company and position header with icon
-		const header = h('div.kanban-job-header',
-			h('span.material-symbols-outlined kanban-job-icon', "business"),
-			h('div.kanban-job-title',
-				h('div.kanban-job-company', job.company),
-				h('div.kanban-job-position', job.position)
+		const header = h(
+			"div.kanban-job-header",
+			h("span.material-symbols-outlined kanban-job-icon", "business"),
+			h(
+				"div.kanban-job-title",
+				h("div.kanban-job-company", job.company),
+				h("div.kanban-job-position", job.position)
 			)
 		);
 
@@ -91,23 +102,24 @@ const KanbanBoard = {
 		const metadata = [];
 		if (job.salaryRange) {
 			metadata.push(
-				h('div.kanban-metadata-item',
-					h('span.material-symbols-outlined kanban-metadata-icon', "payments"),
-					h('span.kanban-metadata-text', job.salaryRange)
+				h(
+					"div.kanban-metadata-item",
+					h("span.material-symbols-outlined kanban-metadata-icon", "payments"),
+					h("span.kanban-metadata-text", job.salaryRange)
 				)
 			);
 		}
 		if (job.location) {
 			metadata.push(
-				h('div.kanban-metadata-item',
-					h('span.material-symbols-outlined kanban-metadata-icon', "location_on"),
-					h('span.kanban-metadata-text', job.location)
+				h(
+					"div.kanban-metadata-item",
+					h("span.material-symbols-outlined kanban-metadata-icon", "location_on"),
+					h("span.kanban-metadata-text", job.location)
 				)
 			);
 		}
 
-		const metadataRow =
-			metadata.length > 0 ? h('div.kanban-job-metadata', ...metadata) : null;
+		const metadataRow = metadata.length > 0 ? h("div.kanban-job-metadata", ...metadata) : null;
 
 		// Action icons with counts (notes, tasks, contacts)
 		const notesCount = job.notes ? job.notes.length : 0;
@@ -115,65 +127,77 @@ const KanbanBoard = {
 		const contactsCount = job.contacts ? job.contacts.length : 0;
 
 		const actionIconsChildren = [];
-		
+
 		// Source link icon if sourceUrl exists (first position)
 		if (job.sourceUrl) {
 			actionIconsChildren.push(
-				h('a.kanban-icon-btn.kanban-source-link', {
+				h(
+					"a.kanban-icon-btn.kanban-source-link",
+					{
 						href: job.sourceUrl,
 						target: "_blank",
 						rel: "noopener noreferrer",
 						title: "View job posting",
-						onclick: (e) => e.stopPropagation()},
-					h('span.material-symbols-outlined', "link")
+						onclick: (e) => e.stopPropagation(),
+					},
+					h("span.material-symbols-outlined", "link")
 				)
 			);
 		}
 
 		// Notes button
-		const notesButton = h('button.kanban-icon-btn', {
+		const notesButton = h(
+			"button.kanban-icon-btn",
+			{
 				title: `Notes (${notesCount})`,
 				onclick: (e) => {
 					e.stopPropagation();
 					openNotesModal(job);
-				}},
-			h('span.material-symbols-outlined', "note")
+				},
+			},
+			h("span.material-symbols-outlined", "note")
 		);
 		if (notesCount > 0) {
-			notesButton.appendChild(h('span.kanban-count-badge', notesCount.toString()));
+			notesButton.appendChild(h("span.kanban-count-badge", notesCount.toString()));
 		}
 		actionIconsChildren.push(notesButton);
 
 		// Tasks button
-		const tasksButton = h('button.kanban-icon-btn', {
+		const tasksButton = h(
+			"button.kanban-icon-btn",
+			{
 				title: `Tasks (${tasksCount})`,
 				onclick: (e) => {
 					e.stopPropagation();
 					openTasksModal(job);
-				}},
-			h('span.material-symbols-outlined', "task_alt")
+				},
+			},
+			h("span.material-symbols-outlined", "task_alt")
 		);
 		if (tasksCount > 0) {
-			tasksButton.appendChild(h('span.kanban-count-badge', tasksCount.toString()));
+			tasksButton.appendChild(h("span.kanban-count-badge", tasksCount.toString()));
 		}
 		actionIconsChildren.push(tasksButton);
 
 		// Contacts button
-		const contactsButton = h('button.kanban-icon-btn', {
+		const contactsButton = h(
+			"button.kanban-icon-btn",
+			{
 				title: `Contacts (${contactsCount})`,
 				onclick: (e) => {
 					e.stopPropagation();
 					openContactsModal(job);
-				}},
-			h('span.material-symbols-outlined', "person")
+				},
+			},
+			h("span.material-symbols-outlined", "person")
 		);
 		if (contactsCount > 0) {
-			contactsButton.appendChild(h('span.kanban-count-badge', contactsCount.toString()));
+			contactsButton.appendChild(h("span.kanban-count-badge", contactsCount.toString()));
 		}
 		actionIconsChildren.push(contactsButton);
 
-		const actionIcons = h('div.kanban-action-icons');
-		actionIconsChildren.forEach(child => actionIcons.appendChild(child));
+		const actionIcons = h("div.kanban-action-icons");
+		actionIconsChildren.forEach((child) => actionIcons.appendChild(child));
 
 		// Card click handler to view/edit job
 		card.addEventListener("click", (e) => {
@@ -211,12 +235,13 @@ const KanbanBoard = {
 		const availableSubsteps =
 			selectedSubsteps.length > 0 ? selectedSubsteps : getSubstepsForPhase(currentPhase);
 
-		const phaseHeader = h('div.kanban-phase-header',
-			h('span.material-symbols-outlined kanban-phase-icon', "schedule"),
-			h('span.kanban-phase-text', `${getPhaseText(currentPhase)} Stage:`)
+		const phaseHeader = h(
+			"div.kanban-phase-header",
+			h("span.material-symbols-outlined kanban-phase-icon", "schedule"),
+			h("span.kanban-phase-text", `${getPhaseText(currentPhase)} Stage:`)
 		);
 
-		const substepsList = h('div.kanban-substeps-list');
+		const substepsList = h("div.kanban-substeps-list");
 
 		if (availableSubsteps.length > 0) {
 			// Show progression through substeps
@@ -236,26 +261,26 @@ const KanbanBoard = {
 					className = "kanban-substep-item current";
 				}
 
-				const substepItem = h('div',
+				const substepItem = h(
+					"div",
 					{ className },
-					h('span.material-symbols-outlined kanban-substep-icon', icon),
-					h('span.kanban-substep-text', getSubstepText(substep))
+					h("span.material-symbols-outlined kanban-substep-icon", icon),
+					h("span.kanban-substep-text", getSubstepText(substep))
 				);
 
 				substepsList.appendChild(substepItem);
 			});
 		} else {
 			// No substeps, just show the phase
-			const phaseItem = h('div.kanban-substep-item current',
-				h('span.material-symbols-outlined kanban-substep-icon',
-					"radio_button_checked"
-				),
-				h('span.kanban-substep-text', getPhaseText(currentPhase))
+			const phaseItem = h(
+				"div.kanban-substep-item current",
+				h("span.material-symbols-outlined kanban-substep-icon", "radio_button_checked"),
+				h("span.kanban-substep-text", getPhaseText(currentPhase))
 			);
 			substepsList.appendChild(phaseItem);
 		}
 
-		return h('div.kanban-phase-section', phaseHeader, substepsList);
+		return h("div.kanban-phase-section", phaseHeader, substepsList);
 	},
 
 	// Drag and drop handlers
@@ -265,7 +290,8 @@ const KanbanBoard = {
 			JSON.stringify({
 				jobId: job.id,
 				sourcePhase: job.currentPhase,
-				sourceSortOrder: job.sortOrder || 0})
+				sourceSortOrder: job.sortOrder || 0,
+			})
 		);
 		e.target.classList.add("dragging");
 		document.querySelectorAll(".kanban-column").forEach((col) => {
@@ -321,13 +347,18 @@ const KanbanBoard = {
 		}
 
 		// Create placeholder card that matches the dragged card's size
-		const placeholder = h('div.drop-placeholder.kanban-job-card', {
+		const placeholder = h(
+			"div.drop-placeholder.kanban-job-card",
+			{
 				style:
-					"opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;"},
-			h('div',
+					"opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;",
+			},
+			h(
+				"div",
 				{
 					style:
-						"height: 80px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;"},
+						"height: 80px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;",
+				},
 				"Drop here"
 			)
 		);
@@ -472,8 +503,10 @@ const KanbanBoard = {
 
 	// Create current step selector with optgroups
 	createCurrentStepSelector: (job) => {
-		const select = h('select.current-step-selector', {name: "currentStep",
-			onchange: (e) => KanbanBoard.handleCurrentStepChange(e, job)});
+		const select = h("select.current-step-selector", {
+			name: "currentStep",
+			onchange: (e) => KanbanBoard.handleCurrentStepChange(e, job),
+		});
 
 		// Add option groups for each phase
 		PHASES.forEach((phase) => {
@@ -482,14 +515,16 @@ const KanbanBoard = {
 			// Only show phases that have selected substeps
 			if (selectedSubsteps.length > 0) {
 				// Create optgroup for this phase
-				const optgroup = h('optgroup', { label: getPhaseText(phase) });
+				const optgroup = h("optgroup", { label: getPhaseText(phase) });
 
 				// Add substep options only (no phase-level option)
 				selectedSubsteps.forEach((substep) => {
-					const substepOption = h('option',
+					const substepOption = h(
+						"option",
 						{
 							value: `${phase}:${substep}`,
-							selected: job.currentPhase === phase && job.currentSubstep === substep},
+							selected: job.currentPhase === phase && job.currentSubstep === substep,
+						},
 						getSubstepText(substep)
 					);
 					optgroup.appendChild(substepOption);
@@ -579,7 +614,7 @@ const KanbanBoard = {
 				currentSubstepElement.classList.add("current");
 				const toggle = currentSubstepElement.querySelector(".workflow-substep-toggle");
 				if (toggle && !toggle.querySelector(".current-indicator")) {
-					toggle.appendChild(h('span.current-indicator', "current"));
+					toggle.appendChild(h("span.current-indicator", "current"));
 				}
 			}
 		}
@@ -595,57 +630,71 @@ const KanbanBoard = {
 
 	// Create workflow selector component
 	createWorkflowSelector: (job) => {
-		const workflowContainer = h('div.workflow-selector');
+		const workflowContainer = h("div.workflow-selector");
 
 		// Create phase sections
 		Object.entries(PHASE_SUBSTEPS).forEach(([phase, substeps]) => {
 			const selectedSubsteps = job.selectedSubsteps?.[phase] || [];
 			const isCurrentPhase = job.currentPhase === phase;
 
-			const phaseSection = h('div',
+			const phaseSection = h(
+				"div",
 				{
 					className: `workflow-phase ${isCurrentPhase ? "current-phase" : ""}`,
-					"data-phase": phase},
+					"data-phase": phase,
+				},
 				// Phase header
-				h('div.workflow-phase-header',
-					h('button',
+				h(
+					"div.workflow-phase-header",
+					h(
+						"button",
 						{
 							type: "button",
 							className: `workflow-phase-toggle ${selectedSubsteps.length > 0 ? "has-substeps" : ""}`,
-							onclick: (e) => KanbanBoard.togglePhaseExpansion(e, phase)},
-						h('span.material-symbols-outlined', "expand_more"),
-						h('span.workflow-phase-title', getPhaseText(phase)),
-						h('span.workflow-phase-count',
-							`${selectedSubsteps.length}/${substeps.length}`
-						)
+							onclick: (e) => KanbanBoard.togglePhaseExpansion(e, phase),
+						},
+						h("span.material-symbols-outlined", "expand_more"),
+						h("span.workflow-phase-title", getPhaseText(phase)),
+						h("span.workflow-phase-count", `${selectedSubsteps.length}/${substeps.length}`)
 					)
 				),
 				// Substeps list (initially collapsed)
-				h('div.workflow-substeps-list', {
-						style: "display: none;"},
+				h(
+					"div.workflow-substeps-list",
+					{
+						style: "display: none;",
+					},
 					...substeps.map((substep) => {
 						const isSelected = selectedSubsteps.includes(substep);
 						const isCurrent = job.currentSubstep === substep && isCurrentPhase;
 
-						return h('div',
+						return h(
+							"div",
 							{
 								className: `workflow-substep-item ${isSelected ? "selected" : ""} ${isCurrent ? "current" : ""}`,
 								"data-phase": phase,
-								"data-substep": substep},
-							h('button.workflow-substep-toggle', {type: "button",
+								"data-substep": substep,
+							},
+							h(
+								"button.workflow-substep-toggle",
+								{
+									type: "button",
 									onclick: (e) => {
 										if (e.shiftKey) {
 											// Shift+click to set as current substep
-											KanbanBoard.setCurrentSubstep(e, job, phase, substep);} else {
+											KanbanBoard.setCurrentSubstep(e, job, phase, substep);
+										} else {
 											// Regular click to toggle selection
 											KanbanBoard.toggleSubstep(e, job, phase, substep);
 										}
-									}},
-								h('span.material-symbols-outlined',
+									},
+								},
+								h(
+									"span.material-symbols-outlined",
 									isSelected ? "check_circle" : "radio_button_unchecked"
 								),
-								h('span.workflow-substep-text', getSubstepText(substep)),
-								isCurrent && h('span.current-indicator', "current")
+								h("span.workflow-substep-text", getSubstepText(substep)),
+								isCurrent && h("span.current-indicator", "current")
 							)
 						);
 					})
@@ -780,7 +829,7 @@ const KanbanBoard = {
 		substepElement.classList.add("current");
 		const toggle = substepElement.querySelector(".workflow-substep-toggle");
 		if (!toggle.querySelector(".current-indicator")) {
-			toggle.appendChild(h('span.current-indicator', "current"));
+			toggle.appendChild(h("span.current-indicator", "current"));
 		}
 
 		// Update current phase highlighting
@@ -843,7 +892,8 @@ const KanbanBoard = {
 			sourceUrl: "",
 			notes: [],
 			tasks: [],
-			contacts: []};
+			contacts: [],
+		};
 
 		// Add to jobsData temporarily
 		jobsData.push(newJob);
@@ -883,7 +933,8 @@ const KanbanBoard = {
 				currentSubstep: currentSubstep,
 				salaryRange: form.salaryRange.value.trim(),
 				location: form.location.value.trim(),
-				sourceUrl: form.sourceUrl.value.trim()};
+				sourceUrl: form.sourceUrl.value.trim(),
+			};
 
 			// Selected substeps are already updated in real-time by the workflow selector
 			// Just preserve the existing selectedSubsteps
@@ -934,98 +985,128 @@ const KanbanBoard = {
 		const positions = [...new Set(jobsData.map((j) => j.position).filter(Boolean))];
 		const locations = [...new Set(jobsData.map((j) => j.location).filter(Boolean))];
 
-		const modal = h('div.modal-overlay.kanban-job-edit-modal', {
-				onclick: (e) => e.target === e.currentTarget && handleClose()},
-			h('div.modal job-edit-modal',
-				h('div.modal-header',
-					h('h3.modal-title', I18n.t("kanban.editJob") || "Edit Job"),
-					h('button.modal-close', { onclick: handleClose }, "×")
+		const modal = h(
+			"div.modal-overlay.kanban-job-edit-modal",
+			{
+				onclick: (e) => e.target === e.currentTarget && handleClose(),
+			},
+			h(
+				"div.modal job-edit-modal",
+				h(
+					"div.modal-header",
+					h("h3.modal-title", I18n.t("kanban.editJob") || "Edit Job"),
+					h("button.modal-close", { onclick: handleClose }, "×")
 				),
-				h('div.modal-body',
-					h('form.job-edit-form',
+				h(
+					"div.modal-body",
+					h(
+						"form.job-edit-form",
 						// Company and Position row (FIRST)
-						h('div.form-row',
-							h('div.form-field',
-								h('label', I18n.t("table.headers.company") || "Company"),
-								h('input', {
+						h(
+							"div.form-row",
+							h(
+								"div.form-field",
+								h("label", I18n.t("table.headers.company") || "Company"),
+								h("input", {
 									type: "text",
 									name: "company",
 									required: true,
-									list: "companies-list"}),
-								h('datalist',
+									list: "companies-list",
+								}),
+								h(
+									"datalist",
 									{ id: "companies-list" },
-									...companies.map((company) => h('option', { value: company }))
+									...companies.map((company) => h("option", { value: company }))
 								)
 							),
-							h('div.form-field',
-								h('label', I18n.t("table.headers.position") || "Position"),
-								h('input', {
+							h(
+								"div.form-field",
+								h("label", I18n.t("table.headers.position") || "Position"),
+								h("input", {
 									type: "text",
 									name: "position",
 									required: true,
-									list: "positions-list"}),
-								h('datalist',
+									list: "positions-list",
+								}),
+								h(
+									"datalist",
 									{ id: "positions-list" },
-									...positions.map((position) => h('option', { value: position }))
+									...positions.map((position) => h("option", { value: position }))
 								)
 							)
 						),
 
 						// Salary and Location row
-						h('div.form-row',
-							h('div.form-field',
-								h('label', I18n.t("table.headers.salaryRange") || "Salary Range"),
-								h('input', {
+						h(
+							"div.form-row",
+							h(
+								"div.form-field",
+								h("label", I18n.t("table.headers.salaryRange") || "Salary Range"),
+								h("input", {
 									type: "text",
 									name: "salaryRange",
-									placeholder: "e.g. $50k - $70k"})
+									placeholder: "e.g. $50k - $70k",
+								})
 							),
-							h('div.form-field',
-								h('label', I18n.t("table.headers.location") || "Location"),
-								h('input', {
+							h(
+								"div.form-field",
+								h("label", I18n.t("table.headers.location") || "Location"),
+								h("input", {
 									type: "text",
 									name: "location",
-									list: "locations-list"}),
-								h('datalist',
+									list: "locations-list",
+								}),
+								h(
+									"datalist",
 									{ id: "locations-list" },
-									...locations.map((location) => h('option', { value: location }))
+									...locations.map((location) => h("option", { value: location }))
 								)
 							)
 						),
 
 						// Source URL and Priority row
-						h('div.form-row',
-							h('div.form-field',
-								h('label', I18n.t("table.headers.sourceUrl") || "Source URL"),
-								h('input', {
+						h(
+							"div.form-row",
+							h(
+								"div.form-field",
+								h("label", I18n.t("table.headers.sourceUrl") || "Source URL"),
+								h("input", {
 									type: "url",
 									name: "sourceUrl",
-									placeholder: "https://"})
+									placeholder: "https://",
+								})
 							),
-							h('div.form-field',
-								h('label', I18n.t("table.headers.priority") || "Priority"),
-								h('select',
+							h(
+								"div.form-field",
+								h("label", I18n.t("table.headers.priority") || "Priority"),
+								h(
+									"select",
 									{ name: "priority" },
-									h('option', { value: "high" }, I18n.t("priorities.high") || "High"),
-									h('option', { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
-									h('option', { value: "low" }, I18n.t("priorities.low") || "Low")
+									h("option", { value: "high" }, I18n.t("priorities.high") || "High"),
+									h("option", { value: "medium" }, I18n.t("priorities.medium") || "Medium"),
+									h("option", { value: "low" }, I18n.t("priorities.low") || "Low")
 								)
 							)
 						),
 
 						// Current Step Selection
-						h('div.form-row',
-							h('div.form-field full-width',
-								h('label', "Current Step"),
+						h(
+							"div.form-row",
+							h(
+								"div.form-field full-width",
+								h("label", "Current Step"),
 								KanbanBoard.createCurrentStepSelector(job)
 							)
 						),
 
 						// Workflow Configuration
-						h('div.form-row',
-							h('div.form-field full-width',
-								h('label', I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
-								h('div.workflow-description',
+						h(
+							"div.form-row",
+							h(
+								"div.form-field.full-width",
+								h("label", I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
+								h(
+									"div.workflow-description",
 									I18n.t("kanban.workflowDescription") ||
 										"Select and configure the steps for each phase of this job:"
 								),
@@ -1034,9 +1115,13 @@ const KanbanBoard = {
 						)
 					)
 				),
-				h('div.modal-footer',
+				h(
+					"div.modal-footer",
 					// Delete button - always visible
-					h('button.btn-danger', {type: "button",
+					h(
+						"button.btn-danger",
+						{
+							type: "button",
 							onclick: async () => {
 								// Check if this is an existing job (has company and position filled)
 								const isExistingJob = job.company && job.position;
@@ -1046,7 +1131,8 @@ const KanbanBoard = {
 									const confirmed = await confirm(
 										I18n.t("messages.confirmDelete", {
 											position: job.position,
-											company: job.company}) ||
+											company: job.company,
+										}) ||
 											`Are you sure you want to delete the application for ${job.position} at ${job.company}?`
 									);
 									if (confirmed) {
@@ -1067,15 +1153,18 @@ const KanbanBoard = {
 									// For new jobs, just close modal (no confirmation needed)
 									handleClose();
 								}
-							}},
+							},
+						},
 						I18n.t("modals.common.delete") || "Delete"
 					),
-					h('button.btn-secondary', {type: "button",
-							onclick: handleClose},
+					h(
+						"button.btn-secondary",
+						{ type: "button", onclick: handleClose },
 						I18n.t("modals.common.cancel") || "Cancel"
 					),
-					h('button.btn-primary', {type: "button",
-							onclick: handleSave},
+					h(
+						"button.btn-primary",
+						{ type: "button", onclick: handleSave },
 						I18n.t("modals.common.save") || "Save"
 					)
 				)
@@ -1148,12 +1237,12 @@ const KanbanBoard = {
 				applicationsTab.innerHTML = "";
 
 				// Create board header
-				const header = h('div.tab-header',
-					h('h2.tab-title', I18n.t("kanban.title")),
-					h('div.kanban-stats',
-						h('span.kanban-total-jobs',
-							I18n.t("kanban.totalJobs", { count: jobsData.length })
-						)
+				const header = h(
+					"div.tab-header",
+					h("h2.tab-title", I18n.t("kanban.title")),
+					h(
+						"div.kanban-stats",
+						h("span.kanban-total-jobs", I18n.t("kanban.totalJobs", { count: jobsData.length }))
 					)
 				);
 
@@ -1161,7 +1250,7 @@ const KanbanBoard = {
 				const board = KanbanBoard.create();
 
 				// Add to container
-				const container = h('div.kanban-container');
+				const container = h("div.kanban-container");
 				container.appendChild(header);
 				container.appendChild(board);
 
@@ -1171,7 +1260,8 @@ const KanbanBoard = {
 				KanbanBoard.refresh();
 			}
 		}
-	}};
+	},
+};
 
 // Make kanban board available globally
 window.KanbanBoard = KanbanBoard;

@@ -223,7 +223,7 @@ const NotesModal = ({ job, onClose }) => {
 
 		// Recreate modal body content
 		modalBody.innerHTML = "";
-		modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes));
+		modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote));
 	};
 
 	return h(
@@ -241,7 +241,7 @@ const NotesModal = ({ job, onClose }) => {
 				),
 				h("button.modal-close", { onclick: onClose }, "×")
 			),
-			h("div.modal-body", createNotesContent(job, sortedActiveNotes, sortedArchivedNotes))
+			h("div.modal-body", createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote))
 		)
 	);
 };
@@ -364,7 +364,7 @@ const refreshNotesModal = (job) => {
 
 	// Recreate modal body content
 	modalBody.innerHTML = "";
-	modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes));
+	modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote));
 };
 
 // Open unified notes modal (for both viewing and adding notes)
@@ -389,7 +389,7 @@ const openNotesModal = (job) => {
 const openAddNoteModal = openNotesModal;
 
 // Create notes content for modal (extracted to global scope for reuse)
-const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
+const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote) => {
 	return h(
 		"div",
 		// Active notes table

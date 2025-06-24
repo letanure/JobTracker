@@ -215,7 +215,7 @@
 
 .kanban-job-header {
 	display: flex;
-	align-items: center;
+	align-items: top;
 	gap: 6px;
 	margin-bottom: 8px;
 }
@@ -264,6 +264,10 @@ a.kanban-source-link {
 	align-items: center;
 	gap: 4px;
 	margin-bottom: 4px;
+}
+.kanban-job-card .material-symbols-outlined {
+	font-size: 14px;
+	color: var(--gray-500);
 }
 
 .kanban-phase-icon {
