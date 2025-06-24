@@ -70,7 +70,7 @@ const CalendarView = {
 		const container = h('div.calendar-container',
 			// Header with title and controls
 			h('div.tab-header',
-				h('h2.tab-title', I18n.t("calendar.title")),
+				h('h2.tab-title', CalendarView.getCurrentPeriodText()),
 
 				// View selector
 				h('div.calendar-controls',
@@ -115,11 +115,6 @@ const CalendarView = {
 						)
 					)
 				)
-			),
-
-			// Current period display
-			h('div.calendar-period',
-				h('h3.calendar-period-text', CalendarView.getCurrentPeriodText())
 			),
 
 			// Calendar body
@@ -183,10 +178,10 @@ const CalendarView = {
 			btn.classList.toggle("active", btn.textContent.toLowerCase() === CalendarView.currentView);
 		});
 
-		// Update period text
-		const periodText = document.querySelector(".calendar-period-text");
-		if (periodText) {
-			periodText.textContent = CalendarView.getCurrentPeriodText();
+		// Update period text in title
+		const titleText = document.querySelector('.tab-content[data-tab="calendar"] .tab-title');
+		if (titleText) {
+			titleText.textContent = CalendarView.getCurrentPeriodText();
 		}
 
 		// Update calendar body

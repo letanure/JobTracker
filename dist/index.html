@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T16:08:38.546Z
-Cache Version: 1750781318546
+Generated: 2025-06-24T16:12:31.856Z
+Cache Version: 1750781551856
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750781318546
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750781318546">
-    <meta name="build-date" content="2025-06-24T16:08:38.546Z">
+    <meta name="build-version" content="1750781551856">
+    <meta name="build-date" content="2025-06-24T16:12:31.856Z">
     <style>
 
 /* ============================================================================ */
@@ -6067,16 +6067,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750781318546';
-window.BUILD_DATE = '2025-06-24T16:08:38.546Z';
+window.BUILD_VERSION = '1750781551856';
+window.BUILD_DATE = '2025-06-24T16:12:31.856Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T16:08:38.535Z
+// Generated: 2025-06-24T16:12:31.845Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T16:08:38.535Z");
+console.log("JobTracker - Built at: 2025-06-24T16:12:31.845Z");
 
 
 // ============================================================================
@@ -13730,7 +13730,7 @@ const CalendarView = {
 		const container = h('div.calendar-container',
 			// Header with title and controls
 			h('div.tab-header',
-				h('h2.tab-title', I18n.t("calendar.title")),
+				h('h2.tab-title', CalendarView.getCurrentPeriodText()),
 
 				// View selector
 				h('div.calendar-controls',
@@ -13775,11 +13775,6 @@ const CalendarView = {
 						)
 					)
 				)
-			),
-
-			// Current period display
-			h('div.calendar-period',
-				h('h3.calendar-period-text', CalendarView.getCurrentPeriodText())
 			),
 
 			// Calendar body
@@ -13843,10 +13838,10 @@ const CalendarView = {
 			btn.classList.toggle("active", btn.textContent.toLowerCase() === CalendarView.currentView);
 		});
 
-		// Update period text
-		const periodText = document.querySelector(".calendar-period-text");
-		if (periodText) {
-			periodText.textContent = CalendarView.getCurrentPeriodText();
+		// Update period text in title
+		const titleText = document.querySelector('.tab-content[data-tab="calendar"] .tab-title');
+		if (titleText) {
+			titleText.textContent = CalendarView.getCurrentPeriodText();
 		}
 
 		// Update calendar body
