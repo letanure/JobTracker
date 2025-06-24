@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T21:27:28.759Z
-Cache Version: 1750800448759
+Generated: 2025-06-24T21:29:06.761Z
+Cache Version: 1750800546761
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750800448759
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750800448759">
-    <meta name="build-date" content="2025-06-24T21:27:28.759Z">
+    <meta name="build-version" content="1750800546761">
+    <meta name="build-date" content="2025-06-24T21:29:06.761Z">
     <style>
 
 /* ============================================================================ */
@@ -6714,16 +6714,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750800448759';
-window.BUILD_DATE = '2025-06-24T21:27:28.759Z';
+window.BUILD_VERSION = '1750800546761';
+window.BUILD_DATE = '2025-06-24T21:29:06.761Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T21:27:28.747Z
+// Generated: 2025-06-24T21:29:06.750Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T21:27:28.747Z");
+console.log("JobTracker - Built at: 2025-06-24T21:29:06.750Z");
 
 
 // ============================================================================
@@ -16944,28 +16944,64 @@ const ResumeBuilder = {
 	},
 
 	// Degree types for education
-	degreeTypes: [
-		// Academic degrees
-		"Bachelor of Science (BSc)",
-		"Bachelor of Arts (BA)",
-		"Bachelor of Engineering (BEng)",
-		"Master of Science (MSc)",
-		"Master of Arts (MA)",
-		"Master of Engineering (MEng)",
-		"Doctor of Philosophy (PhD)",
-		"Doctor of Medicine (MD)",
+	degreeTypes: {
+		undergraduate: [
+			{
+				label: "Bachelor of Science (BSc)",
+				description: "Undergraduate degree in computer science, IT, or engineering"
+			},
+			{
+				label: "Bachelor of Engineering (BEng)",
+				description: "Technical degree focused on software, electrical, or systems engineering"
+			},
+			{
+				label: "Associate Degree",
+				description: "2-year tech-focused degree, often in IT or programming"
+			}
+		],
 
-		// Professional / alternative
-		"Diploma",
-		"Associate Degree",
-		"Bootcamp Certificate",
-		"Nanodegree",
-		"Certificate of Completion",
-		"Professional Certification",
-		"Trade School Certificate",
-		"Online Course",
-		"Other"
-	],
+		postgraduate: [
+			{
+				label: "Master of Science (MSc)",
+				description: "Advanced degree in computer science, data science, or software engineering"
+			},
+			{
+				label: "Master of Engineering (MEng)",
+				description: "Specialized engineering degree in software, hardware, or IT systems"
+			},
+			{
+				label: "Doctor of Philosophy (PhD)",
+				description: "Research doctorate in computer science or related tech fields"
+			}
+		],
+
+		professional: [
+			{
+				label: "Bootcamp Certificate",
+				description: "Intensive program in coding, data, DevOps, or design"
+			},
+			{
+				label: "Nanodegree",
+				description: "Compact online program in web, data, AI, or mobile development"
+			},
+			{
+				label: "Certificate of Completion",
+				description: "Proof of finishing a relevant IT course"
+			},
+			{
+				label: "Professional Certification",
+				description: "Recognized credential from a tech organization (e.g. AWS, Microsoft, Google)"
+			},
+			{
+				label: "Online Course",
+				description: "Unaccredited but useful online course in tech topics"
+			},
+			{
+				label: "Diploma",
+				description: "Formal training program in IT or computer-related fields"
+			}
+		]
+	},
 
 	// Get country options for select dropdown
 	getCountryOptions: () => {
@@ -17908,8 +17944,13 @@ const ResumeBuilder = {
 					oninput: (e) => ResumeBuilder.data.education[index].studyType = e.target.value
 				}),
 				h(`datalist#education-degree-list-${index}`,
-					...ResumeBuilder.degreeTypes.map(degree =>
-						h('option', { value: degree })
+					...Object.values(ResumeBuilder.degreeTypes).flatMap(category =>
+						category.map(degree =>
+							h('option', { 
+								value: degree.label,
+								title: degree.description 
+							})
+						)
 					)
 				)
 			),

@@ -78,28 +78,64 @@ const ResumeBuilder = {
 	},
 
 	// Degree types for education
-	degreeTypes: [
-		// Academic degrees
-		"Bachelor of Science (BSc)",
-		"Bachelor of Arts (BA)",
-		"Bachelor of Engineering (BEng)",
-		"Master of Science (MSc)",
-		"Master of Arts (MA)",
-		"Master of Engineering (MEng)",
-		"Doctor of Philosophy (PhD)",
-		"Doctor of Medicine (MD)",
+	degreeTypes: {
+		undergraduate: [
+			{
+				label: "Bachelor of Science (BSc)",
+				description: "Undergraduate degree in computer science, IT, or engineering"
+			},
+			{
+				label: "Bachelor of Engineering (BEng)",
+				description: "Technical degree focused on software, electrical, or systems engineering"
+			},
+			{
+				label: "Associate Degree",
+				description: "2-year tech-focused degree, often in IT or programming"
+			}
+		],
 
-		// Professional / alternative
-		"Diploma",
-		"Associate Degree",
-		"Bootcamp Certificate",
-		"Nanodegree",
-		"Certificate of Completion",
-		"Professional Certification",
-		"Trade School Certificate",
-		"Online Course",
-		"Other"
-	],
+		postgraduate: [
+			{
+				label: "Master of Science (MSc)",
+				description: "Advanced degree in computer science, data science, or software engineering"
+			},
+			{
+				label: "Master of Engineering (MEng)",
+				description: "Specialized engineering degree in software, hardware, or IT systems"
+			},
+			{
+				label: "Doctor of Philosophy (PhD)",
+				description: "Research doctorate in computer science or related tech fields"
+			}
+		],
+
+		professional: [
+			{
+				label: "Bootcamp Certificate",
+				description: "Intensive program in coding, data, DevOps, or design"
+			},
+			{
+				label: "Nanodegree",
+				description: "Compact online program in web, data, AI, or mobile development"
+			},
+			{
+				label: "Certificate of Completion",
+				description: "Proof of finishing a relevant IT course"
+			},
+			{
+				label: "Professional Certification",
+				description: "Recognized credential from a tech organization (e.g. AWS, Microsoft, Google)"
+			},
+			{
+				label: "Online Course",
+				description: "Unaccredited but useful online course in tech topics"
+			},
+			{
+				label: "Diploma",
+				description: "Formal training program in IT or computer-related fields"
+			}
+		]
+	},
 
 	// Get country options for select dropdown
 	getCountryOptions: () => {
@@ -1042,8 +1078,13 @@ const ResumeBuilder = {
 					oninput: (e) => ResumeBuilder.data.education[index].studyType = e.target.value
 				}),
 				h(`datalist#education-degree-list-${index}`,
-					...ResumeBuilder.degreeTypes.map(degree =>
-						h('option', { value: degree })
+					...Object.values(ResumeBuilder.degreeTypes).flatMap(category =>
+						category.map(degree =>
+							h('option', { 
+								value: degree.label,
+								title: degree.description 
+							})
+						)
 					)
 				)
 			),
