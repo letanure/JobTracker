@@ -34,118 +34,142 @@ const ResumeBuilder = {
 			h('div.tab-header',
 				h('h2.tab-title', I18n.t("headers.resume")),
 				h('div.resume-actions',
-					h('button.btn-secondary', {
-						onclick: () => ResumeBuilder.exportJSON()
-					}, I18n.t("resume.actions.export")),
-					h('button.btn-secondary', {
-						onclick: () => ResumeBuilder.importJSON()
-					}, I18n.t("resume.actions.import")),
 					h('button.btn-primary', {
 						onclick: () => ResumeBuilder.save()
 					}, I18n.t("resume.actions.save"))
 				)
 			),
 
-			// Form container with sections
-			h('div.resume-form',
-				ResumeBuilder.createBasicsSection(),
-				ResumeBuilder.createProfilesSection(),
-				ResumeBuilder.createLanguagesSection(),
-				ResumeBuilder.createSkillsSection(),
-				ResumeBuilder.createExperienceSection(),
-				ResumeBuilder.createProjectsSection(),
-				ResumeBuilder.createPortfolioSection(),
-				ResumeBuilder.createEducationSection(),
-				ResumeBuilder.createCertificationsSection(),
-				ResumeBuilder.createAwardsSection(),
-				ResumeBuilder.createVolunteerSection(),
-				ResumeBuilder.createInterestsSection()
+			// Two-column layout: form + JSON preview
+			h('div.resume-layout',
+				// Left column: Form
+				h('div.resume-form-column',
+					ResumeBuilder.createBasicsSection(),
+					ResumeBuilder.createProfilesSection(),
+					ResumeBuilder.createLanguagesSection(),
+					ResumeBuilder.createSkillsSection(),
+					ResumeBuilder.createExperienceSection(),
+					ResumeBuilder.createProjectsSection(),
+					ResumeBuilder.createPortfolioSection(),
+					ResumeBuilder.createEducationSection(),
+					ResumeBuilder.createCertificationsSection(),
+					ResumeBuilder.createAwardsSection(),
+					ResumeBuilder.createVolunteerSection(),
+					ResumeBuilder.createInterestsSection()
+				),
+
+				// Right column: JSON preview
+				h('div.resume-json-column',
+					h('div.json-header', 'Live JSON Preview'),
+					h('pre.json-preview', {
+						id: 'resume-json-preview'
+					}, JSON.stringify(ResumeBuilder.data, null, 2))
+				)
 			)
 		);
 
 		return container;
 	},
 
+	// Update JSON preview
+	updateJSON: () => {
+		const preview = document.getElementById('resume-json-preview');
+		if (preview) {
+			preview.textContent = JSON.stringify(ResumeBuilder.data, null, 2);
+		}
+	},
+
 	// Create basics section
 	createBasicsSection: () => {
 		return h('div.resume-section',
 			h('h3.resume-section-title', I18n.t("resume.basics.title")),
-			h('div.resume-section-content',
-				h('div.form-grid-2',
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.name")),
-						h('input[type="text"]', {
-							id: 'basics-name',
-							value: ResumeBuilder.data.basics.name,
-							oninput: (e) => ResumeBuilder.data.basics.name = e.target.value
-						})
-					),
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.label")),
-						h('input[type="text"]', {
-							id: 'basics-label',
-							value: ResumeBuilder.data.basics.label,
-							oninput: (e) => ResumeBuilder.data.basics.label = e.target.value
-						})
-					)
-				),
+			h('div.form-grid-2',
 				h('div.form-field',
-					h('label', I18n.t("resume.basics.summary")),
-					h('textarea', {
-						id: 'basics-summary',
-						rows: 3,
-						value: ResumeBuilder.data.basics.summary,
-						oninput: (e) => ResumeBuilder.data.basics.summary = e.target.value
+					h('label', I18n.t("resume.basics.name")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.name,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.name = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				),
-				h('div.form-grid-2',
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.email")),
-						h('input[type="email"]', {
-							id: 'basics-email',
-							value: ResumeBuilder.data.basics.email,
-							oninput: (e) => ResumeBuilder.data.basics.email = e.target.value
-						})
-					),
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.phone")),
-						h('input[type="tel"]', {
-							id: 'basics-phone',
-							value: ResumeBuilder.data.basics.phone,
-							oninput: (e) => ResumeBuilder.data.basics.phone = e.target.value
-						})
-					)
-				),
-				h('div.form-group',
-					h('h4', I18n.t("resume.basics.locationTitle")),
-					h('div.form-grid-2',
-						h('div.form-field',
-							h('label', I18n.t("resume.basics.city")),
-							h('input[type="text"]', {
-								id: 'basics-city',
-								value: ResumeBuilder.data.basics.location.city,
-								oninput: (e) => ResumeBuilder.data.basics.location.city = e.target.value
-							})
-						),
-						h('div.form-field',
-							h('label', I18n.t("resume.basics.country")),
-							h('input[type="text"]', {
-								id: 'basics-country',
-								value: ResumeBuilder.data.basics.location.country,
-								oninput: (e) => ResumeBuilder.data.basics.location.country = e.target.value
-							})
-						)
-					)
-				),
 				h('div.form-field',
-					h('label', I18n.t("resume.basics.personalStatement")),
-					h('textarea', {
-						id: 'basics-personal-statement',
-						rows: 2,
-						value: ResumeBuilder.data.basics.personalStatement,
-						oninput: (e) => ResumeBuilder.data.basics.personalStatement = e.target.value
+					h('label', I18n.t("resume.basics.label")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.label,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.label = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				)
+			),
+			h('div.form-field',
+				h('label', I18n.t("resume.basics.summary")),
+				h('textarea', {
+					rows: 2,
+					value: ResumeBuilder.data.basics.summary,
+					oninput: (e) => {
+						ResumeBuilder.data.basics.summary = e.target.value;
+						ResumeBuilder.updateJSON();
+					}
+				})
+			),
+			h('div.form-grid-2',
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.email")),
+					h('input[type="email"]', {
+						value: ResumeBuilder.data.basics.email,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.email = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				),
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.phone")),
+					h('input[type="tel"]', {
+						value: ResumeBuilder.data.basics.phone,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.phone = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				)
+			),
+			h('div.form-grid-2',
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.city")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.location.city,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.location.city = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				),
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.country")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.location.country,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.location.country = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				)
+			),
+			h('div.form-field',
+				h('label', I18n.t("resume.basics.personalStatement")),
+				h('textarea', {
+					rows: 2,
+					value: ResumeBuilder.data.basics.personalStatement,
+					oninput: (e) => {
+						ResumeBuilder.data.basics.personalStatement = e.target.value;
+						ResumeBuilder.updateJSON();
+					}
+				})
 			)
 		);
 	},
@@ -154,16 +178,17 @@ const ResumeBuilder = {
 	createProfilesSection: () => {
 		return h('div.resume-section',
 			h('h3.resume-section-title', I18n.t("resume.profiles.title")),
-			h('div.resume-section-content',
-				h('div.dynamic-list', { id: 'profiles-list' },
-					...ResumeBuilder.data.basics.profiles.map((profile, index) => 
-						ResumeBuilder.createProfileItem(profile, index)
-					)
-				),
-				h('button.btn-secondary.add-item-btn', {
-					onclick: () => ResumeBuilder.addProfile()
-				}, I18n.t("resume.profiles.addProfile"))
-			)
+			h('div.dynamic-list', { id: 'profiles-list' },
+				...ResumeBuilder.data.basics.profiles.map((profile, index) => 
+					ResumeBuilder.createProfileItem(profile, index)
+				)
+			),
+			h('button.add-item-btn', {
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.addProfile();
+				}
+			}, I18n.t("resume.profiles.addProfile"))
 		);
 	},
 
@@ -175,7 +200,11 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.profiles.type")),
 					h('select', {
 						value: profile.type,
-						onchange: (e) => ResumeBuilder.data.basics.profiles[index].type = e.target.value
+						className: index === ResumeBuilder.data.basics.profiles.length - 1 ? 'focus-first' : '',
+						onchange: (e) => {
+							ResumeBuilder.data.basics.profiles[index].type = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					},
 						h('option[value="linkedin"]', I18n.t("resume.profiles.platforms.linkedin")),
 						h('option[value="github"]', I18n.t("resume.profiles.platforms.github")),
@@ -188,13 +217,19 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.profiles.url")),
 					h('input[type="url"]', {
 						value: profile.url,
-						oninput: (e) => ResumeBuilder.data.basics.profiles[index].url = e.target.value
+						oninput: (e) => {
+							ResumeBuilder.data.basics.profiles[index].url = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeProfile(index)
-			}, I18n.t("resume.actions.remove"))
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeProfile(index);
+				}
+			}, '×')
 		);
 	},
 
@@ -202,16 +237,17 @@ const ResumeBuilder = {
 	createLanguagesSection: () => {
 		return h('div.resume-section',
 			h('h3.resume-section-title', I18n.t("resume.languages.title")),
-			h('div.resume-section-content',
-				h('div.dynamic-list', { id: 'languages-list' },
-					...ResumeBuilder.data.basics.languages.map((lang, index) => 
-						ResumeBuilder.createLanguageItem(lang, index)
-					)
-				),
-				h('button.btn-secondary.add-item-btn', {
-					onclick: () => ResumeBuilder.addLanguage()
-				}, I18n.t("resume.languages.addLanguage"))
-			)
+			h('div.dynamic-list',
+				...ResumeBuilder.data.basics.languages.map((lang, index) => 
+					ResumeBuilder.createLanguageItem(lang, index)
+				)
+			),
+			h('button.add-item-btn', {
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.addLanguage();
+				}
+			}, I18n.t("resume.languages.addLanguage"))
 		);
 	},
 
@@ -223,14 +259,21 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.languages.language")),
 					h('input[type="text"]', {
 						value: lang.language,
-						oninput: (e) => ResumeBuilder.data.basics.languages[index].language = e.target.value
+						className: index === ResumeBuilder.data.basics.languages.length - 1 ? 'focus-first' : '',
+						oninput: (e) => {
+							ResumeBuilder.data.basics.languages[index].language = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				),
 				h('div.form-field',
 					h('label', I18n.t("resume.languages.fluency")),
 					h('select', {
 						value: lang.fluency,
-						onchange: (e) => ResumeBuilder.data.basics.languages[index].fluency = e.target.value
+						onchange: (e) => {
+							ResumeBuilder.data.basics.languages[index].fluency = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					},
 						h('option[value="native"]', I18n.t("resume.languages.levels.native")),
 						h('option[value="fluent"]', I18n.t("resume.languages.levels.fluent")),
@@ -240,8 +283,11 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeLanguage(index)
-			}, I18n.t("resume.actions.remove"))
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeLanguage(index);
+				}
+			}, '×')
 		);
 	},
 
@@ -764,6 +810,14 @@ const ResumeBuilder = {
 	addProfile: () => {
 		ResumeBuilder.data.basics.profiles.push({ type: "linkedin", url: "" });
 		ResumeBuilder.refresh();
+		// Focus on first field of new item
+		setTimeout(() => {
+			const focusElement = document.querySelector('.focus-first');
+			if (focusElement) {
+				focusElement.focus();
+				focusElement.classList.remove('focus-first');
+			}
+		}, 50);
 	},
 
 	removeProfile: (index) => {
@@ -774,6 +828,13 @@ const ResumeBuilder = {
 	addLanguage: () => {
 		ResumeBuilder.data.basics.languages.push({ language: "", fluency: "intermediate" });
 		ResumeBuilder.refresh();
+		setTimeout(() => {
+			const focusElement = document.querySelector('.focus-first');
+			if (focusElement) {
+				focusElement.focus();
+				focusElement.classList.remove('focus-first');
+			}
+		}, 50);
 	},
 
 	removeLanguage: (index) => {
@@ -976,6 +1037,7 @@ const ResumeBuilder = {
 		if (container) {
 			container.innerHTML = '';
 			container.appendChild(ResumeBuilder.create());
+			ResumeBuilder.updateJSON();
 		}
 	},
 

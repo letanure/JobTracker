@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T19:12:50.425Z
-Cache Version: 1750792370425
+Generated: 2025-06-24T19:39:50.092Z
+Cache Version: 1750793990092
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750792370425
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750792370425">
-    <meta name="build-date" content="2025-06-24T19:12:50.425Z">
+    <meta name="build-version" content="1750793990092">
+    <meta name="build-date" content="2025-06-24T19:39:50.092Z">
     <style>
 
 /* ============================================================================ */
@@ -4454,7 +4454,7 @@ a.kanban-source-link {
 /* ============================================================================ */
 
 /* ============================================================================ */
-/* RESUME BUILDER STYLES */
+/* RESUME BUILDER STYLES - COMPACT 2-COLUMN LAYOUT */
 /* ============================================================================ */
 
 .resume-container {
@@ -4470,62 +4470,92 @@ a.kanban-source-link {
 	align-items: center;
 }
 
-.resume-form {
-	flex: 1;
-	overflow-y: auto;
-	padding: var(--space-6);
-	max-height: calc(100vh - 200px);
-}
-
-.resume-section {
-	background: var(--white);
-	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-lg);
-	margin-bottom: var(--space-6);
-	overflow: hidden;
-}
-
-.resume-section-title {
-	background: var(--gray-50);
-	padding: var(--space-4);
-	margin: 0;
-	font-size: var(--font-size-lg);
-	font-weight: 600;
-	color: var(--text-color);
-	border-bottom: var(--border-width) solid var(--border-color);
-}
-
-.resume-section-content {
-	padding: var(--space-4);
-}
-
-/* Form layouts */
-.form-grid-2 {
+.resume-layout {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--space-4);
+	flex: 1;
+	height: calc(100vh - 140px);
+	overflow: hidden;
+}
+
+.resume-form-column {
+	overflow-y: auto;
+	padding: var(--space-4);
+	border-right: var(--border-width) solid var(--border-color);
+}
+
+.resume-json-column {
+	display: flex;
+	flex-direction: column;
+	background: var(--gray-50);
+}
+
+.json-header {
+	padding: var(--space-3);
+	background: var(--gray-100);
+	border-bottom: var(--border-width) solid var(--border-color);
+	font-weight: 600;
+	font-size: var(--font-size-sm);
+	color: var(--text-color);
+}
+
+.json-preview {
+	flex: 1;
+	padding: var(--space-3);
+	margin: 0;
+	font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+	font-size: 11px;
+	line-height: 1.4;
+	overflow: auto;
+	background: var(--white);
+	white-space: pre;
+	color: var(--text-color);
+	border: none;
+}
+
+/* Compact sections without boxes */
+.resume-section {
+	margin-bottom: var(--space-4);
+}
+
+.resume-section-title {
+	font-size: var(--font-size-base);
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0 0 var(--space-2) 0;
+	padding-bottom: var(--space-1);
+	border-bottom: 1px solid var(--gray-200);
+}
+
+/* Compact form layouts */
+.form-grid-2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-2);
+	margin-bottom: var(--space-2);
 }
 
 .form-field {
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .form-field label {
 	display: block;
 	font-weight: 500;
 	color: var(--text-color);
-	margin-bottom: var(--space-1);
-	font-size: var(--font-size-sm);
+	margin-bottom: 2px;
+	font-size: var(--font-size-xs);
 }
 
 .form-field input,
 .form-field textarea,
 .form-field select {
 	width: 100%;
-	padding: var(--space-2);
+	padding: 6px 8px;
 	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-md);
-	font-size: var(--font-size-sm);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-xs);
 	transition: var(--transition-fast);
 }
 
@@ -4534,56 +4564,40 @@ a.kanban-source-link {
 .form-field select:focus {
 	outline: none;
 	border-color: var(--primary-color);
-	box-shadow: 0 0 0 3px var(--primary-100);
+	box-shadow: 0 0 0 2px var(--primary-100);
 }
 
 .form-field textarea {
 	resize: vertical;
-	min-height: 60px;
+	min-height: 40px;
 }
 
-.form-group {
-	margin-bottom: var(--space-4);
-	padding: var(--space-3);
-	background: var(--gray-25);
-	border-radius: var(--radius-md);
-}
-
-.form-group h4 {
-	margin: 0 0 var(--space-3) 0;
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	color: var(--text-color);
-}
-
-/* Dynamic lists for arrays */
+/* Dynamic items - very compact */
 .dynamic-list {
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .dynamic-item {
 	background: var(--gray-25);
 	border: var(--border-width) solid var(--gray-200);
-	border-radius: var(--radius-md);
-	padding: var(--space-4);
-	margin-bottom: var(--space-3);
+	border-radius: var(--radius-sm);
+	padding: var(--space-2);
+	margin-bottom: var(--space-2);
 	position: relative;
-}
-
-.dynamic-item:last-child {
-	margin-bottom: 0;
 }
 
 .add-item-btn {
 	width: 100%;
-	padding: var(--space-3);
+	padding: var(--space-1) var(--space-2);
 	background: var(--gray-50);
-	border: 2px dashed var(--gray-300);
-	border-radius: var(--radius-md);
+	border: 1px dashed var(--gray-300);
+	border-radius: var(--radius-sm);
 	color: var(--gray-600);
 	font-weight: 500;
+	font-size: var(--font-size-xs);
 	cursor: pointer;
 	transition: var(--transition-fast);
+	margin-bottom: var(--space-2);
 }
 
 .add-item-btn:hover {
@@ -4594,62 +4608,35 @@ a.kanban-source-link {
 
 .btn-remove {
 	position: absolute;
-	top: var(--space-2);
-	right: var(--space-2);
+	top: 4px;
+	right: 4px;
 	background: var(--red-500);
 	color: white;
 	border: none;
 	border-radius: var(--radius-sm);
-	padding: var(--space-1) var(--space-2);
-	font-size: var(--font-size-xs);
+	width: 20px;
+	height: 20px;
+	font-size: 12px;
+	line-height: 1;
 	cursor: pointer;
 	transition: var(--transition-fast);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .btn-remove:hover {
 	background: var(--red-600);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-	.resume-form {
-		padding: var(--space-4);
-	}
-
-	.form-grid-2 {
-		grid-template-columns: 1fr;
-		gap: var(--space-2);
-	}
-
-	.resume-actions {
-		flex-direction: column;
-		align-items: stretch;
-	}
-
-	.resume-actions button {
-		width: 100%;
-	}
-}
-
-/* Compact form spacing for resume */
-.resume-section .form-field {
-	margin-bottom: var(--space-3);
-}
-
-.resume-section .form-grid-2 {
-	gap: var(--space-3);
-}
-
-.resume-section .dynamic-item {
-	padding: var(--space-3);
-	margin-bottom: var(--space-2);
-}
-
-/* Better visual separation */
-.resume-section-content > .form-field:last-child,
-.resume-section-content > .form-grid-2:last-child,
-.resume-section-content > .form-group:last-child {
-	margin-bottom: 0;
+/* Select styling */
+select {
+	appearance: none;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right 6px center;
+	background-size: 12px;
+	padding-right: 24px;
 }
 
 /* Month input styling */
@@ -4659,14 +4646,41 @@ input[type="month"] {
 	-moz-appearance: textfield;
 }
 
-/* Select styling */
-select {
-	appearance: none;
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-	background-repeat: no-repeat;
-	background-position: right var(--space-2) center;
-	background-size: 16px;
-	padding-right: var(--space-8);
+/* Responsive design */
+@media (max-width: 768px) {
+	.resume-layout {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr auto;
+	}
+
+	.resume-form-column {
+		border-right: none;
+		border-bottom: var(--border-width) solid var(--border-color);
+	}
+
+	.resume-json-column {
+		max-height: 300px;
+	}
+
+	.form-grid-2 {
+		grid-template-columns: 1fr;
+		gap: var(--space-1);
+	}
+}
+
+/* Compact spacing adjustments */
+.resume-section .form-field:last-child,
+.resume-section .form-grid-2:last-child,
+.resume-section .dynamic-list:last-child {
+	margin-bottom: 0;
+}
+
+.dynamic-item .form-grid-2:last-child {
+	margin-bottom: 0;
+}
+
+.dynamic-item .form-field:last-child {
+	margin-bottom: 0;
 }
 
 /* ============================================================================ */
@@ -6385,16 +6399,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750792370425';
-window.BUILD_DATE = '2025-06-24T19:12:50.425Z';
+window.BUILD_VERSION = '1750793990092';
+window.BUILD_DATE = '2025-06-24T19:39:50.092Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T19:12:50.416Z
+// Generated: 2025-06-24T19:39:50.081Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T19:12:50.416Z");
+console.log("JobTracker - Built at: 2025-06-24T19:39:50.081Z");
 
 
 // ============================================================================
@@ -16571,118 +16585,142 @@ const ResumeBuilder = {
 			h('div.tab-header',
 				h('h2.tab-title', I18n.t("headers.resume")),
 				h('div.resume-actions',
-					h('button.btn-secondary', {
-						onclick: () => ResumeBuilder.exportJSON()
-					}, I18n.t("resume.actions.export")),
-					h('button.btn-secondary', {
-						onclick: () => ResumeBuilder.importJSON()
-					}, I18n.t("resume.actions.import")),
 					h('button.btn-primary', {
 						onclick: () => ResumeBuilder.save()
 					}, I18n.t("resume.actions.save"))
 				)
 			),
 
-			// Form container with sections
-			h('div.resume-form',
-				ResumeBuilder.createBasicsSection(),
-				ResumeBuilder.createProfilesSection(),
-				ResumeBuilder.createLanguagesSection(),
-				ResumeBuilder.createSkillsSection(),
-				ResumeBuilder.createExperienceSection(),
-				ResumeBuilder.createProjectsSection(),
-				ResumeBuilder.createPortfolioSection(),
-				ResumeBuilder.createEducationSection(),
-				ResumeBuilder.createCertificationsSection(),
-				ResumeBuilder.createAwardsSection(),
-				ResumeBuilder.createVolunteerSection(),
-				ResumeBuilder.createInterestsSection()
+			// Two-column layout: form + JSON preview
+			h('div.resume-layout',
+				// Left column: Form
+				h('div.resume-form-column',
+					ResumeBuilder.createBasicsSection(),
+					ResumeBuilder.createProfilesSection(),
+					ResumeBuilder.createLanguagesSection(),
+					ResumeBuilder.createSkillsSection(),
+					ResumeBuilder.createExperienceSection(),
+					ResumeBuilder.createProjectsSection(),
+					ResumeBuilder.createPortfolioSection(),
+					ResumeBuilder.createEducationSection(),
+					ResumeBuilder.createCertificationsSection(),
+					ResumeBuilder.createAwardsSection(),
+					ResumeBuilder.createVolunteerSection(),
+					ResumeBuilder.createInterestsSection()
+				),
+
+				// Right column: JSON preview
+				h('div.resume-json-column',
+					h('div.json-header', 'Live JSON Preview'),
+					h('pre.json-preview', {
+						id: 'resume-json-preview'
+					}, JSON.stringify(ResumeBuilder.data, null, 2))
+				)
 			)
 		);
 
 		return container;
 	},
 
+	// Update JSON preview
+	updateJSON: () => {
+		const preview = document.getElementById('resume-json-preview');
+		if (preview) {
+			preview.textContent = JSON.stringify(ResumeBuilder.data, null, 2);
+		}
+	},
+
 	// Create basics section
 	createBasicsSection: () => {
 		return h('div.resume-section',
 			h('h3.resume-section-title', I18n.t("resume.basics.title")),
-			h('div.resume-section-content',
-				h('div.form-grid-2',
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.name")),
-						h('input[type="text"]', {
-							id: 'basics-name',
-							value: ResumeBuilder.data.basics.name,
-							oninput: (e) => ResumeBuilder.data.basics.name = e.target.value
-						})
-					),
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.label")),
-						h('input[type="text"]', {
-							id: 'basics-label',
-							value: ResumeBuilder.data.basics.label,
-							oninput: (e) => ResumeBuilder.data.basics.label = e.target.value
-						})
-					)
-				),
+			h('div.form-grid-2',
 				h('div.form-field',
-					h('label', I18n.t("resume.basics.summary")),
-					h('textarea', {
-						id: 'basics-summary',
-						rows: 3,
-						value: ResumeBuilder.data.basics.summary,
-						oninput: (e) => ResumeBuilder.data.basics.summary = e.target.value
+					h('label', I18n.t("resume.basics.name")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.name,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.name = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				),
-				h('div.form-grid-2',
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.email")),
-						h('input[type="email"]', {
-							id: 'basics-email',
-							value: ResumeBuilder.data.basics.email,
-							oninput: (e) => ResumeBuilder.data.basics.email = e.target.value
-						})
-					),
-					h('div.form-field',
-						h('label', I18n.t("resume.basics.phone")),
-						h('input[type="tel"]', {
-							id: 'basics-phone',
-							value: ResumeBuilder.data.basics.phone,
-							oninput: (e) => ResumeBuilder.data.basics.phone = e.target.value
-						})
-					)
-				),
-				h('div.form-group',
-					h('h4', I18n.t("resume.basics.locationTitle")),
-					h('div.form-grid-2',
-						h('div.form-field',
-							h('label', I18n.t("resume.basics.city")),
-							h('input[type="text"]', {
-								id: 'basics-city',
-								value: ResumeBuilder.data.basics.location.city,
-								oninput: (e) => ResumeBuilder.data.basics.location.city = e.target.value
-							})
-						),
-						h('div.form-field',
-							h('label', I18n.t("resume.basics.country")),
-							h('input[type="text"]', {
-								id: 'basics-country',
-								value: ResumeBuilder.data.basics.location.country,
-								oninput: (e) => ResumeBuilder.data.basics.location.country = e.target.value
-							})
-						)
-					)
-				),
 				h('div.form-field',
-					h('label', I18n.t("resume.basics.personalStatement")),
-					h('textarea', {
-						id: 'basics-personal-statement',
-						rows: 2,
-						value: ResumeBuilder.data.basics.personalStatement,
-						oninput: (e) => ResumeBuilder.data.basics.personalStatement = e.target.value
+					h('label', I18n.t("resume.basics.label")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.label,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.label = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				)
+			),
+			h('div.form-field',
+				h('label', I18n.t("resume.basics.summary")),
+				h('textarea', {
+					rows: 2,
+					value: ResumeBuilder.data.basics.summary,
+					oninput: (e) => {
+						ResumeBuilder.data.basics.summary = e.target.value;
+						ResumeBuilder.updateJSON();
+					}
+				})
+			),
+			h('div.form-grid-2',
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.email")),
+					h('input[type="email"]', {
+						value: ResumeBuilder.data.basics.email,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.email = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				),
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.phone")),
+					h('input[type="tel"]', {
+						value: ResumeBuilder.data.basics.phone,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.phone = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				)
+			),
+			h('div.form-grid-2',
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.city")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.location.city,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.location.city = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				),
+				h('div.form-field',
+					h('label', I18n.t("resume.basics.country")),
+					h('input[type="text"]', {
+						value: ResumeBuilder.data.basics.location.country,
+						oninput: (e) => {
+							ResumeBuilder.data.basics.location.country = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				)
+			),
+			h('div.form-field',
+				h('label', I18n.t("resume.basics.personalStatement")),
+				h('textarea', {
+					rows: 2,
+					value: ResumeBuilder.data.basics.personalStatement,
+					oninput: (e) => {
+						ResumeBuilder.data.basics.personalStatement = e.target.value;
+						ResumeBuilder.updateJSON();
+					}
+				})
 			)
 		);
 	},
@@ -16691,16 +16729,17 @@ const ResumeBuilder = {
 	createProfilesSection: () => {
 		return h('div.resume-section',
 			h('h3.resume-section-title', I18n.t("resume.profiles.title")),
-			h('div.resume-section-content',
-				h('div.dynamic-list', { id: 'profiles-list' },
-					...ResumeBuilder.data.basics.profiles.map((profile, index) => 
-						ResumeBuilder.createProfileItem(profile, index)
-					)
-				),
-				h('button.btn-secondary.add-item-btn', {
-					onclick: () => ResumeBuilder.addProfile()
-				}, I18n.t("resume.profiles.addProfile"))
-			)
+			h('div.dynamic-list', { id: 'profiles-list' },
+				...ResumeBuilder.data.basics.profiles.map((profile, index) => 
+					ResumeBuilder.createProfileItem(profile, index)
+				)
+			),
+			h('button.add-item-btn', {
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.addProfile();
+				}
+			}, I18n.t("resume.profiles.addProfile"))
 		);
 	},
 
@@ -16712,7 +16751,11 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.profiles.type")),
 					h('select', {
 						value: profile.type,
-						onchange: (e) => ResumeBuilder.data.basics.profiles[index].type = e.target.value
+						className: index === ResumeBuilder.data.basics.profiles.length - 1 ? 'focus-first' : '',
+						onchange: (e) => {
+							ResumeBuilder.data.basics.profiles[index].type = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					},
 						h('option[value="linkedin"]', I18n.t("resume.profiles.platforms.linkedin")),
 						h('option[value="github"]', I18n.t("resume.profiles.platforms.github")),
@@ -16725,13 +16768,19 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.profiles.url")),
 					h('input[type="url"]', {
 						value: profile.url,
-						oninput: (e) => ResumeBuilder.data.basics.profiles[index].url = e.target.value
+						oninput: (e) => {
+							ResumeBuilder.data.basics.profiles[index].url = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeProfile(index)
-			}, I18n.t("resume.actions.remove"))
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeProfile(index);
+				}
+			}, '×')
 		);
 	},
 
@@ -16739,16 +16788,17 @@ const ResumeBuilder = {
 	createLanguagesSection: () => {
 		return h('div.resume-section',
 			h('h3.resume-section-title', I18n.t("resume.languages.title")),
-			h('div.resume-section-content',
-				h('div.dynamic-list', { id: 'languages-list' },
-					...ResumeBuilder.data.basics.languages.map((lang, index) => 
-						ResumeBuilder.createLanguageItem(lang, index)
-					)
-				),
-				h('button.btn-secondary.add-item-btn', {
-					onclick: () => ResumeBuilder.addLanguage()
-				}, I18n.t("resume.languages.addLanguage"))
-			)
+			h('div.dynamic-list',
+				...ResumeBuilder.data.basics.languages.map((lang, index) => 
+					ResumeBuilder.createLanguageItem(lang, index)
+				)
+			),
+			h('button.add-item-btn', {
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.addLanguage();
+				}
+			}, I18n.t("resume.languages.addLanguage"))
 		);
 	},
 
@@ -16760,14 +16810,21 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.languages.language")),
 					h('input[type="text"]', {
 						value: lang.language,
-						oninput: (e) => ResumeBuilder.data.basics.languages[index].language = e.target.value
+						className: index === ResumeBuilder.data.basics.languages.length - 1 ? 'focus-first' : '',
+						oninput: (e) => {
+							ResumeBuilder.data.basics.languages[index].language = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				),
 				h('div.form-field',
 					h('label', I18n.t("resume.languages.fluency")),
 					h('select', {
 						value: lang.fluency,
-						onchange: (e) => ResumeBuilder.data.basics.languages[index].fluency = e.target.value
+						onchange: (e) => {
+							ResumeBuilder.data.basics.languages[index].fluency = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					},
 						h('option[value="native"]', I18n.t("resume.languages.levels.native")),
 						h('option[value="fluent"]', I18n.t("resume.languages.levels.fluent")),
@@ -16777,8 +16834,11 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeLanguage(index)
-			}, I18n.t("resume.actions.remove"))
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeLanguage(index);
+				}
+			}, '×')
 		);
 	},
 
@@ -17301,6 +17361,14 @@ const ResumeBuilder = {
 	addProfile: () => {
 		ResumeBuilder.data.basics.profiles.push({ type: "linkedin", url: "" });
 		ResumeBuilder.refresh();
+		// Focus on first field of new item
+		setTimeout(() => {
+			const focusElement = document.querySelector('.focus-first');
+			if (focusElement) {
+				focusElement.focus();
+				focusElement.classList.remove('focus-first');
+			}
+		}, 50);
 	},
 
 	removeProfile: (index) => {
@@ -17311,6 +17379,13 @@ const ResumeBuilder = {
 	addLanguage: () => {
 		ResumeBuilder.data.basics.languages.push({ language: "", fluency: "intermediate" });
 		ResumeBuilder.refresh();
+		setTimeout(() => {
+			const focusElement = document.querySelector('.focus-first');
+			if (focusElement) {
+				focusElement.focus();
+				focusElement.classList.remove('focus-first');
+			}
+		}, 50);
 	},
 
 	removeLanguage: (index) => {
@@ -17513,6 +17588,7 @@ const ResumeBuilder = {
 		if (container) {
 			container.innerHTML = '';
 			container.appendChild(ResumeBuilder.create());
+			ResumeBuilder.updateJSON();
 		}
 	},
 

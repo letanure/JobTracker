@@ -1,5 +1,5 @@
 /* ============================================================================ */
-/* RESUME BUILDER STYLES */
+/* RESUME BUILDER STYLES - COMPACT 2-COLUMN LAYOUT */
 /* ============================================================================ */
 
 .resume-container {
@@ -15,62 +15,92 @@
 	align-items: center;
 }
 
-.resume-form {
-	flex: 1;
-	overflow-y: auto;
-	padding: var(--space-6);
-	max-height: calc(100vh - 200px);
-}
-
-.resume-section {
-	background: var(--white);
-	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-lg);
-	margin-bottom: var(--space-6);
-	overflow: hidden;
-}
-
-.resume-section-title {
-	background: var(--gray-50);
-	padding: var(--space-4);
-	margin: 0;
-	font-size: var(--font-size-lg);
-	font-weight: 600;
-	color: var(--text-color);
-	border-bottom: var(--border-width) solid var(--border-color);
-}
-
-.resume-section-content {
-	padding: var(--space-4);
-}
-
-/* Form layouts */
-.form-grid-2 {
+.resume-layout {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--space-4);
+	flex: 1;
+	height: calc(100vh - 140px);
+	overflow: hidden;
+}
+
+.resume-form-column {
+	overflow-y: auto;
+	padding: var(--space-4);
+	border-right: var(--border-width) solid var(--border-color);
+}
+
+.resume-json-column {
+	display: flex;
+	flex-direction: column;
+	background: var(--gray-50);
+}
+
+.json-header {
+	padding: var(--space-3);
+	background: var(--gray-100);
+	border-bottom: var(--border-width) solid var(--border-color);
+	font-weight: 600;
+	font-size: var(--font-size-sm);
+	color: var(--text-color);
+}
+
+.json-preview {
+	flex: 1;
+	padding: var(--space-3);
+	margin: 0;
+	font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+	font-size: 11px;
+	line-height: 1.4;
+	overflow: auto;
+	background: var(--white);
+	white-space: pre;
+	color: var(--text-color);
+	border: none;
+}
+
+/* Compact sections without boxes */
+.resume-section {
+	margin-bottom: var(--space-4);
+}
+
+.resume-section-title {
+	font-size: var(--font-size-base);
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0 0 var(--space-2) 0;
+	padding-bottom: var(--space-1);
+	border-bottom: 1px solid var(--gray-200);
+}
+
+/* Compact form layouts */
+.form-grid-2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-2);
+	margin-bottom: var(--space-2);
 }
 
 .form-field {
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .form-field label {
 	display: block;
 	font-weight: 500;
 	color: var(--text-color);
-	margin-bottom: var(--space-1);
-	font-size: var(--font-size-sm);
+	margin-bottom: 2px;
+	font-size: var(--font-size-xs);
 }
 
 .form-field input,
 .form-field textarea,
 .form-field select {
 	width: 100%;
-	padding: var(--space-2);
+	padding: 6px 8px;
 	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-md);
-	font-size: var(--font-size-sm);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-xs);
 	transition: var(--transition-fast);
 }
 
@@ -79,56 +109,40 @@
 .form-field select:focus {
 	outline: none;
 	border-color: var(--primary-color);
-	box-shadow: 0 0 0 3px var(--primary-100);
+	box-shadow: 0 0 0 2px var(--primary-100);
 }
 
 .form-field textarea {
 	resize: vertical;
-	min-height: 60px;
+	min-height: 40px;
 }
 
-.form-group {
-	margin-bottom: var(--space-4);
-	padding: var(--space-3);
-	background: var(--gray-25);
-	border-radius: var(--radius-md);
-}
-
-.form-group h4 {
-	margin: 0 0 var(--space-3) 0;
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	color: var(--text-color);
-}
-
-/* Dynamic lists for arrays */
+/* Dynamic items - very compact */
 .dynamic-list {
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .dynamic-item {
 	background: var(--gray-25);
 	border: var(--border-width) solid var(--gray-200);
-	border-radius: var(--radius-md);
-	padding: var(--space-4);
-	margin-bottom: var(--space-3);
+	border-radius: var(--radius-sm);
+	padding: var(--space-2);
+	margin-bottom: var(--space-2);
 	position: relative;
-}
-
-.dynamic-item:last-child {
-	margin-bottom: 0;
 }
 
 .add-item-btn {
 	width: 100%;
-	padding: var(--space-3);
+	padding: var(--space-1) var(--space-2);
 	background: var(--gray-50);
-	border: 2px dashed var(--gray-300);
-	border-radius: var(--radius-md);
+	border: 1px dashed var(--gray-300);
+	border-radius: var(--radius-sm);
 	color: var(--gray-600);
 	font-weight: 500;
+	font-size: var(--font-size-xs);
 	cursor: pointer;
 	transition: var(--transition-fast);
+	margin-bottom: var(--space-2);
 }
 
 .add-item-btn:hover {
@@ -139,62 +153,35 @@
 
 .btn-remove {
 	position: absolute;
-	top: var(--space-2);
-	right: var(--space-2);
+	top: 4px;
+	right: 4px;
 	background: var(--red-500);
 	color: white;
 	border: none;
 	border-radius: var(--radius-sm);
-	padding: var(--space-1) var(--space-2);
-	font-size: var(--font-size-xs);
+	width: 20px;
+	height: 20px;
+	font-size: 12px;
+	line-height: 1;
 	cursor: pointer;
 	transition: var(--transition-fast);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .btn-remove:hover {
 	background: var(--red-600);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-	.resume-form {
-		padding: var(--space-4);
-	}
-
-	.form-grid-2 {
-		grid-template-columns: 1fr;
-		gap: var(--space-2);
-	}
-
-	.resume-actions {
-		flex-direction: column;
-		align-items: stretch;
-	}
-
-	.resume-actions button {
-		width: 100%;
-	}
-}
-
-/* Compact form spacing for resume */
-.resume-section .form-field {
-	margin-bottom: var(--space-3);
-}
-
-.resume-section .form-grid-2 {
-	gap: var(--space-3);
-}
-
-.resume-section .dynamic-item {
-	padding: var(--space-3);
-	margin-bottom: var(--space-2);
-}
-
-/* Better visual separation */
-.resume-section-content > .form-field:last-child,
-.resume-section-content > .form-grid-2:last-child,
-.resume-section-content > .form-group:last-child {
-	margin-bottom: 0;
+/* Select styling */
+select {
+	appearance: none;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right 6px center;
+	background-size: 12px;
+	padding-right: 24px;
 }
 
 /* Month input styling */
@@ -204,12 +191,39 @@ input[type="month"] {
 	-moz-appearance: textfield;
 }
 
-/* Select styling */
-select {
-	appearance: none;
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-	background-repeat: no-repeat;
-	background-position: right var(--space-2) center;
-	background-size: 16px;
-	padding-right: var(--space-8);
+/* Responsive design */
+@media (max-width: 768px) {
+	.resume-layout {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr auto;
+	}
+
+	.resume-form-column {
+		border-right: none;
+		border-bottom: var(--border-width) solid var(--border-color);
+	}
+
+	.resume-json-column {
+		max-height: 300px;
+	}
+
+	.form-grid-2 {
+		grid-template-columns: 1fr;
+		gap: var(--space-1);
+	}
+}
+
+/* Compact spacing adjustments */
+.resume-section .form-field:last-child,
+.resume-section .form-grid-2:last-child,
+.resume-section .dynamic-list:last-child {
+	margin-bottom: 0;
+}
+
+.dynamic-item .form-grid-2:last-child {
+	margin-bottom: 0;
+}
+
+.dynamic-item .form-field:last-child {
+	margin-bottom: 0;
 }
