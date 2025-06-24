@@ -39,6 +39,13 @@ const ResumeBuilder = {
 		"PH", "VN", "EG", "NG", "KE", "PK", "UA", "BD", "CL", "CO"
 	],
 
+	// Language codes for language selector
+	languageCodes: [
+		"en", "zh", "es", "hi", "ar", "bn", "fr", "ru", "pt", "ur",
+		"id", "de", "ja", "sw", "mr", "te", "vi", "ta", "ko", "fa",
+		"tr", "it", "pl", "jv", "ms", "th", "gu", "pa", "ro", "nl"
+	],
+
 	// Get country options for select dropdown
 	getCountryOptions: () => {
 		try {
@@ -58,6 +65,30 @@ const ResumeBuilder = {
 			// Fallback to country codes if Intl.DisplayNames is not supported
 			console.error('Intl.DisplayNames not supported:', error);
 			return ResumeBuilder.countryCodes.map(code => 
+				h('option', { value: code }, code)
+			);
+		}
+	},
+
+	// Get language options for select dropdown
+	getLanguageOptions: () => {
+		try {
+			const languageNames = new Intl.DisplayNames([navigator.language], { type: "language" });
+			const languages = ResumeBuilder.languageCodes.map(code => ({
+				code,
+				name: languageNames.of(code)
+			}));
+			
+			// Sort by name in user's locale
+			languages.sort((a, b) => a.name.localeCompare(b.name, navigator.language));
+			
+			return languages.map(language => 
+				h('option', { value: language.code }, language.name)
+			);
+		} catch (error) {
+			// Fallback to language codes if Intl.DisplayNames is not supported
+			console.error('Intl.DisplayNames not supported:', error);
+			return ResumeBuilder.languageCodes.map(code => 
 				h('option', { value: code }, code)
 			);
 		}
@@ -471,15 +502,17 @@ const ResumeBuilder = {
 			h('div.form-grid-2',
 				h('div.form-field',
 					...(isFirst ? [h('label', I18n.t("resume.languages.language"))] : []),
-					h('input[type="text"]', {
-						value: lang.language,
-						placeholder: isFirst ? '' : I18n.t("resume.languages.language"),
+					h('select', {
+						value: lang.language || '',
 						className: index === ResumeBuilder.data.basics.languages.length - 1 ? 'focus-first' : '',
-						oninput: (e) => {
+						onchange: (e) => {
 							ResumeBuilder.data.basics.languages[index].language = e.target.value;
 							ResumeBuilder.updateJSON();
 						}
-					})
+					},
+						h('option', { value: '' }, ''),
+						...ResumeBuilder.getLanguageOptions()
+					)
 				),
 				h('div.form-field',
 					...(isFirst ? [h('label', I18n.t("resume.languages.fluency"))] : []),
@@ -1360,8 +1393,132 @@ const ResumeBuilder = {
 		const saved = ResumeStorage.load();
 		if (saved) {
 			ResumeBuilder.data = saved;
+			
+			// Migrate country field if needed
+			if (saved.basics && saved.basics.location && saved.basics.location.country) {
+				const countryValue = saved.basics.location.country;
+				// Check if it's not already a country code
+				if (countryValue.length > 2) {
+					// Try to find matching country code
+					const matchingCode = ResumeBuilder.findCountryCode(countryValue);
+					if (matchingCode) {
+						ResumeBuilder.data.basics.location.country = matchingCode;
+					}
+				}
+			}
+			
+			// Migrate language fields if needed
+			if (saved.basics && saved.basics.languages) {
+				saved.basics.languages.forEach((lang, index) => {
+					if (lang.language && lang.language.length > 3) {
+						// Try to find matching language code
+						const matchingCode = ResumeBuilder.findLanguageCode(lang.language);
+						if (matchingCode !== lang.language) {
+							ResumeBuilder.data.basics.languages[index].language = matchingCode;
+						}
+					}
+				});
+			}
+			
 			ResumeBuilder.refresh();
 		}
+	},
+
+	// Find country code from country name
+	findCountryCode: (countryName) => {
+		try {
+			const regionNames = new Intl.DisplayNames(['en'], { type: "region" });
+			
+			// Check each country code to see if its name matches
+			for (const code of ResumeBuilder.countryCodes) {
+				const name = regionNames.of(code);
+				if (name.toLowerCase() === countryName.toLowerCase()) {
+					return code;
+				}
+			}
+			
+			// Also check in user's locale
+			const userLocaleNames = new Intl.DisplayNames([navigator.language], { type: "region" });
+			for (const code of ResumeBuilder.countryCodes) {
+				const name = userLocaleNames.of(code);
+				if (name.toLowerCase() === countryName.toLowerCase()) {
+					return code;
+				}
+			}
+		} catch (error) {
+			console.error('Error finding country code:', error);
+		}
+		
+		// Return original value if no match found
+		return countryName;
+	},
+
+	// Find language code from language name
+	findLanguageCode: (languageName) => {
+		try {
+			const languageNames = new Intl.DisplayNames(['en'], { type: "language" });
+			
+			// Check each language code to see if its name matches
+			for (const code of ResumeBuilder.languageCodes) {
+				const name = languageNames.of(code);
+				if (name.toLowerCase() === languageName.toLowerCase()) {
+					return code;
+				}
+			}
+			
+			// Also check in user's locale
+			const userLocaleNames = new Intl.DisplayNames([navigator.language], { type: "language" });
+			for (const code of ResumeBuilder.languageCodes) {
+				const name = userLocaleNames.of(code);
+				if (name.toLowerCase() === languageName.toLowerCase()) {
+					return code;
+				}
+			}
+			
+			// Check common variations
+			const languageMap = {
+				'english': 'en',
+				'chinese': 'zh',
+				'spanish': 'es',
+				'hindi': 'hi',
+				'arabic': 'ar',
+				'bengali': 'bn',
+				'french': 'fr',
+				'russian': 'ru',
+				'portuguese': 'pt',
+				'urdu': 'ur',
+				'indonesian': 'id',
+				'german': 'de',
+				'japanese': 'ja',
+				'swahili': 'sw',
+				'marathi': 'mr',
+				'telugu': 'te',
+				'vietnamese': 'vi',
+				'tamil': 'ta',
+				'korean': 'ko',
+				'persian': 'fa',
+				'turkish': 'tr',
+				'italian': 'it',
+				'polish': 'pl',
+				'javanese': 'jv',
+				'malay': 'ms',
+				'thai': 'th',
+				'gujarati': 'gu',
+				'punjabi': 'pa',
+				'romanian': 'ro',
+				'dutch': 'nl'
+			};
+			
+			const lowerName = languageName.toLowerCase();
+			if (languageMap[lowerName]) {
+				return languageMap[lowerName];
+			}
+		} catch (error) {
+			console.error('Error finding language code:', error);
+		}
+		
+		// Return original value if no match found
+		return languageName;
 	},
 
 	// Export JSON
