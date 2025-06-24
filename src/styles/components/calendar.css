@@ -109,6 +109,7 @@
 .calendar-body {
 	flex: 1;
 	overflow: auto;
+	max-height: calc(100vh - 200px);
 }
 
 /* Month View */
@@ -149,7 +150,7 @@
 
 .calendar-day {
 	background: var(--white);
-	min-height: 120px;
+	min-height: 80px;
 	padding: 6px;
 	cursor: pointer;
 	transition: var(--transition-fast);
@@ -590,11 +591,35 @@
 	position: relative;
 	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
 	flex: 1;
+	background-image: 
+		repeating-linear-gradient(
+			to bottom,
+			transparent 0px,
+			transparent 19px,
+			rgba(0, 0, 0, 0.03) 19px,
+			rgba(0, 0, 0, 0.03) 20px,
+			transparent 20px,
+			transparent 39px,
+			rgba(0, 0, 0, 0.06) 39px,
+			rgba(0, 0, 0, 0.06) 40px
+		);
 }
 
 .calendar-day-events-column {
 	position: relative;
 	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
+	background-image: 
+		repeating-linear-gradient(
+			to bottom,
+			transparent 0px,
+			transparent 19px,
+			rgba(0, 0, 0, 0.03) 19px,
+			rgba(0, 0, 0, 0.03) 20px,
+			transparent 20px,
+			transparent 39px,
+			rgba(0, 0, 0, 0.06) 39px,
+			rgba(0, 0, 0, 0.06) 40px
+		);
 }
 
 .calendar-time-slot {
@@ -609,6 +634,18 @@
 	white-space: nowrap;
 	cursor: pointer;
 	text-align: right;
+}
+
+.calendar-time-slot.full-hour {
+	color: var(--gray-600);
+	font-weight: 500;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.calendar-time-slot.half-hour {
+	color: var(--gray-400);
+	font-weight: 400;
+	border-bottom: 1px dashed rgba(0, 0, 0, 0.03);
 }
 
 .calendar-week-event {

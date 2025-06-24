@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T16:12:31.856Z
-Cache Version: 1750781551856
+Generated: 2025-06-24T16:19:13.087Z
+Cache Version: 1750781953087
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750781551856
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750781551856">
-    <meta name="build-date" content="2025-06-24T16:12:31.856Z">
+    <meta name="build-version" content="1750781953087">
+    <meta name="build-date" content="2025-06-24T16:19:13.087Z">
     <style>
 
 /* ============================================================================ */
@@ -3777,6 +3777,7 @@ a.kanban-source-link {
 .calendar-body {
 	flex: 1;
 	overflow: auto;
+	max-height: calc(100vh - 200px);
 }
 
 /* Month View */
@@ -3817,7 +3818,7 @@ a.kanban-source-link {
 
 .calendar-day {
 	background: var(--white);
-	min-height: 120px;
+	min-height: 80px;
 	padding: 6px;
 	cursor: pointer;
 	transition: var(--transition-fast);
@@ -4258,11 +4259,35 @@ a.kanban-source-link {
 	position: relative;
 	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
 	flex: 1;
+	background-image: 
+		repeating-linear-gradient(
+			to bottom,
+			transparent 0px,
+			transparent 19px,
+			rgba(0, 0, 0, 0.03) 19px,
+			rgba(0, 0, 0, 0.03) 20px,
+			transparent 20px,
+			transparent 39px,
+			rgba(0, 0, 0, 0.06) 39px,
+			rgba(0, 0, 0, 0.06) 40px
+		);
 }
 
 .calendar-day-events-column {
 	position: relative;
 	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
+	background-image: 
+		repeating-linear-gradient(
+			to bottom,
+			transparent 0px,
+			transparent 19px,
+			rgba(0, 0, 0, 0.03) 19px,
+			rgba(0, 0, 0, 0.03) 20px,
+			transparent 20px,
+			transparent 39px,
+			rgba(0, 0, 0, 0.06) 39px,
+			rgba(0, 0, 0, 0.06) 40px
+		);
 }
 
 .calendar-time-slot {
@@ -4277,6 +4302,18 @@ a.kanban-source-link {
 	white-space: nowrap;
 	cursor: pointer;
 	text-align: right;
+}
+
+.calendar-time-slot.full-hour {
+	color: var(--gray-600);
+	font-weight: 500;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.calendar-time-slot.half-hour {
+	color: var(--gray-400);
+	font-weight: 400;
+	border-bottom: 1px dashed rgba(0, 0, 0, 0.03);
 }
 
 .calendar-week-event {
@@ -6067,16 +6104,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750781551856';
-window.BUILD_DATE = '2025-06-24T16:12:31.856Z';
+window.BUILD_VERSION = '1750781953087';
+window.BUILD_DATE = '2025-06-24T16:19:13.087Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T16:12:31.845Z
+// Generated: 2025-06-24T16:19:13.070Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T16:12:31.845Z");
+console.log("JobTracker - Built at: 2025-06-24T16:19:13.070Z");
 
 
 // ============================================================================
@@ -14036,8 +14073,11 @@ const CalendarView = {
 				const time24 = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 				const time12 = CalendarView.formatTime12Hour(hour, minute);
 
+				const isFullHour = minute === 0;
+				const className = `calendar-time-slot ${isFullHour ? 'full-hour' : 'half-hour'}`;
+				
 				slots.push(
-					h(`div.calendar-time-slot[data-time="${time24}" data-hour="${hour}" data-minute="${minute}"]`, time12)
+					h(`div.${className}[data-time="${time24}" data-hour="${hour}" data-minute="${minute}"]`, time12)
 				);
 			}
 		}
@@ -14237,7 +14277,15 @@ const CalendarView = {
 						draggable: event.type === "task", // Only tasks can be dragged
 						onclick: (e) => {
 							e.stopPropagation();
-							CalendarView.selectDate(new Date(event.date));
+							if (
+								event.type === "task" &&
+								typeof TasksBoard !== "undefined" &&
+								TasksBoard.openTaskEditModal
+							) {
+								TasksBoard.openTaskEditModal(event.task);
+							} else {
+								CalendarView.selectDate(new Date(event.date));
+							}
 						},
 						ondragstart: (e) => {
 							if (event.type === "task") {
@@ -14619,8 +14667,16 @@ const CalendarView = {
 		const existingModal = document.querySelector(".modal-overlay");
 		if (existingModal) existingModal.remove();
 
-		// Show event details modal instead of navigating away
-		CalendarView.showEventDetailsModal(event);
+		// For tasks, open task edit modal; for other events, show details
+		if (
+			event.type === "task" &&
+			typeof TasksBoard !== "undefined" &&
+			TasksBoard.openTaskEditModal
+		) {
+			TasksBoard.openTaskEditModal(event.task);
+		} else {
+			CalendarView.showEventDetailsModal(event);
+		}
 	},
 
 	// Show event details modal

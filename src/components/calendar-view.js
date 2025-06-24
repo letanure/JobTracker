@@ -376,8 +376,11 @@ const CalendarView = {
 				const time24 = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 				const time12 = CalendarView.formatTime12Hour(hour, minute);
 
+				const isFullHour = minute === 0;
+				const className = `calendar-time-slot ${isFullHour ? 'full-hour' : 'half-hour'}`;
+				
 				slots.push(
-					h(`div.calendar-time-slot[data-time="${time24}" data-hour="${hour}" data-minute="${minute}"]`, time12)
+					h(`div.${className}[data-time="${time24}" data-hour="${hour}" data-minute="${minute}"]`, time12)
 				);
 			}
 		}
@@ -577,7 +580,15 @@ const CalendarView = {
 						draggable: event.type === "task", // Only tasks can be dragged
 						onclick: (e) => {
 							e.stopPropagation();
-							CalendarView.selectDate(new Date(event.date));
+							if (
+								event.type === "task" &&
+								typeof TasksBoard !== "undefined" &&
+								TasksBoard.openTaskEditModal
+							) {
+								TasksBoard.openTaskEditModal(event.task);
+							} else {
+								CalendarView.selectDate(new Date(event.date));
+							}
 						},
 						ondragstart: (e) => {
 							if (event.type === "task") {
@@ -959,8 +970,16 @@ const CalendarView = {
 		const existingModal = document.querySelector(".modal-overlay");
 		if (existingModal) existingModal.remove();
 
-		// Show event details modal instead of navigating away
-		CalendarView.showEventDetailsModal(event);
+		// For tasks, open task edit modal; for other events, show details
+		if (
+			event.type === "task" &&
+			typeof TasksBoard !== "undefined" &&
+			TasksBoard.openTaskEditModal
+		) {
+			TasksBoard.openTaskEditModal(event.task);
+		} else {
+			CalendarView.showEventDetailsModal(event);
+		}
 	},
 
 	// Show event details modal
