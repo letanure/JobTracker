@@ -313,7 +313,9 @@ const ResumeBuilder = {
 		}
 		
 		const isFirst = index === 0;
-		return h('div.dynamic-item',
+		return h('div.dynamic-item', {
+			'data-index': index
+		},
 			h('div.form-grid-2',
 				h('div.form-field',
 					...(isFirst ? [h('label', I18n.t("resume.profiles.type"))] : []),
@@ -380,10 +382,12 @@ const ResumeBuilder = {
 	// Create language item
 	createLanguageItem: (lang, index) => {
 		const isFirst = index === 0;
-		return h('div.dynamic-item',
+		return h('div.dynamic-item', {
+			'data-index': index
+		},
 			h('div.form-grid-2',
 				h('div.form-field',
-					isFirst ? h('label', I18n.t("resume.languages.language")) : null,
+					...(isFirst ? [h('label', I18n.t("resume.languages.language"))] : []),
 					h('input[type="text"]', {
 						value: lang.language,
 						placeholder: isFirst ? '' : I18n.t("resume.languages.language"),
@@ -395,7 +399,7 @@ const ResumeBuilder = {
 					})
 				),
 				h('div.form-field',
-					isFirst ? h('label', I18n.t("resume.languages.fluency")) : null,
+					...(isFirst ? [h('label', I18n.t("resume.languages.fluency"))] : []),
 					h('select', {
 						value: lang.fluency,
 						onchange: (e) => {
@@ -1046,32 +1050,67 @@ const ResumeBuilder = {
 	// Add/Remove methods for dynamic sections
 	addProfile: () => {
 		ResumeBuilder.data.basics.profiles.push({ type: "linkedin", url: "" });
+		const newIndex = ResumeBuilder.data.basics.profiles.length - 1;
 		ResumeBuilder.refresh();
-		// Focus on first field of new item
+		
+		// Mark only the new item for animation and focus
 		setTimeout(() => {
+			const items = document.querySelectorAll('[data-section="profiles"] .dynamic-item');
+			const newItem = items[newIndex];
+			if (newItem) {
+				newItem.classList.add('newly-added');
+				// Remove animation class after animation completes
+				setTimeout(() => {
+					newItem.classList.remove('newly-added');
+				}, 300);
+			}
+			
+			// Focus on first field of new item
 			const focusElement = document.querySelector('.focus-first');
 			if (focusElement) {
 				focusElement.focus();
 				focusElement.classList.remove('focus-first');
 			}
-		}, 50);
+		}, 10);
 	},
 
 	removeProfile: (index) => {
-		ResumeBuilder.data.basics.profiles.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="profiles"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.basics.profiles.splice(index, 1);
+				ResumeBuilder.refresh();
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.basics.profiles.splice(index, 1);
+			ResumeBuilder.refresh();
+		}
 	},
 
 	addLanguage: () => {
 		ResumeBuilder.data.basics.languages.push({ language: "", fluency: "intermediate" });
+		const newIndex = ResumeBuilder.data.basics.languages.length - 1;
 		ResumeBuilder.refresh();
+		
 		setTimeout(() => {
+			const items = document.querySelectorAll('[data-section="languages"] .dynamic-item');
+			const newItem = items[newIndex];
+			if (newItem) {
+				newItem.classList.add('newly-added');
+				setTimeout(() => newItem.classList.remove('newly-added'), 300);
+			}
+			
 			const focusElement = document.querySelector('.focus-first');
 			if (focusElement) {
 				focusElement.focus();
 				focusElement.classList.remove('focus-first');
 			}
-		}, 50);
+		}, 10);
 	},
 
 	removeLanguage: (index) => {

@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T20:41:05.223Z
-Cache Version: 1750797665223
+Generated: 2025-06-24T20:44:09.895Z
+Cache Version: 1750797849895
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750797665223
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750797665223">
-    <meta name="build-date" content="2025-06-24T20:41:05.223Z">
+    <meta name="build-version" content="1750797849895">
+    <meta name="build-date" content="2025-06-24T20:44:09.895Z">
     <style>
 
 /* ============================================================================ */
@@ -4646,11 +4646,62 @@ a.kanban-source-link {
 	margin-bottom: var(--space-1);
 	position: relative;
 	border-bottom: 1px solid var(--gray-100);
+	transform-origin: top;
+}
+
+.dynamic-item.newly-added {
+	animation: slideInFade 0.3s ease-out;
+}
+
+@keyframes slideInFade {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px) scaleY(0.8);
+		max-height: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	50% {
+		opacity: 0.5;
+		max-height: 100px;
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scaleY(1);
+		max-height: none;
+		margin-bottom: var(--space-1);
+		padding-top: var(--space-1);
+		padding-bottom: var(--space-1);
+	}
 }
 
 .dynamic-item:last-child {
 	border-bottom: none;
 	margin-bottom: 0;
+}
+
+.dynamic-item.removing {
+	animation: slideOutFade 0.2s ease-in forwards;
+}
+
+@keyframes slideOutFade {
+	0% {
+		opacity: 1;
+		transform: translateY(0) scaleY(1);
+		max-height: 100px;
+		margin-bottom: var(--space-1);
+		padding-top: var(--space-1);
+		padding-bottom: var(--space-1);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-10px) scaleY(0.8);
+		max-height: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
 }
 
 .dynamic-item .form-grid-2,
@@ -6626,16 +6677,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750797665223';
-window.BUILD_DATE = '2025-06-24T20:41:05.223Z';
+window.BUILD_VERSION = '1750797849895';
+window.BUILD_DATE = '2025-06-24T20:44:09.895Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T20:41:05.211Z
+// Generated: 2025-06-24T20:44:09.883Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T20:41:05.211Z");
+console.log("JobTracker - Built at: 2025-06-24T20:44:09.883Z");
 
 
 // ============================================================================
@@ -17091,7 +17142,9 @@ const ResumeBuilder = {
 		}
 		
 		const isFirst = index === 0;
-		return h('div.dynamic-item',
+		return h('div.dynamic-item', {
+			'data-index': index
+		},
 			h('div.form-grid-2',
 				h('div.form-field',
 					...(isFirst ? [h('label', I18n.t("resume.profiles.type"))] : []),
@@ -17158,10 +17211,12 @@ const ResumeBuilder = {
 	// Create language item
 	createLanguageItem: (lang, index) => {
 		const isFirst = index === 0;
-		return h('div.dynamic-item',
+		return h('div.dynamic-item', {
+			'data-index': index
+		},
 			h('div.form-grid-2',
 				h('div.form-field',
-					isFirst ? h('label', I18n.t("resume.languages.language")) : null,
+					...(isFirst ? [h('label', I18n.t("resume.languages.language"))] : []),
 					h('input[type="text"]', {
 						value: lang.language,
 						placeholder: isFirst ? '' : I18n.t("resume.languages.language"),
@@ -17173,7 +17228,7 @@ const ResumeBuilder = {
 					})
 				),
 				h('div.form-field',
-					isFirst ? h('label', I18n.t("resume.languages.fluency")) : null,
+					...(isFirst ? [h('label', I18n.t("resume.languages.fluency"))] : []),
 					h('select', {
 						value: lang.fluency,
 						onchange: (e) => {
@@ -17824,32 +17879,67 @@ const ResumeBuilder = {
 	// Add/Remove methods for dynamic sections
 	addProfile: () => {
 		ResumeBuilder.data.basics.profiles.push({ type: "linkedin", url: "" });
+		const newIndex = ResumeBuilder.data.basics.profiles.length - 1;
 		ResumeBuilder.refresh();
-		// Focus on first field of new item
+		
+		// Mark only the new item for animation and focus
 		setTimeout(() => {
+			const items = document.querySelectorAll('[data-section="profiles"] .dynamic-item');
+			const newItem = items[newIndex];
+			if (newItem) {
+				newItem.classList.add('newly-added');
+				// Remove animation class after animation completes
+				setTimeout(() => {
+					newItem.classList.remove('newly-added');
+				}, 300);
+			}
+			
+			// Focus on first field of new item
 			const focusElement = document.querySelector('.focus-first');
 			if (focusElement) {
 				focusElement.focus();
 				focusElement.classList.remove('focus-first');
 			}
-		}, 50);
+		}, 10);
 	},
 
 	removeProfile: (index) => {
-		ResumeBuilder.data.basics.profiles.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="profiles"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.basics.profiles.splice(index, 1);
+				ResumeBuilder.refresh();
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.basics.profiles.splice(index, 1);
+			ResumeBuilder.refresh();
+		}
 	},
 
 	addLanguage: () => {
 		ResumeBuilder.data.basics.languages.push({ language: "", fluency: "intermediate" });
+		const newIndex = ResumeBuilder.data.basics.languages.length - 1;
 		ResumeBuilder.refresh();
+		
 		setTimeout(() => {
+			const items = document.querySelectorAll('[data-section="languages"] .dynamic-item');
+			const newItem = items[newIndex];
+			if (newItem) {
+				newItem.classList.add('newly-added');
+				setTimeout(() => newItem.classList.remove('newly-added'), 300);
+			}
+			
 			const focusElement = document.querySelector('.focus-first');
 			if (focusElement) {
 				focusElement.focus();
 				focusElement.classList.remove('focus-first');
 			}
-		}, 50);
+		}, 10);
 	},
 
 	removeLanguage: (index) => {

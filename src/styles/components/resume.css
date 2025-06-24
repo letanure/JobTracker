@@ -191,11 +191,62 @@
 	margin-bottom: var(--space-1);
 	position: relative;
 	border-bottom: 1px solid var(--gray-100);
+	transform-origin: top;
+}
+
+.dynamic-item.newly-added {
+	animation: slideInFade 0.3s ease-out;
+}
+
+@keyframes slideInFade {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px) scaleY(0.8);
+		max-height: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	50% {
+		opacity: 0.5;
+		max-height: 100px;
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scaleY(1);
+		max-height: none;
+		margin-bottom: var(--space-1);
+		padding-top: var(--space-1);
+		padding-bottom: var(--space-1);
+	}
 }
 
 .dynamic-item:last-child {
 	border-bottom: none;
 	margin-bottom: 0;
+}
+
+.dynamic-item.removing {
+	animation: slideOutFade 0.2s ease-in forwards;
+}
+
+@keyframes slideOutFade {
+	0% {
+		opacity: 1;
+		transform: translateY(0) scaleY(1);
+		max-height: 100px;
+		margin-bottom: var(--space-1);
+		padding-top: var(--space-1);
+		padding-bottom: var(--space-1);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-10px) scaleY(0.8);
+		max-height: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
 }
 
 .dynamic-item .form-grid-2,
