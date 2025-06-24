@@ -206,7 +206,7 @@ const PT_TRANSLATIONS = {
 			title: "Certificações",
 			type: "Tipo",
 			name: "Nome da Certificação",
-			issuer: "Organização Emissora",
+			issuer: "Organização",
 			date: "Data de Emissão",
 			addCertification: "Adicionar Certificação"
 		},

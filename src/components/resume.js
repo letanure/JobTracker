@@ -46,6 +46,37 @@ const ResumeBuilder = {
 		"tr", "it", "pl", "jv", "ms", "th", "gu", "pa", "ro", "nl"
 	],
 
+	// Skills suggestions for autocomplete
+	skillsSuggestions: {
+		languages: [
+			"JavaScript", "TypeScript", "Python", "Java", "C#", "C++", "Go", "Ruby", "Rust", "PHP", "SQL", "Shell"
+		],
+		frameworks: [
+			"React", "Next.js", "Vue", "Nuxt", "Svelte", "Angular", "Express", "Django", "Flask", "Spring Boot", "FastAPI"
+		],
+		tools: [
+			"Git", "Docker", "Postman", "ESLint", "Prettier", "Webpack", "Vite", "TurboRepo", "pnpm", "Vitest", "Playwright", "Cypress"
+		],
+		databases: [
+			"PostgreSQL", "MySQL", "MongoDB", "SQLite", "Redis", "Supabase", "Firebase", "Prisma"
+		],
+		cloud: [
+			"Vercel", "Netlify", "Railway", "Heroku", "AWS", "GCP", "Azure", "Cloudflare", "Docker Hub"
+		],
+		testing: [
+			"Jest", "Vitest", "Playwright", "Cypress", "Testing Library", "Mocha", "Chai"
+		],
+		devops: [
+			"CI/CD", "GitHub Actions", "Docker Compose", "Terraform", "Kubernetes", "Nginx"
+		],
+		uiux: [
+			"Tailwind CSS", "Shadcn/ui", "Radix UI", "Figma", "Storybook", "Framer Motion", "Material UI"
+		],
+		soft: [
+			"Problem Solving", "Teamwork", "Mentoring", "Communication", "Remote Collaboration", "Time Management"
+		]
+	},
+
 	// Get country options for select dropdown
 	getCountryOptions: () => {
 		try {
@@ -92,6 +123,22 @@ const ResumeBuilder = {
 				h('option', { value: code }, code)
 			);
 		}
+	},
+
+	// Format skill group name for display
+	formatSkillGroupName: (groupName) => {
+		const formatMap = {
+			'languages': 'Languages',
+			'frameworks': 'Frameworks',
+			'tools': 'Tools',
+			'databases': 'Databases',
+			'cloud': 'Cloud',
+			'testing': 'Testing',
+			'devops': 'DevOps',
+			'uiux': 'UI/UX',
+			'soft': 'Soft Skills'
+		};
+		return formatMap[groupName] || groupName.charAt(0).toUpperCase() + groupName.slice(1);
 	},
 
 	// Toggle section collapse state
@@ -565,6 +612,7 @@ const ResumeBuilder = {
 
 	// Create skill item
 	createSkillItem: (skill, index) => {
+		const datalistId = `skill-group-list-${index}`;
 		return h('div.dynamic-item.skill-item', {
 			'data-index': index
 		},
@@ -573,12 +621,18 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.skills.name")),
 					h('input[type="text"]', {
 						value: skill.name,
+						list: datalistId,
 						className: index === ResumeBuilder.data.skills.length - 1 ? 'focus-first' : '',
 						oninput: (e) => {
 							ResumeBuilder.data.skills[index].name = e.target.value;
 							ResumeBuilder.updateJSON();
 						}
-					})
+					}),
+					h(`datalist#${datalistId}`,
+						...Object.keys(ResumeBuilder.skillsSuggestions).map(group =>
+							h('option', { value: group }, ResumeBuilder.formatSkillGroupName(group))
+						)
+					)
 				),
 				h('button.btn-remove', {
 					type: 'button',
@@ -591,9 +645,10 @@ const ResumeBuilder = {
 			h('div.skills-keywords',
 				h('label', I18n.t("resume.skills.keywords")),
 				h('div.keyword-tags',
-					...skill.keywords.map((keyword, keywordIndex) => 
-						ResumeBuilder.createSkillKeywordTag(skill, index, keyword, keywordIndex)
-					),
+					...skill.keywords.flatMap((keyword, keywordIndex) => {
+						const result = ResumeBuilder.createSkillKeywordTag(skill, index, keyword, keywordIndex);
+						return Array.isArray(result) ? result : [result];
+					}),
 					h('button.add-keyword-btn', {
 						type: 'button',
 						onclick: (e) => {
@@ -609,31 +664,43 @@ const ResumeBuilder = {
 	// Create skill keyword tag
 	createSkillKeywordTag: (skill, skillIndex, keyword, keywordIndex) => {
 		if (!keyword || keyword.trim() === '') {
+			const datalistId = `skill-keyword-list-${skillIndex}-${keywordIndex}`;
+			const skillGroup = skill.name.toLowerCase();
+			const suggestions = ResumeBuilder.skillsSuggestions[skillGroup] || [];
+			
 			// Show input field for empty keywords
-			return h('input.keyword-input', {
-				type: 'text',
-				placeholder: 'Add skill...',
-				value: keyword,
-				oninput: (e) => {
-					ResumeBuilder.data.skills[skillIndex].keywords[keywordIndex] = e.target.value;
-					ResumeBuilder.updateJSON();
-				},
-				onblur: (e) => {
-					// Remove empty keywords on blur
-					if (!e.target.value.trim()) {
-						ResumeBuilder.removeSkillKeyword(skillIndex, keywordIndex);
-					}
-				},
-				onkeydown: (e) => {
-					if (e.key === 'Enter') {
-						e.preventDefault();
-						e.target.blur();
-						if (e.target.value.trim()) {
-							ResumeBuilder.addSkillKeyword(skillIndex);
+			return [
+				h('input.keyword-input', {
+					type: 'text',
+					list: datalistId,
+					placeholder: 'Add skill...',
+					value: keyword,
+					oninput: (e) => {
+						ResumeBuilder.data.skills[skillIndex].keywords[keywordIndex] = e.target.value;
+						ResumeBuilder.updateJSON();
+					},
+					onblur: (e) => {
+						// Remove empty keywords on blur
+						if (!e.target.value.trim()) {
+							ResumeBuilder.removeSkillKeyword(skillIndex, keywordIndex);
+						}
+					},
+					onkeydown: (e) => {
+						if (e.key === 'Enter') {
+							e.preventDefault();
+							e.target.blur();
+							if (e.target.value.trim()) {
+								ResumeBuilder.addSkillKeyword(skillIndex);
+							}
 						}
 					}
-				}
-			});
+				}),
+				h(`datalist#${datalistId}`,
+					...suggestions.map(suggestion =>
+						h('option', { value: suggestion })
+					)
+				)
+			];
 		}
 		
 		// Show tag for non-empty keywords
@@ -834,8 +901,12 @@ const ResumeBuilder = {
 				})
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeProject(index)
-			}, I18n.t("resume.actions.remove"))
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeProject(index);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
@@ -891,8 +962,12 @@ const ResumeBuilder = {
 				})
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removePortfolio(index)
-			}, I18n.t("resume.actions.remove"))
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removePortfolio(index);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
@@ -923,6 +998,7 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.education.institution")),
 					h('input[type="text"]', {
 						value: edu.institution,
+						className: index === ResumeBuilder.data.education.length - 1 ? 'focus-first' : '',
 						oninput: (e) => ResumeBuilder.data.education[index].institution = e.target.value
 					})
 				),
@@ -958,8 +1034,12 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeEducation(index)
-			}, I18n.t("resume.actions.remove"))
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeEducation(index);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
@@ -990,6 +1070,7 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.certifications.type")),
 					h('input[type="text"]', {
 						value: cert.type,
+						className: index === ResumeBuilder.data.certifications.length - 1 ? 'focus-first' : '',
 						oninput: (e) => ResumeBuilder.data.certifications[index].type = e.target.value
 					})
 				),
@@ -1018,8 +1099,12 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeCertification(index)
-			}, I18n.t("resume.actions.remove"))
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeCertification(index);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
@@ -1050,6 +1135,7 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.awards.type")),
 					h('input[type="text"]', {
 						value: award.type,
+						className: index === ResumeBuilder.data.awards.length - 1 ? 'focus-first' : '',
 						oninput: (e) => ResumeBuilder.data.awards[index].type = e.target.value
 					})
 				),
@@ -1078,8 +1164,12 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeAward(index)
-			}, I18n.t("resume.actions.remove"))
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeAward(index);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
@@ -1110,6 +1200,7 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.volunteer.organization")),
 					h('input[type="text"]', {
 						value: vol.organization,
+						className: index === ResumeBuilder.data.volunteer.length - 1 ? 'focus-first' : '',
 						oninput: (e) => ResumeBuilder.data.volunteer[index].organization = e.target.value
 					})
 				),
@@ -1138,8 +1229,12 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeVolunteer(index)
-			}, I18n.t("resume.actions.remove"))
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeVolunteer(index);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
@@ -1170,6 +1265,7 @@ const ResumeBuilder = {
 					h('label', I18n.t("resume.interests.type")),
 					h('input[type="text"]', {
 						value: interest.type,
+						className: index === ResumeBuilder.data.interests.length - 1 ? 'focus-first' : '',
 						oninput: (e) => ResumeBuilder.data.interests[index].type = e.target.value
 					})
 				),
@@ -1182,8 +1278,12 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeInterest(index)
-			}, I18n.t("resume.actions.remove"))
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeInterest(index);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
@@ -1315,12 +1415,27 @@ const ResumeBuilder = {
 			startDate: "",
 			endDate: ""
 		});
+		const newIndex = ResumeBuilder.data.education.length - 1;
 		ResumeBuilder.refresh();
+		ResumeBuilder.animateNewItem('education', newIndex);
 	},
 
 	removeEducation: (index) => {
-		ResumeBuilder.data.education.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="education"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.education.splice(index, 1);
+				ResumeBuilder.refresh(true); // Preserve scroll position
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.education.splice(index, 1);
+			ResumeBuilder.refresh(true); // Preserve scroll position
+		}
 	},
 
 	addCertification: () => {
@@ -1330,12 +1445,27 @@ const ResumeBuilder = {
 			issuer: "",
 			date: ""
 		});
+		const newIndex = ResumeBuilder.data.certifications.length - 1;
 		ResumeBuilder.refresh();
+		ResumeBuilder.animateNewItem('certifications', newIndex);
 	},
 
 	removeCertification: (index) => {
-		ResumeBuilder.data.certifications.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="certifications"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.certifications.splice(index, 1);
+				ResumeBuilder.refresh(true); // Preserve scroll position
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.certifications.splice(index, 1);
+			ResumeBuilder.refresh(true); // Preserve scroll position
+		}
 	},
 
 	addAward: () => {
@@ -1345,12 +1475,27 @@ const ResumeBuilder = {
 			issuer: "",
 			date: ""
 		});
+		const newIndex = ResumeBuilder.data.awards.length - 1;
 		ResumeBuilder.refresh();
+		ResumeBuilder.animateNewItem('awards', newIndex);
 	},
 
 	removeAward: (index) => {
-		ResumeBuilder.data.awards.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="awards"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.awards.splice(index, 1);
+				ResumeBuilder.refresh(true); // Preserve scroll position
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.awards.splice(index, 1);
+			ResumeBuilder.refresh(true); // Preserve scroll position
+		}
 	},
 
 	addVolunteer: () => {
@@ -1360,12 +1505,27 @@ const ResumeBuilder = {
 			startDate: "",
 			endDate: ""
 		});
+		const newIndex = ResumeBuilder.data.volunteer.length - 1;
 		ResumeBuilder.refresh();
+		ResumeBuilder.animateNewItem('volunteer', newIndex);
 	},
 
 	removeVolunteer: (index) => {
-		ResumeBuilder.data.volunteer.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="volunteer"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.volunteer.splice(index, 1);
+				ResumeBuilder.refresh(true); // Preserve scroll position
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.volunteer.splice(index, 1);
+			ResumeBuilder.refresh(true); // Preserve scroll position
+		}
 	},
 
 	addInterest: () => {
@@ -1373,12 +1533,27 @@ const ResumeBuilder = {
 			type: "",
 			value: ""
 		});
+		const newIndex = ResumeBuilder.data.interests.length - 1;
 		ResumeBuilder.refresh();
+		ResumeBuilder.animateNewItem('interests', newIndex);
 	},
 
 	removeInterest: (index) => {
-		ResumeBuilder.data.interests.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="interests"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.interests.splice(index, 1);
+				ResumeBuilder.refresh(true); // Preserve scroll position
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.interests.splice(index, 1);
+			ResumeBuilder.refresh(true); // Preserve scroll position
+		}
 	},
 
 	// Save to localStorage
