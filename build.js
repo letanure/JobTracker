@@ -86,6 +86,7 @@ const BUILD_CONFIG = {
     'src/styles/components/tasks.css',
     'src/styles/components/calendar.css',
     'src/styles/components/resume.css',
+    'src/styles/components/cv.css',
     'src/styles/components/dialogs.css',
     // Remaining CSS files
     'src/styles/table.css',

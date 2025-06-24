@@ -39,13 +39,13 @@
 	border-right: var(--border-width) solid var(--border-color);
 }
 
-.resume-json-column {
+.resume-preview-column {
 	display: flex;
 	flex-direction: column;
 	background: var(--gray-50);
 }
 
-.json-header {
+.preview-header {
 	padding: var(--space-3);
 	background: var(--gray-100);
 	border-bottom: var(--border-width) solid var(--border-color);
@@ -54,18 +54,10 @@
 	color: var(--text-color);
 }
 
-.json-preview {
+#resume-html-preview {
 	flex: 1;
-	padding: var(--space-3);
-	margin: 0;
-	font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-	font-size: 11px;
-	line-height: 1.4;
 	overflow: auto;
 	background: var(--white);
-	white-space: pre;
-	color: var(--text-color);
-	border: none;
 }
 
 /* Compact sections without boxes */

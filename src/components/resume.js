@@ -304,12 +304,12 @@ const ResumeBuilder = {
 					ResumeBuilder.createInterestsSection()
 				),
 
-				// Right column: JSON preview
-				h('div.resume-json-column',
-					h('div.json-header', 'Live JSON Preview'),
-					h('pre.json-preview', {
-						id: 'resume-json-preview'
-					}, JSON.stringify(ResumeBuilder.data, null, 2))
+				// Right column: Resume preview
+				h('div.resume-preview-column',
+					h('div.preview-header', 'Resume Preview'),
+					h('div.cv-container', {
+						id: 'resume-html-preview'
+					}, ResumeBuilder.generateResumeHTML())
 				)
 			)
 		);
@@ -317,13 +317,316 @@ const ResumeBuilder = {
 		return container;
 	},
 
-	// Update JSON preview
-	updateJSON: () => {
-		const preview = document.getElementById('resume-json-preview');
+	// Update resume preview
+	updatePreview: () => {
+		const preview = document.getElementById('resume-html-preview');
 		if (preview) {
-			preview.textContent = JSON.stringify(ResumeBuilder.data, null, 2);
+			preview.innerHTML = '';
+			preview.appendChild(ResumeBuilder.generateResumeHTML());
 		}
 		ResumeBuilder.updateCompletionCounters();
+	},
+
+	// Generate HTML resume
+	generateResumeHTML: () => {
+		const data = ResumeBuilder.data;
+		
+		return h('article.cv-resume',
+			// Header section
+			ResumeBuilder.generateHeaderHTML(data.basics),
+			
+			// Main content sections
+			h('main.cv-main',
+				// Left column
+				h('section.cv-sidebar',
+					ResumeBuilder.generateContactHTML(data.basics),
+					ResumeBuilder.generateLanguagesHTML(data.basics.languages),
+					ResumeBuilder.generateSkillsHTML(data.skills)
+				),
+				
+				// Right column
+				h('section.cv-content',
+					ResumeBuilder.generateSummaryHTML(data.basics),
+					ResumeBuilder.generateExperienceHTML(data.experience),
+					ResumeBuilder.generateEducationHTML(data.education),
+					ResumeBuilder.generateProjectsHTML(data.projects),
+					ResumeBuilder.generateCertificationsHTML(data.certifications),
+					ResumeBuilder.generateAwardsHTML(data.awards),
+					ResumeBuilder.generateVolunteerHTML(data.volunteer)
+				)
+			)
+		);
+	},
+
+	// Generate header section
+	generateHeaderHTML: (basics) => {
+		if (!basics.name && !basics.label) return '';
+		
+		return h('header.cv-header',
+			basics.name ? h('h1.cv-name', basics.name) : '',
+			basics.label ? h('h2.cv-title', basics.label) : ''
+		);
+	},
+
+	// Generate contact section
+	generateContactHTML: (basics) => {
+		const hasContact = basics.email || basics.phone || 
+			(basics.location && (basics.location.city || basics.location.country)) ||
+			(basics.profiles && basics.profiles.length > 0);
+			
+		if (!hasContact) return '';
+		
+		const contactItems = [];
+		
+		if (basics.email) {
+			contactItems.push(h('div.cv-contact-item',
+				h('span.cv-contact-label', 'Email'),
+				h('a.cv-contact-value', { href: `mailto:${basics.email}` }, basics.email)
+			));
+		}
+		
+		if (basics.phone) {
+			contactItems.push(h('div.cv-contact-item',
+				h('span.cv-contact-label', 'Phone'),
+				h('span.cv-contact-value', basics.phone)
+			));
+		}
+		
+		if (basics.location && (basics.location.city || basics.location.country)) {
+			const location = [basics.location.city, basics.location.country].filter(Boolean).join(', ');
+			contactItems.push(h('div.cv-contact-item',
+				h('span.cv-contact-label', 'Location'),
+				h('span.cv-contact-value', location)
+			));
+		}
+		
+		if (basics.profiles && basics.profiles.length > 0) {
+			basics.profiles.forEach(profile => {
+				if (profile.url && profile.type) {
+					contactItems.push(h('div.cv-contact-item',
+						h('span.cv-contact-label', profile.type),
+						h('a.cv-contact-value', { href: profile.url, target: '_blank' }, profile.url)
+					));
+				}
+			});
+		}
+		
+		return h('section.cv-contact',
+			h('h3.cv-section-title', 'Contact'),
+			h('div.cv-contact-list', ...contactItems)
+		);
+	},
+
+	// Generate summary section
+	generateSummaryHTML: (basics) => {
+		if (!basics.summary && !basics.personalStatement) return '';
+		
+		return h('section.cv-summary',
+			h('h3.cv-section-title', 'Summary'),
+			basics.summary ? h('p.cv-summary-text', basics.summary) : '',
+			basics.personalStatement ? h('p.cv-summary-text', basics.personalStatement) : ''
+		);
+	},
+
+	// Generate experience section
+	generateExperienceHTML: (experience) => {
+		if (!experience || experience.length === 0) return '';
+		
+		return h('section.cv-experience',
+			h('h3.cv-section-title', 'Work Experience'),
+			h('div.cv-experience-list',
+				...experience.map(exp => ResumeBuilder.generateExperienceItemHTML(exp))
+			)
+		);
+	},
+
+	// Generate single experience item
+	generateExperienceItemHTML: (exp) => {
+		return h('div.cv-experience-item',
+			h('div.cv-experience-header',
+				exp.position ? h('h4.cv-experience-position', exp.position) : '',
+				exp.company ? h('h5.cv-experience-company', exp.company) : ''
+			),
+			h('div.cv-experience-meta',
+				exp.startDate || exp.endDate ? h('span.cv-experience-dates', 
+					`${exp.startDate || ''} - ${exp.endDate || 'Present'}`
+				) : '',
+				exp.location ? h('span.cv-experience-location', exp.location) : ''
+			),
+			exp.summary ? h('p.cv-experience-summary', exp.summary) : '',
+			exp.highlights && exp.highlights.length > 0 ? h('ul.cv-experience-highlights',
+				...exp.highlights.map(highlight => h('li.cv-experience-highlight', highlight))
+			) : ''
+		);
+	},
+
+	// Generate education section
+	generateEducationHTML: (education) => {
+		if (!education || education.length === 0) return '';
+		
+		return h('section.cv-education',
+			h('h3.cv-section-title', 'Education'),
+			h('div.cv-education-list',
+				...education.map(edu => ResumeBuilder.generateEducationItemHTML(edu))
+			)
+		);
+	},
+
+	// Generate single education item
+	generateEducationItemHTML: (edu) => {
+		return h('div.cv-education-item',
+			edu.studyType ? h('h4.cv-education-degree', edu.studyType) : '',
+			edu.area ? h('h5.cv-education-field', edu.area) : '',
+			edu.institution ? h('h6.cv-education-institution', edu.institution) : '',
+			edu.startDate || edu.endDate ? h('span.cv-education-dates',
+				`${edu.startDate || ''} - ${edu.endDate || 'Present'}`
+			) : ''
+		);
+	},
+
+	// Generate skills section
+	generateSkillsHTML: (skills) => {
+		if (!skills || skills.length === 0) return '';
+		
+		return h('section.cv-skills',
+			h('h3.cv-section-title', 'Skills'),
+			h('div.cv-skills-list',
+				...skills.map(skill => ResumeBuilder.generateSkillItemHTML(skill))
+			)
+		);
+	},
+
+	// Generate single skill item
+	generateSkillItemHTML: (skill) => {
+		if (!skill.name) return '';
+		
+		return h('div.cv-skill-item',
+			h('h4.cv-skill-category', skill.name),
+			skill.keywords && skill.keywords.length > 0 ? h('div.cv-skill-keywords',
+				...skill.keywords.filter(k => k.trim()).map(keyword => 
+					h('span.cv-skill-keyword', keyword)
+				)
+			) : ''
+		);
+	},
+
+	// Generate languages section
+	generateLanguagesHTML: (languages) => {
+		if (!languages || languages.length === 0) return '';
+		
+		return h('section.cv-languages',
+			h('h3.cv-section-title', 'Languages'),
+			h('div.cv-languages-list',
+				...languages.map(lang => ResumeBuilder.generateLanguageItemHTML(lang))
+			)
+		);
+	},
+
+	// Generate single language item
+	generateLanguageItemHTML: (lang) => {
+		if (!lang.language) return '';
+		
+		return h('div.cv-language-item',
+			h('span.cv-language-name', lang.language),
+			lang.fluency ? h('span.cv-language-level', lang.fluency) : ''
+		);
+	},
+
+	// Generate projects section
+	generateProjectsHTML: (projects) => {
+		if (!projects || projects.length === 0) return '';
+		
+		return h('section.cv-projects',
+			h('h3.cv-section-title', 'Projects'),
+			h('div.cv-projects-list',
+				...projects.map(project => ResumeBuilder.generateProjectItemHTML(project))
+			)
+		);
+	},
+
+	// Generate single project item
+	generateProjectItemHTML: (project) => {
+		if (!project.name) return '';
+		
+		return h('div.cv-project-item',
+			h('h4.cv-project-name', project.name),
+			project.description ? h('p.cv-project-description', project.description) : '',
+			project.url ? h('a.cv-project-url', { href: project.url, target: '_blank' }, project.url) : '',
+			project.tags && project.tags.length > 0 ? h('div.cv-project-tags',
+				...project.tags.map(tag => h('span.cv-project-tag', tag))
+			) : ''
+		);
+	},
+
+	// Generate certifications section
+	generateCertificationsHTML: (certifications) => {
+		if (!certifications || certifications.length === 0) return '';
+		
+		return h('section.cv-certifications',
+			h('h3.cv-section-title', 'Certifications'),
+			h('div.cv-certifications-list',
+				...certifications.map(cert => ResumeBuilder.generateCertificationItemHTML(cert))
+			)
+		);
+	},
+
+	// Generate single certification item
+	generateCertificationItemHTML: (cert) => {
+		if (!cert.name) return '';
+		
+		return h('div.cv-certification-item',
+			h('h4.cv-certification-name', cert.name),
+			cert.issuer ? h('h5.cv-certification-issuer', cert.issuer) : '',
+			cert.date ? h('span.cv-certification-date', cert.date) : ''
+		);
+	},
+
+	// Generate awards section
+	generateAwardsHTML: (awards) => {
+		if (!awards || awards.length === 0) return '';
+		
+		return h('section.cv-awards',
+			h('h3.cv-section-title', 'Awards'),
+			h('div.cv-awards-list',
+				...awards.map(award => ResumeBuilder.generateAwardItemHTML(award))
+			)
+		);
+	},
+
+	// Generate single award item
+	generateAwardItemHTML: (award) => {
+		if (!award.title) return '';
+		
+		return h('div.cv-award-item',
+			h('h4.cv-award-title', award.title),
+			award.awarder ? h('h5.cv-award-awarder', award.awarder) : '',
+			award.date ? h('span.cv-award-date', award.date) : ''
+		);
+	},
+
+	// Generate volunteer section
+	generateVolunteerHTML: (volunteer) => {
+		if (!volunteer || volunteer.length === 0) return '';
+		
+		return h('section.cv-volunteer',
+			h('h3.cv-section-title', 'Volunteer Experience'),
+			h('div.cv-volunteer-list',
+				...volunteer.map(vol => ResumeBuilder.generateVolunteerItemHTML(vol))
+			)
+		);
+	},
+
+	// Generate single volunteer item
+	generateVolunteerItemHTML: (vol) => {
+		if (!vol.organization) return '';
+		
+		return h('div.cv-volunteer-item',
+			h('h4.cv-volunteer-role', vol.position || vol.role),
+			h('h5.cv-volunteer-organization', vol.organization),
+			vol.startDate || vol.endDate ? h('span.cv-volunteer-dates',
+				`${vol.startDate || ''} - ${vol.endDate || 'Present'}`
+			) : ''
+		);
 	},
 
 	// Helper function for smooth add animation and scroll
@@ -412,7 +715,7 @@ const ResumeBuilder = {
 						value: ResumeBuilder.data.basics.name,
 						oninput: (e) => {
 							ResumeBuilder.data.basics.name = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				),
@@ -422,7 +725,7 @@ const ResumeBuilder = {
 						value: ResumeBuilder.data.basics.label,
 						oninput: (e) => {
 							ResumeBuilder.data.basics.label = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				)
@@ -434,7 +737,7 @@ const ResumeBuilder = {
 					value: ResumeBuilder.data.basics.summary,
 					oninput: (e) => {
 						ResumeBuilder.data.basics.summary = e.target.value;
-						ResumeBuilder.updateJSON();
+						ResumeBuilder.updatePreview();
 					}
 				})
 			),
@@ -445,7 +748,7 @@ const ResumeBuilder = {
 						value: ResumeBuilder.data.basics.email,
 						oninput: (e) => {
 							ResumeBuilder.data.basics.email = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				),
@@ -455,7 +758,7 @@ const ResumeBuilder = {
 						value: ResumeBuilder.data.basics.phone,
 						oninput: (e) => {
 							ResumeBuilder.data.basics.phone = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				)
@@ -467,7 +770,7 @@ const ResumeBuilder = {
 						value: ResumeBuilder.data.basics.location.city,
 						oninput: (e) => {
 							ResumeBuilder.data.basics.location.city = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				),
@@ -477,7 +780,7 @@ const ResumeBuilder = {
 						value: ResumeBuilder.data.basics.location.country,
 						onchange: (e) => {
 							ResumeBuilder.data.basics.location.country = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					},
 						h('option', { value: '' }, ''),
@@ -492,7 +795,7 @@ const ResumeBuilder = {
 					value: ResumeBuilder.data.basics.personalStatement,
 					oninput: (e) => {
 						ResumeBuilder.data.basics.personalStatement = e.target.value;
-						ResumeBuilder.updateJSON();
+						ResumeBuilder.updatePreview();
 					}
 				})
 			)
@@ -545,7 +848,7 @@ const ResumeBuilder = {
 						className: index === ResumeBuilder.data.basics.profiles.length - 1 ? 'focus-first' : '',
 						onchange: (e) => {
 							ResumeBuilder.data.basics.profiles[index].type = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					},
 						h('option[value="linkedin"]', I18n.t("resume.profiles.platforms.linkedin")),
@@ -562,7 +865,7 @@ const ResumeBuilder = {
 						placeholder: isFirst ? '' : I18n.t("resume.profiles.url"),
 						oninput: (e) => {
 							ResumeBuilder.data.basics.profiles[index].url = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				)
@@ -614,7 +917,7 @@ const ResumeBuilder = {
 						className: index === ResumeBuilder.data.basics.languages.length - 1 ? 'focus-first' : '',
 						onchange: (e) => {
 							ResumeBuilder.data.basics.languages[index].language = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					},
 						h('option', { value: '' }, ''),
@@ -627,7 +930,7 @@ const ResumeBuilder = {
 						value: lang.fluency,
 						onchange: (e) => {
 							ResumeBuilder.data.basics.languages[index].fluency = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					},
 						h('option[value="native"]', I18n.t("resume.languages.levels.native")),
@@ -685,7 +988,7 @@ const ResumeBuilder = {
 						className: index === ResumeBuilder.data.skills.length - 1 ? 'focus-first' : '',
 						oninput: (e) => {
 							ResumeBuilder.data.skills[index].name = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					}),
 					h(`datalist#${datalistId}`,
@@ -737,7 +1040,7 @@ const ResumeBuilder = {
 					value: keyword,
 					oninput: (e) => {
 						ResumeBuilder.data.skills[skillIndex].keywords[keywordIndex] = e.target.value;
-						ResumeBuilder.updateJSON();
+						ResumeBuilder.updatePreview();
 					},
 					onblur: (e) => {
 						// Remove empty keywords on blur
@@ -809,7 +1112,7 @@ const ResumeBuilder = {
 							className: index === ResumeBuilder.data.experience.length - 1 ? 'focus-first' : '',
 							oninput: (e) => {
 								ResumeBuilder.data.experience[index].company = e.target.value;
-								ResumeBuilder.updateJSON();
+								ResumeBuilder.updatePreview();
 							}
 						})
 					),
@@ -820,7 +1123,7 @@ const ResumeBuilder = {
 							placeholder: isFirst ? '' : I18n.t("resume.experience.position"),
 							oninput: (e) => {
 								ResumeBuilder.data.experience[index].position = e.target.value;
-								ResumeBuilder.updateJSON();
+								ResumeBuilder.updatePreview();
 							}
 						})
 					)
@@ -841,7 +1144,7 @@ const ResumeBuilder = {
 						placeholder: isFirst ? '' : I18n.t("resume.experience.location"),
 						oninput: (e) => {
 							ResumeBuilder.data.experience[index].location = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				),
@@ -851,7 +1154,7 @@ const ResumeBuilder = {
 						value: exp.startDate,
 						oninput: (e) => {
 							ResumeBuilder.data.experience[index].startDate = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				),
@@ -861,7 +1164,7 @@ const ResumeBuilder = {
 						value: exp.endDate || '',
 						oninput: (e) => {
 							ResumeBuilder.data.experience[index].endDate = e.target.value;
-							ResumeBuilder.updateJSON();
+							ResumeBuilder.updatePreview();
 						}
 					})
 				)
@@ -873,7 +1176,7 @@ const ResumeBuilder = {
 					value: exp.summary,
 					oninput: (e) => {
 						ResumeBuilder.data.experience[index].summary = e.target.value;
-						ResumeBuilder.updateJSON();
+						ResumeBuilder.updatePreview();
 					}
 				})
 			) : h('textarea', {
@@ -882,7 +1185,7 @@ const ResumeBuilder = {
 				placeholder: I18n.t("resume.experience.summary"),
 				oninput: (e) => {
 					ResumeBuilder.data.experience[index].summary = e.target.value;
-					ResumeBuilder.updateJSON();
+					ResumeBuilder.updatePreview();
 				}
 			}),
 			isFirst ? h('div.form-field',
@@ -892,7 +1195,7 @@ const ResumeBuilder = {
 					value: exp.highlights.join('\n'),
 					oninput: (e) => {
 						ResumeBuilder.data.experience[index].highlights = e.target.value.split('\n').filter(h => h.trim());
-						ResumeBuilder.updateJSON();
+						ResumeBuilder.updatePreview();
 					}
 				})
 			) : h('textarea', {
@@ -901,7 +1204,7 @@ const ResumeBuilder = {
 				placeholder: I18n.t("resume.experience.highlights"),
 				oninput: (e) => {
 					ResumeBuilder.data.experience[index].highlights = e.target.value.split('\n').filter(h => h.trim());
-					ResumeBuilder.updateJSON();
+					ResumeBuilder.updatePreview();
 				}
 			})
 		);
@@ -1821,7 +2124,7 @@ const ResumeBuilder = {
 			container.innerHTML = '';
 			const newContent = ResumeBuilder.create();
 			container.appendChild(newContent);
-			ResumeBuilder.updateJSON();
+			ResumeBuilder.updatePreview();
 			
 			// Restore collapsed states and scroll position after refresh  
 			setTimeout(() => {
