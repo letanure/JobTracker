@@ -337,29 +337,52 @@ a.kanban-source-link {
 }
 
 .kanban-icon-btn {
-	/* Extends .icon-btn utility */
+	padding: 2px;
+	min-width: 18px;
+	height: 18px;
+	border-radius: 3px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-fast);
+	box-shadow: none;
+	border: none;
+	background: transparent;
+	color: var(--gray-500);
+	cursor: pointer;
 	position: relative;
 }
 
 .kanban-icon-btn .material-symbols-outlined {
-	font-size: 14px;
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.kanban-icon-btn:hover {
+	background: var(--gray-100);
+	color: var(--gray-700);
+}
+
+.kanban-icon-btn:focus {
+	outline: 1px solid var(--blue-500);
+	outline-offset: 1px;
 }
 
 .kanban-count-badge {
 	position: absolute;
-	top: -4px;
-	right: -4px;
+	top: -3px;
+	right: -3px;
 	background: var(--gray-200);
 	color: var(--gray-700);
-	font-size: 10px;
+	font-size: 9px;
 	font-weight: 500;
-	min-width: 16px;
-	height: 16px;
-	border-radius: 8px;
+	min-width: 12px;
+	height: 12px;
+	border-radius: 6px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0 4px;
+	padding: 0 3px;
 	border: 1px solid var(--gray-300);
 	z-index: 1;
 }

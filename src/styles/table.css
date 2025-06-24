@@ -155,8 +155,9 @@ td .current-phase {
 }
 
 .actions-cell .action-btn {
-	margin: 0 2px;
+	margin: 0 1px;
 	position: relative;
+	flex-shrink: 0;
 }
 
 .actions-cell .kanban-action-icons {
@@ -415,11 +416,20 @@ tr.editing .actions-cell button {
 	max-width: 80px;
 }
 
-/* Prevent line breaking in specific columns */
-.notes-table td:nth-child(2),
-.tasks-table td:nth-child(2) {
+/* Prevent line breaking in all table columns except text content */
+.notes-table td,
+.tasks-table td,
+.contacts-table td {
 	white-space: nowrap;
-	width: 120px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Allow text wrapping only for content cells */
+.notes-table .note-text-cell,
+.tasks-table .task-text-cell {
+	white-space: normal;
+	word-wrap: break-word;
 }
 
 .notes-table td:nth-child(4),
@@ -447,9 +457,13 @@ tr.editing .actions-cell button {
 .tasks-table-actions .action-btn,
 .contacts-table-actions .action-btn {
 	flex-shrink: 0;
-	min-width: 24px;
-	width: 24px;
-	height: 24px;
+	min-width: 22px;
+	width: 22px;
+	height: 22px;
+	padding: 2px;
+	border: none;
+	background: transparent;
+	border-radius: 4px;
 }
 
 /* Task two-row layout - GitHub style */

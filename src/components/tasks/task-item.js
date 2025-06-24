@@ -152,13 +152,13 @@ const TaskItem = ({ task, job }) => {
 				"div",
 				{ className: "task-actions modal-actions-row" },
 				h("button", {
-					className: "action-btn edit-task-btn icon-btn-transparent",
+					className: "action-btn edit-task-btn ",
 					title: I18n.t("modals.tasks.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit,
 				}),
 				h("button", {
-					className: "action-btn archive-btn icon-btn-transparent",
+					className: "action-btn archive-btn ",
 					title: isArchived
 						? I18n.t("modals.tasks.unarchiveTitle")
 						: I18n.t("modals.tasks.archiveTitle"),

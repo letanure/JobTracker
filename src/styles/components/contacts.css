@@ -67,6 +67,29 @@
 	margin-top: 16px;
 }
 
+.contacts-actions .action-btn {
+	padding: 4px 12px;
+	min-width: auto;
+	height: 28px;
+	border-radius: 6px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: var(--transition-fast);
+	box-shadow: none;
+	border: var(--border-width) solid var(--border-color);
+	background: transparent;
+	color: var(--text-color);
+	cursor: pointer;
+	font-size: var(--font-size-sm);
+	font-weight: 500;
+}
+
+.contacts-actions .action-btn:hover {
+	background: var(--gray-50);
+	border-color: var(--gray-300);
+}
+
 /* Empty state */
 .contacts-empty {
 	padding: 40px 20px;

@@ -38,10 +38,10 @@ const enableTaskEditing = (task, job) => {
 			</select>
 		</td>
 		<td class="tasks-table-actions">
-			<button class="action-btn save-task-btn icon-btn-transparent" title="${I18n.t("modals.common.save")}">
+			<button class="action-btn save-task-btn" title="${I18n.t("modals.common.save")}">
 				<span class="material-symbols-outlined icon-14">check</span>
 			</button>
-			<button class="action-btn cancel-task-btn icon-btn-transparent" title="${I18n.t("modals.common.cancel")}">
+			<button class="action-btn cancel-task-btn" title="${I18n.t("modals.common.cancel")}">
 				<span class="material-symbols-outlined icon-14">close</span>
 			</button>
 		</td>
@@ -219,13 +219,13 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 										"td",
 										{ className: "tasks-table-actions" },
 										h("button", {
-											className: "action-btn edit-task-btn icon-btn-transparent",
+											className: "action-btn edit-task-btn",
 											title: I18n.t("modals.tasks.editTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 											onclick: () => enableTaskEditing(task, job),
 										}),
 										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
+											className: "action-btn archive-btn",
 											title: I18n.t("modals.tasks.archiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
 											onclick: () => archiveTask(task, job),
@@ -316,7 +316,7 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 										"td",
 										{ className: "tasks-table-actions" },
 										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
+											className: "action-btn archive-btn",
 											title: I18n.t("modals.tasks.unarchiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => archiveTask(task, job),

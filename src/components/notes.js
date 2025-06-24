@@ -121,13 +121,13 @@ const NoteItem = ({ note, job }) => {
 				"div",
 				{ className: "note-actions modal-actions-row" },
 				h("button", {
-					className: "action-btn edit-note-btn icon-btn-transparent",
+					className: "action-btn edit-note-btn ",
 					title: I18n.t("modals.notes.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit,
 				}),
 				h("button", {
-					className: "action-btn archive-btn icon-btn-transparent",
+					className: "action-btn archive-btn ",
 					title: isArchived
 						? I18n.t("modals.notes.unarchiveTitle")
 						: I18n.t("modals.notes.archiveTitle"),
@@ -280,13 +280,13 @@ const NotesModal = ({ job, onClose }) => {
 											"td",
 											{ className: "notes-table-actions" },
 											h("button", {
-												className: "action-btn edit-note-btn icon-btn-transparent",
+												className: "action-btn edit-note-btn ",
 												title: I18n.t("modals.notes.editTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 												onclick: () => enableNoteEditing(note, job),
 											}),
 											h("button", {
-												className: "action-btn archive-btn icon-btn-transparent",
+												className: "action-btn archive-btn ",
 												title: I18n.t("modals.notes.archiveTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
 												onclick: () => archiveNote(note, job),
@@ -360,7 +360,7 @@ const NotesModal = ({ job, onClose }) => {
 											"td",
 											{ className: "notes-table-actions" },
 											h("button", {
-												className: "action-btn archive-btn icon-btn-transparent",
+												className: "action-btn archive-btn ",
 												title: I18n.t("modals.notes.unarchiveTitle"),
 												innerHTML:
 													'<span class="material-symbols-outlined icon-14">unarchive</span>',
@@ -488,10 +488,10 @@ const enableNoteEditing = (note, job) => {
 			<textarea class="note-edit-textarea" rows="2" placeholder="${I18n.t("modals.notes.placeholder")}">${note.text || ""}</textarea>
 		</td>
 		<td class="notes-table-actions">
-			<button class="action-btn save-note-btn icon-btn-transparent" title="${I18n.t("modals.common.save")}">
+			<button class="action-btn save-note-btn " title="${I18n.t("modals.common.save")}">
 				<span class="material-symbols-outlined icon-14">check</span>
 			</button>
-			<button class="action-btn cancel-note-btn icon-btn-transparent" title="${I18n.t("modals.common.cancel")}">
+			<button class="action-btn cancel-note-btn " title="${I18n.t("modals.common.cancel")}">
 				<span class="material-symbols-outlined icon-14">close</span>
 			</button>
 		</td>
@@ -586,13 +586,13 @@ const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 										"td",
 										{ className: "notes-table-actions" },
 										h("button", {
-											className: "action-btn edit-note-btn icon-btn-transparent",
+											className: "action-btn edit-note-btn ",
 											title: I18n.t("modals.notes.editTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 											onclick: () => enableNoteEditing(note, job),
 										}),
 										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
+											className: "action-btn archive-btn ",
 											title: I18n.t("modals.notes.archiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
 											onclick: () => archiveNote(note, job),
@@ -669,7 +669,7 @@ const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 										"td",
 										{ className: "notes-table-actions" },
 										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
+											className: "action-btn archive-btn ",
 											title: I18n.t("modals.notes.unarchiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => archiveNote(note, job),

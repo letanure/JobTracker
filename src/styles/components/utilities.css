@@ -54,6 +54,70 @@
 	color: var(--gray-700);
 }
 
+/* Ghost button variant - transparent with hover effects only */
+.icon-btn-ghost {
+	padding: 2px;
+	min-width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-fast);
+	box-shadow: none;
+	border: none;
+	background: transparent;
+	color: var(--gray-500);
+	cursor: pointer;
+}
+
+.icon-btn-ghost .material-symbols-outlined {
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.icon-btn-ghost:hover {
+	background: var(--gray-100);
+	color: var(--gray-700);
+}
+
+.icon-btn-ghost:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: 1px;
+}
+
+/* Small ghost button for table actions */
+.icon-btn-ghost-sm {
+	padding: 1px;
+	min-width: 18px;
+	height: 18px;
+	border-radius: 3px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-fast);
+	box-shadow: none;
+	border: none;
+	background: transparent;
+	color: var(--gray-500);
+	cursor: pointer;
+}
+
+.icon-btn-ghost-sm .material-symbols-outlined {
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.icon-btn-ghost-sm:hover {
+	background: var(--gray-100);
+	color: var(--gray-700);
+}
+
+.icon-btn-ghost-sm:focus {
+	outline: 1px solid var(--blue-500);
+	outline-offset: 1px;
+}
+
 /* Common card base styling */
 .card-base {
 	background: var(--white);

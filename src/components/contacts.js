@@ -184,13 +184,13 @@ const ContactItem = ({ contact, job }) => {
 				"div",
 				{ className: "contact-actions modal-actions-row" },
 				h("button", {
-					className: "action-btn edit-contact-btn icon-btn-transparent",
+					className: "action-btn edit-contact-btn ",
 					title: I18n.t("modals.contacts.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit,
 				}),
 				h("button", {
-					className: "action-btn archive-btn icon-btn-transparent",
+					className: "action-btn archive-btn ",
 					title: isArchived
 						? I18n.t("modals.contacts.unarchiveTitle")
 						: I18n.t("modals.contacts.archiveTitle"),
@@ -477,13 +477,13 @@ const ContactsModal = ({ job, onClose }) => {
 										"td",
 										{ className: "contacts-table-actions" },
 										h("button", {
-											className: "action-btn edit-contact-btn icon-btn-transparent",
+											className: "action-btn edit-contact-btn ",
 											title: I18n.t("modals.contacts.editTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 											onclick: () => enableContactEditing(contact, job),
 										}),
 										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
+											className: "action-btn archive-btn ",
 											title: I18n.t("modals.contacts.archiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
 											onclick: () => handleArchiveContact(contact),
@@ -581,7 +581,7 @@ const ContactsModal = ({ job, onClose }) => {
 											"td",
 											{ className: "contacts-table-actions" },
 											h("button", {
-												className: "action-btn archive-btn icon-btn-transparent",
+												className: "action-btn archive-btn ",
 												title: I18n.t("modals.contacts.unarchiveTitle"),
 												innerHTML:
 													'<span class="material-symbols-outlined icon-14">unarchive</span>',
@@ -804,10 +804,10 @@ const enableContactEditing = (contact, job) => {
 			<input type="text" value="${contact.company || ""}" class="contact-edit-input" data-field="company" placeholder="${I18n.t("modals.contacts.placeholderCompany")}">
 		</td>
 		<td class="contacts-table-actions">
-			<button class="action-btn save-contact-btn icon-btn-transparent" title="${I18n.t("modals.common.save")}">
+			<button class="action-btn save-contact-btn " title="${I18n.t("modals.common.save")}">
 				<span class="material-symbols-outlined icon-14">check</span>
 			</button>
-			<button class="action-btn cancel-contact-btn icon-btn-transparent" title="${I18n.t("modals.common.cancel")}">
+			<button class="action-btn cancel-contact-btn " title="${I18n.t("modals.common.cancel")}">
 				<span class="material-symbols-outlined icon-14">close</span>
 			</button>
 		</td>
@@ -961,13 +961,13 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 									"td",
 									{ className: "contacts-table-actions" },
 									h("button", {
-										className: "action-btn edit-contact-btn icon-btn-transparent",
+										className: "action-btn edit-contact-btn ",
 										title: I18n.t("modals.contacts.editTitle"),
 										innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 										onclick: () => enableContactEditing(contact, job),
 									}),
 									h("button", {
-										className: "action-btn archive-btn icon-btn-transparent",
+										className: "action-btn archive-btn ",
 										title: I18n.t("modals.contacts.archiveTitle"),
 										innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
 										onclick: () => handleArchiveContact(contact),
@@ -1065,7 +1065,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 										"td",
 										{ className: "contacts-table-actions" },
 										h("button", {
-											className: "action-btn archive-btn icon-btn-transparent",
+											className: "action-btn archive-btn ",
 											title: I18n.t("modals.contacts.unarchiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => handleArchiveContact(contact),
@@ -1249,7 +1249,7 @@ const updateContactRowDisplay = (contactRow, contact, job) => {
 
 	// Add edit button
 	const editBtn = document.createElement("button");
-	editBtn.className = "action-btn edit-contact-btn icon-btn-transparent";
+	editBtn.className = "action-btn edit-contact-btn ";
 	editBtn.title = I18n.t("modals.contacts.editTitle");
 	editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">edit</span>';
 	editBtn.onclick = () => enableContactEditing(contact, job);
@@ -1257,7 +1257,7 @@ const updateContactRowDisplay = (contactRow, contact, job) => {
 
 	// Add archive button
 	const archiveBtn = document.createElement("button");
-	archiveBtn.className = "action-btn archive-btn icon-btn-transparent";
+	archiveBtn.className = "action-btn archive-btn ";
 	archiveBtn.title = I18n.t("modals.contacts.archiveTitle");
 	archiveBtn.innerHTML = '<span class="material-symbols-outlined icon-14">archive</span>';
 	archiveBtn.onclick = () => handleArchiveContact(contact);

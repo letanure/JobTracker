@@ -178,7 +178,7 @@ const CustomDialogs = {
 						h(
 							"button",
 							{
-								className: `action-btn ${button.className}`,
+								className: `btn-subtle ${button.className}`,
 								onclick: button.onClick,
 							},
 							button.text

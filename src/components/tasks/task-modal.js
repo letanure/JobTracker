@@ -149,7 +149,7 @@ const TasksModal = ({ job, onClose }) => {
 		// Add cancel button next to save button
 		const actionsCell = taskRow.querySelector(".tasks-table-actions");
 		const cancelBtn = h("button", {
-			className: "action-btn cancel-btn icon-btn-transparent",
+			className: "action-btn cancel-btn ",
 			title: I18n.t("modals.common.cancel"),
 			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
 			onclick: () => disableTaskEditing(task, job),
@@ -525,13 +525,13 @@ const TasksModal = ({ job, onClose }) => {
 											"td",
 											{ className: "tasks-table-actions" },
 											h("button", {
-												className: "action-btn edit-task-btn icon-btn-transparent",
+												className: "action-btn edit-task-btn ",
 												title: I18n.t("modals.tasks.editTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 												onclick: () => enableTaskEditing(task, job),
 											}),
 											h("button", {
-												className: "action-btn archive-btn icon-btn-transparent",
+												className: "action-btn archive-btn ",
 												title: I18n.t("modals.tasks.archiveTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
 												onclick: () => archiveTask(task, job),
@@ -619,7 +619,7 @@ const TasksModal = ({ job, onClose }) => {
 											"td",
 											{ className: "tasks-table-actions" },
 											h("button", {
-												className: "action-btn archive-btn icon-btn-transparent",
+												className: "action-btn archive-btn ",
 												title: I18n.t("modals.tasks.unarchiveTitle"),
 												innerHTML:
 													'<span class="material-symbols-outlined icon-14">unarchive</span>',
