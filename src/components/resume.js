@@ -155,6 +155,53 @@ const ResumeBuilder = {
 		ResumeBuilder.updateCompletionCounters();
 	},
 
+	// Helper function for smooth add animation and scroll
+	animateNewItem: (sectionId, newIndex) => {
+		setTimeout(() => {
+			const items = document.querySelectorAll(`[data-section="${sectionId}"] .dynamic-item`);
+			const newItem = items[newIndex];
+			if (newItem) {
+				newItem.classList.add('newly-added');
+				
+				// Smart scroll that keeps add button visible
+				const addButton = document.querySelector(`[data-section="${sectionId}"] .add-item-btn`);
+				const formColumn = document.querySelector('.resume-form-column');
+				
+				if (addButton && formColumn) {
+					// Calculate if we need to scroll and how much
+					const itemRect = newItem.getBoundingClientRect();
+					const buttonRect = addButton.getBoundingClientRect();
+					const formRect = formColumn.getBoundingClientRect();
+					
+					// Check if new item is below the visible area
+					if (itemRect.bottom > formRect.bottom) {
+						// Scroll just enough to show the new item but keep add button visible
+						const scrollAmount = Math.min(
+							itemRect.bottom - formRect.bottom + 20, // Show item with some padding
+							buttonRect.top - formRect.top - 60     // Keep button visible with padding
+						);
+						
+						if (scrollAmount > 0) {
+							formColumn.scrollBy({
+								top: scrollAmount,
+								behavior: 'smooth'
+							});
+						}
+					}
+				}
+				
+				setTimeout(() => newItem.classList.remove('newly-added'), 300);
+			}
+			
+			// Focus on first field of new item
+			const focusElement = document.querySelector('.focus-first');
+			if (focusElement) {
+				focusElement.focus();
+				focusElement.classList.remove('focus-first');
+			}
+		}, 10);
+	},
+
 	// Update completion counters for all sections
 	updateCompletionCounters: () => {
 		const sections = [
@@ -1052,26 +1099,7 @@ const ResumeBuilder = {
 		ResumeBuilder.data.basics.profiles.push({ type: "linkedin", url: "" });
 		const newIndex = ResumeBuilder.data.basics.profiles.length - 1;
 		ResumeBuilder.refresh();
-		
-		// Mark only the new item for animation and focus
-		setTimeout(() => {
-			const items = document.querySelectorAll('[data-section="profiles"] .dynamic-item');
-			const newItem = items[newIndex];
-			if (newItem) {
-				newItem.classList.add('newly-added');
-				// Remove animation class after animation completes
-				setTimeout(() => {
-					newItem.classList.remove('newly-added');
-				}, 300);
-			}
-			
-			// Focus on first field of new item
-			const focusElement = document.querySelector('.focus-first');
-			if (focusElement) {
-				focusElement.focus();
-				focusElement.classList.remove('focus-first');
-			}
-		}, 10);
+		ResumeBuilder.animateNewItem('profiles', newIndex);
 	},
 
 	removeProfile: (index) => {
@@ -1083,12 +1111,12 @@ const ResumeBuilder = {
 			itemToRemove.classList.add('removing');
 			setTimeout(() => {
 				ResumeBuilder.data.basics.profiles.splice(index, 1);
-				ResumeBuilder.refresh();
+				ResumeBuilder.refresh(true); // Preserve scroll position
 			}, 200); // Match animation duration
 		} else {
 			// Fallback if item not found
 			ResumeBuilder.data.basics.profiles.splice(index, 1);
-			ResumeBuilder.refresh();
+			ResumeBuilder.refresh(true); // Preserve scroll position
 		}
 	},
 
@@ -1096,26 +1124,25 @@ const ResumeBuilder = {
 		ResumeBuilder.data.basics.languages.push({ language: "", fluency: "intermediate" });
 		const newIndex = ResumeBuilder.data.basics.languages.length - 1;
 		ResumeBuilder.refresh();
-		
-		setTimeout(() => {
-			const items = document.querySelectorAll('[data-section="languages"] .dynamic-item');
-			const newItem = items[newIndex];
-			if (newItem) {
-				newItem.classList.add('newly-added');
-				setTimeout(() => newItem.classList.remove('newly-added'), 300);
-			}
-			
-			const focusElement = document.querySelector('.focus-first');
-			if (focusElement) {
-				focusElement.focus();
-				focusElement.classList.remove('focus-first');
-			}
-		}, 10);
+		ResumeBuilder.animateNewItem('languages', newIndex);
 	},
 
 	removeLanguage: (index) => {
-		ResumeBuilder.data.basics.languages.splice(index, 1);
-		ResumeBuilder.refresh();
+		// Find the specific dynamic item and animate it out
+		const items = document.querySelectorAll('[data-section="languages"] .dynamic-item');
+		const itemToRemove = items[index];
+		
+		if (itemToRemove) {
+			itemToRemove.classList.add('removing');
+			setTimeout(() => {
+				ResumeBuilder.data.basics.languages.splice(index, 1);
+				ResumeBuilder.refresh(true); // Preserve scroll position
+			}, 200); // Match animation duration
+		} else {
+			// Fallback if item not found
+			ResumeBuilder.data.basics.languages.splice(index, 1);
+			ResumeBuilder.refresh(true); // Preserve scroll position
+		}
 	},
 
 	addSkill: () => {
@@ -1325,18 +1352,20 @@ const ResumeBuilder = {
 	},
 
 	// Refresh the interface
-	refresh: () => {
+	refresh: (preserveScroll = false) => {
 		const container = document.querySelector('.tab-content[data-tab="resume"]');
 		if (container) {
-			// Store current collapsed states before refresh
+			// Store current collapsed states and scroll position before refresh
 			const currentCollapsedStates = {...ResumeBuilder.collapsedSections};
+			const formColumn = container.querySelector('.resume-form-column');
+			const currentScrollTop = preserveScroll && formColumn ? formColumn.scrollTop : 0;
 			
 			container.innerHTML = '';
 			const newContent = ResumeBuilder.create();
 			container.appendChild(newContent);
 			ResumeBuilder.updateJSON();
 			
-			// Restore collapsed states after refresh  
+			// Restore collapsed states and scroll position after refresh  
 			setTimeout(() => {
 				Object.keys(currentCollapsedStates).forEach(sectionId => {
 					if (currentCollapsedStates[sectionId]) {
@@ -1348,6 +1377,14 @@ const ResumeBuilder = {
 						}
 					}
 				});
+				
+				// Restore scroll position if requested
+				if (preserveScroll && currentScrollTop > 0) {
+					const newFormColumn = container.querySelector('.resume-form-column');
+					if (newFormColumn) {
+						newFormColumn.scrollTop = currentScrollTop;
+					}
+				}
 			}, 10);
 		}
 	},

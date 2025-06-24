@@ -2,6 +2,11 @@
 /* RESUME BUILDER STYLES - COMPACT 2-COLUMN LAYOUT */
 /* ============================================================================ */
 
+/* Enable smooth scrolling for the resume form */
+.resume-form-column {
+	scroll-behavior: smooth;
+}
+
 .resume-container {
 	display: flex;
 	flex-direction: column;
