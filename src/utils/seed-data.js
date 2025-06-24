@@ -2,6 +2,15 @@
 // SEED DATA - DEMO DATA FOR FIRST-TIME USERS
 // ============================================================================
 
+// Helper function to generate dates relative to today
+const getRelativeDate = (daysOffset, hour = 10, minute = 0) => {
+	const today = new Date();
+	const targetDate = new Date(today);
+	targetDate.setDate(today.getDate() + daysOffset);
+	targetDate.setHours(hour, minute, 0, 0);
+	return targetDate.toISOString();
+};
+
 // Demo data for first-time users
 const DEMO_DATA = [
 	{
@@ -9,7 +18,7 @@ const DEMO_DATA = [
 		priority: "high",
 		company: "TechCorp Inc",
 		position: "Senior Software Engineer",
-		appliedDate: "2025-06-15T10:00:00.000Z",
+		appliedDate: getRelativeDate(-9), // Applied 9 days ago
 		currentPhase: "interview",
 		currentSubstep: "technical_interview",
 		completedSubsteps: ["phone_screening"],
@@ -27,9 +36,9 @@ const DEMO_DATA = [
 				text: "Prepare system design presentation",
 				status: "todo",
 				priority: "high",
-				createdAt: "2025-06-15T10:00:00.000Z",
+				createdAt: getRelativeDate(-9),
 				completedAt: null,
-				dueDate: "2025-06-25T10:00:00.000Z",
+				dueDate: getRelativeDate(1), // Due tomorrow
 				duration: "2h",
 				sortOrder: 0},
 			{
@@ -37,8 +46,8 @@ const DEMO_DATA = [
 				text: "Review company tech stack",
 				status: "done",
 				priority: "medium",
-				createdAt: "2025-06-14T09:00:00.000Z",
-				completedAt: "2025-06-16T14:30:00.000Z",
+				createdAt: getRelativeDate(-10, 9),
+				completedAt: getRelativeDate(-8, 14, 30),
 				dueDate: null,
 				duration: "1h",
 				sortOrder: 0},
@@ -47,9 +56,9 @@ const DEMO_DATA = [
 				text: "Complete coding assessment",
 				status: "todo",
 				priority: "high",
-				createdAt: "2025-06-20T10:00:00.000Z",
+				createdAt: getRelativeDate(-4),
 				completedAt: null,
-				dueDate: "2025-06-28T23:59:00.000Z",
+				dueDate: getRelativeDate(4, 23, 59), // Due in 4 days
 				duration: "3h",
 				sortOrder: 1},
 			{
@@ -57,9 +66,9 @@ const DEMO_DATA = [
 				text: "Research team members on LinkedIn",
 				status: "todo",
 				priority: "low",
-				createdAt: "2025-06-21T10:00:00.000Z",
+				createdAt: getRelativeDate(-3),
 				completedAt: null,
-				dueDate: "2025-07-02T10:00:00.000Z",
+				dueDate: getRelativeDate(8), // Due in 8 days
 				duration: null,
 				sortOrder: 2},
 		],
@@ -71,7 +80,7 @@ const DEMO_DATA = [
 				phone: "+1 (555) 123-4567",
 				company: "TechCorp Inc",
 				role: "Technical Recruiter",
-				createdAt: "2025-06-15T10:00:00.000Z",
+				createdAt: getRelativeDate(-9),
 				archived: false},
 			{
 				id: "2",
@@ -80,7 +89,7 @@ const DEMO_DATA = [
 				phone: "+1 (555) 234-5678",
 				company: "TechCorp Inc",
 				role: "Engineering Manager",
-				createdAt: "2025-06-16T14:00:00.000Z",
+				createdAt: getRelativeDate(-8, 14),
 				archived: false},
 		]},
 	{

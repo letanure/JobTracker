@@ -366,6 +366,27 @@
 	gap: 6px;
 }
 
+.calendar-event-job-btn {
+	background: none;
+	border: none;
+	color: var(--gray-500);
+	cursor: pointer;
+	padding: 2px;
+	border-radius: 3px;
+	transition: var(--transition-fast);
+	margin-left: auto;
+	flex-shrink: 0;
+}
+
+.calendar-event-job-btn:hover {
+	background: rgba(0, 0, 0, 0.1);
+	color: var(--primary-color);
+}
+
+.calendar-event-job-btn .material-symbols-outlined {
+	font-size: 14px;
+}
+
 .calendar-event-time {
 	font-size: 11px;
 	display: flex;

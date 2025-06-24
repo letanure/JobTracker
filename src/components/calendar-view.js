@@ -654,7 +654,16 @@ const CalendarView = {
 					}},
 				h('div.calendar-event-header',
 					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
-					h('div.calendar-event-title', event.title)
+					h('div.calendar-event-title', event.title),
+					h('button.calendar-event-job-btn', {
+						onclick: (e) => {
+							e.stopPropagation();
+							if (typeof KanbanBoard !== "undefined" && KanbanBoard.openJobEditModal) {
+								KanbanBoard.openJobEditModal(event.job);
+							}
+						},
+						title: `View job: ${event.job.company} - ${event.job.position}`
+					}, h('span.material-symbols-outlined', 'work'))
 				)
 			);
 		});
@@ -836,7 +845,16 @@ const CalendarView = {
 					h('div.calendar-event-title', event.title),
 					event.type === "task" &&
 						event.priority &&
-						h('span', { className: `calendar-event-priority priority-${event.priority}` })
+						h('span', { className: `calendar-event-priority priority-${event.priority}` }),
+					h('button.calendar-event-job-btn', {
+						onclick: (e) => {
+							e.stopPropagation();
+							if (typeof KanbanBoard !== "undefined" && KanbanBoard.openJobEditModal) {
+								KanbanBoard.openJobEditModal(event.job);
+							}
+						},
+						title: `View job: ${event.job.company} - ${event.job.position}`
+					}, h('span.material-symbols-outlined', 'work'))
 				),
 				h('div.calendar-event-subtitle',
 					`${event.job.company} - ${event.job.position}`
