@@ -10,6 +10,8 @@ const EN_TRANSLATIONS = {
 	common: {
 		viewJob: "View Job",
 		chooseJob: "Choose a job..."},
+	actions: {
+		archive: "Archive job"},
 	tabs: {
 		dashboard: "Dashboard",
 		jobs: "Jobs",
@@ -108,7 +110,8 @@ const EN_TRANSLATIONS = {
 			"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?",
 		welcomeConfirm: "Yes, add examples",
 		welcomeCancel: "No, leave empty",
-		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?"},
+		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
+		confirmArchive: "Are you sure you want to archive the application for {position} at {company}?"},
 	demo: {
 		notes1: "Great culture fit. Need to research their microservices architecture.",
 		notes2: "Early stage startup. High growth potential but risky."},

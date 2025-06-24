@@ -23,8 +23,8 @@ async function initializeApp() {
 	const savedJobs = loadFromLocalStorage();
 
 	if (savedJobs && savedJobs.length > 0) {
-		jobsData = savedJobs;
-		originalData = [...jobsData];
+		originalData = savedJobs;
+		jobsData = originalData.filter((job) => !job.archived);
 		refreshInterface();
 	} else {
 		// Show empty interface first
@@ -36,8 +36,8 @@ async function initializeApp() {
 			cancelText: I18n.t("messages.welcomeCancel"),
 			focusConfirm: true});
 		if (showDemo) {
-			jobsData = getDemoData();
-			originalData = [...jobsData];
+			originalData = getDemoData();
+			jobsData = originalData.filter((job) => !job.archived);
 			saveToLocalStorage();
 			refreshInterface();
 		}
@@ -122,18 +122,18 @@ function populatePhaseFilter() {
 // Filter functions
 function filterByPriority(priority) {
 	if (priority === null) {
-		jobsData = [...originalData];
+		jobsData = originalData.filter((job) => !job.archived);
 	} else {
-		jobsData = originalData.filter((job) => job.priority === priority);
+		jobsData = originalData.filter((job) => !job.archived && job.priority === priority);
 	}
 	refreshInterface();
 }
 
 function filterByPhase(phase) {
 	if (phase === null) {
-		jobsData = [...originalData];
+		jobsData = originalData.filter((job) => !job.archived);
 	} else {
-		jobsData = originalData.filter((job) => job.currentPhase === phase);
+		jobsData = originalData.filter((job) => !job.archived && job.currentPhase === phase);
 	}
 	refreshInterface();
 }

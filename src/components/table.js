@@ -113,15 +113,15 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				)
 			);
 
-			// Delete button
+			// Archive button
 			actionIconsChildren.push(
 				h('button.kanban-icon-btn', {
-						title: "Delete job",
+						title: I18n.t("actions.archive") || "Archive job",
 						onclick: (e) => {
 							e.stopPropagation();
-							onDelete(job);
+							archiveJob(job);
 						}},
-					h('span.material-symbols-outlined', "delete")
+					h('span.material-symbols-outlined', "archive")
 				)
 			);
 

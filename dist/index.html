@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T16:57:25.619Z
-Cache Version: 1750784245619
+Generated: 2025-06-24T17:07:43.297Z
+Cache Version: 1750784863297
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750784245619
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750784245619">
-    <meta name="build-date" content="2025-06-24T16:57:25.619Z">
+    <meta name="build-version" content="1750784863297">
+    <meta name="build-date" content="2025-06-24T17:07:43.297Z">
     <style>
 
 /* ============================================================================ */
@@ -6160,16 +6160,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750784245619';
-window.BUILD_DATE = '2025-06-24T16:57:25.619Z';
+window.BUILD_VERSION = '1750784863297';
+window.BUILD_DATE = '2025-06-24T17:07:43.297Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T16:57:25.617Z
+// Generated: 2025-06-24T17:07:43.286Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T16:57:25.617Z");
+console.log("JobTracker - Built at: 2025-06-24T17:07:43.286Z");
 
 
 // ============================================================================
@@ -6523,6 +6523,8 @@ const EN_TRANSLATIONS = {
 	common: {
 		viewJob: "View Job",
 		chooseJob: "Choose a job..."},
+	actions: {
+		archive: "Archive job"},
 	tabs: {
 		dashboard: "Dashboard",
 		jobs: "Jobs",
@@ -6621,7 +6623,8 @@ const EN_TRANSLATIONS = {
 			"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?",
 		welcomeConfirm: "Yes, add examples",
 		welcomeCancel: "No, leave empty",
-		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?"},
+		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
+		confirmArchive: "Are you sure you want to archive the application for {position} at {company}?"},
 	demo: {
 		notes1: "Great culture fit. Need to research their microservices architecture.",
 		notes2: "Early stage startup. High growth potential but risky."},
@@ -6818,6 +6821,8 @@ const PT_TRANSLATIONS = {
 	common: {
 		viewJob: "Ver Vaga",
 		chooseJob: "Escolha uma vaga..."},
+	actions: {
+		archive: "Arquivar vaga"},
 	tabs: {
 		dashboard: "Painel",
 		jobs: "Empregos",
@@ -6917,7 +6922,8 @@ const PT_TRANSLATIONS = {
 			"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?",
 		welcomeConfirm: "Sim, adicionar exemplos",
 		welcomeCancel: "Não, deixar vazio",
-		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?"},
+		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
+		confirmArchive: "Tem certeza de que deseja arquivar a candidatura para {position} na {company}?"},
 	demo: {
 		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
 		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado."},
@@ -15680,15 +15686,15 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				)
 			);
 
-			// Delete button
+			// Archive button
 			actionIconsChildren.push(
 				h('button.kanban-icon-btn', {
-						title: "Delete job",
+						title: I18n.t("actions.archive") || "Archive job",
 						onclick: (e) => {
 							e.stopPropagation();
-							onDelete(job);
+							archiveJob(job);
 						}},
-					h('span.material-symbols-outlined', "delete")
+					h('span.material-symbols-outlined', "archive")
 				)
 			);
 
@@ -16159,24 +16165,33 @@ function editJob(job) {
 	}
 }
 
-// Delete job function
-async function deleteJob(job) {
-	// Confirm deletion using async confirm dialog
+// Archive job function
+async function archiveJob(job) {
+	// Confirm archiving using async confirm dialog
 	const confirmed = await confirm(
-		I18n.t("messages.confirmDelete", { position: job.position, company: job.company }) ||
-			`Are you sure you want to delete the application for ${job.position} at ${job.company}?`
+		I18n.t("messages.confirmArchive", { position: job.position, company: job.company }) ||
+			`Are you sure you want to archive the application for ${job.position} at ${job.company}?`
 	);
 
 	if (confirmed) {
-		// Remove from array
-		const index = jobsData.findIndex((j) => j.id === job.id);
-		if (index !== -1) {
-			jobsData.splice(index, 1);
-			originalData = [...jobsData];
+		// Mark job as archived in original data
+		const originalIndex = originalData.findIndex((j) => j.id === job.id);
+		if (originalIndex !== -1) {
+			originalData[originalIndex].archived = true;
+			originalData[originalIndex].archivedAt = new Date().toISOString();
+			
+			// Update filtered data to exclude archived jobs
+			jobsData = originalData.filter((job) => !job.archived);
 			saveToLocalStorage();
 			refreshInterface();
 		}
 	}
+}
+
+// Delete job function (kept for compatibility)
+async function deleteJob(job) {
+	// Redirect to archive instead of delete
+	await archiveJob(job);
 }
 
 // Global functions for HTML onclick handlers
@@ -16238,8 +16253,8 @@ async function initializeApp() {
 	const savedJobs = loadFromLocalStorage();
 
 	if (savedJobs && savedJobs.length > 0) {
-		jobsData = savedJobs;
-		originalData = [...jobsData];
+		originalData = savedJobs;
+		jobsData = originalData.filter((job) => !job.archived);
 		refreshInterface();
 	} else {
 		// Show empty interface first
@@ -16251,8 +16266,8 @@ async function initializeApp() {
 			cancelText: I18n.t("messages.welcomeCancel"),
 			focusConfirm: true});
 		if (showDemo) {
-			jobsData = getDemoData();
-			originalData = [...jobsData];
+			originalData = getDemoData();
+			jobsData = originalData.filter((job) => !job.archived);
 			saveToLocalStorage();
 			refreshInterface();
 		}
@@ -16337,18 +16352,18 @@ function populatePhaseFilter() {
 // Filter functions
 function filterByPriority(priority) {
 	if (priority === null) {
-		jobsData = [...originalData];
+		jobsData = originalData.filter((job) => !job.archived);
 	} else {
-		jobsData = originalData.filter((job) => job.priority === priority);
+		jobsData = originalData.filter((job) => !job.archived && job.priority === priority);
 	}
 	refreshInterface();
 }
 
 function filterByPhase(phase) {
 	if (phase === null) {
-		jobsData = [...originalData];
+		jobsData = originalData.filter((job) => !job.archived);
 	} else {
-		jobsData = originalData.filter((job) => job.currentPhase === phase);
+		jobsData = originalData.filter((job) => !job.archived && job.currentPhase === phase);
 	}
 	refreshInterface();
 }

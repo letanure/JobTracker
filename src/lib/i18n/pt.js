@@ -10,6 +10,8 @@ const PT_TRANSLATIONS = {
 	common: {
 		viewJob: "Ver Vaga",
 		chooseJob: "Escolha uma vaga..."},
+	actions: {
+		archive: "Arquivar vaga"},
 	tabs: {
 		dashboard: "Painel",
 		jobs: "Empregos",
@@ -109,7 +111,8 @@ const PT_TRANSLATIONS = {
 			"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?",
 		welcomeConfirm: "Sim, adicionar exemplos",
 		welcomeCancel: "Não, deixar vazio",
-		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?"},
+		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
+		confirmArchive: "Tem certeza de que deseja arquivar a candidatura para {position} na {company}?"},
 	demo: {
 		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
 		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado."},

@@ -12,24 +12,33 @@ function editJob(job) {
 	}
 }
 
-// Delete job function
-async function deleteJob(job) {
-	// Confirm deletion using async confirm dialog
+// Archive job function
+async function archiveJob(job) {
+	// Confirm archiving using async confirm dialog
 	const confirmed = await confirm(
-		I18n.t("messages.confirmDelete", { position: job.position, company: job.company }) ||
-			`Are you sure you want to delete the application for ${job.position} at ${job.company}?`
+		I18n.t("messages.confirmArchive", { position: job.position, company: job.company }) ||
+			`Are you sure you want to archive the application for ${job.position} at ${job.company}?`
 	);
 
 	if (confirmed) {
-		// Remove from array
-		const index = jobsData.findIndex((j) => j.id === job.id);
-		if (index !== -1) {
-			jobsData.splice(index, 1);
-			originalData = [...jobsData];
+		// Mark job as archived in original data
+		const originalIndex = originalData.findIndex((j) => j.id === job.id);
+		if (originalIndex !== -1) {
+			originalData[originalIndex].archived = true;
+			originalData[originalIndex].archivedAt = new Date().toISOString();
+			
+			// Update filtered data to exclude archived jobs
+			jobsData = originalData.filter((job) => !job.archived);
 			saveToLocalStorage();
 			refreshInterface();
 		}
 	}
+}
+
+// Delete job function (kept for compatibility)
+async function deleteJob(job) {
+	// Redirect to archive instead of delete
+	await archiveJob(job);
 }
 
 // Global functions for HTML onclick handlers
