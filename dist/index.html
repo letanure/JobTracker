@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T16:20:38.512Z
-Cache Version: 1750782038512
+Generated: 2025-06-24T16:23:27.532Z
+Cache Version: 1750782207532
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750782038512
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750782038512">
-    <meta name="build-date" content="2025-06-24T16:20:38.512Z">
+    <meta name="build-version" content="1750782207532">
+    <meta name="build-date" content="2025-06-24T16:23:27.532Z">
     <style>
 
 /* ============================================================================ */
@@ -6104,16 +6104,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750782038512';
-window.BUILD_DATE = '2025-06-24T16:20:38.512Z';
+window.BUILD_VERSION = '1750782207532';
+window.BUILD_DATE = '2025-06-24T16:23:27.532Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T16:20:38.502Z
+// Generated: 2025-06-24T16:23:27.524Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T16:20:38.502Z");
+console.log("JobTracker - Built at: 2025-06-24T16:23:27.524Z");
 
 
 // ============================================================================
@@ -14864,15 +14864,14 @@ const CalendarView = {
 			const timeStr = CalendarView.formatTime12Hour(hours, minutes);
 
 			const indicator = h('div.time-drop-indicator', {
-				style: `position: absolute; top: ${snapY}px; left: 0; right: 0; height: 2px; background: var(--blue-500); z-index: 10; pointer-events: none;`});
-
-			const timeLabel = h('div.time-drop-label', {
-					style: `position: absolute; top: ${snapY - 10}px; left: 4px; background: var(--blue-500); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; z-index: 11; pointer-events: none;`},
-				timeStr
+				style: `position: absolute; top: ${snapY}px; left: 4px; right: 4px; height: 24px; background: var(--blue-100); border: 2px dashed var(--blue-400); border-radius: 4px; z-index: 10; pointer-events: none; display: flex; align-items: center; justify-content: center;`},
+				h('div.time-drop-label', {
+					style: `color: var(--blue-600); font-size: 11px; font-weight: 500; pointer-events: none;`},
+					`Drop at ${timeStr}`
+				)
 			);
 
 			container.appendChild(indicator);
-			container.appendChild(timeLabel);
 		}
 	},
 

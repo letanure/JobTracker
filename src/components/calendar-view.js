@@ -1167,15 +1167,14 @@ const CalendarView = {
 			const timeStr = CalendarView.formatTime12Hour(hours, minutes);
 
 			const indicator = h('div.time-drop-indicator', {
-				style: `position: absolute; top: ${snapY}px; left: 0; right: 0; height: 2px; background: var(--blue-500); z-index: 10; pointer-events: none;`});
-
-			const timeLabel = h('div.time-drop-label', {
-					style: `position: absolute; top: ${snapY - 10}px; left: 4px; background: var(--blue-500); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; z-index: 11; pointer-events: none;`},
-				timeStr
+				style: `position: absolute; top: ${snapY}px; left: 4px; right: 4px; height: 24px; background: var(--blue-100); border: 2px dashed var(--blue-400); border-radius: 4px; z-index: 10; pointer-events: none; display: flex; align-items: center; justify-content: center;`},
+				h('div.time-drop-label', {
+					style: `color: var(--blue-600); font-size: 11px; font-weight: 500; pointer-events: none;`},
+					`Drop at ${timeStr}`
+				)
 			);
 
 			container.appendChild(indicator);
-			container.appendChild(timeLabel);
 		}
 	},
 
