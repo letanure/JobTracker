@@ -360,6 +360,14 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.calendar-week-event.dragging {
+	opacity: 0.6;
+	cursor: grabbing;
+	z-index: 1000;
+	/* Preserve original dimensions during drag */
+	transform: none !important;
+}
+
 .calendar-event-header {
 	display: flex;
 	align-items: center;
@@ -447,7 +455,14 @@
 
 .calendar-day-event:hover {
 	transform: translateY(-1px);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day-event.dragging {
+	opacity: 0.6;
+	cursor: grabbing;
+	z-index: 1000;
+	/* Preserve original dimensions during drag */
+	transform: none !important;
 }
 
 .calendar-event-header {

@@ -829,6 +829,7 @@ const CalendarView = {
 				{
 					className: `calendar-day-event calendar-event-${event.type}`,
 					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
+					draggable: event.type === "task", // Only tasks can be dragged
 					onclick: () => {
 						if (
 							event.type === "task" &&
@@ -839,6 +840,15 @@ const CalendarView = {
 						} else {
 							CalendarView.showEventDetails(event);
 						}
+					},
+					ondragstart: (e) => {
+						if (event.type === "task") {
+							CalendarView.handleDragStart(e, event);
+						}
+					},
+					ondragend: (e) => {
+						// Clean up drag state
+						CalendarView.handleDragEnd(e);
 					}},
 				h('div.calendar-event-header',
 					h('div.calendar-event-time', CalendarView.formatEventTime(event)),

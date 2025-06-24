@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T16:31:26.274Z
-Cache Version: 1750782686274
+Generated: 2025-06-24T16:57:25.619Z
+Cache Version: 1750784245619
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750782686274
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750782686274">
-    <meta name="build-date" content="2025-06-24T16:31:26.274Z">
+    <meta name="build-version" content="1750784245619">
+    <meta name="build-date" content="2025-06-24T16:57:25.619Z">
     <style>
 
 /* ============================================================================ */
@@ -4047,6 +4047,14 @@ a.kanban-source-link {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.calendar-week-event.dragging {
+	opacity: 0.6;
+	cursor: grabbing;
+	z-index: 1000;
+	/* Preserve original dimensions during drag */
+	transform: none !important;
+}
+
 .calendar-event-header {
 	display: flex;
 	align-items: center;
@@ -4134,7 +4142,14 @@ a.kanban-source-link {
 
 .calendar-day-event:hover {
 	transform: translateY(-1px);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day-event.dragging {
+	opacity: 0.6;
+	cursor: grabbing;
+	z-index: 1000;
+	/* Preserve original dimensions during drag */
+	transform: none !important;
 }
 
 .calendar-event-header {
@@ -6145,16 +6160,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750782686274';
-window.BUILD_DATE = '2025-06-24T16:31:26.274Z';
+window.BUILD_VERSION = '1750784245619';
+window.BUILD_DATE = '2025-06-24T16:57:25.619Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T16:31:26.263Z
+// Generated: 2025-06-24T16:57:25.617Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T16:31:26.263Z");
+console.log("JobTracker - Built at: 2025-06-24T16:57:25.617Z");
 
 
 // ============================================================================
@@ -14576,6 +14591,7 @@ const CalendarView = {
 				{
 					className: `calendar-day-event calendar-event-${event.type}`,
 					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
+					draggable: event.type === "task", // Only tasks can be dragged
 					onclick: () => {
 						if (
 							event.type === "task" &&
@@ -14586,6 +14602,15 @@ const CalendarView = {
 						} else {
 							CalendarView.showEventDetails(event);
 						}
+					},
+					ondragstart: (e) => {
+						if (event.type === "task") {
+							CalendarView.handleDragStart(e, event);
+						}
+					},
+					ondragend: (e) => {
+						// Clean up drag state
+						CalendarView.handleDragEnd(e);
 					}},
 				h('div.calendar-event-header',
 					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
