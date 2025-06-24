@@ -5,15 +5,13 @@
 const Dashboard = {
 	// Create the dashboard
 	create: () => {
-		const container = h("div", { className: "dashboard-container" });
+		const container = h('div.dashboard-container');
 
 		// Create stats section
 		const statsSection = Dashboard.createStatsSection();
 
 		// Create tasks sections
-		const tasksContainer = h(
-			"div",
-			{ className: "dashboard-tasks-container" },
+		const tasksContainer = h('div.dashboard-tasks-container',
 			Dashboard.createTodayTasksSection(),
 			Dashboard.createTomorrowTasksSection()
 		);
@@ -29,9 +27,7 @@ const Dashboard = {
 	createStatsSection: () => {
 		const stats = Dashboard.calculateStats();
 
-		const statsGrid = h(
-			"div",
-			{ className: "dashboard-stats-grid" },
+		const statsGrid = h('div.dashboard-stats-grid',
 			// Total Jobs
 			Dashboard.createStatCard(
 				"work",
@@ -90,29 +86,22 @@ const Dashboard = {
 			)
 		);
 
-		return h(
-			"div",
-			{ className: "dashboard-stats-section" },
-			h("h3", { className: "dashboard-section-title" }, I18n.t("dashboard.stats.title")),
+		return h('div.dashboard-stats-section',
+			h('h3.dashboard-section-title', I18n.t("dashboard.stats.title")),
 			statsGrid
 		);
 	},
 
 	// Create a stat card
 	createStatCard: (icon, label, value, variant = "default") => {
-		return h(
-			"div",
+		return h('div',
 			{ className: `dashboard-stat-card stat-${variant}` },
-			h(
-				"div",
-				{ className: "stat-icon" },
-				h("span", { className: "material-symbols-outlined" }, icon)
+			h('div.stat-icon',
+				h('span.material-symbols-outlined', icon)
 			),
-			h(
-				"div",
-				{ className: "stat-content" },
-				h("div", { className: "stat-value" }, value),
-				h("div", { className: "stat-label" }, label)
+			h('div.stat-content',
+				h('div.stat-value', value),
+				h('div.stat-label', label)
 			)
 		);
 	},
@@ -121,11 +110,11 @@ const Dashboard = {
 	createTodayTasksSection: () => {
 		const todayTasks = Dashboard.getTasksForDate(new Date());
 
-		const tasksList = h("div", { className: "dashboard-tasks-list" });
+		const tasksList = h('div.dashboard-tasks-list');
 
 		if (todayTasks.length === 0) {
 			tasksList.appendChild(
-				h("div", { className: "empty-state" }, I18n.t("dashboard.todayTasks.noTasks"))
+				h('div.empty-state', I18n.t("dashboard.todayTasks.noTasks"))
 			);
 		} else {
 			todayTasks.forEach((task) => {
@@ -133,10 +122,8 @@ const Dashboard = {
 			});
 		}
 
-		return h(
-			"div",
-			{ className: "dashboard-tasks-section" },
-			h("h3", { className: "dashboard-section-title" }, I18n.t("dashboard.todayTasks.title")),
+		return h('div.dashboard-tasks-section',
+			h('h3.dashboard-section-title', I18n.t("dashboard.todayTasks.title")),
 			tasksList
 		);
 	},
@@ -147,11 +134,11 @@ const Dashboard = {
 		tomorrow.setDate(tomorrow.getDate() + 1);
 		const tomorrowTasks = Dashboard.getTasksForDate(tomorrow);
 
-		const tasksList = h("div", { className: "dashboard-tasks-list" });
+		const tasksList = h('div.dashboard-tasks-list');
 
 		if (tomorrowTasks.length === 0) {
 			tasksList.appendChild(
-				h("div", { className: "empty-state" }, I18n.t("dashboard.tomorrowTasks.noTasks"))
+				h('div.empty-state', I18n.t("dashboard.tomorrowTasks.noTasks"))
 			);
 		} else {
 			tomorrowTasks.forEach((task) => {
@@ -159,10 +146,8 @@ const Dashboard = {
 			});
 		}
 
-		return h(
-			"div",
-			{ className: "dashboard-tasks-section" },
-			h("h3", { className: "dashboard-section-title" }, I18n.t("dashboard.tomorrowTasks.title")),
+		return h('div.dashboard-tasks-section',
+			h('h3.dashboard-section-title', I18n.t("dashboard.tomorrowTasks.title")),
 			tasksList
 		);
 	},
@@ -179,25 +164,19 @@ const Dashboard = {
 			timeStr = dueDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 		}
 
-		return h(
-			"div",
+		return h('div',
 			{
 				className: `dashboard-task-item ${priorityClass}`,
-				onclick: () => Dashboard.openTaskModal(task),
-			},
-			h("div", { className: "task-time" }, timeStr || "—"),
-			h(
-				"div",
-				{ className: "task-info" },
-				h("div", { className: "task-text" }, task.task || task.text || task.description),
-				h(
-					"div",
-					{ className: "task-job" },
-					h("span", { className: "material-symbols-outlined" }, "work"),
-					h("span", {}, `${task.jobCompany} - ${task.jobPosition}`)
+				onclick: () => Dashboard.openTaskModal(task)},
+			h('div.task-time', timeStr || "—"),
+			h('div.task-info',
+				h('div.task-text', task.task || task.text || task.description),
+				h('div.task-job',
+					h('span.material-symbols-outlined', "work"),
+					h('span', `${task.jobCompany} - ${task.jobPosition}`)
 				)
 			),
-			h("div", { className: `task-status ${statusClass}` }, getTaskStatusText(task.status))
+			h('div', { className: `task-status ${statusClass}` }, getTaskStatusText(task.status))
 		);
 	},
 
@@ -271,8 +250,7 @@ const Dashboard = {
 			activeTasks,
 			totalContacts,
 			totalNotes,
-			tasksThisWeek,
-		};
+			tasksThisWeek};
 	},
 
 	// Get tasks for a specific date
@@ -291,8 +269,7 @@ const Dashboard = {
 								jobId: job.id,
 								jobCompany: job.company,
 								jobPosition: job.position,
-								jobPhase: job.currentPhase,
-							});
+								jobPhase: job.currentPhase});
 						}
 					}
 				});
@@ -332,8 +309,7 @@ const Dashboard = {
 	// Refresh dashboard
 	refresh: () => {
 		Dashboard.init();
-	},
-};
+	}};
 
 // Make Dashboard available globally
 window.Dashboard = Dashboard;

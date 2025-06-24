@@ -34,8 +34,7 @@ async function initializeApp() {
 		const showDemo = await confirm(I18n.t("messages.welcome"), {
 			confirmText: I18n.t("messages.welcomeConfirm"),
 			cancelText: I18n.t("messages.welcomeCancel"),
-			focusConfirm: true,
-		});
+			focusConfirm: true});
 		if (showDemo) {
 			jobsData = getDemoData();
 			originalData = [...jobsData];
@@ -68,30 +67,22 @@ function populatePriorityFilter() {
 	dropdown.innerHTML = "";
 
 	// Add "All Priorities" option
-	const allOption = h(
-		"div",
-		{
-			className: "dropdown-option",
+	const allOption = h('div.dropdown-option', {
 			onclick: () => {
 				filterByPriority(null);
 				toggleDropdown("priorityDropdown");
-			},
-		},
+			}},
 		I18n.t("table.filters.allPriorities")
 	);
 	dropdown.appendChild(allOption);
 
 	// Add priority options
 	for (const priority of PRIORITIES) {
-		const option = h(
-			"div",
-			{
-				className: "dropdown-option",
+		const option = h('div.dropdown-option', {
 				onclick: () => {
 					filterByPriority(priority);
 					toggleDropdown("priorityDropdown");
-				},
-			},
+				}},
 			getPriorityText(priority)
 		);
 		dropdown.appendChild(option);
@@ -106,30 +97,22 @@ function populatePhaseFilter() {
 	dropdown.innerHTML = "";
 
 	// Add "All Phases" option
-	const allOption = h(
-		"div",
-		{
-			className: "dropdown-option",
+	const allOption = h('div.dropdown-option', {
 			onclick: () => {
 				filterByPhase(null);
 				toggleDropdown("phaseDropdown");
-			},
-		},
+			}},
 		I18n.t("table.filters.allPhases")
 	);
 	dropdown.appendChild(allOption);
 
 	// Add phase options
 	for (const phase of PHASES) {
-		const option = h(
-			"div",
-			{
-				className: "dropdown-option",
+		const option = h('div.dropdown-option', {
 				onclick: () => {
 					filterByPhase(phase);
 					toggleDropdown("phaseDropdown");
-				},
-			},
+				}},
 			getPhaseText(phase)
 		);
 		dropdown.appendChild(option);
@@ -193,8 +176,7 @@ function renderJobTable() {
 			const row = JobRow({
 				job,
 				onEdit: editJob,
-				onDelete: deleteJob,
-			});
+				onDelete: deleteJob});
 			tbody.appendChild(row);
 		} catch (error) {
 			console.error("Error rendering job row:", error, job);

@@ -26,8 +26,7 @@ export const CalendarEvents = {
 					date: new Date(job.appliedDate),
 					title: `${I18n.t("calendar.applied")}: ${job.company}`,
 					job: job,
-					color: EVENT_COLORS[EVENT_TYPES.APPLIED],
-				});
+					color: EVENT_COLORS[EVENT_TYPES.APPLIED]});
 			}
 
 			// Add tasks with due dates
@@ -42,8 +41,7 @@ export const CalendarEvents = {
 							job: job,
 							task: task,
 							priority: task.priority,
-							color: EVENT_COLORS[EVENT_TYPES.TASK],
-						});
+							color: EVENT_COLORS[EVENT_TYPES.TASK]});
 					}
 				});
 			}
@@ -60,8 +58,7 @@ export const CalendarEvents = {
 					date: interviewDate,
 					title: `${I18n.t("calendar.interview")}: ${job.company} - ${job.position}`,
 					job: job,
-					color: EVENT_COLORS[EVENT_TYPES.INTERVIEW],
-				});
+					color: EVENT_COLORS[EVENT_TYPES.INTERVIEW]});
 			}
 
 			// Add follow-up reminders
@@ -76,8 +73,7 @@ export const CalendarEvents = {
 						date: followUpDate,
 						title: `${I18n.t("calendar.followUp")}: ${job.company}`,
 						job: job,
-						color: EVENT_COLORS[EVENT_TYPES.FOLLOWUP],
-					});
+						color: EVENT_COLORS[EVENT_TYPES.FOLLOWUP]});
 				}
 			}
 		});
@@ -153,8 +149,7 @@ export const CalendarEvents = {
 			const priorityColors = {
 				high: "red",
 				medium: "orange",
-				low: "blue",
-			};
+				low: "blue"};
 			return priorityColors[priority] || EVENT_COLORS[type];
 		}
 
@@ -212,8 +207,7 @@ export const CalendarEvents = {
 				...event,
 				positionStyle: position ? position.style : "",
 				startMinutes: CalendarUtils.getEventStartMinutes(event),
-				endMinutes: CalendarUtils.getEventEndMinutes(event),
-			};
+				endMinutes: CalendarUtils.getEventEndMinutes(event)};
 		});
 
 		// Filter out events that don't have time-based positioning
@@ -246,5 +240,4 @@ export const CalendarEvents = {
 
 		// Return all events (timed + untimed)
 		return [...positionedTimedEvents, ...untimedEvents];
-	},
-};
+	}};

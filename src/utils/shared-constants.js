@@ -7,37 +7,32 @@ export const EVENT_TYPES = {
 	TASK: "task",
 	APPLIED: "applied",
 	INTERVIEW: "interview",
-	FOLLOWUP: "followup",
-};
+	FOLLOWUP: "followup"};
 
 // Event colors mapping
 export const EVENT_COLORS = {
 	[EVENT_TYPES.TASK]: "blue",
 	[EVENT_TYPES.APPLIED]: "green",
 	[EVENT_TYPES.INTERVIEW]: "orange",
-	[EVENT_TYPES.FOLLOWUP]: "purple",
-};
+	[EVENT_TYPES.FOLLOWUP]: "purple"};
 
 // Task status configurations
 export const TASK_STATUSES = {
 	TODO: "todo",
 	IN_PROGRESS: "in-progress",
-	DONE: "done",
-};
+	DONE: "done"};
 
 // Task priority configurations
 export const TASK_PRIORITIES = {
 	HIGH: "high",
 	MEDIUM: "medium",
-	LOW: "low",
-};
+	LOW: "low"};
 
 // Priority order for sorting
 export const PRIORITY_ORDER = {
 	[TASK_PRIORITIES.HIGH]: 3,
 	[TASK_PRIORITIES.MEDIUM]: 2,
-	[TASK_PRIORITIES.LOW]: 1,
-};
+	[TASK_PRIORITIES.LOW]: 1};
 
 // Duration options for tasks
 export const DURATION_OPTIONS = [
@@ -56,8 +51,7 @@ export const DURATION_MINUTES = {
 	"1h": 60,
 	"1h30": 90,
 	"2h": 120,
-	"3h": 180,
-};
+	"3h": 180};
 
 // Common modal class names
 export const MODAL_CLASSES = {
@@ -66,8 +60,7 @@ export const MODAL_CLASSES = {
 	HEADER: "modal-header",
 	BODY: "modal-body",
 	FOOTER: "modal-footer",
-	CLOSE_BTN: "modal-close-btn",
-};
+	CLOSE_BTN: "modal-close-btn"};
 
 // Drag & drop class names
 export const DRAG_CLASSES = {
@@ -75,16 +68,14 @@ export const DRAG_CLASSES = {
 	DRAG_OVER: "drag-over",
 	DROP_INDICATOR: "drop-indicator",
 	TIME_DROP_INDICATOR: "time-drop-indicator",
-	TIME_DROP_LABEL: "time-drop-label",
-};
+	TIME_DROP_LABEL: "time-drop-label"};
 
 // Common animation durations (ms)
 export const ANIMATION_DURATIONS = {
 	FAST: 150,
 	NORMAL: 300,
 	SLOW: 500,
-	NOTIFICATION: 3000,
-};
+	NOTIFICATION: 3000};
 
 // Calendar constants
 export const CALENDAR_CONSTANTS = {
@@ -95,15 +86,13 @@ export const CALENDAR_CONSTANTS = {
 	TIME_SLOT_HEIGHT: 20, // pixels
 	QUARTER_SLOT_HEIGHT: 10, // 15-minute intervals
 	WEEKDAYS: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-	WEEKDAYS_SHORT: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-};
+	WEEKDAYS_SHORT: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]};
 
 // Form validation patterns
 export const VALIDATION_PATTERNS = {
 	EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 	PHONE: /^\+?[\d\s\-\(\)]+$/,
-	URL: /^https?:\/\/.+/,
-};
+	URL: /^https?:\/\/.+/};
 
 // Interview substeps for calendar events
 export const INTERVIEW_SUBSTEPS = [
@@ -125,15 +114,13 @@ export const TABLE_COLUMNS = {
 	STATUS_WIDTH: "100px",
 	DATE_WIDTH: "120px",
 	COMPACT_PADDING: "var(--space-2) var(--space-3)",
-	NORMAL_PADDING: "var(--space-3) var(--space-4)",
-};
+	NORMAL_PADDING: "var(--space-3) var(--space-4)"};
 
 // Responsive breakpoints (match CSS)
 export const BREAKPOINTS = {
 	MOBILE: "768px",
 	TABLET: "1024px",
-	DESKTOP: "1200px",
-};
+	DESKTOP: "1200px"};
 
 // Common error messages
 export const ERROR_MESSAGES = {
@@ -142,16 +129,14 @@ export const ERROR_MESSAGES = {
 	INVALID_URL: "Please enter a valid URL",
 	SAVE_FAILED: "Failed to save changes",
 	DELETE_FAILED: "Failed to delete item",
-	LOAD_FAILED: "Failed to load data",
-};
+	LOAD_FAILED: "Failed to load data"};
 
 // Success messages
 export const SUCCESS_MESSAGES = {
 	SAVED: "Changes saved successfully",
 	DELETED: "Item deleted successfully",
 	CREATED: "Item created successfully",
-	MOVED: "Item moved successfully",
-};
+	MOVED: "Item moved successfully"};
 
 // Default values
 export const DEFAULTS = {
@@ -159,5 +144,4 @@ export const DEFAULTS = {
 	TASK_STATUS: TASK_STATUSES.TODO,
 	TASK_DURATION: "30min",
 	PAGE_SIZE: 50,
-	DEBOUNCE_DELAY: 300,
-};
+	DEBOUNCE_DELAY: 300};

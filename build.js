@@ -520,7 +520,7 @@ Cache Version: ${cacheVersion}
   // Use simple HTML minification for now (advanced minification has async issues)
   htmlContent = simpleMinifyHTML(htmlContent);
   
-  const minifiedOutput = 'dist/index.html';
+  const minifiedOutput = 'dist/index.min.html';
   
   if (writeFile(minifiedOutput, htmlContent)) {
     console.log(`🎉 Build complete!`);
@@ -755,7 +755,7 @@ function build(separateFiles = false) {
   if (separateFiles) {
     return buildSeparateFiles();
   } else {
-    return buildMinified(); // Always build minified version
+    return buildSingleFile(); // Build regular single file version
   }
 }
 

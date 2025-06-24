@@ -155,77 +155,56 @@ const refreshTasksModal = (job) => {
 const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 	return h(
 		"div",
-		{},
 		// Active tasks table
 		sortedActiveTasks.length > 0
 			? h(
-					"div",
-					{ className: "tasks-table-container" },
+					"div.tasks-table-container",
 					h(
-						"table",
-						{ className: "tasks-table" },
+						"table.tasks-table",
 						h(
 							"thead",
-							{},
 							h(
 								"tr",
-								{},
-								h("th", { className: "status-col" }, I18n.t("modals.tasks.statusHeader")),
-								h("th", { className: "priority-col" }, I18n.t("modals.tasks.priorityHeader")),
-								h("th", { className: "due-date-col" }, I18n.t("modals.tasks.dueDateHeader")),
-								h("th", { className: "duration-col" }, I18n.t("modals.tasks.durationHeader")),
-								h("th", { className: "actions-col" }, I18n.t("modals.tasks.actionsHeader"))
+								h("th.status-col", I18n.t("modals.tasks.statusHeader")),
+								h("th.priority-col", I18n.t("modals.tasks.priorityHeader")),
+								h("th.due-date-col", I18n.t("modals.tasks.dueDateHeader")),
+								h("th.duration-col", I18n.t("modals.tasks.durationHeader")),
+								h("th.actions-col", I18n.t("modals.tasks.actionsHeader"))
 							)
 						),
 						h(
 							"tbody",
-							{},
 							...sortedActiveTasks.flatMap((task) => [
 								// Task header row
 								h(
 									"tr",
 									{ key: `${task.id}-header`, "data-task-id": task.id },
 									h(
-										"td",
-										{ className: "task-status-cell" },
-										h("span", { className: "task-status-display" }, getTaskStatusText(task.status))
+										"td.task-status-cell",
+										h("span.task-status-display", getTaskStatusText(task.status))
 									),
 									h(
-										"td",
-										{ className: "task-priority-cell" },
+										"td.task-priority-cell",
 										h(
-											"span",
-											{ className: "task-priority-display" },
+											"span.task-priority-display",
 											I18n.t(
 												`modals.tasks.priority${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}`
 											)
 										)
 									),
 									h(
-										"td",
-										{ className: "task-due-date-cell" },
-										h(
-											"span",
-											{ className: "task-due-date-display" },
-											task.dueDate ? formatDate(task.dueDate) : "—"
-										)
+										"td.task-due-date-cell",
+										h("span.task-due-date-display", task.dueDate ? formatDate(task.dueDate) : "—")
 									),
+									h("td.task-duration-cell", h("span.task-duration-display", task.duration || "—")),
 									h(
-										"td",
-										{ className: "task-duration-cell" },
-										h("span", { className: "task-duration-display" }, task.duration || "—")
-									),
-									h(
-										"td",
-										{ className: "tasks-table-actions" },
-										h("button", {
-											className: "action-btn edit-task-btn",
+										"td.tasks-table-actions",
+										h("button.action-btn.edit-task-btn", {
 											title: I18n.t("modals.tasks.editTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 											onclick: () => enableTaskEditing(task, job),
 										}),
-										h("button", {
-											className: "action-btn archive-btn",
+										h("button.action-btn.archive-btn", {
 											title: I18n.t("modals.tasks.archiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
 											onclick: () => archiveTask(task, job),
@@ -236,23 +215,21 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 								h(
 									"tr",
 									{ key: `${task.id}-text`, className: "task-text-row" },
-									h("td", { colspan: 5, className: "task-text-cell" }, task.text)
+									h("td.task-text-cell", { colspan: 5 }, task.text)
 								),
 							])
 						)
 					)
 				)
-			: h("p", { className: "modal-empty-message" }, I18n.t("modals.tasks.emptyState")),
+			: h("p.modal-empty-message", I18n.t("modals.tasks.emptyState")),
 
 		// Archived tasks section
 		sortedArchivedTasks.length > 0
 			? h(
-					"div",
-					{ className: "archived-tasks-section" },
+					"div.archived-tasks-section",
 					h(
-						"h4",
+						"h4.tasks-archived-header",
 						{
-							className: "tasks-archived-header",
 							onclick: () => {
 								const archivedTable = document.getElementById("archived-tasks-table");
 								const expandIcon = document.getElementById("archived-tasks-icon");
@@ -266,9 +243,8 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 							},
 						},
 						h(
-							"span",
+							"span.material-symbols-outlined.expand-icon",
 							{
-								className: "material-symbols-outlined expand-icon",
 								id: "archived-tasks-icon",
 							},
 							"expand_more"
@@ -276,47 +252,37 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 						I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
 					),
 					h(
-						"table",
-						{
-							id: "archived-tasks-table",
-							className: "tasks-table archived",
-							style: "display: none",
-						},
+						"table.tasks-table.archived",
+						{ id: "archived-tasks-table", style: "display: none" },
 						h(
 							"thead",
-							{},
 							h(
 								"tr",
-								{},
-								h("th", { className: "status-col" }, I18n.t("modals.tasks.statusHeader")),
-								h("th", { className: "priority-col" }, I18n.t("modals.tasks.priorityHeader")),
-								h("th", { className: "due-date-col" }, I18n.t("modals.tasks.dueDateHeader")),
-								h("th", { className: "duration-col" }, I18n.t("modals.tasks.durationHeader")),
-								h("th", { className: "actions-col" }, I18n.t("modals.tasks.actionsHeader"))
+								h("th.status-col", I18n.t("modals.tasks.statusHeader")),
+								h("th.priority-col", I18n.t("modals.tasks.priorityHeader")),
+								h("th.due-date-col", I18n.t("modals.tasks.dueDateHeader")),
+								h("th.duration-col", I18n.t("modals.tasks.durationHeader")),
+								h("th.actions-col", I18n.t("modals.tasks.actionsHeader"))
 							)
 						),
 						h(
 							"tbody",
-							{},
 							...sortedArchivedTasks.flatMap((task) => [
 								h(
 									"tr",
 									{ key: `${task.id}-header` },
-									h("td", {}, getTaskStatusText(task.status)),
+									h("td", getTaskStatusText(task.status)),
 									h(
 										"td",
-										{},
 										I18n.t(
 											`modals.tasks.priority${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}`
 										)
 									),
-									h("td", {}, task.dueDate ? formatDate(task.dueDate) : "—"),
-									h("td", {}, task.duration || "—"),
+									h("td", task.dueDate ? formatDate(task.dueDate) : "—"),
+									h("td", task.duration || "—"),
 									h(
-										"td",
-										{ className: "tasks-table-actions" },
-										h("button", {
-											className: "action-btn archive-btn",
+										"td.tasks-table-actions",
+										h("button.action-btn.archive-btn", {
 											title: I18n.t("modals.tasks.unarchiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => archiveTask(task, job),
@@ -336,25 +302,21 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 
 		// Add task form
 		h(
-			"div",
-			{ className: "add-task-row" },
-			h("h4", { className: "add-task-title" }, I18n.t("modals.tasks.addSection")),
+			"div.add-task-row",
+			h("h4.add-task-title", I18n.t("modals.tasks.addSection")),
 			h(
-				"form",
+				"form.add-task-form",
 				{
-					className: "add-task-form",
 					onsubmit: (e) => {
 						e.preventDefault();
 						handleAddTask();
 					},
 				},
 				h(
-					"div",
-					{ className: "task-form-grid" },
+					"div.task-form-grid",
 					h(
-						"select",
+						"select.add-task-status",
 						{
-							className: "add-task-status",
 							title: I18n.t("modals.tasks.statusHeader"),
 						},
 						h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
@@ -362,24 +324,21 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 						h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
 					),
 					h(
-						"select",
+						"select.add-task-priority",
 						{
-							className: "add-task-priority",
 							title: I18n.t("modals.tasks.priorityHeader"),
 						},
 						h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
 						h("option", { value: "medium", selected: true }, I18n.t("modals.tasks.priorityMedium")),
 						h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 					),
-					h("input", {
+					h("input.add-task-due-date", {
 						type: "date",
-						className: "add-task-due-date",
 						title: I18n.t("modals.tasks.dueDateHeader"),
 					}),
 					h(
-						"select",
+						"select.add-task-duration",
 						{
-							className: "add-task-duration",
 							title: I18n.t("modals.tasks.durationHeader"),
 						},
 						h("option", { value: "" }, "—"),
@@ -391,8 +350,7 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 						h("option", { value: "3h" }, "3h")
 					)
 				),
-				h("textarea", {
-					className: "add-task-textarea",
+				h("textarea.add-task-textarea", {
 					placeholder: I18n.t("modals.tasks.placeholder"),
 					rows: 2,
 					onkeydown: (e) => {
@@ -403,16 +361,8 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 					},
 				}),
 				h(
-					"div",
-					{ className: "add-task-form-actions" },
-					h(
-						"button",
-						{
-							type: "submit",
-							className: "action-btn primary-btn",
-						},
-						I18n.t("modals.tasks.addButton")
-					)
+					"div.add-task-form-actions",
+					h("button.action-btn.primary-btn", { type: "submit" }, I18n.t("modals.tasks.addButton"))
 				)
 			)
 		)

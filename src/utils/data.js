@@ -6,8 +6,7 @@
 const saveToLocalStorage = () => {
 	DataStore.save({
 		jobs: jobsData,
-		language: I18n.currentLanguage,
-	});
+		language: I18n.currentLanguage});
 };
 
 // Load from localStorage

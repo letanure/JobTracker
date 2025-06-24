@@ -206,5 +206,4 @@ const TabNavigation = {
 				tabContainer.classList.add("tabs-initialized");
 			}
 		}, 50);
-	},
-};
+	}};

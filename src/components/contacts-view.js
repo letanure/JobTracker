@@ -25,34 +25,22 @@ const ContactsView = {
 
 	// Create the main contacts structure
 	create: () => {
-		const container = h(
-			"div",
-			{ className: "contacts-container" },
+		const container = h('div.contacts-container',
 			// Header
-			h(
-				"div",
-				{ className: "tab-header" },
-				h("h2", { className: "tab-title" }, I18n.t("contactsView.title")),
-				h(
-					"div",
-					{ className: "contacts-stats" },
-					h("span", { className: "contacts-count" }, ContactsView.getTotalContactsText())
+			h('div.tab-header',
+				h('h2.tab-title', I18n.t("contactsView.title")),
+				h('div.contacts-stats',
+					h('span.contacts-count', ContactsView.getTotalContactsText())
 				)
 			),
 
 			// Contacts table
-			h("div", { className: "contacts-table-container" }, ContactsView.renderContactsTable()),
+			h('div.contacts-table-container', ContactsView.renderContactsTable()),
 
 			// Table actions
-			h(
-				"div",
-				{ className: "contacts-actions" },
-				h(
-					"button",
-					{
-						className: "action-btn",
-						onclick: () => ContactsView.showAddContactModal(),
-					},
+			h('div.contacts-actions',
+				h('button.action-btn', {
+						onclick: () => ContactsView.showAddContactModal()},
 					I18n.t("contactsView.addContact")
 				)
 			)
@@ -74,8 +62,7 @@ const ContactsView = {
 							...contact,
 							jobId: job.id,
 							jobCompany: job.company,
-							jobPosition: job.position,
-						});
+							jobPosition: job.position});
 					}
 				});
 			}
@@ -96,104 +83,65 @@ const ContactsView = {
 		const contacts = ContactsView.getAllContacts();
 
 		if (contacts.length === 0) {
-			return h(
-				"div",
-				{ className: "contacts-empty" },
-				h("p", { className: "contacts-empty-message" }, I18n.t("contactsView.emptyState"))
+			return h('div.contacts-empty',
+				h('p.contacts-empty-message', I18n.t("contactsView.emptyState"))
 			);
 		}
 
-		return h(
-			"table",
-			{ className: "contacts-table" },
-			h(
-				"thead",
-				{},
-				h(
-					"tr",
-					{},
-					h("th", {}, I18n.t("contactsView.nameHeader")),
-					h("th", {}, I18n.t("contactsView.emailHeader")),
-					h("th", {}, I18n.t("contactsView.phoneHeader")),
-					h("th", {}, I18n.t("contactsView.roleHeader")),
-					h("th", {}, I18n.t("contactsView.companyHeader")),
-					h("th", {}, I18n.t("contactsView.jobHeader")),
-					h("th", {}, I18n.t("contactsView.actionsHeader"))
+		return h('table.contacts-table',
+			h('thead',
+				h('tr',
+					h('th', I18n.t("contactsView.nameHeader")),
+					h('th', I18n.t("contactsView.emailHeader")),
+					h('th', I18n.t("contactsView.phoneHeader")),
+					h('th', I18n.t("contactsView.roleHeader")),
+					h('th', I18n.t("contactsView.companyHeader")),
+					h('th', I18n.t("contactsView.jobHeader")),
+					h('th', I18n.t("contactsView.actionsHeader"))
 				)
 			),
-			h("tbody", {}, ...contacts.map((contact) => ContactsView.renderContactRow(contact)))
+			h('tbody', ...contacts.map((contact) => ContactsView.renderContactRow(contact)))
 		);
 	},
 
 	// Render contact row
 	renderContactRow: (contact) => {
-		return h(
-			"tr",
-			{
-				className: "contact-row",
+		return h('tr.contact-row', {
 				"data-contact-id": contact.id,
-				"data-job-id": contact.jobId,
-			},
-			h(
-				"td",
-				{ className: "contact-cell contact-name-cell" },
-				h("input", {
-					type: "text",
+				"data-job-id": contact.jobId},
+			h('td.contact-cell.contact-name-cell',
+				h('input.contact-field-input', {type: "text",
 					value: contact.name || "",
-					className: "contact-field-input",
 					placeholder: I18n.t("contactsView.namePlaceholder"),
 					onchange: (e) => ContactsView.updateContactField(contact, "name", e.target.value),
-					onblur: (e) => ContactsView.validateAndSave(contact, "name", e.target.value),
-				})
+					onblur: (e) => ContactsView.validateAndSave(contact, "name", e.target.value)})
 			),
-			h(
-				"td",
-				{ className: "contact-cell contact-email-cell" },
-				h("input", {
-					type: "email",
+			h('td.contact-cell.contact-email-cell',
+				h('input.contact-field-input', {type: "email",
 					value: contact.email || "",
-					className: "contact-field-input",
 					placeholder: I18n.t("contactsView.emailPlaceholder"),
-					onchange: (e) => ContactsView.updateContactField(contact, "email", e.target.value),
-				})
+					onchange: (e) => ContactsView.updateContactField(contact, "email", e.target.value)})
 			),
-			h(
-				"td",
-				{ className: "contact-cell contact-phone-cell" },
-				h("input", {
-					type: "tel",
+			h('td.contact-cell.contact-phone-cell',
+				h('input.contact-field-input', {type: "tel",
 					value: contact.phone || "",
-					className: "contact-field-input",
 					placeholder: I18n.t("contactsView.phonePlaceholder"),
-					onchange: (e) => ContactsView.updateContactField(contact, "phone", e.target.value),
-				})
+					onchange: (e) => ContactsView.updateContactField(contact, "phone", e.target.value)})
 			),
-			h(
-				"td",
-				{ className: "contact-cell contact-role-cell" },
-				h("input", {
-					type: "text",
+			h('td.contact-cell.contact-role-cell',
+				h('input.contact-field-input', {type: "text",
 					value: contact.role || "",
-					className: "contact-field-input",
 					placeholder: I18n.t("contactsView.rolePlaceholder"),
-					onchange: (e) => ContactsView.updateContactField(contact, "role", e.target.value),
-				})
+					onchange: (e) => ContactsView.updateContactField(contact, "role", e.target.value)})
 			),
-			h(
-				"td",
-				{ className: "contact-cell contact-company-cell" },
-				h("span", { className: "contact-company-display" }, contact.jobCompany)
+			h('td.contact-cell.contact-company-cell',
+				h('span.contact-company-display', contact.jobCompany)
 			),
-			h(
-				"td",
-				{ className: "contact-cell contact-job-cell" },
-				h("span", { className: "contact-job-display" }, contact.jobPosition)
+			h('td.contact-cell.contact-job-cell',
+				h('span.contact-job-display', contact.jobPosition)
 			),
-			h(
-				"td",
-				{ className: "contact-cell contact-actions-cell" },
-				h("button", {
-					className: "contact-view-job-btn action-btn",
+			h('td.contact-cell.contact-actions-cell',
+				h('button.contact-view-job-btn.action-btn', {
 					title: `View job: ${contact.jobPosition} at ${contact.jobCompany}`,
 					onclick: () => {
 						// Find the job and open edit modal
@@ -202,14 +150,11 @@ const ContactsView = {
 							window.KanbanBoard.openJobEditModal(job);
 						}
 					},
-					innerHTML: '<span class="material-symbols-outlined icon-14">work</span>',
-				}),
-				h("button", {
-					className: "contact-delete-btn action-btn delete-btn",
+					innerHTML: '<span class="material-symbols-outlined icon-14">work</span>'}),
+				h('button.contact-delete-btn.action-btn.delete-btn', {
 					title: I18n.t("contactsView.deleteTitle"),
 					onclick: () => ContactsView.deleteContact(contact),
-					innerHTML: '<span class="material-symbols-outlined icon-14">delete</span>',
-				})
+					innerHTML: '<span class="material-symbols-outlined icon-14">delete</span>'})
 			)
 		);
 	},
@@ -253,8 +198,7 @@ const ContactsView = {
 	// Delete contact with confirmation
 	deleteContact: async (contact) => {
 		const confirmMessage = I18n.t("contactsView.deleteConfirmation", {
-			name: contact.name || "this contact",
-		});
+			name: contact.name || "this contact"});
 
 		if (await confirm(confirmMessage)) {
 			const jobIndex = jobsData.findIndex((j) => j.id === contact.jobId);
@@ -294,7 +238,7 @@ const ContactsView = {
 
 		// Add error class and message
 		fieldCell.classList.add("has-error");
-		const errorElement = h("div", { className: "field-error" }, message);
+		const errorElement = h('div.field-error', message);
 		fieldCell.appendChild(errorElement);
 
 		// Remove error after 3 seconds
@@ -325,126 +269,69 @@ const ContactsView = {
 		// Get all jobs for the dropdown
 		const jobOptions = jobsData.map((job) => ({
 			id: job.id,
-			text: `${job.company} - ${job.position}`,
-		}));
+			text: `${job.company} - ${job.position}`}));
 
 		if (jobOptions.length === 0) {
 			await alert(I18n.t("contactsView.noJobsAvailable"));
 			return;
 		}
 
-		const modal = h(
-			"div",
-			{
-				className: "modal-overlay",
+		const modal = h('div.modal-overlay', {
 				onclick: (e) => {
 					if (e.target.className === "modal-overlay") e.target.remove();
-				},
-			},
-			h(
-				"div",
-				{ className: "modal" },
-				h(
-					"div",
-					{ className: "modal-header" },
-					h("h3", { className: "modal-title" }, I18n.t("contactsView.addContactTitle")),
-					h(
-						"button",
-						{
-							className: "modal-close",
-							onclick: (e) => e.target.closest(".modal-overlay").remove(),
-						},
+				}},
+			h('div.modal',
+				h('div.modal-header',
+					h('h3.modal-title', I18n.t("contactsView.addContactTitle")),
+					h('button.modal-close', {
+							onclick: (e) => e.target.closest(".modal-overlay").remove()},
 						"×"
 					)
 				),
-				h(
-					"div",
-					{ className: "modal-body" },
-					h(
-						"div",
-						{ className: "add-contact-form" },
-						h(
-							"div",
-							{ className: "contact-form-row" },
-							h(
-								"div",
-								{ className: "contact-form-field" },
-								h("label", {}, I18n.t("contactsView.nameHeader")),
-								h("input", {
-									type: "text",
-									className: "add-contact-name",
-									placeholder: I18n.t("contactsView.namePlaceholder"),
-								})
+				h('div.modal-body',
+					h('div.add-contact-form',
+						h('div.contact-form-row',
+							h('div.contact-form-field',
+								h('label', I18n.t("contactsView.nameHeader")),
+								h('input.add-contact-name', {type: "text",
+									placeholder: I18n.t("contactsView.namePlaceholder")})
 							),
-							h(
-								"div",
-								{ className: "contact-form-field" },
-								h("label", {}, I18n.t("contactsView.emailHeader")),
-								h("input", {
-									type: "email",
-									className: "add-contact-email",
-									placeholder: I18n.t("contactsView.emailPlaceholder"),
-								})
+							h('div.contact-form-field',
+								h('label', I18n.t("contactsView.emailHeader")),
+								h('input.add-contact-email', {type: "email",
+									placeholder: I18n.t("contactsView.emailPlaceholder")})
 							)
 						),
-						h(
-							"div",
-							{ className: "contact-form-row" },
-							h(
-								"div",
-								{ className: "contact-form-field" },
-								h("label", {}, I18n.t("contactsView.phoneHeader")),
-								h("input", {
-									type: "tel",
-									className: "add-contact-phone",
-									placeholder: I18n.t("contactsView.phonePlaceholder"),
-								})
+						h('div.contact-form-row',
+							h('div.contact-form-field',
+								h('label', I18n.t("contactsView.phoneHeader")),
+								h('input.add-contact-phone', {type: "tel",
+									placeholder: I18n.t("contactsView.phonePlaceholder")})
 							),
-							h(
-								"div",
-								{ className: "contact-form-field" },
-								h("label", {}, I18n.t("contactsView.roleHeader")),
-								h("input", {
-									type: "text",
-									className: "add-contact-role",
-									placeholder: I18n.t("contactsView.rolePlaceholder"),
-								})
+							h('div.contact-form-field',
+								h('label', I18n.t("contactsView.roleHeader")),
+								h('input.add-contact-role', {type: "text",
+									placeholder: I18n.t("contactsView.rolePlaceholder")})
 							)
 						),
-						h(
-							"div",
-							{ className: "contact-form-row" },
-							h(
-								"div",
-								{ className: "contact-form-field full-width" },
-								h("label", {}, I18n.t("contactsView.jobHeader")),
-								h(
-									"select",
-									{ className: "add-contact-job" },
-									h("option", { value: "" }, I18n.t("contactsView.selectJob")),
-									...jobOptions.map((job) => h("option", { value: job.id }, job.text))
+						h('div.contact-form-row',
+							h('div.contact-form-field full-width',
+								h('label', I18n.t("contactsView.jobHeader")),
+								h('select.add-contact-job',
+									h('option', { value: "" }, I18n.t("contactsView.selectJob")),
+									...jobOptions.map((job) => h('option', { value: job.id }, job.text))
 								)
 							)
 						)
 					)
 				),
-				h(
-					"div",
-					{ className: "modal-footer" },
-					h(
-						"button",
-						{
-							className: "btn-secondary",
-							onclick: (e) => e.target.closest(".modal-overlay").remove(),
-						},
+				h('div.modal-footer',
+					h('button.btn-secondary', {
+							onclick: (e) => e.target.closest(".modal-overlay").remove()},
 						I18n.t("modals.common.cancel")
 					),
-					h(
-						"button",
-						{
-							className: "btn-primary",
-							onclick: () => ContactsView.addContact(),
-						},
+					h('button.btn-primary', {
+							onclick: () => ContactsView.addContact()},
 						I18n.t("contactsView.addContact")
 					)
 				)
@@ -500,8 +387,7 @@ const ContactsView = {
 			role: role || null,
 			company: jobsData[jobIndex].company,
 			createdAt: new Date().toISOString(),
-			archived: false,
-		};
+			archived: false};
 
 		// Add to job
 		if (!jobsData[jobIndex].contacts) {
@@ -537,8 +423,7 @@ const ContactsView = {
 		if (statsElement) {
 			statsElement.textContent = ContactsView.getTotalContactsText();
 		}
-	},
-};
+	}};
 
 // Make ContactsView available globally
 window.ContactsView = ContactsView;

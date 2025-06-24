@@ -17,8 +17,7 @@ const CalendarView = {
 
 		return {
 			view: ["month", "week", "day"].includes(view) ? view : "month",
-			date: date ? new Date(date) : new Date(),
-		};
+			date: date ? new Date(date) : new Date()};
 	},
 
 	// Set calendar state in URL
@@ -68,93 +67,63 @@ const CalendarView = {
 
 	// Create the main calendar structure
 	create: () => {
-		const container = h(
-			"div",
-			{ className: "calendar-container" },
+		const container = h('div.calendar-container',
 			// Header with title and controls
-			h(
-				"div",
-				{ className: "tab-header" },
-				h("h2", { className: "tab-title" }, I18n.t("calendar.title")),
+			h('div.tab-header',
+				h('h2.tab-title', I18n.t("calendar.title")),
 
 				// View selector
-				h(
-					"div",
-					{ className: "calendar-controls" },
-					h(
-						"div",
-						{ className: "calendar-view-selector" },
-						h(
-							"button",
+				h('div.calendar-controls',
+					h('div.calendar-view-selector',
+						h('button',
 							{
 								className: `view-btn ${CalendarView.currentView === "month" ? "active" : ""}`,
-								onclick: () => CalendarView.switchView("month"),
-							},
+								onclick: () => CalendarView.switchView("month")},
 							I18n.t("calendar.month")
 						),
-						h(
-							"button",
+						h('button',
 							{
 								className: `view-btn ${CalendarView.currentView === "week" ? "active" : ""}`,
-								onclick: () => CalendarView.switchView("week"),
-							},
+								onclick: () => CalendarView.switchView("week")},
 							I18n.t("calendar.week")
 						),
-						h(
-							"button",
+						h('button',
 							{
 								className: `view-btn ${CalendarView.currentView === "day" ? "active" : ""}`,
-								onclick: () => CalendarView.switchView("day"),
-							},
+								onclick: () => CalendarView.switchView("day")},
 							I18n.t("calendar.day")
 						)
 					),
 
 					// Navigation controls
-					h(
-						"div",
-						{ className: "calendar-nav" },
-						h(
-							"button",
-							{
-								className: "nav-btn",
+					h('div.calendar-nav',
+						h('button.nav-btn', {
 								onclick: () => CalendarView.navigate("prev"),
-								title: I18n.t("calendar.previous"),
-							},
-							h("span", { className: "material-symbols-outlined" }, "chevron_left")
+								title: I18n.t("calendar.previous")},
+							h('span.material-symbols-outlined', "chevron_left")
 						),
 
-						h(
-							"button",
-							{
-								className: "nav-btn today-btn",
-								onclick: () => CalendarView.navigateToday(),
-							},
+						h('button.nav-btn.today-btn', {
+								onclick: () => CalendarView.navigateToday()},
 							I18n.t("calendar.today")
 						),
 
-						h(
-							"button",
-							{
-								className: "nav-btn",
+						h('button.nav-btn', {
 								onclick: () => CalendarView.navigate("next"),
-								title: I18n.t("calendar.next"),
-							},
-							h("span", { className: "material-symbols-outlined" }, "chevron_right")
+								title: I18n.t("calendar.next")},
+							h('span.material-symbols-outlined', "chevron_right")
 						)
 					)
 				)
 			),
 
 			// Current period display
-			h(
-				"div",
-				{ className: "calendar-period" },
-				h("h3", { className: "calendar-period-text" }, CalendarView.getCurrentPeriodText())
+			h('div.calendar-period',
+				h('h3.calendar-period-text', CalendarView.getCurrentPeriodText())
 			),
 
 			// Calendar body
-			h("div", { className: "calendar-body", id: "calendarBody" }, CalendarView.renderCurrentView())
+			h('div.calendar-body', { id: "calendarBody" }, CalendarView.renderCurrentView())
 		);
 
 		return container;
@@ -277,20 +246,14 @@ const CalendarView = {
 
 		const weekdays = I18n.t("calendar.weekdays");
 
-		const monthGrid = h(
-			"div",
-			{ className: "calendar-month" },
+		const monthGrid = h('div.calendar-month',
 			// Weekday headers
-			h(
-				"div",
-				{ className: "calendar-weekdays" },
-				...weekdays.map((day) => h("div", { className: "calendar-weekday" }, day))
+			h('div.calendar-weekdays',
+				...weekdays.map((day) => h('div.calendar-weekday', day))
 			),
 
 			// Days grid
-			h(
-				"div",
-				{ className: "calendar-days" },
+			h('div.calendar-days',
 				...CalendarView.generateMonthDays(startDate, firstDay, lastDay)
 			)
 		);
@@ -314,29 +277,25 @@ const CalendarView = {
 				const isToday = date.getTime() === today.getTime();
 				const dayEvents = CalendarView.getEventsForDate(date);
 
-				const dayContent = [h("div", { className: "calendar-day-number" }, date.getDate())];
+				const dayContent = [h('div.calendar-day-number', date.getDate())];
 
 				if (dayEvents.length > 0) {
 					dayContent.push(
-						h(
-							"div",
-							{ className: "calendar-day-events" },
+						h('div.calendar-day-events',
 							...CalendarView.renderDayEventCards(dayEvents)
 						)
 					);
 				}
 
 				days.push(
-					h(
-						"div",
+					h('div',
 						{
 							className: `calendar-day ${!isCurrentMonth ? "other-month" : ""} ${isToday ? "today" : ""} ${dayEvents.length > 0 ? "has-events" : ""}`,
 							onclick: () => CalendarView.selectDate(date),
 							ondragover: (e) => CalendarView.handleDragOver(e),
 							ondragleave: (e) => CalendarView.handleDragLeave(e),
 							ondrop: (e) => CalendarView.handleDrop(e, date),
-							"data-date": CalendarView.formatDateKey(date),
-						},
+							"data-date": CalendarView.formatDateKey(date)},
 						...dayContent
 					)
 				);
@@ -354,14 +313,10 @@ const CalendarView = {
 		const weekdays = I18n.t("calendar.weekdays");
 		const weekdaysFull = I18n.t("calendar.weekdaysFull");
 
-		const weekGrid = h(
-			"div",
-			{ className: "calendar-week" },
+		const weekGrid = h('div.calendar-week',
 			// Time column
-			h(
-				"div",
-				{ className: "calendar-week-times" },
-				h("div", { className: "calendar-week-time-header" }, ""),
+			h('div.calendar-week-times',
+				h('div.calendar-week-time-header', ""),
 				...CalendarView.generateTimeSlots()
 			),
 
@@ -372,24 +327,17 @@ const CalendarView = {
 				const dayEvents = CalendarView.getEventsForDate(date);
 				const isToday = CalendarView.isToday(date);
 
-				return h(
-					"div",
+				return h('div',
 					{ className: `calendar-week-day ${isToday ? "today" : ""}` },
-					h(
-						"div",
-						{ className: "calendar-week-day-header" },
-						h("div", { className: "calendar-week-day-name" }, weekdays[i]),
-						h("div", { className: "calendar-week-day-number" }, date.getDate())
+					h('div.calendar-week-day-header',
+						h('div.calendar-week-day-name', weekdays[i]),
+						h('div.calendar-week-day-number', date.getDate())
 					),
-					h(
-						"div",
-						{
-							className: "calendar-week-day-events",
+					h('div.calendar-week-day-events', {
 							ondragover: (e) => CalendarView.handleDragOver(e),
 							ondragleave: (e) => CalendarView.handleDragLeave(e),
 							ondrop: (e) => CalendarView.handleDrop(e, date),
-							"data-date": CalendarView.formatDateKey(date),
-						},
+							"data-date": CalendarView.formatDateKey(date)},
 						...CalendarView.renderWeekEvents(dayEvents)
 					)
 				);
@@ -404,27 +352,22 @@ const CalendarView = {
 		const date = CalendarView.currentDate;
 		const dayEvents = CalendarView.getEventsForDate(date);
 
-		const dayView = h(
-			"div",
-			{ className: "calendar-day-view" },
+		const dayView = h('div.calendar-day-view', [
 			// Time slots
-			h("div", { className: "calendar-day-times" }, ...CalendarView.generateTimeSlots()),
+			h('div.calendar-day-times', [...CalendarView.generateTimeSlots()]),
 
 			// Events column with drag and drop support
-			h(
-				"div",
+			h('div.calendar-day-events-column[data-date]', 
 				{
-					className: "calendar-day-events-column",
 					ondragover: (e) => CalendarView.handleDragOver(e),
 					ondragleave: (e) => CalendarView.handleDragLeave(e),
 					ondrop: (e) => CalendarView.handleDrop(e, date),
-					"data-date": CalendarView.formatDateKey(date),
-				},
+					"data-date": CalendarView.formatDateKey(date)},
 				...(dayEvents.length === 0
-					? [h("div", { className: "calendar-no-events" }, I18n.t("calendar.noEvents"))]
+					? [h('div.calendar-no-events', I18n.t("calendar.noEvents"))]
 					: CalendarView.renderDayEvents(dayEvents))
 			)
-		);
+		]);
 
 		return dayView;
 	},
@@ -439,16 +382,7 @@ const CalendarView = {
 				const time12 = CalendarView.formatTime12Hour(hour, minute);
 
 				slots.push(
-					h(
-						"div",
-						{
-							className: "calendar-time-slot",
-							"data-time": time24,
-							"data-hour": hour,
-							"data-minute": minute,
-						},
-						time12
-					)
+					h(`div.calendar-time-slot[data-time="${time24}" data-hour="${hour}" data-minute="${minute}"]`, time12)
 				);
 			}
 		}
@@ -476,8 +410,7 @@ const CalendarView = {
 					date: new Date(job.appliedDate),
 					title: `${I18n.t("calendar.applied")}: ${job.company}`,
 					job: job,
-					color: "green",
-				});
+					color: "green"});
 			}
 
 			// Add tasks with due dates
@@ -492,8 +425,7 @@ const CalendarView = {
 							job: job,
 							task: task,
 							priority: task.priority,
-							color: "blue",
-						});
+							color: "blue"});
 					}
 				});
 			}
@@ -522,8 +454,7 @@ const CalendarView = {
 					date: interviewDate,
 					title: `${I18n.t("calendar.interview")}: ${job.company} - ${job.position}`,
 					job: job,
-					color: "orange",
-				});
+					color: "orange"});
 			}
 
 			// Add follow-up reminders
@@ -538,8 +469,7 @@ const CalendarView = {
 						date: followUpDate,
 						title: `${I18n.t("calendar.followUp")}: ${job.company}`,
 						job: job,
-						color: "purple",
-					});
+						color: "purple"});
 				}
 			}
 		});
@@ -645,8 +575,7 @@ const CalendarView = {
 			}
 
 			cards.push(
-				h(
-					"div",
+				h('div',
 					{
 						className: `calendar-day-event-mini calendar-event-${event.type}`,
 						style: `background-color: var(--${color}-100); border-left: 2px solid var(--${color}-500);`,
@@ -660,9 +589,8 @@ const CalendarView = {
 								CalendarView.handleDragStart(e, event);
 							}
 						},
-						title: eventText,
-					},
-					h("div", { className: "calendar-event-mini-text" }, eventText)
+						title: eventText},
+					h('div.calendar-event-mini-text', eventText)
 				)
 			);
 		});
@@ -670,15 +598,11 @@ const CalendarView = {
 		// Add overflow indicator if there are more events
 		if (events.length > 3) {
 			cards.push(
-				h(
-					"div",
-					{
-						className: "calendar-event-more",
+				h('div.calendar-event-more', {
 						onclick: (e) => {
 							e.stopPropagation();
 							CalendarView.selectDate(new Date(events[0].date));
-						},
-					},
+						}},
 					`+${events.length - 3} more`
 				)
 			);
@@ -693,8 +617,7 @@ const CalendarView = {
 		const eventsWithPositions = CalendarView.calculateEventPositions(events);
 
 		return eventsWithPositions.map((event) => {
-			return h(
-				"div",
+			return h('div',
 				{
 					className: `calendar-week-event calendar-event-${event.type}`,
 					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 3px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
@@ -714,10 +637,9 @@ const CalendarView = {
 						if (event.type === "task") {
 							CalendarView.handleDragStart(e, event);
 						}
-					},
-				},
-				h("div", { className: "calendar-event-time" }, CalendarView.formatEventTime(event)),
-				h("div", { className: "calendar-event-title" }, event.title)
+					}},
+				h('div.calendar-event-time', CalendarView.formatEventTime(event)),
+				h('div.calendar-event-title', event.title)
 			);
 		});
 	},
@@ -766,8 +688,7 @@ const CalendarView = {
 			"1h": 60,
 			"1h30": 90,
 			"2h": 120,
-			"3h": 180,
-		};
+			"3h": 180};
 
 		return durationMap[duration] || null;
 	},
@@ -779,8 +700,7 @@ const CalendarView = {
 			...event,
 			positionStyle: CalendarView.calculateEventPosition(event),
 			startMinutes: CalendarView.getEventStartMinutes(event),
-			endMinutes: CalendarView.getEventEndMinutes(event),
-		}));
+			endMinutes: CalendarView.getEventEndMinutes(event)}));
 
 		// Filter out events that don't have time-based positioning
 		const timedEvents = eventsWithBasicPosition.filter(
@@ -880,8 +800,7 @@ const CalendarView = {
 		const eventsWithPositions = CalendarView.calculateEventPositions(events);
 
 		return eventsWithPositions.map((event) => {
-			return h(
-				"div",
+			return h('div',
 				{
 					className: `calendar-day-event calendar-event-${event.type}`,
 					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
@@ -895,20 +814,15 @@ const CalendarView = {
 						} else {
 							CalendarView.showEventDetails(event);
 						}
-					},
-				},
-				h(
-					"div",
-					{ className: "calendar-event-header" },
-					h("div", { className: "calendar-event-time" }, CalendarView.formatEventTime(event)),
+					}},
+				h('div.calendar-event-header',
+					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
 					event.type === "task" &&
 						event.priority &&
-						h("span", { className: `calendar-event-priority priority-${event.priority}` })
+						h('span', { className: `calendar-event-priority priority-${event.priority}` })
 				),
-				h("div", { className: "calendar-event-title" }, event.title),
-				h(
-					"div",
-					{ className: "calendar-event-subtitle" },
+				h('div.calendar-event-title', event.title),
+				h('div.calendar-event-subtitle',
 					`${event.job.company} - ${event.job.position}`
 				)
 			);
@@ -922,8 +836,7 @@ const CalendarView = {
 			const priorityColors = {
 				high: "red",
 				medium: "orange",
-				low: "green",
-			};
+				low: "green"};
 			return priorityColors[priority] || "blue";
 		}
 
@@ -932,8 +845,7 @@ const CalendarView = {
 			applied: "green",
 			task: "blue",
 			interview: "orange",
-			followup: "purple",
-		};
+			followup: "purple"};
 		return colors[type] || "gray";
 	},
 
@@ -944,9 +856,8 @@ const CalendarView = {
 			applied: "work",
 			task: "task_alt",
 			interview: "groups",
-			followup: "follow_the_signs",
-		};
-		return h("span", { className: "material-symbols-outlined" }, icons[event.type] || "event");
+			followup: "follow_the_signs"};
+		return h('span.material-symbols-outlined', icons[event.type] || "event");
 	},
 
 	// Format task date and time
@@ -976,36 +887,20 @@ const CalendarView = {
 		const weekdays = I18n.t("calendar.weekdaysFull");
 		const dateStr = `${weekdays[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]}`;
 
-		const modal = h(
-			"div",
-			{
-				className: "modal-overlay",
+		const modal = h('div.modal-overlay', {
 				onclick: (e) => {
 					if (e.target.className === "modal-overlay") e.target.remove();
-				},
-			},
-			h(
-				"div",
-				{ className: "modal calendar-events-modal" },
-				h(
-					"div",
-					{ className: "modal-header" },
-					h("h3", { className: "modal-title" }, dateStr),
-					h(
-						"button",
-						{
-							className: "modal-close",
-							onclick: (e) => e.target.closest(".modal-overlay").remove(),
-						},
+				}},
+			h('div.modal calendar-events-modal',
+				h('div.modal-header',
+					h('h3.modal-title', dateStr),
+					h('button.modal-close', {
+							onclick: (e) => e.target.closest(".modal-overlay").remove()},
 						"×"
 					)
 				),
-				h(
-					"div",
-					{ className: "modal-body" },
-					h(
-						"div",
-						{ className: "calendar-events-list" },
+				h('div.modal-body',
+					h('div.calendar-events-list',
 						...events.map((event) => CalendarView.renderEventCard(event))
 					)
 				)
@@ -1017,62 +912,43 @@ const CalendarView = {
 
 	// Render event card
 	renderEventCard: (event) => {
-		return h(
-			"div",
+		return h('div',
 			{
 				className: `calendar-event-card calendar-event-${event.type}`,
-				onclick: () => CalendarView.handleEventClick(event),
-			},
-			h(
-				"div",
-				{ className: "calendar-event-card-header" },
-				h(
-					"span",
-					{
-						className: "calendar-event-type-badge",
-						style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`,
-					},
+				onclick: () => CalendarView.handleEventClick(event)},
+			h('div.calendar-event-card-header',
+				h('span.calendar-event-type-badge', {
+						style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`},
 					I18n.t(`calendar.${event.type}`)
 				),
 				event.type === "task" &&
 					event.priority &&
-					h(
-						"span",
+					h('span',
 						{ className: `priority-badge priority-${event.priority}` },
 						I18n.t(
 							`modals.tasks.priority${event.priority.charAt(0).toUpperCase() + event.priority.slice(1)}`
 						)
 					)
 			),
-			h("div", { className: "calendar-event-card-title" }, event.title),
-			h(
-				"div",
-				{ className: "calendar-event-card-subtitle" },
+			h('div.calendar-event-card-title', event.title),
+			h('div.calendar-event-card-subtitle',
 				`${event.job.company} - ${event.job.position}`
 			),
 			// Show duration and due time for tasks
 			event.type === "task" &&
 				(event.task.duration || event.task.dueDate) &&
-				h(
-					"div",
-					{ className: "calendar-event-card-meta" },
+				h('div.calendar-event-card-meta',
 					...[
 						event.task.dueDate &&
-							h(
-								"span",
-								{ className: "calendar-event-meta-item" },
-								h(
-									"span",
-									{ className: "material-symbols-outlined calendar-meta-icon" },
+							h('span.calendar-event-meta-item',
+								h('span.material-symbols-outlined calendar-meta-icon',
 									"schedule"
 								),
 								CalendarView.formatTaskDateTime(event.task.dueDate)
 							),
 						event.task.duration &&
-							h(
-								"span",
-								{ className: "calendar-event-meta-item" },
-								h("span", { className: "material-symbols-outlined calendar-meta-icon" }, "timer"),
+							h('span.calendar-event-meta-item',
+								h('span.material-symbols-outlined calendar-meta-icon', "timer"),
 								event.task.duration
 							),
 					].filter(Boolean)
@@ -1092,123 +968,77 @@ const CalendarView = {
 
 	// Show event details modal
 	showEventDetailsModal: (event) => {
-		const modal = h(
-			"div",
-			{
-				className: "modal-overlay",
+		const modal = h('div.modal-overlay', {
 				onclick: (e) => {
 					if (e.target.className === "modal-overlay") e.target.remove();
-				},
-			},
-			h(
-				"div",
-				{ className: "modal calendar-event-details-modal" },
-				h(
-					"div",
-					{ className: "modal-header" },
-					h("h3", { className: "modal-title" }, event.title),
-					h(
-						"button",
-						{
-							className: "modal-close",
-							onclick: (e) => e.target.closest(".modal-overlay").remove(),
-						},
+				}},
+			h('div.modal calendar-event-details-modal',
+				h('div.modal-header',
+					h('h3.modal-title', event.title),
+					h('button.modal-close', {
+							onclick: (e) => e.target.closest(".modal-overlay").remove()},
 						"×"
 					)
 				),
-				h(
-					"div",
-					{ className: "modal-body" },
-					h(
-						"div",
-						{ className: "event-details" },
-						h(
-							"div",
-							{ className: "event-detail-row" },
-							h("strong", {}, "Type: "),
-							h(
-								"span",
+				h('div.modal-body',
+					h('div.event-details',
+						h('div.event-detail-row',
+							h('strong', "Type: "),
+							h('span',
 								{
 									className: `event-type-badge event-type-${event.type}`,
-									style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`,
-								},
+									style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`},
 								I18n.t(`calendar.${event.type}`)
 							)
 						),
-						h(
-							"div",
-							{ className: "event-detail-row" },
-							h("strong", {}, "Company: "),
-							h("span", {}, event.job.company)
+						h('div.event-detail-row',
+							h('strong', "Company: "),
+							h('span', event.job.company)
 						),
-						h(
-							"div",
-							{ className: "event-detail-row" },
-							h("strong", {}, "Position: "),
-							h("span", {}, event.job.position)
+						h('div.event-detail-row',
+							h('strong', "Position: "),
+							h('span', event.job.position)
 						),
-						h(
-							"div",
-							{ className: "event-detail-row" },
-							h("strong", {}, "Date: "),
-							h("span", {}, event.date.toLocaleDateString())
+						h('div.event-detail-row',
+							h('strong', "Date: "),
+							h('span', event.date.toLocaleDateString())
 						),
 						event.type === "task" &&
 							event.task && [
-								h(
-									"div",
-									{ className: "event-detail-row" },
-									h("strong", {}, "Priority: "),
-									h(
-										"span",
+								h('div.event-detail-row',
+									h('strong', "Priority: "),
+									h('span',
 										{
 											className: `priority-badge priority-${event.task.priority}`,
-											style: `background-color: var(--${CalendarView.getEventColor("task", event.task.priority)}-100); color: var(--${CalendarView.getEventColor("task", event.task.priority)}-700);`,
-										},
+											style: `background-color: var(--${CalendarView.getEventColor("task", event.task.priority)}-100); color: var(--${CalendarView.getEventColor("task", event.task.priority)}-700);`},
 										event.task.priority
 									)
 								),
-								h(
-									"div",
-									{ className: "event-detail-row" },
-									h("strong", {}, "Status: "),
-									h("span", {}, event.task.status)
+								h('div.event-detail-row',
+									h('strong', "Status: "),
+									h('span', event.task.status)
 								),
 							]
 					)
 				),
-				h(
-					"div",
-					{ className: "modal-footer" },
+				h('div.modal-footer',
 					event.type === "task" &&
-						h(
-							"button",
-							{
-								className: "btn-primary",
+						h('button.btn-primary', {
 								onclick: () => {
 									modal.remove();
 									openTasksModal(event.job);
-								},
-							},
+								}},
 							"Open Tasks"
 						),
-					h(
-						"button",
-						{
-							className: "btn-secondary",
+					h('button.btn-secondary', {
 							onclick: () => {
 								modal.remove();
 								TabNavigation.switchTo("jobs");
-							},
-						},
+							}},
 						"View Job"
 					),
-					h(
-						"button",
-						{
-							className: "btn-secondary",
-							onclick: () => modal.remove(),
-						},
+					h('button.btn-secondary', {
+							onclick: () => modal.remove()},
 						"Close"
 					)
 				)
@@ -1240,8 +1070,7 @@ const CalendarView = {
 				eventId: event.id,
 				jobId: event.job.id,
 				taskId: event.task.id,
-				eventType: event.type,
-			})
+				eventType: event.type})
 		);
 
 		e.dataTransfer.effectAllowed = "move";
@@ -1293,17 +1122,11 @@ const CalendarView = {
 		if (hours >= 8 && hours <= 20) {
 			const timeStr = CalendarView.formatTime12Hour(hours, minutes);
 
-			const indicator = h("div", {
-				className: "time-drop-indicator",
-				style: `position: absolute; top: ${snapY}px; left: 0; right: 0; height: 2px; background: var(--blue-500); z-index: 10; pointer-events: none;`,
-			});
+			const indicator = h('div.time-drop-indicator', {
+				style: `position: absolute; top: ${snapY}px; left: 0; right: 0; height: 2px; background: var(--blue-500); z-index: 10; pointer-events: none;`});
 
-			const timeLabel = h(
-				"div",
-				{
-					className: "time-drop-label",
-					style: `position: absolute; top: ${snapY - 10}px; left: 4px; background: var(--blue-500); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; z-index: 11; pointer-events: none;`,
-				},
+			const timeLabel = h('div.time-drop-label', {
+					style: `position: absolute; top: ${snapY - 10}px; left: 4px; background: var(--blue-500); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; z-index: 11; pointer-events: none;`},
 				timeStr
 			);
 
@@ -1449,15 +1272,11 @@ const CalendarView = {
 				: `Moved with success to ${dateStr}`;
 
 		// Create temporary notification
-		const notification = h(
-			"div",
-			{
-				className: "calendar-move-notification",
+		const notification = h('div.calendar-move-notification', {
 				style:
-					"position: fixed; top: 20px; right: 20px; background: var(--green-100); color: var(--green-700); padding: 12px 16px; border-radius: 6px; border: 1px solid var(--green-300); z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);",
-			},
-			h("div", { style: "font-weight: 600; margin-bottom: 4px;" }, message),
-			h("div", { style: "font-size: 12px;" }, `"${task.text}"`)
+					"position: fixed; top: 20px; right: 20px; background: var(--green-100); color: var(--green-700); padding: 12px 16px; border-radius: 6px; border: 1px solid var(--green-300); z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"},
+			h('div', { style: "font-weight: 600; margin-bottom: 4px;" }, message),
+			h('div', { style: "font-size: 12px;" }, `"${task.text}"`)
 		);
 
 		document.body.appendChild(notification);
@@ -1468,8 +1287,7 @@ const CalendarView = {
 				notification.parentNode.removeChild(notification);
 			}
 		}, 3000);
-	},
-};
+	}};
 
 // Make CalendarView available globally
 window.CalendarView = CalendarView;

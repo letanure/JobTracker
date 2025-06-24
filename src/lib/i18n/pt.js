@@ -4,15 +4,12 @@
 
 const PT_TRANSLATIONS = {
 	app: {
-		title: "JobTracker",
-	},
+		title: "JobTracker"},
 	buttons: {
-		addApplication: "+ Adicionar Candidatura",
-	},
+		addApplication: "+ Adicionar Candidatura"},
 	common: {
 		viewJob: "Ver Vaga",
-		chooseJob: "Escolha uma vaga...",
-	},
+		chooseJob: "Escolha uma vaga..."},
 	tabs: {
 		dashboard: "Painel",
 		jobs: "Empregos",
@@ -20,24 +17,21 @@ const PT_TRANSLATIONS = {
 		tasks: "Quadro de Tarefas",
 		calendar: "Calendário",
 		contacts: "Contatos",
-		profile: "Perfil",
-	},
+		profile: "Perfil"},
 	headers: {
 		dashboard: "Painel",
 		jobs: "Candidaturas a Empregos",
 		applications: "Quadro de Candidaturas",
 		tasks: "Quadro de Tarefas",
 		calendar: "Vista do Calendário",
-		contacts: "Todos os Contatos",
-	},
+		contacts: "Todos os Contatos"},
 	kanban: {
 		title: "Quadro de Candidaturas",
 		totalJobs: "{count} candidaturas no total",
 		editJob: "Editar Vaga",
 		addJob: "Adicionar Vaga",
 		workflowConfig: "Configuração do Fluxo",
-		workflowDescription: "Selecione e configure as etapas para cada fase desta vaga:",
-	},
+		workflowDescription: "Selecione e configure as etapas para cada fase desta vaga:"},
 	table: {
 		headers: {
 			priority: "Prioridade",
@@ -52,33 +46,27 @@ const PT_TRANSLATIONS = {
 			contacts: "Contatos",
 			notes: "Notas",
 			tasks: "Tarefas",
-			actions: "Ações",
-		},
+			actions: "Ações"},
 		filters: {
 			allPriorities: "Todas as Prioridades",
-			allPhases: "Todas as Fases",
-		},
+			allPhases: "Todas as Fases"},
 		placeholders: {
 			company: "Nome da Empresa",
 			position: "Cargo",
 
 			salaryRange: "Faixa Salarial",
 			location: "Localização",
-			sourceUrl: "URL da Vaga",
-		},
-	},
+			sourceUrl: "URL da Vaga"}},
 	priorities: {
 		high: "Alta",
 		medium: "Média",
-		low: "Baixa",
-	},
+		low: "Baixa"},
 	phases: {
 		wishlist: "Lista de Desejos",
 		applied: "Candidatura Enviada",
 		interview: "Entrevista",
 		offer: "Oferta",
-		rejected_withdrawn: "Rejeitado / Retirado",
-	},
+		rejected_withdrawn: "Rejeitado / Retirado"},
 	substeps: {
 		none: "Nenhuma subetapa",
 		wishlist: "Lista de Desejos",
@@ -109,26 +97,22 @@ const PT_TRANSLATIONS = {
 		offer_discussion: "Discussão da Oferta",
 		salary_negotiation: "Negociação Salarial",
 		rejected: "Rejeitado",
-		withdrawn: "Retirado",
-	},
+		withdrawn: "Retirado"},
 	stats: {
 		totalApplications: "Total de Candidaturas",
 		active: "Ativas",
 		interviews: "Entrevistas",
 		offers: "Ofertas",
-		rejections: "Rejeições",
-	},
+		rejections: "Rejeições"},
 	messages: {
 		welcome:
 			"Bem-vindo ao JobTracker!\n\nGostaria de ver 2 exemplos de candidaturas para entender como o rastreador funciona?",
 		welcomeConfirm: "Sim, adicionar exemplos",
 		welcomeCancel: "Não, deixar vazio",
-		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
-	},
+		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?"},
 	demo: {
 		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
-		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado.",
-	},
+		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado."},
 	seo: {
 		title: "JobTracker - Rastreador Local Gratuito | Sem Login, Sem Rastreamento, Dados Privados",
 		description:
@@ -141,8 +125,7 @@ const PT_TRANSLATIONS = {
 			"Acompanhe candidaturas de forma privada no seu navegador. 100% gratuito, sem login, sem rastreamento, seus dados nunca saem do seu dispositivo.",
 		twitterTitle: "JobTracker - Rastreador Privado de Candidaturas",
 		twitterDescription:
-			"Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo.",
-	},
+			"Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo."},
 	modals: {
 		notes: {
 			title: "Notas para {position} na {company}",
@@ -154,8 +137,7 @@ const PT_TRANSLATIONS = {
 			editTitle: "Editar nota",
 			archiveTitle: "Arquivar nota",
 			unarchiveTitle: "Desarquivar nota",
-			addButton: "Adicionar Nota",
-		},
+			addButton: "Adicionar Nota"},
 		tasks: {
 			title: "Tarefas para {position} na {company}",
 			activeSection: "Tarefas Ativas",
@@ -175,8 +157,7 @@ const PT_TRANSLATIONS = {
 			taskPlaceholder: "Digite a descrição da tarefa...",
 			validation: {
 				jobRequired: "Por favor, selecione uma vaga",
-				taskRequired: "Por favor, digite uma descrição da tarefa",
-			},
+				taskRequired: "Por favor, digite uma descrição da tarefa"},
 			daysOverdue: "{days} dias atrasado",
 			dueToday: "Vence hoje",
 			dueTomorrow: "Vence amanhã",
@@ -190,8 +171,7 @@ const PT_TRANSLATIONS = {
 			statusDone: "Concluída",
 			priorityLow: "Baixa",
 			priorityMedium: "Média",
-			priorityHigh: "Alta",
-		},
+			priorityHigh: "Alta"},
 		contacts: {
 			title: "Contatos para {position} na {company}",
 			activeSection: "Contatos Ativos",
@@ -210,9 +190,7 @@ const PT_TRANSLATIONS = {
 			defaultContact: "Contato",
 			validation: {
 				nameRequired: "Nome é obrigatório",
-				emailRequired: "Email é obrigatório",
-			},
-		},
+				emailRequired: "Email é obrigatório"}},
 		common: {
 			save: "Salvar",
 			cancel: "Cancelar",
@@ -220,24 +198,19 @@ const PT_TRANSLATIONS = {
 			delete: "Excluir",
 			ok: "OK",
 			yes: "Sim",
-			no: "Não",
-		},
+			no: "Não"},
 		dialogs: {
 			alert: "Alerta",
 			confirm: "Confirmar",
-			prompt: "Entrada Necessária",
-		},
-	},
+			prompt: "Entrada Necessária"}},
 	forms: {
 		saveChangesTitle: "Salvar alterações",
 		cancelEditingTitle: "Cancelar edição",
 		noDueDate: "Sem data de vencimento",
-		placeholderNameEmail: "Nome\nEmail",
-	},
+		placeholderNameEmail: "Nome\nEmail"},
 	footer: {
 		madeWith: "Feito com",
-		by: "por",
-	},
+		by: "por"},
 	calendar: {
 		title: "Visualização de Calendário",
 		today: "Hoje",
@@ -267,11 +240,9 @@ const PT_TRANSLATIONS = {
 			"Dezembro",
 		],
 		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-	},
+		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]},
 	validation: {
-		companyPositionRequired: "Empresa e posição são obrigatórias",
-	},
+		companyPositionRequired: "Empresa e posição são obrigatórias"},
 	contactsView: {
 		title: "Todos os Contatos",
 		totalContacts: "{count} contatos no total",
@@ -295,9 +266,7 @@ const PT_TRANSLATIONS = {
 		deleteConfirmation: "Tem certeza que deseja deletar {name}?",
 		validation: {
 			nameRequired: "Nome é obrigatório",
-			jobRequired: "Por favor selecione uma vaga",
-		},
-	},
+			jobRequired: "Por favor selecione uma vaga"}},
 	dashboard: {
 		stats: {
 			title: "Visão Geral",
@@ -308,19 +277,13 @@ const PT_TRANSLATIONS = {
 			activeApplications: "Candidaturas Ativas",
 			interviews: "Entrevistas",
 			offers: "Ofertas",
-			thisWeek: "Esta Semana",
-		},
+			thisWeek: "Esta Semana"},
 		todayTasks: {
 			title: "Tarefas de Hoje",
-			noTasks: "Nenhuma tarefa agendada para hoje",
-		},
+			noTasks: "Nenhuma tarefa agendada para hoje"},
 		tomorrowTasks: {
 			title: "Tarefas de Amanhã",
-			noTasks: "Nenhuma tarefa agendada para amanhã",
-		},
+			noTasks: "Nenhuma tarefa agendada para amanhã"},
 		recentActivity: {
 			title: "Atividade Recente",
-			noActivity: "Nenhuma atividade recente",
-		},
-	},
-};
+			noActivity: "Nenhuma atividade recente"}}};

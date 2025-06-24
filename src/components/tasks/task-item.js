@@ -111,17 +111,12 @@ const TaskItem = ({ task, job }) => {
 			"data-task-id": task.id,
 		},
 		h(
-			"div",
-			{
-				className: "task-header task-header-layout",
-			},
+			"div.task-header.task-header-layout",
 			h(
-				"div",
-				{ className: "task-controls-row" },
+				"div.task-controls-row",
 				h(
-					"select",
+					"select.task-status.inline-select",
 					{
-						className: "task-status inline-select",
 						value: task.status,
 						onchange: (e) => handleStatusChange(e.target.value),
 					},
@@ -130,9 +125,8 @@ const TaskItem = ({ task, job }) => {
 					h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
 				),
 				h(
-					"select",
+					"select.task-priority.inline-select",
 					{
-						className: "task-priority inline-select",
 						value: task.priority,
 						onchange: (e) => handlePriorityChange(e.target.value),
 					},
@@ -140,25 +134,21 @@ const TaskItem = ({ task, job }) => {
 					h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
 					h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
 				),
-				h("input", {
+				h("input.task-due-date.inline-input", {
 					type: "date",
-					className: "task-due-date inline-input",
 					value: task.dueDate ? task.dueDate.split("T")[0] : "",
 					onchange: (e) =>
 						handleDueDateChange(e.target.value ? `${e.target.value}T00:00:00.000Z` : null),
 				})
 			),
 			h(
-				"div",
-				{ className: "task-actions modal-actions-row" },
-				h("button", {
-					className: "action-btn edit-task-btn ",
+				"div.task-actions modal-actions-row",
+				h("button.action-btn.edit-task-btn", {
 					title: I18n.t("modals.tasks.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
 					onclick: handleEdit,
 				}),
-				h("button", {
-					className: "action-btn archive-btn ",
+				h("button.action-btn.archive-btn", {
 					title: isArchived
 						? I18n.t("modals.tasks.unarchiveTitle")
 						: I18n.t("modals.tasks.archiveTitle"),
@@ -167,13 +157,7 @@ const TaskItem = ({ task, job }) => {
 				})
 			)
 		),
-		h(
-			"div",
-			{
-				className: "task-text",
-			},
-			task.text
-		)
+		h("div.task-text", task.text)
 	);
 };
 

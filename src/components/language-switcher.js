@@ -135,5 +135,4 @@ const LanguageSwitcher = {
 	// Initialize the language switcher
 	init: () => {
 		LanguageSwitcher.updateUI();
-	},
-};
+	}};

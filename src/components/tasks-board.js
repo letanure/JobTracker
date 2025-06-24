@@ -5,7 +5,7 @@
 const TasksBoard = {
 	// Create the tasks board
 	create: () => {
-		const boardContainer = h("div", { className: "tasks-board" });
+		const boardContainer = h('div.tasks-board');
 
 		// Create columns for each task status
 		TASK_STATUSES.forEach((status) => {
@@ -29,8 +29,7 @@ const TasksBoard = {
 						jobId: job.id,
 						jobCompany: job.company,
 						jobPosition: job.position,
-						jobPhase: job.currentPhase,
-					});
+						jobPhase: job.currentPhase});
 				});
 			}
 		});
@@ -46,40 +45,28 @@ const TasksBoard = {
 			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)); // Sort by sortOrder within status
 		const columnTitle = getTaskStatusText(status);
 
-		const column = h("div", {
-			className: "tasks-column",
-			"data-status": status,
-		});
+		const column = h('div.tasks-column', {
+			"data-status": status});
 
 		// Column header with title and count
-		const header = h(
-			"div",
-			{ className: "tasks-column-header" },
-			h(
-				"div",
-				{ className: "tasks-column-title" },
-				h("span", { className: "tasks-column-name" }, columnTitle),
-				h(
-					"div",
-					{ className: "tasks-column-actions" },
+		const header = h('div.tasks-column-header',
+			h('div.tasks-column-title',
+				h('span.tasks-column-name', columnTitle),
+				h('div.tasks-column-actions',
 					// Add "Add Task" button for todo column (left of counter)
 					status === "todo" &&
-						h(
-							"button",
-							{
-								className: "tasks-add-task-btn",
-								onclick: () => TasksBoard.openAddTaskModal(),
-							},
-							h("span", { className: "material-symbols-outlined" }, "add"),
+						h('button.tasks-add-task-btn', {
+								onclick: () => TasksBoard.openAddTaskModal()},
+							h('span.material-symbols-outlined', "add"),
 							I18n.t("modals.tasks.addButton") || "Add Task"
 						),
-					h("span", { className: "tasks-column-count" }, statusTasks.length.toString())
+					h('span.tasks-column-count', statusTasks.length.toString())
 				)
 			)
 		);
 
 		// Column body with task cards
-		const body = h("div", { className: "tasks-column-body" });
+		const body = h('div.tasks-column-body');
 
 		statusTasks.forEach((task) => {
 			const card = TasksBoard.createTaskCard(task);
@@ -98,12 +85,10 @@ const TasksBoard = {
 
 	// Create a task card
 	createTaskCard: (task) => {
-		const card = h("div", {
-			className: "tasks-task-card",
+		const card = h('div.tasks-task-card', {
 			draggable: true,
 			"data-task-id": task.id,
-			"data-job-id": task.jobId,
-		});
+			"data-job-id": task.jobId});
 
 		// Add click event listener to open task editing
 		card.addEventListener("click", (e) => {
@@ -119,76 +104,53 @@ const TasksBoard = {
 		card.addEventListener("dragend", TasksBoard.handleDragEnd);
 
 		// Priority indicator
-		const priorityDot = h("div", {
-			className: `tasks-priority-dot priority-${task.priority}`,
-		});
+		const priorityDot = h('div', {
+			className: `tasks-priority-dot priority-${task.priority}`});
 
 		// Due date indicator
 		const dueDateIndicator = TasksBoard.createDueDateIndicator(task);
 
 		// Task content
-		const content = h(
-			"div",
-			{ className: "tasks-task-content" },
-			h(
-				"div",
-				{ className: "tasks-task-text" },
+		const content = h('div.tasks-task-content',
+			h('div.tasks-task-text',
 				task.task || task.text || task.description || "Untitled task"
 			)
 		);
 
 		// Job context information
-		const jobContext = h(
-			"div",
-			{ className: "tasks-job-context" },
-			h(
-				"div",
-				{ className: "tasks-job-info" },
-				h("span", { className: "material-symbols-outlined tasks-job-icon" }, "business"),
-				h("span", { className: "tasks-job-text" }, `${task.jobCompany} — ${task.jobPosition}`)
+		const jobContext = h('div.tasks-job-context',
+			h('div.tasks-job-info',
+				h('span.material-symbols-outlined tasks-job-icon', "business"),
+				h('span.tasks-job-text', `${task.jobCompany} — ${task.jobPosition}`)
 			),
-			h(
-				"div",
-				{ className: "tasks-job-phase" },
-				h("span", { className: "material-symbols-outlined tasks-phase-icon" }, "schedule"),
-				h("span", { className: "tasks-phase-text" }, getPhaseText(task.jobPhase))
+			h('div.tasks-job-phase',
+				h('span.material-symbols-outlined tasks-phase-icon', "schedule"),
+				h('span.tasks-phase-text', getPhaseText(task.jobPhase))
 			)
 		);
 
 		// Card footer with due date indicator and action icons
-		const cardFooter = h(
-			"div",
-			{ className: "tasks-card-footer" },
+		const cardFooter = h('div.tasks-card-footer',
 			// Due date indicator aligned left
 			dueDateIndicator,
 			// Action icons aligned right
-			h(
-				"div",
-				{ className: "tasks-action-icons" },
-				h(
-					"button",
-					{
-						className: "tasks-icon-btn",
+			h('div.tasks-action-icons',
+				h('button.tasks-icon-btn', {
 						title: I18n.t("modals.tasks.editTitle") || "Edit Task",
 						onclick: (e) => {
 							e.stopPropagation();
 							TasksBoard.openTaskEditModal(task);
-						},
-					},
-					h("span", { className: "material-symbols-outlined" }, "edit")
+						}},
+					h('span.material-symbols-outlined', "edit")
 				),
 
-				h(
-					"button",
-					{
-						className: "tasks-icon-btn",
+				h('button.tasks-icon-btn', {
 						title: I18n.t("common.viewJob") || "View Job",
 						onclick: (e) => {
 							e.stopPropagation();
 							TasksBoard.openJobModal(task);
-						},
-					},
-					h("span", { className: "material-symbols-outlined" }, "work")
+						}},
+					h('span.material-symbols-outlined', "work")
 				)
 			)
 		);
@@ -242,11 +204,10 @@ const TasksBoard = {
 			text = I18n.t("modals.tasks.dueInDays", { days: diffDays }) || `Due in ${diffDays} days`;
 		}
 
-		return h(
-			"div",
+		return h('div',
 			{ className, title: `Due: ${dueDate.toLocaleDateString()}` },
-			h("span", { className: "material-symbols-outlined" }, icon),
-			h("span", { className: "due-date-text" }, text)
+			h('span.material-symbols-outlined', icon),
+			h('span.due-date-text', text)
 		);
 	},
 
@@ -259,8 +220,7 @@ const TasksBoard = {
 				taskId: task.id,
 				jobId: task.jobId,
 				sourceStatus: task.status,
-				sourceSortOrder: task.sortOrder || 0,
-			})
+				sourceSortOrder: task.sortOrder || 0})
 		);
 		e.target.classList.add("dragging");
 		document.querySelectorAll(".tasks-column").forEach((col) => {
@@ -321,19 +281,13 @@ const TasksBoard = {
 		}
 
 		// Create placeholder card that matches the dragged card's size
-		const placeholder = h(
-			"div",
-			{
-				className: "drop-placeholder tasks-task-card",
+		const placeholder = h('div.drop-placeholder.tasks-task-card', {
 				style:
-					"opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;",
-			},
-			h(
-				"div",
+					"opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;"},
+			h('div',
 				{
 					style:
-						"height: 120px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;",
-				},
+						"height: 120px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;"},
 				"Drop here"
 			)
 		);
@@ -448,8 +402,7 @@ const TasksBoard = {
 						statusTasks.push({
 							...task,
 							jobIndex,
-							taskIndex,
-						});
+							taskIndex});
 					}
 				});
 			}
@@ -553,8 +506,7 @@ const TasksBoard = {
 					status: status,
 					priority: priority,
 					dueDate: dueDate,
-					duration: duration,
-				};
+					duration: duration};
 			} else {
 				// Create new task
 				const jobId = Number.parseInt(form.jobSelect.value);
@@ -653,76 +605,45 @@ const TasksBoard = {
 		// Get jobs for selection
 		const jobOptions = jobsData.map((jobOption) => ({
 			id: jobOption.id,
-			text: `${jobOption.company} - ${jobOption.position}`,
-		}));
+			text: `${jobOption.company} - ${jobOption.position}`}));
 
-		const modal = h(
-			"div",
-			{
-				className: "modal-overlay tasks-add-task-modal",
-				onclick: (e) => e.target === e.currentTarget && handleClose(),
-			},
-			h(
-				"div",
-				{ className: "modal" },
-				h(
-					"div",
-					{ className: "modal-header" },
-					h("h3", { className: "modal-title" }, modalTitle),
-					h("button", { className: "modal-close", onclick: handleClose }, "×")
+		const modal = h('div.modal-overlay.tasks-add-task-modal', {
+				onclick: (e) => e.target === e.currentTarget && handleClose()},
+			h('div.modal',
+				h('div.modal-header',
+					h('h3.modal-title', modalTitle),
+					h('button.modal-close', { onclick: handleClose }, "×")
 				),
-				h(
-					"div",
-					{ className: "modal-body" },
-					h(
-						"form",
-						{ className: "add-task-form" },
+				h('div.modal-body',
+					h('form.add-task-form',
 						// Job selection (create mode) or job info (edit mode)
 						isEditMode
-							? h(
-									"div",
-									{ className: "add-task-job-row" },
-									h(
-										"div",
-										{
-											className: "job-info-display",
+							? h('div.add-task-job-row',
+									h('div.job-info-display', {
 											style:
-												"padding: 8px 12px; background: var(--gray-50); border-radius: 6px; font-weight: 500;",
-										},
+												"padding: 8px 12px; background: var(--gray-50); border-radius: 6px; font-weight: 500;"},
 										`${job.company} - ${job.position}`
 									)
 								)
-							: h(
-									"div",
-									{ className: "add-task-job-row" },
-									h(
-										"select",
-										{ name: "jobSelect", required: true, className: "add-task-job-select" },
-										h("option", { value: "" }, I18n.t("common.chooseJob") || "Choose a job..."),
+							: h('div.add-task-job-row',
+									h('select.add-task-job-select', {name: "jobSelect", required: true},
+										h('option', { value: "" }, I18n.t("common.chooseJob") || "Choose a job..."),
 										...jobOptions.map((jobOption) =>
-											h("option", { value: jobOption.id }, jobOption.text)
+											h('option', { value: jobOption.id }, jobOption.text)
 										)
 									)
 								),
 						// Status, Priority, Due Date, Duration (grid layout like existing tasks modal)
-						h(
-							"div",
-							{ className: "task-form-grid" },
+						h('div.task-form-grid',
 							(() => {
-								const statusSelect = h(
-									"select",
-									{
-										name: "taskStatus",
-										className: "add-task-status",
-										title: "Status",
-									},
-									h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo") || "To Do"),
-									h(
-										"option",
+								const statusSelect = h('select.add-task-status', {name: "taskStatus",
+										title: "Status"},
+									h('option', { value: "todo" }, I18n.t("modals.tasks.statusTodo") || "To Do"),
+									h('option',
 										{ value: "in-progress" },
 										I18n.t("modals.tasks.statusInProgress") || "In Progress"
 									),
-									h("option", { value: "done" }, I18n.t("modals.tasks.statusDone") || "Done")
+									h('option', { value: "done" }, I18n.t("modals.tasks.statusDone") || "Done")
 								);
 								if (isEditMode) {
 									statusSelect.value = task.status || "todo";
@@ -732,20 +653,14 @@ const TasksBoard = {
 								return statusSelect;
 							})(),
 							(() => {
-								const prioritySelect = h(
-									"select",
-									{
-										name: "taskPriority",
-										className: "add-task-priority",
-										title: "Priority",
-									},
-									h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow") || "Low"),
-									h(
-										"option",
+								const prioritySelect = h('select.add-task-priority', {name: "taskPriority",
+										title: "Priority"},
+									h('option', { value: "low" }, I18n.t("modals.tasks.priorityLow") || "Low"),
+									h('option',
 										{ value: "medium" },
 										I18n.t("modals.tasks.priorityMedium") || "Medium"
 									),
-									h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh") || "High")
+									h('option', { value: "high" }, I18n.t("modals.tasks.priorityHigh") || "High")
 								);
 								if (isEditMode) {
 									prioritySelect.value = task.priority || "medium";
@@ -755,12 +670,9 @@ const TasksBoard = {
 								return prioritySelect;
 							})(),
 							(() => {
-								const dueDateInput = h("input", {
-									type: "datetime-local",
+								const dueDateInput = h('input.add-task-due-date', {type: "datetime-local",
 									name: "dueDate",
-									className: "add-task-due-date",
-									title: "Due Date & Time",
-								});
+									title: "Due Date & Time"});
 								if (isEditMode && task.dueDate) {
 									try {
 										dueDateInput.value = new Date(task.dueDate).toISOString().slice(0, 16);
@@ -771,20 +683,15 @@ const TasksBoard = {
 								return dueDateInput;
 							})(),
 							(() => {
-								const durationSelect = h(
-									"select",
-									{
-										name: "duration",
-										className: "add-task-duration",
-										title: "Duration",
-									},
-									h("option", { value: "" }, "—"),
-									h("option", { value: "15min" }, "15 min"),
-									h("option", { value: "30min" }, "30 min"),
-									h("option", { value: "1h" }, "1h"),
-									h("option", { value: "1h30" }, "1:30"),
-									h("option", { value: "2h" }, "2h"),
-									h("option", { value: "3h" }, "3h")
+								const durationSelect = h('select.add-task-duration', {name: "duration",
+										title: "Duration"},
+									h('option', { value: "" }, "—"),
+									h('option', { value: "15min" }, "15 min"),
+									h('option', { value: "30min" }, "30 min"),
+									h('option', { value: "1h" }, "1h"),
+									h('option', { value: "1h30" }, "1:30"),
+									h('option', { value: "2h" }, "2h"),
+									h('option', { value: "3h" }, "3h")
 								);
 								if (isEditMode) {
 									durationSelect.value = task.duration || "";
@@ -793,17 +700,12 @@ const TasksBoard = {
 							})()
 						),
 						// Task text (full width)
-						h(
-							"div",
-							{ className: "add-task-text-row" },
+						h('div.add-task-text-row',
 							(() => {
-								const textarea = h("textarea", {
-									name: "taskText",
-									className: "add-task-textarea",
+								const textarea = h('textarea.add-task-textarea', {name: "taskText",
 									placeholder: I18n.t("modals.tasks.placeholder") || "Enter your task here...",
 									required: true,
-									rows: 3,
-								});
+									rows: 3});
 
 								// Set the text content for edit mode
 								if (isEditMode) {
@@ -815,36 +717,19 @@ const TasksBoard = {
 						)
 					)
 				),
-				h(
-					"div",
-					{ className: "modal-footer" },
-					h(
-						"button",
-						{
-							type: "button",
-							className: "btn-secondary",
-							onclick: handleClose,
-						},
+				h('div.modal-footer',
+					h('button.btn-secondary', {type: "button",
+							onclick: handleClose},
 						I18n.t("modals.common.cancel") || "Cancel"
 					),
 					// Show delete button in edit mode
 					isEditMode &&
-						h(
-							"button",
-							{
-								type: "button",
-								className: "btn-danger",
-								onclick: handleDelete,
-							},
+						h('button.btn-danger', {type: "button",
+								onclick: handleDelete},
 							I18n.t("modals.common.delete") || "Delete"
 						),
-					h(
-						"button",
-						{
-							type: "button",
-							className: "btn-primary",
-							onclick: handleSave,
-						},
+					h('button.btn-primary', {type: "button",
+							onclick: handleSave},
 						isEditMode
 							? I18n.t("modals.common.save") || "Save"
 							: I18n.t("modals.tasks.addButton") || "Add Task"
@@ -896,15 +781,11 @@ const TasksBoard = {
 				});
 
 				// Create board header with job filter
-				const header = h(
-					"div",
-					{ className: "tab-header" },
-					h("h2", { className: "tab-title" }, I18n.t("tabs.tasks")),
-					h(
-						"div",
-						{ className: "tasks-stats" },
+				const header = h('div.tab-header',
+					h('h2.tab-title', I18n.t("tabs.tasks")),
+					h('div.tasks-stats',
 						TasksBoard.createJobFilter(),
-						h("span", { className: "tasks-total-count" }, `${totalTasks} total tasks`)
+						h('span.tasks-total-count', `${totalTasks} total tasks`)
 					)
 				);
 
@@ -912,7 +793,7 @@ const TasksBoard = {
 				const board = TasksBoard.create();
 
 				// Add to container
-				const container = h("div", { className: "tasks-container" });
+				const container = h('div.tasks-container');
 				container.appendChild(header);
 				container.appendChild(board);
 
@@ -928,20 +809,15 @@ const TasksBoard = {
 	createJobFilter: () => {
 		const jobOptions = jobsData.map((job) => ({
 			id: job.id,
-			text: `${job.company} - ${job.position}`,
-		}));
+			text: `${job.company} - ${job.position}`}));
 
-		const select = h(
-			"select",
-			{
-				className: "tasks-job-filter",
+		const select = h('select.tasks-job-filter', {
 				onchange: (e) => {
 					TasksBoard.setSelectedJobFilter(e.target.value);
 					TasksBoard.refresh();
-				},
-			},
-			h("option", { value: "" }, I18n.t("tasks.allJobs") || "All Jobs"),
-			...jobOptions.map((job) => h("option", { value: job.id }, job.text))
+				}},
+			h('option', { value: "" }, I18n.t("modals.tasks.allJobs") || "All Jobs"),
+			...jobOptions.map((job) => h('option', { value: job.id }, job.text))
 		);
 
 		// Set current filter value
@@ -966,8 +842,7 @@ const TasksBoard = {
 		} else {
 			localStorage.removeItem("tasks-job-filter");
 		}
-	},
-};
+	}};
 
 // Make tasks board available globally
 window.TasksBoard = TasksBoard;

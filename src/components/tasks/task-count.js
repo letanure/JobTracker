@@ -13,18 +13,15 @@ const TasksCount = ({ tasks = [], onClick }) => {
 
 	const className = totalActiveCount === 0 ? "tasks-count zero" : "tasks-count";
 
-	return h(
-		"span",
+	return h(`span.${className}`, 
 		{
-			className,
 			onclick: onClick, // Always allow clicks to open modal
-			title: `${totalActiveCount} active task${totalActiveCount !== 1 ? "s" : ""} (${todoCount} todo, ${inProgressCount} in progress, ${doneCount} done)${archivedCount > 0 ? ` + ${archivedCount} archived` : ""}`,
-		},
-		h("span", { className: "task-count-todo" }, todoCount.toString()),
-		h("span", { className: "task-count-separator" }, "/"),
-		h("span", { className: "task-count-in-progress" }, inProgressCount.toString()),
-		h("span", { className: "task-count-separator" }, "/"),
-		h("span", { className: "task-count-done" }, doneCount.toString())
+			title: `${totalActiveCount} active task${totalActiveCount !== 1 ? "s" : ""} (${todoCount} todo, ${inProgressCount} in progress, ${doneCount} done)${archivedCount > 0 ? ` + ${archivedCount} archived` : ""}`},
+		h('span.task-count-todo', todoCount.toString()),
+		h('span.task-count-separator', '/'),
+		h('span.task-count-in-progress', inProgressCount.toString()),
+		h('span.task-count-separator', '/'),
+		h('span.task-count-done', doneCount.toString())
 	);
 };
 
