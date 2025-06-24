@@ -27,14 +27,89 @@ const ResumeBuilder = {
 		interests: []
 	},
 
+	// Track section collapsed states
+	collapsedSections: {},
+
+	// Toggle section collapse state
+	toggleSection: (sectionId) => {
+		ResumeBuilder.collapsedSections[sectionId] = !ResumeBuilder.collapsedSections[sectionId];
+		const content = document.querySelector(`[data-section="${sectionId}"] .section-content`);
+		const arrow = document.querySelector(`[data-section="${sectionId}"] .section-arrow`);
+		
+		if (content && arrow) {
+			const isCollapsed = ResumeBuilder.collapsedSections[sectionId];
+			content.classList.toggle('collapsed', isCollapsed);
+			arrow.classList.toggle('collapsed', isCollapsed);
+		}
+	},
+
+	// Calculate completion for basics section
+	calculateBasicsCompletion: () => {
+		const basics = ResumeBuilder.data.basics;
+		const fields = ['name', 'label', 'email', 'phone'];
+		const completed = fields.filter(field => basics[field] && basics[field].trim()).length;
+		const locationComplete = (basics.location.city && basics.location.country) ? 1 : 0;
+		const summaryComplete = basics.summary && basics.summary.trim() ? 1 : 0;
+		const total = fields.length + 2; // +2 for location and summary
+		return { completed: completed + locationComplete + summaryComplete, total };
+	},
+
+	// Calculate completion for array sections
+	calculateArrayCompletion: (sectionName, requiredFields, customData = null) => {
+		const data = customData || ResumeBuilder.data[sectionName];
+		if (!data || data.length === 0) return { completed: 0, total: 0 };
+		
+		let completed = 0;
+		data.forEach(item => {
+			const itemCompleted = requiredFields.filter(field => {
+				const value = field.includes('.') ? 
+					field.split('.').reduce((obj, key) => obj && obj[key], item) : 
+					item[field];
+				return value && value.toString().trim();
+			}).length;
+			if (itemCompleted === requiredFields.length) completed++;
+		});
+		
+		return { completed, total: data.length };
+	},
+
+	// Create collapsible section wrapper
+	createCollapsibleSection: (sectionId, titleKey, content, completionData) => {
+		// Initialize all sections as expanded (not collapsed)
+		const isCollapsed = ResumeBuilder.collapsedSections[sectionId] || false;
+		const completionText = completionData.total > 0 ? 
+			`(${completionData.completed}/${completionData.total})` : 
+			'(0/0)';
+		
+		return h('div.resume-section', {
+			'data-section': sectionId
+		},
+			h('h3.resume-section-title', {
+				onclick: () => ResumeBuilder.toggleSection(sectionId)
+			},
+				h('div.section-title-content',
+					h('span', I18n.t(titleKey)),
+					h('span.section-completion', completionText)
+				),
+				h('span.section-arrow', {
+					className: isCollapsed ? 'collapsed' : ''
+				}, h('span.material-symbols-outlined', 'keyboard_arrow_down'))
+			),
+			h('div.section-content', {
+				className: isCollapsed ? 'collapsed' : ''
+			}, ...content)
+		);
+	},
+
 	// Create the resume builder interface
 	create: () => {
 		const container = h('div.resume-container',
 			// Header
 			h('div.tab-header',
 				h('h2.tab-title', I18n.t("headers.resume")),
-				h('div.resume-actions',
+				h('div.resume-stats',
 					h('button.btn-primary', {
+						type: 'button',
 						onclick: () => ResumeBuilder.save()
 					}, I18n.t("resume.actions.save"))
 				)
@@ -77,12 +152,41 @@ const ResumeBuilder = {
 		if (preview) {
 			preview.textContent = JSON.stringify(ResumeBuilder.data, null, 2);
 		}
+		ResumeBuilder.updateCompletionCounters();
+	},
+
+	// Update completion counters for all sections
+	updateCompletionCounters: () => {
+		const sections = [
+			{ id: 'basics', completion: ResumeBuilder.calculateBasicsCompletion() },
+			{ id: 'profiles', completion: ResumeBuilder.calculateArrayCompletion('profiles', ['type', 'url'], ResumeBuilder.data.basics.profiles) },
+			{ id: 'languages', completion: ResumeBuilder.calculateArrayCompletion('languages', ['language', 'fluency'], ResumeBuilder.data.basics.languages) },
+			{ id: 'skills', completion: ResumeBuilder.calculateArrayCompletion('skills', ['name']) },
+			{ id: 'experience', completion: ResumeBuilder.calculateArrayCompletion('experience', ['position', 'company']) },
+			{ id: 'projects', completion: ResumeBuilder.calculateArrayCompletion('projects', ['name', 'description']) },
+			{ id: 'portfolio', completion: ResumeBuilder.calculateArrayCompletion('portfolio', ['title', 'url']) },
+			{ id: 'education', completion: ResumeBuilder.calculateArrayCompletion('education', ['institution', 'degree']) },
+			{ id: 'certifications', completion: ResumeBuilder.calculateArrayCompletion('certifications', ['name', 'issuer']) },
+			{ id: 'awards', completion: ResumeBuilder.calculateArrayCompletion('awards', ['title', 'awarder']) },
+			{ id: 'volunteer', completion: ResumeBuilder.calculateArrayCompletion('volunteer', ['organization', 'position']) },
+			{ id: 'interests', completion: ResumeBuilder.calculateArrayCompletion('interests', ['name']) }
+		];
+
+		sections.forEach(section => {
+			const completionElement = document.querySelector(`[data-section="${section.id}"] .section-completion`);
+			if (completionElement) {
+				const completionText = section.completion.total > 0 ? 
+					`(${section.completion.completed}/${section.completion.total})` : 
+					'(0/0)';
+				completionElement.textContent = completionText;
+			}
+		});
 	},
 
 	// Create basics section
 	createBasicsSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.basics.title")),
+		const completion = ResumeBuilder.calculateBasicsCompletion();
+		const content = [
 			h('div.form-grid-2',
 				h('div.form-field',
 					h('label', I18n.t("resume.basics.name")),
@@ -171,35 +275,50 @@ const ResumeBuilder = {
 					}
 				})
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('basics', 'resume.basics.title', content, completion);
 	},
 
 	// Create profiles section
 	createProfilesSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.profiles.title")),
-			h('div.dynamic-list', { id: 'profiles-list' },
-				...ResumeBuilder.data.basics.profiles.map((profile, index) => 
-					ResumeBuilder.createProfileItem(profile, index)
-				)
-			),
-			h('button.add-item-btn', {
-				onclick: (e) => {
-					e.preventDefault();
-					ResumeBuilder.addProfile();
-				}
-			}, I18n.t("resume.profiles.addProfile"))
+		const completion = ResumeBuilder.calculateArrayCompletion('profiles', ['type', 'url'], ResumeBuilder.data.basics.profiles);
+		const profileItems = ResumeBuilder.data.basics.profiles.map((profile, index) => 
+			ResumeBuilder.createProfileItem(profile, index)
 		);
+		
+		const content = [
+			h('div.dynamic-list', { id: 'profiles-list' },
+				...profileItems
+			),
+			h('div.add-item-section',
+				h('button.add-item-btn', {
+					type: 'button',
+					onclick: (e) => {
+						e.preventDefault();
+						ResumeBuilder.addProfile();
+					}
+				}, h('span.material-symbols-outlined', 'add'), ' ', I18n.t("resume.profiles.addProfile"))
+			)
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('profiles', 'resume.profiles.title', content, completion);
 	},
 
 	// Create profile item
 	createProfileItem: (profile, index) => {
+		if (!profile || typeof profile !== 'object') {
+			console.error('Invalid profile data:', profile, 'at index:', index);
+			return h('div.dynamic-item', 'Error: Invalid profile data');
+		}
+		
+		const isFirst = index === 0;
 		return h('div.dynamic-item',
 			h('div.form-grid-2',
 				h('div.form-field',
-					h('label', I18n.t("resume.profiles.type")),
+					...(isFirst ? [h('label', I18n.t("resume.profiles.type"))] : []),
 					h('select', {
-						value: profile.type,
+						value: profile.type || 'linkedin',
 						className: index === ResumeBuilder.data.basics.profiles.length - 1 ? 'focus-first' : '',
 						onchange: (e) => {
 							ResumeBuilder.data.basics.profiles[index].type = e.target.value;
@@ -214,9 +333,10 @@ const ResumeBuilder = {
 					)
 				),
 				h('div.form-field',
-					h('label', I18n.t("resume.profiles.url")),
+					...(isFirst ? [h('label', I18n.t("resume.profiles.url"))] : []),
 					h('input[type="url"]', {
-						value: profile.url,
+						value: profile.url || '',
+						placeholder: isFirst ? '' : I18n.t("resume.profiles.url"),
 						oninput: (e) => {
 							ResumeBuilder.data.basics.profiles[index].url = e.target.value;
 							ResumeBuilder.updateJSON();
@@ -225,40 +345,48 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
+				type: 'button',
 				onclick: (e) => {
 					e.preventDefault();
 					ResumeBuilder.removeProfile(index);
 				}
-			}, '×')
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
 	// Create languages section
 	createLanguagesSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.languages.title")),
+		const completion = ResumeBuilder.calculateArrayCompletion('languages', ['language', 'fluency'], ResumeBuilder.data.basics.languages);
+		const content = [
 			h('div.dynamic-list',
 				...ResumeBuilder.data.basics.languages.map((lang, index) => 
 					ResumeBuilder.createLanguageItem(lang, index)
 				)
 			),
-			h('button.add-item-btn', {
-				onclick: (e) => {
-					e.preventDefault();
-					ResumeBuilder.addLanguage();
-				}
-			}, I18n.t("resume.languages.addLanguage"))
-		);
+			h('div.add-item-section',
+				h('button.add-item-btn', {
+					type: 'button',
+					onclick: (e) => {
+						e.preventDefault();
+						ResumeBuilder.addLanguage();
+					}
+				}, h('span.material-symbols-outlined', 'add'), ' ', I18n.t("resume.languages.addLanguage"))
+			)
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('languages', 'resume.languages.title', content, completion);
 	},
 
 	// Create language item
 	createLanguageItem: (lang, index) => {
+		const isFirst = index === 0;
 		return h('div.dynamic-item',
 			h('div.form-grid-2',
 				h('div.form-field',
-					h('label', I18n.t("resume.languages.language")),
+					isFirst ? h('label', I18n.t("resume.languages.language")) : null,
 					h('input[type="text"]', {
 						value: lang.language,
+						placeholder: isFirst ? '' : I18n.t("resume.languages.language"),
 						className: index === ResumeBuilder.data.basics.languages.length - 1 ? 'focus-first' : '',
 						oninput: (e) => {
 							ResumeBuilder.data.basics.languages[index].language = e.target.value;
@@ -267,7 +395,7 @@ const ResumeBuilder = {
 					})
 				),
 				h('div.form-field',
-					h('label', I18n.t("resume.languages.fluency")),
+					isFirst ? h('label', I18n.t("resume.languages.fluency")) : null,
 					h('select', {
 						value: lang.fluency,
 						onchange: (e) => {
@@ -283,151 +411,248 @@ const ResumeBuilder = {
 				)
 			),
 			h('button.btn-remove', {
+				type: 'button',
 				onclick: (e) => {
 					e.preventDefault();
 					ResumeBuilder.removeLanguage(index);
 				}
-			}, '×')
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
 	// Create skills section
 	createSkillsSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.skills.title")),
-			h('div.resume-section-content',
-				h('div.dynamic-list', { id: 'skills-list' },
-					...ResumeBuilder.data.skills.map((skill, index) => 
-						ResumeBuilder.createSkillItem(skill, index)
-					)
-				),
-				h('button.btn-secondary.add-item-btn', {
-					onclick: () => ResumeBuilder.addSkill()
-				}, I18n.t("resume.skills.addSkill"))
+		const completion = ResumeBuilder.calculateArrayCompletion('skills', ['name']);
+		const content = [
+			h('div.dynamic-list',
+				...ResumeBuilder.data.skills.map((skill, index) => 
+					ResumeBuilder.createSkillItem(skill, index)
+				)
+			),
+			h('div.add-item-section',
+				h('button.add-item-btn', {
+					type: 'button',
+					onclick: (e) => {
+						e.preventDefault();
+						ResumeBuilder.addSkill();
+					}
+				}, h('span.material-symbols-outlined', 'add'), ' ', I18n.t("resume.skills.addSkill"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('skills', 'resume.skills.title', content, completion);
 	},
 
 	// Create skill item
 	createSkillItem: (skill, index) => {
-		return h('div.dynamic-item',
-			h('div.form-field',
-				h('label', I18n.t("resume.skills.name")),
-				h('input[type="text"]', {
-					value: skill.name,
-					oninput: (e) => ResumeBuilder.data.skills[index].name = e.target.value
-				})
+		return h('div.dynamic-item.skill-item',
+			h('div.skill-header',
+				h('div.form-field',
+					h('label', I18n.t("resume.skills.name")),
+					h('input[type="text"]', {
+						value: skill.name,
+						className: index === ResumeBuilder.data.skills.length - 1 ? 'focus-first' : '',
+						oninput: (e) => {
+							ResumeBuilder.data.skills[index].name = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
+					})
+				),
+				h('button.btn-remove', {
+					type: 'button',
+					onclick: (e) => {
+						e.preventDefault();
+						ResumeBuilder.removeSkill(index);
+					}
+				}, h('span.material-symbols-outlined', 'close'))
 			),
-			h('div.form-field',
+			h('div.skills-keywords',
 				h('label', I18n.t("resume.skills.keywords")),
-				h('textarea', {
-					rows: 2,
-					value: skill.keywords.join(', '),
-					oninput: (e) => ResumeBuilder.data.skills[index].keywords = e.target.value.split(',').map(k => k.trim()).filter(k => k)
-				})
-			),
-			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeSkill(index)
-			}, I18n.t("resume.actions.remove"))
+				h('div.dynamic-list',
+					...skill.keywords.map((keyword, keywordIndex) => 
+						ResumeBuilder.createSkillKeywordItem(skill, index, keyword, keywordIndex)
+					)
+				),
+				h('button.add-keyword-btn', {
+					type: 'button',
+					onclick: (e) => {
+						e.preventDefault();
+						ResumeBuilder.addSkillKeyword(index);
+					}
+				}, h('span.material-symbols-outlined', 'add'))
+			)
+		);
+	},
+
+	// Create skill keyword item
+	createSkillKeywordItem: (skill, skillIndex, keyword, keywordIndex) => {
+		return h('div.keyword-item',
+			h('input[type="text"]', {
+				value: keyword,
+				placeholder: 'Skill name',
+				oninput: (e) => {
+					ResumeBuilder.data.skills[skillIndex].keywords[keywordIndex] = e.target.value;
+					ResumeBuilder.updateJSON();
+				}
+			}),
+			h('button.btn-remove-keyword', {
+				type: 'button',
+				onclick: (e) => {
+					e.preventDefault();
+					ResumeBuilder.removeSkillKeyword(skillIndex, keywordIndex);
+				}
+			}, h('span.material-symbols-outlined', 'close'))
 		);
 	},
 
 	// Create experience section
 	createExperienceSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.experience.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('experience', ['position', 'company']);
+		const content = [
 				h('div.dynamic-list', { id: 'experience-list' },
 					...ResumeBuilder.data.experience.map((exp, index) => 
 						ResumeBuilder.createExperienceItem(exp, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addExperience()
 				}, I18n.t("resume.experience.addExperience"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('experience', 'resume.experience.title', content, completion);
 	},
 
 	// Create experience item
 	createExperienceItem: (exp, index) => {
-		return h('div.dynamic-item',
-			h('div.form-grid-2',
+		const isFirst = index === 0;
+		return h('div.dynamic-item.experience-item',
+			h('div.experience-header',
+				h('div.form-grid-2',
+					h('div.form-field',
+						isFirst ? h('label', I18n.t("resume.experience.company")) : null,
+						h('input[type="text"]', {
+							value: exp.company,
+							placeholder: isFirst ? '' : I18n.t("resume.experience.company"),
+							className: index === ResumeBuilder.data.experience.length - 1 ? 'focus-first' : '',
+							oninput: (e) => {
+								ResumeBuilder.data.experience[index].company = e.target.value;
+								ResumeBuilder.updateJSON();
+							}
+						})
+					),
+					h('div.form-field',
+						isFirst ? h('label', I18n.t("resume.experience.position")) : null,
+						h('input[type="text"]', {
+							value: exp.position,
+							placeholder: isFirst ? '' : I18n.t("resume.experience.position"),
+							oninput: (e) => {
+								ResumeBuilder.data.experience[index].position = e.target.value;
+								ResumeBuilder.updateJSON();
+							}
+						})
+					)
+				),
+				h('button.btn-remove', {
+					type: 'button',
+					onclick: (e) => {
+						e.preventDefault();
+						ResumeBuilder.removeExperience(index);
+					}
+				}, h('span.material-symbols-outlined', 'close'))
+			),
+			h('div.form-grid-3',
 				h('div.form-field',
-					h('label', I18n.t("resume.experience.company")),
+					isFirst ? h('label', I18n.t("resume.experience.location")) : null,
 					h('input[type="text"]', {
-						value: exp.company,
-						oninput: (e) => ResumeBuilder.data.experience[index].company = e.target.value
+						value: exp.location,
+						placeholder: isFirst ? '' : I18n.t("resume.experience.location"),
+						oninput: (e) => {
+							ResumeBuilder.data.experience[index].location = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				),
 				h('div.form-field',
-					h('label', I18n.t("resume.experience.position")),
-					h('input[type="text"]', {
-						value: exp.position,
-						oninput: (e) => ResumeBuilder.data.experience[index].position = e.target.value
-					})
-				)
-			),
-			h('div.form-field',
-				h('label', I18n.t("resume.experience.location")),
-				h('input[type="text"]', {
-					value: exp.location,
-					oninput: (e) => ResumeBuilder.data.experience[index].location = e.target.value
-				})
-			),
-			h('div.form-grid-2',
-				h('div.form-field',
-					h('label', I18n.t("resume.experience.startDate")),
+					isFirst ? h('label', I18n.t("resume.experience.startDate")) : null,
 					h('input[type="month"]', {
 						value: exp.startDate,
-						oninput: (e) => ResumeBuilder.data.experience[index].startDate = e.target.value
+						oninput: (e) => {
+							ResumeBuilder.data.experience[index].startDate = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				),
 				h('div.form-field',
-					h('label', I18n.t("resume.experience.endDate")),
+					isFirst ? h('label', I18n.t("resume.experience.endDate")) : null,
 					h('input[type="month"]', {
 						value: exp.endDate || '',
-						oninput: (e) => ResumeBuilder.data.experience[index].endDate = e.target.value
+						oninput: (e) => {
+							ResumeBuilder.data.experience[index].endDate = e.target.value;
+							ResumeBuilder.updateJSON();
+						}
 					})
 				)
 			),
-			h('div.form-field',
+			isFirst ? h('div.form-field',
 				h('label', I18n.t("resume.experience.summary")),
 				h('textarea', {
 					rows: 2,
 					value: exp.summary,
-					oninput: (e) => ResumeBuilder.data.experience[index].summary = e.target.value
+					oninput: (e) => {
+						ResumeBuilder.data.experience[index].summary = e.target.value;
+						ResumeBuilder.updateJSON();
+					}
 				})
-			),
-			h('div.form-field',
+			) : h('textarea', {
+				rows: 2,
+				value: exp.summary,
+				placeholder: I18n.t("resume.experience.summary"),
+				oninput: (e) => {
+					ResumeBuilder.data.experience[index].summary = e.target.value;
+					ResumeBuilder.updateJSON();
+				}
+			}),
+			isFirst ? h('div.form-field',
 				h('label', I18n.t("resume.experience.highlights")),
 				h('textarea', {
-					rows: 3,
+					rows: 2,
 					value: exp.highlights.join('\n'),
-					oninput: (e) => ResumeBuilder.data.experience[index].highlights = e.target.value.split('\n').filter(h => h.trim())
+					oninput: (e) => {
+						ResumeBuilder.data.experience[index].highlights = e.target.value.split('\n').filter(h => h.trim());
+						ResumeBuilder.updateJSON();
+					}
 				})
-			),
-			h('button.btn-remove', {
-				onclick: () => ResumeBuilder.removeExperience(index)
-			}, I18n.t("resume.actions.remove"))
+			) : h('textarea', {
+				rows: 2,
+				value: exp.highlights.join('\n'),
+				placeholder: I18n.t("resume.experience.highlights"),
+				oninput: (e) => {
+					ResumeBuilder.data.experience[index].highlights = e.target.value.split('\n').filter(h => h.trim());
+					ResumeBuilder.updateJSON();
+				}
+			})
 		);
 	},
 
 	// Create projects section
 	createProjectsSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.projects.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('projects', ['name', 'description']);
+		const content = [
 				h('div.dynamic-list', { id: 'projects-list' },
 					...ResumeBuilder.data.projects.map((project, index) => 
 						ResumeBuilder.createProjectItem(project, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addProject()
 				}, I18n.t("resume.projects.addProject"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('projects', 'resume.projects.title', content, completion);
 	},
 
 	// Create project item
@@ -472,19 +697,21 @@ const ResumeBuilder = {
 
 	// Create portfolio section
 	createPortfolioSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.portfolio.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('portfolio', ['title', 'url']);
+		const content = [
 				h('div.dynamic-list', { id: 'portfolio-list' },
 					...ResumeBuilder.data.portfolio.map((item, index) => 
 						ResumeBuilder.createPortfolioItem(item, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addPortfolio()
 				}, I18n.t("resume.portfolio.addPortfolio"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('portfolio', 'resume.portfolio.title', content, completion);
 	},
 
 	// Create portfolio item
@@ -527,19 +754,21 @@ const ResumeBuilder = {
 
 	// Create education section
 	createEducationSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.education.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('education', ['institution', 'degree']);
+		const content = [
 				h('div.dynamic-list', { id: 'education-list' },
 					...ResumeBuilder.data.education.map((edu, index) => 
 						ResumeBuilder.createEducationItem(edu, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addEducation()
 				}, I18n.t("resume.education.addEducation"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('education', 'resume.education.title', content, completion);
 	},
 
 	// Create education item
@@ -592,19 +821,21 @@ const ResumeBuilder = {
 
 	// Create certifications section
 	createCertificationsSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.certifications.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('certifications', ['name', 'issuer']);
+		const content = [
 				h('div.dynamic-list', { id: 'certifications-list' },
 					...ResumeBuilder.data.certifications.map((cert, index) => 
 						ResumeBuilder.createCertificationItem(cert, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addCertification()
 				}, I18n.t("resume.certifications.addCertification"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('certifications', 'resume.certifications.title', content, completion);
 	},
 
 	// Create certification item
@@ -650,19 +881,21 @@ const ResumeBuilder = {
 
 	// Create awards section
 	createAwardsSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.awards.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('awards', ['title', 'awarder']);
+		const content = [
 				h('div.dynamic-list', { id: 'awards-list' },
 					...ResumeBuilder.data.awards.map((award, index) => 
 						ResumeBuilder.createAwardItem(award, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addAward()
 				}, I18n.t("resume.awards.addAward"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('awards', 'resume.awards.title', content, completion);
 	},
 
 	// Create award item
@@ -708,19 +941,21 @@ const ResumeBuilder = {
 
 	// Create volunteer section
 	createVolunteerSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.volunteer.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('volunteer', ['organization', 'position']);
+		const content = [
 				h('div.dynamic-list', { id: 'volunteer-list' },
 					...ResumeBuilder.data.volunteer.map((vol, index) => 
 						ResumeBuilder.createVolunteerItem(vol, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addVolunteer()
 				}, I18n.t("resume.volunteer.addVolunteer"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('volunteer', 'resume.volunteer.title', content, completion);
 	},
 
 	// Create volunteer item
@@ -766,19 +1001,21 @@ const ResumeBuilder = {
 
 	// Create interests section
 	createInterestsSection: () => {
-		return h('div.resume-section',
-			h('h3.resume-section-title', I18n.t("resume.interests.title")),
-			h('div.resume-section-content',
+		const completion = ResumeBuilder.calculateArrayCompletion('interests', ['name']);
+		const content = [
 				h('div.dynamic-list', { id: 'interests-list' },
 					...ResumeBuilder.data.interests.map((interest, index) => 
 						ResumeBuilder.createInterestItem(interest, index)
 					)
 				),
+			h('div.add-item-section',
 				h('button.btn-secondary.add-item-btn', {
 					onclick: () => ResumeBuilder.addInterest()
 				}, I18n.t("resume.interests.addInterest"))
 			)
-		);
+		];
+		
+		return ResumeBuilder.createCollapsibleSection('interests', 'resume.interests.title', content, completion);
 	},
 
 	// Create interest item
@@ -843,12 +1080,29 @@ const ResumeBuilder = {
 	},
 
 	addSkill: () => {
-		ResumeBuilder.data.skills.push({ name: "", keywords: [] });
+		ResumeBuilder.data.skills.push({ name: "", keywords: [""] });
 		ResumeBuilder.refresh();
+		setTimeout(() => {
+			const focusElement = document.querySelector('.focus-first');
+			if (focusElement) {
+				focusElement.focus();
+				focusElement.classList.remove('focus-first');
+			}
+		}, 50);
 	},
 
 	removeSkill: (index) => {
 		ResumeBuilder.data.skills.splice(index, 1);
+		ResumeBuilder.refresh();
+	},
+
+	addSkillKeyword: (skillIndex) => {
+		ResumeBuilder.data.skills[skillIndex].keywords.push("");
+		ResumeBuilder.refresh();
+	},
+
+	removeSkillKeyword: (skillIndex, keywordIndex) => {
+		ResumeBuilder.data.skills[skillIndex].keywords.splice(keywordIndex, 1);
 		ResumeBuilder.refresh();
 	},
 
@@ -1035,9 +1289,27 @@ const ResumeBuilder = {
 	refresh: () => {
 		const container = document.querySelector('.tab-content[data-tab="resume"]');
 		if (container) {
+			// Store current collapsed states before refresh
+			const currentCollapsedStates = {...ResumeBuilder.collapsedSections};
+			
 			container.innerHTML = '';
-			container.appendChild(ResumeBuilder.create());
+			const newContent = ResumeBuilder.create();
+			container.appendChild(newContent);
 			ResumeBuilder.updateJSON();
+			
+			// Restore collapsed states after refresh  
+			setTimeout(() => {
+				Object.keys(currentCollapsedStates).forEach(sectionId => {
+					if (currentCollapsedStates[sectionId]) {
+						const content = document.querySelector(`[data-section="${sectionId}"] .section-content`);
+						const arrow = document.querySelector(`[data-section="${sectionId}"] .section-arrow`);
+						if (content && arrow) {
+							content.classList.add('collapsed');
+							arrow.classList.add('collapsed');
+						}
+					}
+				});
+			}, 10);
 		}
 	},
 
