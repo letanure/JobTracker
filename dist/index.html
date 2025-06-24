@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T16:00:13.538Z
-Cache Version: 1750780813538
+Generated: 2025-06-24T16:08:38.546Z
+Cache Version: 1750781318546
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750780813538
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750780813538">
-    <meta name="build-date" content="2025-06-24T16:00:13.538Z">
+    <meta name="build-version" content="1750781318546">
+    <meta name="build-date" content="2025-06-24T16:08:38.546Z">
     <style>
 
 /* ============================================================================ */
@@ -656,6 +656,18 @@ ol:not([class]) {
 }
 
 .author-link:hover {
+	text-decoration: underline;
+}
+
+.bug-report-link {
+	color: var(--text-secondary);
+	text-decoration: none;
+	font-size: 12px;
+	transition: var(--transition-fast);
+}
+
+.bug-report-link:hover {
+	color: var(--primary-color);
 	text-decoration: underline;
 }
 
@@ -6040,6 +6052,9 @@ tr.editing .actions-cell button {
                 <span id="footerBy">by</span> 
                 <a href="https://github.com/letanure" target="_blank" rel="noopener noreferrer" class="author-link">letanure</a>
             </p>
+            <a href="https://github.com/letanure/JobTracker/issues" target="_blank" rel="noopener noreferrer" class="bug-report-link">
+                <span id="footerFoundBug">Found a bug?</span>
+            </a>
             <a href="https://github.com/letanure/JobTracker" target="_blank" rel="noopener noreferrer" class="github-link">
                 <svg class="github-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
@@ -6052,16 +6067,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750780813538';
-window.BUILD_DATE = '2025-06-24T16:00:13.538Z';
+window.BUILD_VERSION = '1750781318546';
+window.BUILD_DATE = '2025-06-24T16:08:38.546Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T16:00:13.529Z
+// Generated: 2025-06-24T16:08:38.535Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T16:00:13.529Z");
+console.log("JobTracker - Built at: 2025-06-24T16:08:38.535Z");
 
 
 // ============================================================================
@@ -6614,7 +6629,8 @@ const EN_TRANSLATIONS = {
 		placeholderNameEmail: "Name\nEmail"},
 	footer: {
 		madeWith: "Made with",
-		by: "by"},
+		by: "by",
+		foundBug: "Found a bug?"},
 	calendar: {
 		title: "Calendar View",
 		today: "Today",
@@ -6909,7 +6925,8 @@ const PT_TRANSLATIONS = {
 		placeholderNameEmail: "Nome\nEmail"},
 	footer: {
 		madeWith: "Feito com",
-		by: "por"},
+		by: "por",
+		foundBug: "Encontrou um bug?"},
 	calendar: {
 		title: "Visualização de Calendário",
 		today: "Hoje",
@@ -7447,6 +7464,7 @@ function updateStaticTexts() {
 	// Update footer text
 	$("#footerMadeWith").text(I18n.t("footer.madeWith"));
 	$("#footerBy").text(I18n.t("footer.by"));
+	$("#footerFoundBug").text(I18n.t("footer.foundBug"));
 }
 
 // Initialize language switcher

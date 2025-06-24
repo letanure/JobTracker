@@ -210,7 +210,8 @@ const PT_TRANSLATIONS = {
 		placeholderNameEmail: "Nome\nEmail"},
 	footer: {
 		madeWith: "Feito com",
-		by: "por"},
+		by: "por",
+		foundBug: "Encontrou um bug?"},
 	calendar: {
 		title: "Visualização de Calendário",
 		today: "Hoje",

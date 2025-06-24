@@ -95,6 +95,7 @@ function updateStaticTexts() {
 	// Update footer text
 	$("#footerMadeWith").text(I18n.t("footer.madeWith"));
 	$("#footerBy").text(I18n.t("footer.by"));
+	$("#footerFoundBug").text(I18n.t("footer.foundBug"));
 }
 
 // Initialize language switcher

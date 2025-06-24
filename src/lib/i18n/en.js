@@ -209,7 +209,8 @@ const EN_TRANSLATIONS = {
 		placeholderNameEmail: "Name\nEmail"},
 	footer: {
 		madeWith: "Made with",
-		by: "by"},
+		by: "by",
+		foundBug: "Found a bug?"},
 	calendar: {
 		title: "Calendar View",
 		today: "Today",

@@ -135,6 +135,18 @@
 	text-decoration: underline;
 }
 
+.bug-report-link {
+	color: var(--text-secondary);
+	text-decoration: none;
+	font-size: 12px;
+	transition: var(--transition-fast);
+}
+
+.bug-report-link:hover {
+	color: var(--primary-color);
+	text-decoration: underline;
+}
+
 .github-link {
 	display: flex;
 	align-items: center;
