@@ -595,6 +595,10 @@ const CalendarView = {
 								CalendarView.handleDragStart(e, event);
 							}
 						},
+						ondragend: (e) => {
+							// Clean up drag state
+							CalendarView.handleDragEnd(e);
+						},
 						title: eventText},
 					h('div.calendar-event-mini-text', eventText)
 				)
@@ -643,6 +647,10 @@ const CalendarView = {
 						if (event.type === "task") {
 							CalendarView.handleDragStart(e, event);
 						}
+					},
+					ondragend: (e) => {
+						// Clean up drag state
+						CalendarView.handleDragEnd(e);
 					}},
 				h('div.calendar-event-header',
 					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
@@ -1070,6 +1078,26 @@ const CalendarView = {
 	},
 
 	// Drag and drop handlers
+	handleDragEnd: (e) => {
+		// Remove dragging class from all elements
+		document.querySelectorAll(".dragging").forEach((el) => {
+			el.classList.remove("dragging");
+		});
+		
+		// Remove any drop indicators
+		document.querySelectorAll(".time-drop-indicator, .time-drop-label").forEach((indicator) => {
+			indicator.remove();
+		});
+		
+		// Remove drag-over effects
+		document.querySelectorAll(".drag-over").forEach((el) => {
+			el.classList.remove("drag-over");
+		});
+		
+		// Reset processing flag
+		CalendarView._isProcessingDrop = false;
+	},
+
 	handleDragStart: (e, event) => {
 		e.stopPropagation();
 

@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T16:19:13.087Z
-Cache Version: 1750781953087
+Generated: 2025-06-24T16:20:38.512Z
+Cache Version: 1750782038512
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750781953087
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750781953087">
-    <meta name="build-date" content="2025-06-24T16:19:13.087Z">
+    <meta name="build-version" content="1750782038512">
+    <meta name="build-date" content="2025-06-24T16:20:38.512Z">
     <style>
 
 /* ============================================================================ */
@@ -6104,16 +6104,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750781953087';
-window.BUILD_DATE = '2025-06-24T16:19:13.087Z';
+window.BUILD_VERSION = '1750782038512';
+window.BUILD_DATE = '2025-06-24T16:20:38.512Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T16:19:13.070Z
+// Generated: 2025-06-24T16:20:38.502Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T16:19:13.070Z");
+console.log("JobTracker - Built at: 2025-06-24T16:20:38.502Z");
 
 
 // ============================================================================
@@ -14292,6 +14292,10 @@ const CalendarView = {
 								CalendarView.handleDragStart(e, event);
 							}
 						},
+						ondragend: (e) => {
+							// Clean up drag state
+							CalendarView.handleDragEnd(e);
+						},
 						title: eventText},
 					h('div.calendar-event-mini-text', eventText)
 				)
@@ -14340,6 +14344,10 @@ const CalendarView = {
 						if (event.type === "task") {
 							CalendarView.handleDragStart(e, event);
 						}
+					},
+					ondragend: (e) => {
+						// Clean up drag state
+						CalendarView.handleDragEnd(e);
 					}},
 				h('div.calendar-event-header',
 					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
@@ -14767,6 +14775,26 @@ const CalendarView = {
 	},
 
 	// Drag and drop handlers
+	handleDragEnd: (e) => {
+		// Remove dragging class from all elements
+		document.querySelectorAll(".dragging").forEach((el) => {
+			el.classList.remove("dragging");
+		});
+		
+		// Remove any drop indicators
+		document.querySelectorAll(".time-drop-indicator, .time-drop-label").forEach((indicator) => {
+			indicator.remove();
+		});
+		
+		// Remove drag-over effects
+		document.querySelectorAll(".drag-over").forEach((el) => {
+			el.classList.remove("drag-over");
+		});
+		
+		// Reset processing flag
+		CalendarView._isProcessingDrop = false;
+	},
+
 	handleDragStart: (e, event) => {
 		e.stopPropagation();
 
