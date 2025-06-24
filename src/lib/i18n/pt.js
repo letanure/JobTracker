@@ -171,6 +171,7 @@ const PT_TRANSLATIONS = {
 			archiveTitle: "Arquivar tarefa",
 			unarchiveTitle: "Desarquivar tarefa",
 			addButton: "Adicionar Tarefa",
+			allJobs: "Todas as Vagas",
 			addTask: "Adicionar Tarefa",
 			selectJob: "Selecionar Vaga",
 			chooseJob: "Escolha uma vaga...",

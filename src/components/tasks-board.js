@@ -35,7 +35,13 @@ const TasksBoard = {
 			}
 		});
 
-		const statusTasks = allTasks
+		// Apply job filter if set
+		const selectedJobId = TasksBoard.getSelectedJobFilter();
+		const filteredTasks = selectedJobId 
+			? allTasks.filter((task) => task.jobId === selectedJobId)
+			: allTasks;
+
+		const statusTasks = filteredTasks
 			.filter((task) => task.status === status)
 			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)); // Sort by sortOrder within status
 		const columnTitle = getTaskStatusText(status);
@@ -843,7 +849,7 @@ const TasksBoard = {
 					}
 				});
 
-				// Create board header
+				// Create board header with job filter
 				const header = h(
 					"div",
 					{ className: "tab-header" },
@@ -851,6 +857,7 @@ const TasksBoard = {
 					h(
 						"div",
 						{ className: "tasks-stats" },
+						TasksBoard.createJobFilter(),
 						h("span", { className: "tasks-total-count" }, `${totalTasks} total tasks`)
 					)
 				);
@@ -868,6 +875,52 @@ const TasksBoard = {
 				// Just refresh the existing board
 				TasksBoard.refresh();
 			}
+		}
+	},
+
+	// Create job filter dropdown
+	createJobFilter: () => {
+		const jobOptions = jobsData.map((job) => ({
+			id: job.id,
+			text: `${job.company} - ${job.position}`,
+		}));
+
+		const select = h(
+			"select",
+			{
+				className: "tasks-job-filter",
+				onchange: (e) => {
+					TasksBoard.setSelectedJobFilter(e.target.value);
+					TasksBoard.refresh();
+				},
+			},
+			h("option", { value: "" }, I18n.t("tasks.allJobs") || "All Jobs"),
+			...jobOptions.map((job) =>
+				h("option", { value: job.id }, job.text)
+			)
+		);
+
+		// Set current filter value
+		const selectedJobId = TasksBoard.getSelectedJobFilter();
+		if (selectedJobId) {
+			select.value = selectedJobId;
+		}
+
+		return select;
+	},
+
+	// Get selected job filter from localStorage
+	getSelectedJobFilter: () => {
+		const stored = localStorage.getItem("tasks-job-filter");
+		return stored ? parseInt(stored) : null;
+	},
+
+	// Set selected job filter in localStorage
+	setSelectedJobFilter: (jobId) => {
+		if (jobId) {
+			localStorage.setItem("tasks-job-filter", jobId);
+		} else {
+			localStorage.removeItem("tasks-job-filter");
 		}
 	},
 };

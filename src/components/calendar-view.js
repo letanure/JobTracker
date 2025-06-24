@@ -410,10 +410,16 @@ const CalendarView = {
 			// Time slots
 			h("div", { className: "calendar-day-times" }, ...CalendarView.generateTimeSlots()),
 
-			// Events column
+			// Events column with drag and drop support
 			h(
 				"div",
-				{ className: "calendar-day-events-column" },
+				{ 
+					className: "calendar-day-events-column",
+					ondragover: (e) => CalendarView.handleDragOver(e),
+					ondragleave: (e) => CalendarView.handleDragLeave(e),
+					ondrop: (e) => CalendarView.handleDrop(e, date),
+					"data-date": CalendarView.formatDateKey(date),
+				},
 				...(dayEvents.length === 0
 					? [h("div", { className: "calendar-no-events" }, I18n.t("calendar.noEvents"))]
 					: CalendarView.renderDayEvents(dayEvents))
@@ -423,15 +429,32 @@ const CalendarView = {
 		return dayView;
 	},
 
-	// Generate time slots
+	// Generate time slots (30-minute intervals from 8am to 8pm)
 	generateTimeSlots: () => {
 		const slots = [];
-		for (let hour = 0; hour < 24; hour++) {
-			const time =
-				hour === 0 ? "12 AM" : hour < 12 ? `${hour} AM` : hour === 12 ? "12 PM" : `${hour - 12} PM`;
-			slots.push(h("div", { className: "calendar-time-slot" }, time));
+		// Generate slots from 8am (8) to 8pm (20) in 30-minute intervals
+		for (let hour = 8; hour <= 20; hour++) {
+			for (let minute = 0; minute < 60; minute += 30) {
+				const time24 = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+				const time12 = CalendarView.formatTime12Hour(hour, minute);
+				
+				slots.push(h("div", { 
+					className: "calendar-time-slot",
+					"data-time": time24,
+					"data-hour": hour,
+					"data-minute": minute
+				}, time12));
+			}
 		}
 		return slots;
+	},
+
+	// Format time in 12-hour format
+	formatTime12Hour: (hour, minute) => {
+		const period = hour < 12 ? "AM" : "PM";
+		const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+		const minuteStr = minute === 0 ? "" : `:${minute.toString().padStart(2, '0')}`;
+		return `${hour12}${minuteStr} ${period}`;
 	},
 
 	// Load events from jobs data
@@ -515,6 +538,28 @@ const CalendarView = {
 			}
 		});
 
+		// Sort events by date and time, with tasks ordered by priority within the same time
+		events.sort((a, b) => {
+			// First sort by date
+			const dateCompare = a.date.getTime() - b.date.getTime();
+			if (dateCompare !== 0) return dateCompare;
+			
+			// If same date, prioritize tasks by priority (high > medium > low)
+			if (a.type === "task" && b.type === "task") {
+				const priorityOrder = { high: 3, medium: 2, low: 1 };
+				const aPriority = priorityOrder[a.priority] || 0;
+				const bPriority = priorityOrder[b.priority] || 0;
+				return bPriority - aPriority; // Higher priority first
+			}
+			
+			// If one is task and other isn't, tasks come first
+			if (a.type === "task" && b.type !== "task") return -1;
+			if (a.type !== "task" && b.type === "task") return 1;
+			
+			// For same type non-tasks, maintain current order
+			return 0;
+		});
+
 		CalendarView.events = events;
 	},
 
@@ -574,7 +619,7 @@ const CalendarView = {
 		const cards = [];
 
 		displayEvents.forEach((event) => {
-			const color = CalendarView.getEventColor(event.type);
+			const color = CalendarView.getEventColor(event.type, event.task?.priority);
 			let eventText = "";
 
 			// Format event text based on type
@@ -638,14 +683,23 @@ const CalendarView = {
 
 	// Render week events
 	renderWeekEvents: (events) => {
-		return events.map((event) =>
-			h(
+		// Calculate overlapping events and their positions
+		const eventsWithPositions = CalendarView.calculateEventPositions(events);
+		
+		return eventsWithPositions.map((event) => {
+			return h(
 				"div",
 				{
 					className: `calendar-week-event calendar-event-${event.type}`,
-					style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); border-left: 3px solid var(--${CalendarView.getEventColor(event.type)}-500);`,
+					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 3px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
 					draggable: event.type === "task", // Only tasks can be dragged
-					onclick: () => CalendarView.showEventDetails(event),
+					onclick: () => {
+						if (event.type === "task" && typeof TasksBoard !== "undefined" && TasksBoard.openTaskEditModal) {
+							TasksBoard.openTaskEditModal(event.task);
+						} else {
+							CalendarView.showEventDetails(event);
+						}
+					},
 					ondragstart: (e) => {
 						if (event.type === "task") {
 							CalendarView.handleDragStart(e, event);
@@ -654,19 +708,178 @@ const CalendarView = {
 				},
 				h("div", { className: "calendar-event-time" }, CalendarView.formatEventTime(event)),
 				h("div", { className: "calendar-event-title" }, event.title)
-			)
+			);
+		});
+	},
+
+	// Calculate event position based on time
+	calculateEventPosition: (event) => {
+		// Only position tasks with specific times, others use default flow
+		if (event.type !== "task" || !event.task.dueDate) {
+			return "";
+		}
+
+		const eventDate = new Date(event.task.dueDate);
+		const hours = eventDate.getHours();
+		const minutes = eventDate.getMinutes();
+
+		// Only position events within business hours (8am-8pm)
+		if (hours < 8 || hours > 20) {
+			return "";
+		}
+
+		// Calculate position: each 30-min slot is about 60px high
+		const slotsFromStart = (hours - 8) * 2 + Math.floor(minutes / 30);
+		const topPosition = slotsFromStart * 60; // 60px per 30-min slot
+		
+		// Calculate height based on duration if available
+		let height = 50; // default height
+		if (event.task.duration) {
+			const durationMinutes = CalendarView.parseDuration(event.task.duration);
+			if (durationMinutes) {
+				height = Math.max(30, (durationMinutes / 30) * 60); // 60px per 30-min
+			}
+		}
+
+		return `position: absolute; top: ${topPosition}px; height: ${height}px; width: calc(100% - 8px); margin: 2px 4px; z-index: 1;`;
+	},
+
+	// Parse duration string to minutes
+	parseDuration: (duration) => {
+		if (!duration) return null;
+		
+		const durationMap = {
+			"15min": 15,
+			"30min": 30,
+			"1h": 60,
+			"1h30": 90,
+			"2h": 120,
+			"3h": 180
+		};
+		
+		return durationMap[duration] || null;
+	},
+
+	// Calculate positions for events, handling overlaps
+	calculateEventPositions: (events) => {
+		// First, calculate basic position for each event
+		const eventsWithBasicPosition = events.map(event => ({
+			...event,
+			positionStyle: CalendarView.calculateEventPosition(event),
+			startMinutes: CalendarView.getEventStartMinutes(event),
+			endMinutes: CalendarView.getEventEndMinutes(event)
+		}));
+
+		// Filter out events that don't have time-based positioning
+		const timedEvents = eventsWithBasicPosition.filter(event => 
+			event.startMinutes !== null && event.positionStyle !== ""
 		);
+		const untimedEvents = eventsWithBasicPosition.filter(event => 
+			event.startMinutes === null || event.positionStyle === ""
+		);
+
+		// Group overlapping events
+		const groups = CalendarView.groupOverlappingEvents(timedEvents);
+
+		// Calculate column positions for overlapping events
+		const positionedTimedEvents = [];
+		groups.forEach(group => {
+			group.forEach((event, index) => {
+				const columnWidth = 100 / group.length;
+				const leftOffset = index * columnWidth;
+				
+				// Modify the position style to include column positioning
+				event.positionStyle = event.positionStyle.replace(
+					'width: calc(100% - 8px);',
+					`width: calc(${columnWidth}% - 6px); left: ${leftOffset}%;`
+				);
+				
+				positionedTimedEvents.push(event);
+			});
+		});
+
+		// Return all events (timed + untimed)
+		return [...positionedTimedEvents, ...untimedEvents];
+	},
+
+	// Get event start time in minutes from start of day
+	getEventStartMinutes: (event) => {
+		if (event.type !== "task" || !event.task.dueDate) return null;
+		
+		const eventDate = new Date(event.task.dueDate);
+		const hours = eventDate.getHours();
+		const minutes = eventDate.getMinutes();
+		
+		// Only consider business hours
+		if (hours < 8 || hours > 20) return null;
+		
+		return hours * 60 + minutes;
+	},
+
+	// Get event end time in minutes from start of day
+	getEventEndMinutes: (event) => {
+		const startMinutes = CalendarView.getEventStartMinutes(event);
+		if (startMinutes === null) return null;
+		
+		const durationMinutes = CalendarView.parseDuration(event.task?.duration) || 30; // default 30 min
+		return startMinutes + durationMinutes;
+	},
+
+	// Group events that overlap in time
+	groupOverlappingEvents: (events) => {
+		const groups = [];
+		const processed = new Set();
+
+		events.forEach(event => {
+			if (processed.has(event.id)) return;
+
+			const group = [event];
+			processed.add(event.id);
+
+			// Find all events that overlap with this one
+			events.forEach(otherEvent => {
+				if (processed.has(otherEvent.id)) return;
+
+				if (CalendarView.eventsOverlap(event, otherEvent)) {
+					group.push(otherEvent);
+					processed.add(otherEvent.id);
+				}
+			});
+
+			groups.push(group);
+		});
+
+		return groups;
+	},
+
+	// Check if two events overlap in time
+	eventsOverlap: (event1, event2) => {
+		const start1 = event1.startMinutes;
+		const end1 = event1.endMinutes;
+		const start2 = event2.startMinutes;
+		const end2 = event2.endMinutes;
+
+		return start1 < end2 && start2 < end1;
 	},
 
 	// Render day events
 	renderDayEvents: (events) => {
-		return events.map((event) =>
-			h(
+		// Calculate overlapping events and their positions for day view too
+		const eventsWithPositions = CalendarView.calculateEventPositions(events);
+		
+		return eventsWithPositions.map((event) => {
+			return h(
 				"div",
 				{
 					className: `calendar-day-event calendar-event-${event.type}`,
-					style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type)}-500);`,
-					onclick: () => CalendarView.showEventDetails(event),
+					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
+					onclick: () => {
+						if (event.type === "task" && typeof TasksBoard !== "undefined" && TasksBoard.openTaskEditModal) {
+							TasksBoard.openTaskEditModal(event.task);
+						} else {
+							CalendarView.showEventDetails(event);
+						}
+					},
 				},
 				h(
 					"div",
@@ -683,11 +896,22 @@ const CalendarView = {
 					`${event.job.company} - ${event.job.position}`
 				)
 			)
-		);
+		});
 	},
 
 	// Get event color
-	getEventColor: (type) => {
+	getEventColor: (type, priority = null) => {
+		// For tasks, use priority-based colors
+		if (type === "task" && priority) {
+			const priorityColors = {
+				high: "red",
+				medium: "orange", 
+				low: "green",
+			};
+			return priorityColors[priority] || "blue";
+		}
+		
+		// For other event types, use default colors
 		const colors = {
 			applied: "green",
 			task: "blue",
@@ -707,6 +931,26 @@ const CalendarView = {
 			followup: "follow_the_signs",
 		};
 		return h("span", { className: "material-symbols-outlined" }, icons[event.type] || "event");
+	},
+
+	// Format task date and time
+	formatTaskDateTime: (dueDate) => {
+		const date = new Date(dueDate);
+		const now = new Date();
+		const isToday = date.toDateString() === now.toDateString();
+		const isTomorrow = date.toDateString() === new Date(now.getTime() + 24 * 60 * 60 * 1000).toDateString();
+		
+		// Format time part
+		const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+		
+		// Return appropriate format
+		if (isToday) {
+			return `Today ${timeStr}`;
+		} else if (isTomorrow) {
+			return `Tomorrow ${timeStr}`;
+		} else {
+			return `${date.toLocaleDateString()} ${timeStr}`;
+		}
 	},
 
 	// Show date events modal
@@ -769,7 +1013,7 @@ const CalendarView = {
 					"span",
 					{
 						className: "calendar-event-type-badge",
-						style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); color: var(--${CalendarView.getEventColor(event.type)}-700);`,
+						style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`,
 					},
 					I18n.t(`calendar.${event.type}`)
 				),
@@ -788,6 +1032,25 @@ const CalendarView = {
 				"div",
 				{ className: "calendar-event-card-subtitle" },
 				`${event.job.company} - ${event.job.position}`
+			),
+			// Show duration and due time for tasks
+			event.type === "task" && (event.task.duration || event.task.dueDate) && h(
+				"div",
+				{ className: "calendar-event-card-meta" },
+				...[
+					event.task.dueDate && h(
+						"span",
+						{ className: "calendar-event-meta-item" },
+						h("span", { className: "material-symbols-outlined calendar-meta-icon" }, "schedule"),
+						CalendarView.formatTaskDateTime(event.task.dueDate)
+					),
+					event.task.duration && h(
+						"span",
+						{ className: "calendar-event-meta-item" },
+						h("span", { className: "material-symbols-outlined calendar-meta-icon" }, "timer"),
+						event.task.duration
+					)
+				].filter(Boolean)
 			)
 		);
 	},
@@ -842,7 +1105,7 @@ const CalendarView = {
 								"span",
 								{
 									className: `event-type-badge event-type-${event.type}`,
-									style: `background-color: var(--${CalendarView.getEventColor(event.type)}-100); color: var(--${CalendarView.getEventColor(event.type)}-700);`,
+									style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`,
 								},
 								I18n.t(`calendar.${event.type}`)
 							)
@@ -875,7 +1138,7 @@ const CalendarView = {
 										"span",
 										{
 											className: `priority-badge priority-${event.task.priority}`,
-											style: `background-color: var(--${CalendarView.getEventColor(event.task.priority === "high" ? "red" : event.task.priority === "medium" ? "orange" : "green")}-100); color: var(--${CalendarView.getEventColor(event.task.priority === "high" ? "red" : event.task.priority === "medium" ? "orange" : "green")}-700);`,
+											style: `background-color: var(--${CalendarView.getEventColor("task", event.task.priority)}-100); color: var(--${CalendarView.getEventColor("task", event.task.priority)}-700);`,
 										},
 										event.task.priority
 									)
@@ -969,6 +1232,53 @@ const CalendarView = {
 		// Add visual feedback to drop target
 		const dayElement = e.currentTarget;
 		dayElement.classList.add("drag-over");
+
+		// Calculate time position for grid snapping in week/day views
+		if (dayElement.classList.contains("calendar-week-day-events") || 
+			dayElement.classList.contains("calendar-day-events-column")) {
+			CalendarView.showTimeGridIndicator(e, dayElement);
+		}
+	},
+
+	// Show time grid indicator for precise dropping
+	showTimeGridIndicator: (e, container) => {
+		// Remove existing indicators
+		container.querySelectorAll('.time-drop-indicator').forEach(indicator => {
+			indicator.remove();
+		});
+
+		const rect = container.getBoundingClientRect();
+		const mouseY = e.clientY - rect.top;
+		
+		// Calculate which 15-minute slot the mouse is over
+		const slotHeight = 60; // 30-min slot = 60px
+		const quarterSlotHeight = slotHeight / 2; // 15-min = 30px
+		
+		const slotIndex = Math.floor(mouseY / quarterSlotHeight);
+		const snapY = slotIndex * quarterSlotHeight;
+		
+		// Calculate the time this represents
+		const totalQuarters = slotIndex;
+		const hours = Math.floor(totalQuarters / 4) + 8; // Start at 8am
+		const minutes = (totalQuarters % 4) * 15;
+		
+		// Only show if within business hours
+		if (hours >= 8 && hours <= 20) {
+			const timeStr = CalendarView.formatTime12Hour(hours, minutes);
+			
+			const indicator = h('div', {
+				className: 'time-drop-indicator',
+				style: `position: absolute; top: ${snapY}px; left: 0; right: 0; height: 2px; background: var(--blue-500); z-index: 10; pointer-events: none;`
+			});
+			
+			const timeLabel = h('div', {
+				className: 'time-drop-label',
+				style: `position: absolute; top: ${snapY - 10}px; left: 4px; background: var(--blue-500); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; z-index: 11; pointer-events: none;`
+			}, timeStr);
+			
+			container.appendChild(indicator);
+			container.appendChild(timeLabel);
+		}
 	},
 
 	handleDragLeave: (e) => {
@@ -981,9 +1291,12 @@ const CalendarView = {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// Remove visual feedback
+		// Remove visual feedback and indicators
 		const dayElement = e.currentTarget;
 		dayElement.classList.remove("drag-over");
+		dayElement.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
+			indicator.remove();
+		});
 
 		// Remove dragging class from all elements
 		document.querySelectorAll(".dragging").forEach((el) => {
@@ -994,27 +1307,50 @@ const CalendarView = {
 			const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
 
 			if (dragData.eventType === "task") {
-				CalendarView.moveTaskToDate(dragData.jobId, dragData.taskId, targetDate);
+				// Calculate new time if dropping on time grid
+				let newDateTime = new Date(targetDate);
+				
+				if (dayElement.classList.contains("calendar-week-day-events") || 
+					dayElement.classList.contains("calendar-day-events-column")) {
+					
+					const rect = dayElement.getBoundingClientRect();
+					const mouseY = e.clientY - rect.top;
+					
+					// Calculate 15-minute slot
+					const quarterSlotHeight = 30; // 15-min = 30px
+					const slotIndex = Math.floor(mouseY / quarterSlotHeight);
+					const totalQuarters = slotIndex;
+					const hours = Math.floor(totalQuarters / 4) + 8; // Start at 8am
+					const minutes = (totalQuarters % 4) * 15;
+					
+					// Only update time if within business hours
+					if (hours >= 8 && hours <= 20) {
+						newDateTime.setHours(hours, minutes, 0, 0);
+					}
+				}
+				
+				CalendarView.moveTaskToDateTime(dragData.jobId, dragData.taskId, newDateTime);
 			}
 		} catch (error) {
 			console.error("Error handling drop:", error);
 		}
 	},
 
-	// Move task to new date
-	moveTaskToDate: (jobId, taskId, newDate) => {
+	// Move task to new date and time
+	moveTaskToDateTime: (jobId, taskId, newDateTime) => {
 		// Find the job
-		const job = jobsData.find((j) => j.id === Number.parseInt(jobId));
-		if (!job || !job.tasks) return;
+		const jobIndex = jobsData.findIndex((job) => job.id === parseInt(jobId));
+		if (jobIndex === -1) return;
 
 		// Find the task
-		const task = job.tasks.find((t) => t.id === taskId);
-		if (!task) return;
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((task) => task.id.toString() === taskId.toString());
+		if (taskIndex === -1) return;
 
-		// Update the task's due date
-		const newDueDate = new Date(newDate);
-		newDueDate.setHours(23, 59, 59, 999); // Set to end of day
-		task.dueDate = newDueDate.toISOString();
+		const task = jobsData[jobIndex].tasks[taskIndex];
+		const job = jobsData[jobIndex];
+
+		// Update task due date with new date and time
+		jobsData[jobIndex].tasks[taskIndex].dueDate = newDateTime.toISOString();
 
 		// Save changes
 		saveToLocalStorage();
@@ -1024,7 +1360,12 @@ const CalendarView = {
 		CalendarView.updateView();
 
 		// Show confirmation
-		CalendarView.showMoveConfirmation(task, job, newDate);
+		CalendarView.showMoveConfirmation(task, job, newDateTime);
+	},
+
+	// Move task to new date (legacy function for compatibility)
+	moveTaskToDate: (jobId, taskId, newDate) => {
+		CalendarView.moveTaskToDateTime(jobId, taskId, newDate);
 	},
 
 	// Show confirmation of task move

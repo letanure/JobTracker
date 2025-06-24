@@ -124,54 +124,10 @@ const TaskItem = ({ task, job }) => {
 	};
 
 	const handleEdit = () => {
-		const taskTextElement = document.querySelector(`[data-task-id="${task.id}"] .task-text`);
-		if (!taskTextElement) return;
-
-		const currentText = task.text;
-		const textarea = h("textarea", {
-			className: "task-edit-textarea",
-			textContent: currentText,
-		});
-
-		const saveBtn = h("button", {
-			className: "action-btn edit-btn edit-save-btn",
-			textContent: I18n.t("modals.common.save"),
-			onclick: () => {
-				const newText = textarea.value.trim();
-				if (!newText) return;
-
-				const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-				if (jobIndex === -1) return;
-
-				const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
-				if (taskIndex === -1) return;
-
-				jobsData[jobIndex].tasks[taskIndex].text = newText;
-				saveToLocalStorage();
-
-				// Update in place - replace textarea with new text
-				taskTextElement.innerHTML = "";
-				taskTextElement.textContent = newText;
-
-				// Update interface
-				refreshInterface();
-			},
-		});
-
-		const cancelBtn = h("button", {
-			className: "action-btn cancel-btn edit-cancel-btn",
-			textContent: I18n.t("modals.common.cancel"),
-			onclick: () => {
-				// Cancel editing - restore original text
-				taskTextElement.innerHTML = "";
-				taskTextElement.textContent = task.text;
-			},
-		});
-
-		taskTextElement.innerHTML = "";
-		taskTextElement.appendChild(textarea);
-		taskTextElement.appendChild(h("div", {}, saveBtn, cancelBtn));
-		textarea.focus();
+		// Use TasksBoard modal for task editing instead of inline editing
+		if (typeof TasksBoard !== "undefined" && TasksBoard.openTaskEditModal) {
+			TasksBoard.openTaskEditModal(task);
+		}
 	};
 
 	return h(

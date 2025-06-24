@@ -170,6 +170,7 @@ const EN_TRANSLATIONS = {
 			archiveTitle: "Archive task",
 			unarchiveTitle: "Unarchive task",
 			addButton: "Add Task",
+			allJobs: "All Jobs",
 			addTask: "Add Task",
 			selectJob: "Select Job",
 			chooseJob: "Choose a job...",
