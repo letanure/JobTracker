@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T20:48:21.470Z
-Cache Version: 1750798101470
+Generated: 2025-06-24T21:01:27.771Z
+Cache Version: 1750798887771
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750798101470
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750798101470">
-    <meta name="build-date" content="2025-06-24T20:48:21.470Z">
+    <meta name="build-version" content="1750798887771">
+    <meta name="build-date" content="2025-06-24T21:01:27.771Z">
     <style>
 
 /* ============================================================================ */
@@ -4463,6 +4463,7 @@ a.kanban-source-link {
 }
 
 .resume-container {
+	padding: 24px;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -4471,8 +4472,11 @@ a.kanban-source-link {
 
 .resume-stats {
 	display: flex;
-	gap: var(--space-2);
 	align-items: center;
+	gap: 8px;
+	background: var(--gray-100);
+	border-radius: 6px;
+	padding: 2px;
 }
 
 .resume-layout {
@@ -4486,7 +4490,7 @@ a.kanban-source-link {
 
 .resume-form-column {
 	overflow-y: auto;
-	padding: var(--space-4);
+	padding: 0 var(--space-4) var(--space-4) 0;
 	border-right: var(--border-width) solid var(--border-color);
 }
 
@@ -4825,76 +4829,104 @@ a.kanban-source-link {
 	margin-top: 16px; /* Align with input field */
 }
 
-/* Skills keywords styling */
+/* Skills keywords styling - Tag Layout */
 .skills-keywords {
-	margin-left: var(--space-2);
+	margin-left: var(--space-3);
+	margin-top: var(--space-1);
+	padding-left: var(--space-2);
+	border-left: 2px solid var(--gray-200);
 }
 
 .skills-keywords label {
 	display: block;
 	font-weight: 500;
-	color: var(--text-color);
-	margin-bottom: 2px;
-	font-size: var(--font-size-xs);
-}
-
-.keyword-item {
-	display: flex;
-	align-items: center;
-	gap: var(--space-1);
+	color: var(--gray-600);
 	margin-bottom: var(--space-1);
-}
-
-.keyword-item input {
-	flex: 1;
-	padding: 4px 6px;
-	border: var(--border-width) solid var(--border-color);
-	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
 }
 
-.keyword-item input:focus {
-	outline: none;
-	border-color: var(--primary-color);
-	box-shadow: 0 0 0 2px var(--primary-100);
+.keyword-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-1);
+	align-items: center;
 }
 
-.btn-remove-keyword {
-	background: var(--red-500);
-	color: white;
+.keyword-tag {
+	display: inline-flex;
+	align-items: center;
+	background: var(--blue-100);
+	color: var(--blue-800);
+	border: 1px solid var(--blue-200);
+	border-radius: var(--radius-full);
+	padding: 4px 8px;
+	font-size: var(--font-size-xs);
+	font-weight: 500;
+	gap: 6px;
+	transition: var(--transition-fast);
+}
+
+.keyword-tag:hover {
+	background: var(--blue-200);
+}
+
+.keyword-text {
+	line-height: 1;
+}
+
+.keyword-remove {
+	background: none;
 	border: none;
-	border-radius: var(--radius-sm);
+	color: var(--blue-600);
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 1;
+	padding: 0;
+	margin: 0;
 	width: 16px;
 	height: 16px;
-	font-size: 10px;
-	cursor: pointer;
-	transition: var(--transition-fast);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-shrink: 0;
+	border-radius: 50%;
+	transition: var(--transition-fast);
 }
 
-.btn-remove-keyword:hover {
-	background: var(--red-600);
+.keyword-remove:hover {
+	background: var(--blue-300);
+	color: var(--blue-900);
 }
 
-.btn-remove-keyword .material-symbols-outlined {
-	font-size: 10px;
+.keyword-input {
+	border: 1px dashed var(--border-color);
+	border-radius: var(--radius-sm);
+	padding: 4px 8px;
+	font-size: var(--font-size-xs);
+	background: var(--gray-50);
+	min-width: 100px;
+	transition: var(--transition-fast);
+}
+
+.keyword-input:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	border-style: solid;
+	background: var(--white);
+	box-shadow: 0 0 0 2px var(--primary-100);
 }
 
 .add-keyword-btn {
 	background: var(--gray-100);
 	border: 1px dashed var(--gray-300);
 	border-radius: var(--radius-sm);
-	padding: 2px 4px;
+	padding: 4px 8px;
 	font-size: var(--font-size-xs);
 	cursor: pointer;
 	color: var(--gray-600);
 	transition: var(--transition-fast);
-	display: flex;
+	display: inline-flex;
 	align-items: center;
-	gap: 2px;
+	gap: 4px;
 }
 
 .add-keyword-btn:hover {
@@ -6682,16 +6714,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750798101470';
-window.BUILD_DATE = '2025-06-24T20:48:21.470Z';
+window.BUILD_VERSION = '1750798887771';
+window.BUILD_DATE = '2025-06-24T21:01:27.771Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T20:48:21.459Z
+// Generated: 2025-06-24T21:01:27.761Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T20:48:21.459Z");
+console.log("JobTracker - Built at: 2025-06-24T21:01:27.761Z");
 
 
 // ============================================================================
@@ -7190,7 +7222,7 @@ const EN_TRANSLATIONS = {
 		skills: {
 			title: "Skills",
 			name: "Skill Category",
-			keywords: "Skills (comma separated)",
+			keywords: "Skills",
 			addSkill: "Add Skill Category"
 		},
 		experience: {
@@ -7210,7 +7242,7 @@ const EN_TRANSLATIONS = {
 			name: "Project Name",
 			description: "Description",
 			url: "Project URL",
-			tags: "Technologies (comma separated)",
+			tags: "Technologies",
 			addProject: "Add Project"
 		},
 		portfolio: {
@@ -7617,7 +7649,7 @@ const PT_TRANSLATIONS = {
 		skills: {
 			title: "Habilidades",
 			name: "Categoria de Habilidade",
-			keywords: "Habilidades (separadas por vírgula)",
+			keywords: "Habilidades",
 			addSkill: "Adicionar Categoria"
 		},
 		experience: {
@@ -7637,7 +7669,7 @@ const PT_TRANSLATIONS = {
 			name: "Nome do Projeto",
 			description: "Descrição",
 			url: "URL do Projeto",
-			tags: "Tecnologias (separadas por vírgula)",
+			tags: "Tecnologias",
 			addProject: "Adicionar Projeto"
 		},
 		portfolio: {
@@ -17330,7 +17362,9 @@ const ResumeBuilder = {
 
 	// Create skill item
 	createSkillItem: (skill, index) => {
-		return h('div.dynamic-item.skill-item',
+		return h('div.dynamic-item.skill-item', {
+			'data-index': index
+		},
 			h('div.skill-header',
 				h('div.form-field',
 					h('label', I18n.t("resume.skills.name")),
@@ -17353,40 +17387,62 @@ const ResumeBuilder = {
 			),
 			h('div.skills-keywords',
 				h('label', I18n.t("resume.skills.keywords")),
-				h('div.dynamic-list',
+				h('div.keyword-tags',
 					...skill.keywords.map((keyword, keywordIndex) => 
-						ResumeBuilder.createSkillKeywordItem(skill, index, keyword, keywordIndex)
-					)
-				),
-				h('button.add-keyword-btn', {
-					type: 'button',
-					onclick: (e) => {
-						e.preventDefault();
-						ResumeBuilder.addSkillKeyword(index);
-					}
-				}, h('span.material-symbols-outlined', 'add'))
+						ResumeBuilder.createSkillKeywordTag(skill, index, keyword, keywordIndex)
+					),
+					h('button.add-keyword-btn', {
+						type: 'button',
+						onclick: (e) => {
+							e.preventDefault();
+							ResumeBuilder.addSkillKeyword(index);
+						}
+					}, h('span.material-symbols-outlined', 'add'))
+				)
 			)
 		);
 	},
 
-	// Create skill keyword item
-	createSkillKeywordItem: (skill, skillIndex, keyword, keywordIndex) => {
-		return h('div.keyword-item',
-			h('input[type="text"]', {
+	// Create skill keyword tag
+	createSkillKeywordTag: (skill, skillIndex, keyword, keywordIndex) => {
+		if (!keyword || keyword.trim() === '') {
+			// Show input field for empty keywords
+			return h('input.keyword-input', {
+				type: 'text',
+				placeholder: 'Add skill...',
 				value: keyword,
-				placeholder: 'Skill name',
 				oninput: (e) => {
 					ResumeBuilder.data.skills[skillIndex].keywords[keywordIndex] = e.target.value;
 					ResumeBuilder.updateJSON();
+				},
+				onblur: (e) => {
+					// Remove empty keywords on blur
+					if (!e.target.value.trim()) {
+						ResumeBuilder.removeSkillKeyword(skillIndex, keywordIndex);
+					}
+				},
+				onkeydown: (e) => {
+					if (e.key === 'Enter') {
+						e.preventDefault();
+						e.target.blur();
+						if (e.target.value.trim()) {
+							ResumeBuilder.addSkillKeyword(skillIndex);
+						}
+					}
 				}
-			}),
-			h('button.btn-remove-keyword', {
+			});
+		}
+		
+		// Show tag for non-empty keywords
+		return h('div.keyword-tag',
+			h('span.keyword-text', keyword),
+			h('button.keyword-remove', {
 				type: 'button',
 				onclick: (e) => {
 					e.preventDefault();
 					ResumeBuilder.removeSkillKeyword(skillIndex, keywordIndex);
 				}
-			}, h('span.material-symbols-outlined', 'close'))
+			}, '×')
 		);
 	},
 
@@ -17981,14 +18037,9 @@ const ResumeBuilder = {
 
 	addSkill: () => {
 		ResumeBuilder.data.skills.push({ name: "", keywords: [""] });
+		const newIndex = ResumeBuilder.data.skills.length - 1;
 		ResumeBuilder.refresh();
-		setTimeout(() => {
-			const focusElement = document.querySelector('.focus-first');
-			if (focusElement) {
-				focusElement.focus();
-				focusElement.classList.remove('focus-first');
-			}
-		}, 50);
+		ResumeBuilder.animateNewItem('skills', newIndex);
 	},
 
 	removeSkill: (index) => {
@@ -17998,12 +18049,12 @@ const ResumeBuilder = {
 
 	addSkillKeyword: (skillIndex) => {
 		ResumeBuilder.data.skills[skillIndex].keywords.push("");
-		ResumeBuilder.refresh();
+		ResumeBuilder.refresh(true); // Preserve scroll position
 	},
 
 	removeSkillKeyword: (skillIndex, keywordIndex) => {
 		ResumeBuilder.data.skills[skillIndex].keywords.splice(keywordIndex, 1);
-		ResumeBuilder.refresh();
+		ResumeBuilder.refresh(true); // Preserve scroll position
 	},
 
 	addExperience: () => {

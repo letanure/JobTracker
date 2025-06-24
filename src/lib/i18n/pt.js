@@ -156,7 +156,7 @@ const PT_TRANSLATIONS = {
 		skills: {
 			title: "Habilidades",
 			name: "Categoria de Habilidade",
-			keywords: "Habilidades (separadas por vírgula)",
+			keywords: "Habilidades",
 			addSkill: "Adicionar Categoria"
 		},
 		experience: {
@@ -176,7 +176,7 @@ const PT_TRANSLATIONS = {
 			name: "Nome do Projeto",
 			description: "Descrição",
 			url: "URL do Projeto",
-			tags: "Tecnologias (separadas por vírgula)",
+			tags: "Tecnologias",
 			addProject: "Adicionar Projeto"
 		},
 		portfolio: {

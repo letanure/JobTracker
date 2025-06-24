@@ -496,7 +496,9 @@ const ResumeBuilder = {
 
 	// Create skill item
 	createSkillItem: (skill, index) => {
-		return h('div.dynamic-item.skill-item',
+		return h('div.dynamic-item.skill-item', {
+			'data-index': index
+		},
 			h('div.skill-header',
 				h('div.form-field',
 					h('label', I18n.t("resume.skills.name")),
@@ -519,40 +521,62 @@ const ResumeBuilder = {
 			),
 			h('div.skills-keywords',
 				h('label', I18n.t("resume.skills.keywords")),
-				h('div.dynamic-list',
+				h('div.keyword-tags',
 					...skill.keywords.map((keyword, keywordIndex) => 
-						ResumeBuilder.createSkillKeywordItem(skill, index, keyword, keywordIndex)
-					)
-				),
-				h('button.add-keyword-btn', {
-					type: 'button',
-					onclick: (e) => {
-						e.preventDefault();
-						ResumeBuilder.addSkillKeyword(index);
-					}
-				}, h('span.material-symbols-outlined', 'add'))
+						ResumeBuilder.createSkillKeywordTag(skill, index, keyword, keywordIndex)
+					),
+					h('button.add-keyword-btn', {
+						type: 'button',
+						onclick: (e) => {
+							e.preventDefault();
+							ResumeBuilder.addSkillKeyword(index);
+						}
+					}, h('span.material-symbols-outlined', 'add'))
+				)
 			)
 		);
 	},
 
-	// Create skill keyword item
-	createSkillKeywordItem: (skill, skillIndex, keyword, keywordIndex) => {
-		return h('div.keyword-item',
-			h('input[type="text"]', {
+	// Create skill keyword tag
+	createSkillKeywordTag: (skill, skillIndex, keyword, keywordIndex) => {
+		if (!keyword || keyword.trim() === '') {
+			// Show input field for empty keywords
+			return h('input.keyword-input', {
+				type: 'text',
+				placeholder: 'Add skill...',
 				value: keyword,
-				placeholder: 'Skill name',
 				oninput: (e) => {
 					ResumeBuilder.data.skills[skillIndex].keywords[keywordIndex] = e.target.value;
 					ResumeBuilder.updateJSON();
+				},
+				onblur: (e) => {
+					// Remove empty keywords on blur
+					if (!e.target.value.trim()) {
+						ResumeBuilder.removeSkillKeyword(skillIndex, keywordIndex);
+					}
+				},
+				onkeydown: (e) => {
+					if (e.key === 'Enter') {
+						e.preventDefault();
+						e.target.blur();
+						if (e.target.value.trim()) {
+							ResumeBuilder.addSkillKeyword(skillIndex);
+						}
+					}
 				}
-			}),
-			h('button.btn-remove-keyword', {
+			});
+		}
+		
+		// Show tag for non-empty keywords
+		return h('div.keyword-tag',
+			h('span.keyword-text', keyword),
+			h('button.keyword-remove', {
 				type: 'button',
 				onclick: (e) => {
 					e.preventDefault();
 					ResumeBuilder.removeSkillKeyword(skillIndex, keywordIndex);
 				}
-			}, h('span.material-symbols-outlined', 'close'))
+			}, '×')
 		);
 	},
 
@@ -1147,14 +1171,9 @@ const ResumeBuilder = {
 
 	addSkill: () => {
 		ResumeBuilder.data.skills.push({ name: "", keywords: [""] });
+		const newIndex = ResumeBuilder.data.skills.length - 1;
 		ResumeBuilder.refresh();
-		setTimeout(() => {
-			const focusElement = document.querySelector('.focus-first');
-			if (focusElement) {
-				focusElement.focus();
-				focusElement.classList.remove('focus-first');
-			}
-		}, 50);
+		ResumeBuilder.animateNewItem('skills', newIndex);
 	},
 
 	removeSkill: (index) => {
@@ -1164,12 +1183,12 @@ const ResumeBuilder = {
 
 	addSkillKeyword: (skillIndex) => {
 		ResumeBuilder.data.skills[skillIndex].keywords.push("");
-		ResumeBuilder.refresh();
+		ResumeBuilder.refresh(true); // Preserve scroll position
 	},
 
 	removeSkillKeyword: (skillIndex, keywordIndex) => {
 		ResumeBuilder.data.skills[skillIndex].keywords.splice(keywordIndex, 1);
-		ResumeBuilder.refresh();
+		ResumeBuilder.refresh(true); // Preserve scroll position
 	},
 
 	addExperience: () => {

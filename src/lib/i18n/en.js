@@ -155,7 +155,7 @@ const EN_TRANSLATIONS = {
 		skills: {
 			title: "Skills",
 			name: "Skill Category",
-			keywords: "Skills (comma separated)",
+			keywords: "Skills",
 			addSkill: "Add Skill Category"
 		},
 		experience: {
@@ -175,7 +175,7 @@ const EN_TRANSLATIONS = {
 			name: "Project Name",
 			description: "Description",
 			url: "Project URL",
-			tags: "Technologies (comma separated)",
+			tags: "Technologies",
 			addProject: "Add Project"
 		},
 		portfolio: {
