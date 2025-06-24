@@ -3,24 +3,24 @@
 /* ============================================================================ */
 
 /* Import base styles first */
-@import url('./styles/base.css');
-@import url('./styles/layout.css');
+@import url("./styles/base.css");
+@import url("./styles/layout.css");
 
 /* Import all component styles */
-@import url('./styles/components/utilities.css');
-@import url('./styles/components/buttons.css');
-@import url('./styles/components/forms.css');
-@import url('./styles/components/contacts.css');
-@import url('./styles/components/dropdowns.css');
-@import url('./styles/components/modals.css');
-@import url('./styles/components/badges.css');
-@import url('./styles/components/language-switcher.css');
-@import url('./styles/components/tabs.css');
-@import url('./styles/components/kanban.css');
-@import url('./styles/components/tasks.css');
-@import url('./styles/components/calendar.css');
-@import url('./styles/components/dialogs.css');
+@import url("./styles/components/utilities.css");
+@import url("./styles/components/buttons.css");
+@import url("./styles/components/forms.css");
+@import url("./styles/components/contacts.css");
+@import url("./styles/components/dropdowns.css");
+@import url("./styles/components/modals.css");
+@import url("./styles/components/badges.css");
+@import url("./styles/components/language-switcher.css");
+@import url("./styles/components/tabs.css");
+@import url("./styles/components/kanban.css");
+@import url("./styles/components/tasks.css");
+@import url("./styles/components/calendar.css");
+@import url("./styles/components/dialogs.css");
 
 /* Import remaining styles */
-@import url('./styles/table.css');
-@import url('./styles/dashboard.css');
+@import url("./styles/table.css");
+@import url("./styles/dashboard.css");

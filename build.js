@@ -7,6 +7,17 @@
 
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
+
+// Import minification tools
+let terser, htmlMinifier, csso;
+try {
+  terser = require('terser');
+  htmlMinifier = require('html-minifier-terser');
+  csso = require('csso');
+} catch (error) {
+  console.log('⚠️  Minification packages not installed. Run: npm install --save-dev terser html-minifier-terser csso-cli');
+}
 
 // Build configuration
 const BUILD_CONFIG = {
@@ -32,6 +43,11 @@ const BUILD_CONFIG = {
     // Components
     'src/components/dialogs.js',
     'src/components/notes.js',
+    // Task modules (must be loaded before main tasks.js)
+    'src/components/tasks/task-count.js',
+    'src/components/tasks/task-item.js',
+    'src/components/tasks/task-modal.js',
+    'src/components/tasks/task-operations.js',
     'src/components/tasks.js',
     'src/components/contacts.js',
     'src/components/form-fields.js',
@@ -148,9 +164,122 @@ function copyFile(srcPath, destPath) {
 }
 
 /**
- * Simple HTML minification
+ * Basic JavaScript minification that safely preserves template literals and strings
+ */
+function minifyJavaScriptBasic(code) {
+  // Disable all minification for now - the regex patterns were corrupting strings
+  return code;
+}
+
+/**
+ * Advanced JavaScript minification using Terser
+ */
+function minifyJavaScript(code) {
+  if (!terser) {
+    // Fallback to basic minification (now disabled for safety)
+    return minifyJavaScriptBasic(code);
+  }
+
+  try {
+    // Check if terser.minify returns a Promise
+    const result = terser.minify(code, {
+      compress: {
+        dead_code: true,
+        drop_console: false, // Keep console.log for debugging
+        drop_debugger: true,
+        keep_fnames: false,
+        passes: 2
+      },
+      mangle: {
+        toplevel: false,
+        keep_fnames: false
+      },
+      format: {
+        comments: false
+      }
+    });
+    
+    // If result is a Promise, fall back to basic minification
+    if (result && typeof result.then === 'function') {
+      console.log('⚠️  Terser returned a Promise, using basic minification instead');
+      return minifyJavaScriptBasic(code);
+    }
+
+    if (result.error) {
+      console.error('⚠️  Terser minification failed:', result.error.message);
+      return code; // Return original code if minification fails
+    }
+
+    return result.code || code;
+  } catch (error) {
+    console.error('⚠️  JavaScript minification error:', error.message);
+    return code; // Return original code if minification fails
+  }
+}
+
+/**
+ * Advanced CSS minification using CSSO
+ */
+function minifyCSS(css) {
+  if (!csso) {
+    // Fallback to basic minification
+    return css
+      .replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
+      .replace(/\s+/g, ' ') // Compress whitespace
+      .replace(/;\s+/g, ';') // Remove space after semicolons
+      .replace(/\{\s+/g, '{') // Remove space after opening braces
+      .replace(/\s+\}/g, '}') // Remove space before closing braces
+      .trim();
+  }
+
+  try {
+    const result = csso.minify(css, {
+      restructure: true,
+      forceMediaMerge: true,
+      comments: false
+    });
+
+    return result.css;
+  } catch (error) {
+    console.error('⚠️  CSS minification error:', error.message);
+    return css; // Return original CSS if minification fails
+  }
+}
+
+/**
+ * Advanced HTML minification using html-minifier-terser
  */
 function minifyHTML(html) {
+  if (!htmlMinifier) {
+    // Fallback to simple minification
+    return simpleMinifyHTML(html);
+  }
+
+  try {
+    // Use simpler options to avoid async issues
+    return htmlMinifier.minify(html, {
+      collapseWhitespace: true,
+      removeComments: true,
+      removeRedundantAttributes: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      minifyCSS: false, // Disable CSS minification in HTML to avoid async
+      minifyJS: false,  // Disable JS minification in HTML to avoid async
+      useShortDoctype: true,
+      removeEmptyAttributes: true,
+      caseSensitive: true,
+      keepClosingSlash: true
+    });
+  } catch (error) {
+    console.error('⚠️  HTML minification error:', error.message);
+    return simpleMinifyHTML(html); // Fallback to simple minification
+  }
+}
+
+/**
+ * Simple HTML minification (fallback)
+ */
+function simpleMinifyHTML(html) {
   // Split HTML into parts to avoid minifying script content
   const scriptRegex = /(<script[^>]*>)([\s\S]*?)(<\/script>)/gi;
   const parts = [];
@@ -304,12 +433,45 @@ function generateHreflangLinks(baseUrl, translations) {
 }
 
 /**
+ * Analyze compression potential (without creating files)
+ */
+function analyzeCompression(content) {
+  try {
+    const originalSizeKB = (content.length / 1024).toFixed(2);
+    
+    // Analyze gzip compression
+    const gzipContent = zlib.gzipSync(content, { level: 9 });
+    const gzipSizeKB = (gzipContent.length / 1024).toFixed(2);
+    const gzipSavings = (((content.length - gzipContent.length) / content.length) * 100).toFixed(1);
+    
+    console.log(`📄 Current size: ${originalSizeKB} KB`);
+    console.log(`🗜️  Gzip potential: ${gzipSizeKB} KB (${gzipSavings}% smaller)`);
+    
+    // Analyze brotli compression if available
+    if (zlib.brotliCompressSync) {
+      const brotliContent = zlib.brotliCompressSync(content, {
+        params: {
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+          [zlib.constants.BROTLI_PARAM_SIZE_HINT]: content.length
+        }
+      });
+      const brotliSizeKB = (brotliContent.length / 1024).toFixed(2);
+      const brotliSavings = (((content.length - brotliContent.length) / content.length) * 100).toFixed(1);
+      console.log(`🔧 Brotli potential: ${brotliSizeKB} KB (${brotliSavings}% smaller)`);
+    }
+
+  } catch (error) {
+    console.error('⚠️  Compression analysis failed:', error.message);
+  }
+}
+
+/**
  * Build minified version for deployment
  */
 function buildMinified() {
-  console.log('🗜️  Building minified version for deployment...\n');
+  console.log('🗜️  Building optimized version...\n');
   
-  // First build the regular version
+  // Build JavaScript and CSS
   const jsResult = buildJavaScript();
   const cssResult = buildCSS();
   
@@ -331,52 +493,47 @@ function buildMinified() {
   htmlContent = htmlContent.replace(/<link rel="stylesheet" href="[^"]*">/g, '');
   htmlContent = htmlContent.replace(/<script src="[^"]*"><\/script>/g, '');
   
-  // Add minified build comment
-  const buildComment = `<!-- JobTracker v${new Date().toISOString().split('T')[0]} - Minified for deployment -->`;
+  // Add minimal build metadata
+  const buildTimestamp = new Date().toISOString();
+  const cacheVersion = Date.now();
+  const buildComment = `<!--
+Generated: ${buildTimestamp}
+Cache Version: ${cacheVersion}
+-->`;
   
-  // Insert minified CSS (basic minification)
-  const minifiedCSS = cssResult.content
-    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
-    .replace(/\s+/g, ' ') // Compress whitespace
-    .replace(/;\s+/g, ';') // Remove space after semicolons
-    .replace(/\{\s+/g, '{') // Remove space after opening braces
-    .replace(/\s+\}/g, '}') // Remove space before closing braces
-    .trim();
+  // Insert minified CSS (advanced minification)
+  console.log('🎨 Minifying CSS...');
+  const minifiedCSS = minifyCSS(cssResult.content);
   const cssBlock = `<style>${minifiedCSS}</style>`;
   htmlContent = htmlContent.replace('</head>', `${cssBlock}</head>`);
   
-  // Insert minified JavaScript (basic minification)
-  const minifiedJS = jsResult.content
-    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove block comments
-    .replace(/\/\/.*$/gm, '') // Remove line comments
-    .replace(/\s+/g, ' ') // Compress whitespace
-    .replace(/;\s+/g, ';') // Remove space after semicolons
-    .replace(/\{\s+/g, '{') // Remove space after opening braces
-    .replace(/\s+\}/g, '}') // Remove space before closing braces
-    .trim();
+  // Insert minified JavaScript (advanced minification)
+  console.log('📦 Minifying JavaScript...');
+  const minifiedJS = minifyJavaScript(jsResult.content);
   const jsBlock = `<script>${minifiedJS}</script>`;
   htmlContent = htmlContent.replace('</body>', `${jsBlock}</body>`);
   
-  // Add build comment and minify
+  // Add build comment and minify HTML
   htmlContent = buildComment + htmlContent;
-  htmlContent = minifyHTML(htmlContent);
+  console.log('🗜️  Minifying HTML...');
   
-  const minifiedOutput = 'dist/index.min.html';
+  // Use simple HTML minification for now (advanced minification has async issues)
+  htmlContent = simpleMinifyHTML(htmlContent);
+  
+  const minifiedOutput = 'dist/index.html';
   
   if (writeFile(minifiedOutput, htmlContent)) {
-    console.log(`🎉 Minified build complete!`);
+    console.log(`🎉 Build complete!`);
     console.log(`📦 Output: ${minifiedOutput}`);
     
-    // Show file sizes comparison
-    const originalStats = fs.statSync(BUILD_CONFIG.singleFileOutput);
-    const minifiedStats = fs.statSync(minifiedOutput);
-    const originalSizeKB = (originalStats.size / 1024).toFixed(2);
-    const minifiedSizeKB = (minifiedStats.size / 1024).toFixed(2);
-    const savings = (((originalStats.size - minifiedStats.size) / originalStats.size) * 100).toFixed(1);
-    
-    console.log(`📏 Original size: ${originalSizeKB} KB`);
-    console.log(`📏 Minified size: ${minifiedSizeKB} KB`);
-    console.log(`💾 Space saved: ${savings}%`);
+    // Show file size
+    const stats = fs.statSync(minifiedOutput);
+    const sizeKB = (stats.size / 1024).toFixed(2);
+    console.log(`📏 Size: ${sizeKB} KB`);
+
+    // Create compressed versions for reference (but don't clutter the main directory)
+    console.log('\n📊 Compression Analysis:');
+    analyzeCompression(htmlContent);
     
     return true;
   }
@@ -583,7 +740,7 @@ ${jsResult.content}    </script>`;
 }
 
 /**
- * Main build function - builds single HTML file by default
+ * Main build function - builds minified single HTML file by default
  */
 function build(separateFiles = false) {
   console.log('🏗️  Building JobTracker...\n');
@@ -598,7 +755,7 @@ function build(separateFiles = false) {
   if (separateFiles) {
     return buildSeparateFiles();
   } else {
-    return buildSingleFile();
+    return buildMinified(); // Always build minified version
   }
 }
 

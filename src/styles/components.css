@@ -3,15 +3,15 @@
 /* ============================================================================ */
 
 /* Import all component CSS files */
-@import url('./components/buttons.css');
-@import url('./components/forms.css');
-@import url('./components/contacts.css');
-@import url('./components/dropdowns.css');
-@import url('./components/modals.css');
-@import url('./components/badges.css');
-@import url('./components/language-switcher.css');
-@import url('./components/tabs.css');
-@import url('./components/kanban.css');
-@import url('./components/tasks.css');
-@import url('./components/calendar.css');
-@import url('./components/dialogs.css');
+@import url("./components/buttons.css");
+@import url("./components/forms.css");
+@import url("./components/contacts.css");
+@import url("./components/dropdowns.css");
+@import url("./components/modals.css");
+@import url("./components/badges.css");
+@import url("./components/language-switcher.css");
+@import url("./components/tabs.css");
+@import url("./components/kanban.css");
+@import url("./components/tasks.css");
+@import url("./components/calendar.css");
+@import url("./components/dialogs.css");

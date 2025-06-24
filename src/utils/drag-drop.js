@@ -2,7 +2,7 @@
 // DRAG & DROP UTILITY - Shared drag and drop functionality
 // ============================================================================
 
-import { DRAG_CLASSES, ANIMATION_DURATIONS } from './shared-constants.js';
+import { ANIMATION_DURATIONS, DRAG_CLASSES } from "./shared-constants.js";
 
 /**
  * Shared drag and drop utility for calendar, kanban, and tasks board
@@ -11,7 +11,7 @@ export const DragDropUtils = {
 	/**
 	 * Initialize drag start for an element
 	 */
-	handleDragStart: (e, data, allowedTypes = ['task']) => {
+	handleDragStart: (e, data, allowedTypes = ["task"]) => {
 		e.stopPropagation();
 
 		// Only allow dragging specified types
@@ -21,8 +21,8 @@ export const DragDropUtils = {
 		}
 
 		// Store the drag data
-		e.dataTransfer.setData('text/plain', JSON.stringify(data));
-		e.dataTransfer.effectAllowed = 'move';
+		e.dataTransfer.setData("text/plain", JSON.stringify(data));
+		e.dataTransfer.effectAllowed = "move";
 
 		// Add visual feedback
 		e.target.classList.add(DRAG_CLASSES.DRAGGING);
@@ -35,7 +35,7 @@ export const DragDropUtils = {
 	 */
 	handleDragOver: (e, container) => {
 		e.preventDefault();
-		e.dataTransfer.dropEffect = 'move';
+		e.dataTransfer.dropEffect = "move";
 
 		// Add visual feedback to drop target
 		container.classList.add(DRAG_CLASSES.DRAG_OVER);
@@ -49,7 +49,7 @@ export const DragDropUtils = {
 		container.classList.remove(DRAG_CLASSES.DRAG_OVER);
 
 		// Remove any drop indicators
-		container.querySelectorAll(`.${DRAG_CLASSES.DROP_INDICATOR}`).forEach(indicator => {
+		container.querySelectorAll(`.${DRAG_CLASSES.DROP_INDICATOR}`).forEach((indicator) => {
 			indicator.remove();
 		});
 	},
@@ -65,32 +65,32 @@ export const DragDropUtils = {
 		container.classList.remove(DRAG_CLASSES.DRAG_OVER);
 
 		// Remove all drag indicators
-		document.querySelectorAll(`.${DRAG_CLASSES.DRAGGING}`).forEach(el => {
+		document.querySelectorAll(`.${DRAG_CLASSES.DRAGGING}`).forEach((el) => {
 			el.classList.remove(DRAG_CLASSES.DRAGGING);
 		});
 
 		// Remove drop indicators
-		document.querySelectorAll(`.${DRAG_CLASSES.DROP_INDICATOR}`).forEach(indicator => {
+		document.querySelectorAll(`.${DRAG_CLASSES.DROP_INDICATOR}`).forEach((indicator) => {
 			indicator.remove();
 		});
 
 		try {
-			const dragDataText = e.dataTransfer.getData('text/plain');
+			const dragDataText = e.dataTransfer.getData("text/plain");
 			if (!dragDataText) {
-				console.error('No drag data found');
+				console.error("No drag data found");
 				return false;
 			}
 
 			const dragData = JSON.parse(dragDataText);
-			
+
 			// Call the provided drop handler
-			if (typeof onDrop === 'function') {
+			if (typeof onDrop === "function") {
 				return onDrop(dragData, e);
 			}
 
 			return true;
 		} catch (error) {
-			console.error('Error handling drop:', error);
+			console.error("Error handling drop:", error);
 			return false;
 		}
 	},
@@ -99,7 +99,7 @@ export const DragDropUtils = {
 	 * Create a drop indicator element
 	 */
 	createDropIndicator: (position, text = null) => {
-		const indicator = document.createElement('div');
+		const indicator = document.createElement("div");
 		indicator.className = DRAG_CLASSES.DROP_INDICATOR;
 		indicator.style.cssText = `
 			position: absolute;
@@ -114,7 +114,7 @@ export const DragDropUtils = {
 
 		// Add text label if provided
 		if (text) {
-			const label = document.createElement('div');
+			const label = document.createElement("div");
 			label.className = `${DRAG_CLASSES.DROP_INDICATOR}-label`;
 			label.textContent = text;
 			label.style.cssText = `
@@ -139,7 +139,7 @@ export const DragDropUtils = {
 	 * Remove all drop indicators from document
 	 */
 	clearDropIndicators: () => {
-		document.querySelectorAll(`.${DRAG_CLASSES.DROP_INDICATOR}`).forEach(indicator => {
+		document.querySelectorAll(`.${DRAG_CLASSES.DROP_INDICATOR}`).forEach((indicator) => {
 			indicator.remove();
 		});
 	},
@@ -150,7 +150,7 @@ export const DragDropUtils = {
 	hasParentWithClass: (element, className) => {
 		let current = element;
 		while (current && current !== document.body) {
-			if (current.classList && current.classList.contains(className)) {
+			if (current.classList?.contains(className)) {
 				return current;
 			}
 			current = current.parentElement;
@@ -173,33 +173,34 @@ export const DragDropUtils = {
 			type,
 			id,
 			timestamp: Date.now(),
-			...additionalData
+			...additionalData,
 		};
 	},
 
 	/**
 	 * Validate drag data object
 	 */
-	validateDragData: (dragData, requiredFields = ['type', 'id']) => {
-		if (!dragData || typeof dragData !== 'object') {
+	validateDragData: (dragData, requiredFields = ["type", "id"]) => {
+		if (!dragData || typeof dragData !== "object") {
 			return false;
 		}
 
-		return requiredFields.every(field => dragData.hasOwnProperty(field));
+		// biome-ignore lint/suspicious/noPrototypeBuiltins: <explanation>
+		return requiredFields.every((field) => dragData.hasOwnProperty(field));
 	},
 
 	/**
 	 * Add draggable attributes to element
 	 */
-	makeDraggable: (element, dragData, allowedTypes = ['task']) => {
+	makeDraggable: (element, dragData, allowedTypes = ["task"]) => {
 		element.draggable = true;
-		element.style.cursor = 'grab';
+		element.style.cursor = "grab";
 
-		element.addEventListener('dragstart', (e) => {
+		element.addEventListener("dragstart", (e) => {
 			DragDropUtils.handleDragStart(e, dragData, allowedTypes);
 		});
 
-		element.addEventListener('dragend', (e) => {
+		element.addEventListener("dragend", (e) => {
 			e.target.classList.remove(DRAG_CLASSES.DRAGGING);
 			DragDropUtils.clearDropIndicators();
 		});
@@ -211,23 +212,20 @@ export const DragDropUtils = {
 	 * Add drop zone functionality to element
 	 */
 	makeDropZone: (element, onDrop, options = {}) => {
-		const {
-			showIndicators = true,
-			dragOverClass = DRAG_CLASSES.DRAG_OVER
-		} = options;
+		const { showIndicators = true, dragOverClass = DRAG_CLASSES.DRAG_OVER } = options;
 
-		element.addEventListener('dragover', (e) => {
+		element.addEventListener("dragover", (e) => {
 			DragDropUtils.handleDragOver(e, element);
 		});
 
-		element.addEventListener('dragleave', (e) => {
+		element.addEventListener("dragleave", (e) => {
 			DragDropUtils.handleDragLeave(e, element);
 		});
 
-		element.addEventListener('drop', (e) => {
+		element.addEventListener("drop", (e) => {
 			DragDropUtils.handleDrop(e, element, onDrop);
 		});
 
 		return element;
-	}
+	},
 };

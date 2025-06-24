@@ -26,15 +26,25 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 			h(
 				"div",
 				{ className: "phase-display" },
-				h("span", { className: "phase-main" }, (() => {
-					const phaseText = getPhaseText(job.currentPhase);
-					return phaseText && !phaseText.startsWith('phases.') ? phaseText : job.currentPhase;
-				})()),
+				h(
+					"span",
+					{ className: "phase-main" },
+					(() => {
+						const phaseText = getPhaseText(job.currentPhase);
+						return phaseText && !phaseText.startsWith("phases.") ? phaseText : job.currentPhase;
+					})()
+				),
 				job.currentSubstep && job.currentSubstep !== job.currentPhase
-					? h("span", { className: "phase-substep" }, (() => {
-						const substepText = getSubstepText(job.currentSubstep);
-						return substepText && !substepText.startsWith('substeps.') ? substepText : job.currentSubstep;
-					})())
+					? h(
+							"span",
+							{ className: "phase-substep" },
+							(() => {
+								const substepText = getSubstepText(job.currentSubstep);
+								return substepText && !substepText.startsWith("substeps.")
+									? substepText
+									: job.currentSubstep;
+							})()
+						)
 					: null
 			)
 		),
@@ -46,20 +56,21 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 			h(
 				"div",
 				{ className: "kanban-action-icons" },
-				// Source link icon if sourceUrl exists  
-				job.sourceUrl && h(
-					"a",
-					{
-						className: "kanban-icon-btn kanban-source-link",
-						href: job.sourceUrl,
-						target: "_blank",
-						rel: "noopener noreferrer",
-						title: "View job posting",
-						onclick: (e) => e.stopPropagation(),
-					},
-					h("span", { className: "material-symbols-outlined" }, "link")
-				),
-				
+				// Source link icon if sourceUrl exists
+				job.sourceUrl &&
+					h(
+						"a",
+						{
+							className: "kanban-icon-btn kanban-source-link",
+							href: job.sourceUrl,
+							target: "_blank",
+							rel: "noopener noreferrer",
+							title: "View job posting",
+							onclick: (e) => e.stopPropagation(),
+						},
+						h("span", { className: "material-symbols-outlined" }, "link")
+					),
+
 				// Notes icon with counter
 				h(
 					"button",
@@ -72,10 +83,11 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 						},
 					},
 					h("span", { className: "material-symbols-outlined" }, "note"),
-					(job.notes || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.notes || []).length.toString())
+					(job.notes || []).length > 0 &&
+						h("span", { className: "kanban-count-badge" }, (job.notes || []).length.toString())
 				),
-				
-				// Tasks icon with counter  
+
+				// Tasks icon with counter
 				h(
 					"button",
 					{
@@ -87,9 +99,10 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 						},
 					},
 					h("span", { className: "material-symbols-outlined" }, "task_alt"),
-					(job.tasks || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.tasks || []).length.toString())
+					(job.tasks || []).length > 0 &&
+						h("span", { className: "kanban-count-badge" }, (job.tasks || []).length.toString())
 				),
-				
+
 				// Contacts icon with counter
 				h(
 					"button",
@@ -102,28 +115,37 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 						},
 					},
 					h("span", { className: "material-symbols-outlined" }, "person"),
-					(job.contacts || []).length > 0 && h("span", { className: "kanban-count-badge" }, (job.contacts || []).length.toString())
+					(job.contacts || []).length > 0 &&
+						h("span", { className: "kanban-count-badge" }, (job.contacts || []).length.toString())
 				),
-				
+
 				// Edit button
-				h("button", {
-					className: "kanban-icon-btn",
-					title: "Edit job",
-					onclick: (e) => {
-						e.stopPropagation();
-						onEdit(job);
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: "Edit job",
+						onclick: (e) => {
+							e.stopPropagation();
+							onEdit(job);
+						},
 					},
-				}, h("span", { className: "material-symbols-outlined" }, "edit")),
-				
+					h("span", { className: "material-symbols-outlined" }, "edit")
+				),
+
 				// Delete button
-				h("button", {
-					className: "kanban-icon-btn",
-					title: "Delete job", 
-					onclick: (e) => {
-						e.stopPropagation();
-						onDelete(job);
+				h(
+					"button",
+					{
+						className: "kanban-icon-btn",
+						title: "Delete job",
+						onclick: (e) => {
+							e.stopPropagation();
+							onDelete(job);
+						},
 					},
-				}, h("span", { className: "material-symbols-outlined" }, "delete"))
+					h("span", { className: "material-symbols-outlined" }, "delete")
+				)
 			)
 		)
 	);

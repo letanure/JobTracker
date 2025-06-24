@@ -413,7 +413,7 @@ const CalendarView = {
 			// Events column with drag and drop support
 			h(
 				"div",
-				{ 
+				{
 					className: "calendar-day-events-column",
 					ondragover: (e) => CalendarView.handleDragOver(e),
 					ondragleave: (e) => CalendarView.handleDragLeave(e),
@@ -435,15 +435,21 @@ const CalendarView = {
 		// Generate slots from 8am (8) to 8pm (20) in 30-minute intervals
 		for (let hour = 8; hour <= 20; hour++) {
 			for (let minute = 0; minute < 60; minute += 30) {
-				const time24 = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+				const time24 = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 				const time12 = CalendarView.formatTime12Hour(hour, minute);
-				
-				slots.push(h("div", { 
-					className: "calendar-time-slot",
-					"data-time": time24,
-					"data-hour": hour,
-					"data-minute": minute
-				}, time12));
+
+				slots.push(
+					h(
+						"div",
+						{
+							className: "calendar-time-slot",
+							"data-time": time24,
+							"data-hour": hour,
+							"data-minute": minute,
+						},
+						time12
+					)
+				);
 			}
 		}
 		return slots;
@@ -453,7 +459,7 @@ const CalendarView = {
 	formatTime12Hour: (hour, minute) => {
 		const period = hour < 12 ? "AM" : "PM";
 		const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-		const minuteStr = minute === 0 ? "" : `:${minute.toString().padStart(2, '0')}`;
+		const minuteStr = minute === 0 ? "" : `:${minute.toString().padStart(2, "0")}`;
 		return `${hour12}${minuteStr} ${period}`;
 	},
 
@@ -543,7 +549,7 @@ const CalendarView = {
 			// First sort by date
 			const dateCompare = a.date.getTime() - b.date.getTime();
 			if (dateCompare !== 0) return dateCompare;
-			
+
 			// If same date, prioritize tasks by priority (high > medium > low)
 			if (a.type === "task" && b.type === "task") {
 				const priorityOrder = { high: 3, medium: 2, low: 1 };
@@ -551,11 +557,11 @@ const CalendarView = {
 				const bPriority = priorityOrder[b.priority] || 0;
 				return bPriority - aPriority; // Higher priority first
 			}
-			
+
 			// If one is task and other isn't, tasks come first
 			if (a.type === "task" && b.type !== "task") return -1;
 			if (a.type !== "task" && b.type === "task") return 1;
-			
+
 			// For same type non-tasks, maintain current order
 			return 0;
 		});
@@ -685,7 +691,7 @@ const CalendarView = {
 	renderWeekEvents: (events) => {
 		// Calculate overlapping events and their positions
 		const eventsWithPositions = CalendarView.calculateEventPositions(events);
-		
+
 		return eventsWithPositions.map((event) => {
 			return h(
 				"div",
@@ -694,7 +700,11 @@ const CalendarView = {
 					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 3px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
 					draggable: event.type === "task", // Only tasks can be dragged
 					onclick: () => {
-						if (event.type === "task" && typeof TasksBoard !== "undefined" && TasksBoard.openTaskEditModal) {
+						if (
+							event.type === "task" &&
+							typeof TasksBoard !== "undefined" &&
+							TasksBoard.openTaskEditModal
+						) {
 							TasksBoard.openTaskEditModal(event.task);
 						} else {
 							CalendarView.showEventDetails(event);
@@ -731,7 +741,7 @@ const CalendarView = {
 		// Calculate position: each 30-min slot is about 20px high
 		const slotsFromStart = (hours - 8) * 2 + Math.floor(minutes / 30);
 		const topPosition = slotsFromStart * 20; // 20px per 30-min slot
-		
+
 		// Calculate height based on duration if available (default 30 min)
 		let durationMinutes = 30; // default 30 minutes if no duration
 		if (event.task.duration) {
@@ -749,35 +759,35 @@ const CalendarView = {
 	// Parse duration string to minutes
 	parseDuration: (duration) => {
 		if (!duration) return null;
-		
+
 		const durationMap = {
 			"15min": 15,
 			"30min": 30,
 			"1h": 60,
 			"1h30": 90,
 			"2h": 120,
-			"3h": 180
+			"3h": 180,
 		};
-		
+
 		return durationMap[duration] || null;
 	},
 
 	// Calculate positions for events, handling overlaps
 	calculateEventPositions: (events) => {
 		// First, calculate basic position for each event
-		const eventsWithBasicPosition = events.map(event => ({
+		const eventsWithBasicPosition = events.map((event) => ({
 			...event,
 			positionStyle: CalendarView.calculateEventPosition(event),
 			startMinutes: CalendarView.getEventStartMinutes(event),
-			endMinutes: CalendarView.getEventEndMinutes(event)
+			endMinutes: CalendarView.getEventEndMinutes(event),
 		}));
 
 		// Filter out events that don't have time-based positioning
-		const timedEvents = eventsWithBasicPosition.filter(event => 
-			event.startMinutes !== null && event.positionStyle !== ""
+		const timedEvents = eventsWithBasicPosition.filter(
+			(event) => event.startMinutes !== null && event.positionStyle !== ""
 		);
-		const untimedEvents = eventsWithBasicPosition.filter(event => 
-			event.startMinutes === null || event.positionStyle === ""
+		const untimedEvents = eventsWithBasicPosition.filter(
+			(event) => event.startMinutes === null || event.positionStyle === ""
 		);
 
 		// Group overlapping events
@@ -785,17 +795,17 @@ const CalendarView = {
 
 		// Calculate column positions for overlapping events
 		const positionedTimedEvents = [];
-		groups.forEach(group => {
+		groups.forEach((group) => {
 			group.forEach((event, index) => {
 				const columnWidth = 100 / group.length;
 				const leftOffset = index * columnWidth;
-				
+
 				// Modify the position style to include column positioning
 				event.positionStyle = event.positionStyle.replace(
-					'width: calc(100% - 8px);',
+					"width: calc(100% - 8px);",
 					`width: calc(${columnWidth}% - 6px); left: ${leftOffset}%;`
 				);
-				
+
 				positionedTimedEvents.push(event);
 			});
 		});
@@ -807,14 +817,14 @@ const CalendarView = {
 	// Get event start time in minutes from start of day
 	getEventStartMinutes: (event) => {
 		if (event.type !== "task" || !event.task.dueDate) return null;
-		
+
 		const eventDate = new Date(event.task.dueDate);
 		const hours = eventDate.getHours();
 		const minutes = eventDate.getMinutes();
-		
+
 		// Only consider business hours
 		if (hours < 8 || hours > 20) return null;
-		
+
 		return hours * 60 + minutes;
 	},
 
@@ -822,7 +832,7 @@ const CalendarView = {
 	getEventEndMinutes: (event) => {
 		const startMinutes = CalendarView.getEventStartMinutes(event);
 		if (startMinutes === null) return null;
-		
+
 		const durationMinutes = CalendarView.parseDuration(event.task?.duration) || 30; // default 30 min
 		return startMinutes + durationMinutes;
 	},
@@ -832,14 +842,14 @@ const CalendarView = {
 		const groups = [];
 		const processed = new Set();
 
-		events.forEach(event => {
+		events.forEach((event) => {
 			if (processed.has(event.id)) return;
 
 			const group = [event];
 			processed.add(event.id);
 
 			// Find all events that overlap with this one
-			events.forEach(otherEvent => {
+			events.forEach((otherEvent) => {
 				if (processed.has(otherEvent.id)) return;
 
 				if (CalendarView.eventsOverlap(event, otherEvent)) {
@@ -868,7 +878,7 @@ const CalendarView = {
 	renderDayEvents: (events) => {
 		// Calculate overlapping events and their positions for day view too
 		const eventsWithPositions = CalendarView.calculateEventPositions(events);
-		
+
 		return eventsWithPositions.map((event) => {
 			return h(
 				"div",
@@ -876,7 +886,11 @@ const CalendarView = {
 					className: `calendar-day-event calendar-event-${event.type}`,
 					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
 					onclick: () => {
-						if (event.type === "task" && typeof TasksBoard !== "undefined" && TasksBoard.openTaskEditModal) {
+						if (
+							event.type === "task" &&
+							typeof TasksBoard !== "undefined" &&
+							TasksBoard.openTaskEditModal
+						) {
 							TasksBoard.openTaskEditModal(event.task);
 						} else {
 							CalendarView.showEventDetails(event);
@@ -897,7 +911,7 @@ const CalendarView = {
 					{ className: "calendar-event-subtitle" },
 					`${event.job.company} - ${event.job.position}`
 				)
-			)
+			);
 		});
 	},
 
@@ -907,12 +921,12 @@ const CalendarView = {
 		if (type === "task" && priority) {
 			const priorityColors = {
 				high: "red",
-				medium: "orange", 
+				medium: "orange",
 				low: "green",
 			};
 			return priorityColors[priority] || "blue";
 		}
-		
+
 		// For other event types, use default colors
 		const colors = {
 			applied: "green",
@@ -940,19 +954,20 @@ const CalendarView = {
 		const date = new Date(dueDate);
 		const now = new Date();
 		const isToday = date.toDateString() === now.toDateString();
-		const isTomorrow = date.toDateString() === new Date(now.getTime() + 24 * 60 * 60 * 1000).toDateString();
-		
+		const isTomorrow =
+			date.toDateString() === new Date(now.getTime() + 24 * 60 * 60 * 1000).toDateString();
+
 		// Format time part
-		const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-		
+		const timeStr = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
 		// Return appropriate format
 		if (isToday) {
 			return `Today ${timeStr}`;
-		} else if (isTomorrow) {
-			return `Tomorrow ${timeStr}`;
-		} else {
-			return `${date.toLocaleDateString()} ${timeStr}`;
 		}
+		if (isTomorrow) {
+			return `Tomorrow ${timeStr}`;
+		}
+		return `${date.toLocaleDateString()} ${timeStr}`;
 	},
 
 	// Show date events modal
@@ -1036,24 +1051,32 @@ const CalendarView = {
 				`${event.job.company} - ${event.job.position}`
 			),
 			// Show duration and due time for tasks
-			event.type === "task" && (event.task.duration || event.task.dueDate) && h(
-				"div",
-				{ className: "calendar-event-card-meta" },
-				...[
-					event.task.dueDate && h(
-						"span",
-						{ className: "calendar-event-meta-item" },
-						h("span", { className: "material-symbols-outlined calendar-meta-icon" }, "schedule"),
-						CalendarView.formatTaskDateTime(event.task.dueDate)
-					),
-					event.task.duration && h(
-						"span",
-						{ className: "calendar-event-meta-item" },
-						h("span", { className: "material-symbols-outlined calendar-meta-icon" }, "timer"),
-						event.task.duration
-					)
-				].filter(Boolean)
-			)
+			event.type === "task" &&
+				(event.task.duration || event.task.dueDate) &&
+				h(
+					"div",
+					{ className: "calendar-event-card-meta" },
+					...[
+						event.task.dueDate &&
+							h(
+								"span",
+								{ className: "calendar-event-meta-item" },
+								h(
+									"span",
+									{ className: "material-symbols-outlined calendar-meta-icon" },
+									"schedule"
+								),
+								CalendarView.formatTaskDateTime(event.task.dueDate)
+							),
+						event.task.duration &&
+							h(
+								"span",
+								{ className: "calendar-event-meta-item" },
+								h("span", { className: "material-symbols-outlined calendar-meta-icon" }, "timer"),
+								event.task.duration
+							),
+					].filter(Boolean)
+				)
 		);
 	},
 
@@ -1236,8 +1259,10 @@ const CalendarView = {
 		dayElement.classList.add("drag-over");
 
 		// Calculate time position for grid snapping in week/day views
-		if (dayElement.classList.contains("calendar-week-day-events") || 
-			dayElement.classList.contains("calendar-day-events-column")) {
+		if (
+			dayElement.classList.contains("calendar-week-day-events") ||
+			dayElement.classList.contains("calendar-day-events-column")
+		) {
 			CalendarView.showTimeGridIndicator(e, dayElement);
 		}
 	},
@@ -1245,39 +1270,43 @@ const CalendarView = {
 	// Show time grid indicator for precise dropping
 	showTimeGridIndicator: (e, container) => {
 		// Remove ALL existing indicators from all containers
-		document.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
+		document.querySelectorAll(".time-drop-indicator, .time-drop-label").forEach((indicator) => {
 			indicator.remove();
 		});
 
 		const rect = container.getBoundingClientRect();
 		const mouseY = e.clientY - rect.top;
-		
+
 		// Calculate which 15-minute slot the mouse is over
 		const slotHeight = 20; // 30-min slot = 20px
 		const quarterSlotHeight = slotHeight / 2; // 15-min = 10px
-		
+
 		const slotIndex = Math.floor(mouseY / quarterSlotHeight);
 		const snapY = slotIndex * quarterSlotHeight;
-		
+
 		// Calculate the time this represents
 		const totalQuarters = slotIndex;
 		const hours = Math.floor(totalQuarters / 4) + 8; // Start at 8am
 		const minutes = (totalQuarters % 4) * 15;
-		
+
 		// Only show if within business hours
 		if (hours >= 8 && hours <= 20) {
 			const timeStr = CalendarView.formatTime12Hour(hours, minutes);
-			
-			const indicator = h('div', {
-				className: 'time-drop-indicator',
-				style: `position: absolute; top: ${snapY}px; left: 0; right: 0; height: 2px; background: var(--blue-500); z-index: 10; pointer-events: none;`
+
+			const indicator = h("div", {
+				className: "time-drop-indicator",
+				style: `position: absolute; top: ${snapY}px; left: 0; right: 0; height: 2px; background: var(--blue-500); z-index: 10; pointer-events: none;`,
 			});
-			
-			const timeLabel = h('div', {
-				className: 'time-drop-label',
-				style: `position: absolute; top: ${snapY - 10}px; left: 4px; background: var(--blue-500); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; z-index: 11; pointer-events: none;`
-			}, timeStr);
-			
+
+			const timeLabel = h(
+				"div",
+				{
+					className: "time-drop-label",
+					style: `position: absolute; top: ${snapY - 10}px; left: 4px; background: var(--blue-500); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; z-index: 11; pointer-events: none;`,
+				},
+				timeStr
+			);
+
 			container.appendChild(indicator);
 			container.appendChild(timeLabel);
 		}
@@ -1287,9 +1316,9 @@ const CalendarView = {
 		// Remove visual feedback
 		const dayElement = e.currentTarget;
 		dayElement.classList.remove("drag-over");
-		
+
 		// Remove time indicators when leaving the container
-		document.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
+		document.querySelectorAll(".time-drop-indicator, .time-drop-label").forEach((indicator) => {
 			indicator.remove();
 		});
 	},
@@ -1307,7 +1336,7 @@ const CalendarView = {
 		// Remove visual feedback and indicators
 		const dayElement = e.currentTarget;
 		dayElement.classList.remove("drag-over");
-		document.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
+		document.querySelectorAll(".time-drop-indicator, .time-drop-label").forEach((indicator) => {
 			indicator.remove();
 		});
 
@@ -1322,32 +1351,33 @@ const CalendarView = {
 				console.error("No drag data found");
 				return;
 			}
-			
+
 			const dragData = JSON.parse(dragDataText);
 
 			if (dragData.eventType === "task" && dragData.jobId && dragData.taskId) {
 				// Calculate new time if dropping on time grid
-				let newDateTime = new Date(targetDate);
-				
-				if (dayElement.classList.contains("calendar-week-day-events") || 
-					dayElement.classList.contains("calendar-day-events-column")) {
-					
+				const newDateTime = new Date(targetDate);
+
+				if (
+					dayElement.classList.contains("calendar-week-day-events") ||
+					dayElement.classList.contains("calendar-day-events-column")
+				) {
 					const rect = dayElement.getBoundingClientRect();
 					const mouseY = e.clientY - rect.top;
-					
+
 					// Calculate 15-minute slot
 					const quarterSlotHeight = 10; // 15-min = 10px
 					const slotIndex = Math.floor(mouseY / quarterSlotHeight);
 					const totalQuarters = slotIndex;
 					const hours = Math.floor(totalQuarters / 4) + 8; // Start at 8am
 					const minutes = (totalQuarters % 4) * 15;
-					
+
 					// Only update time if within business hours
 					if (hours >= 8 && hours <= 20) {
 						newDateTime.setHours(hours, minutes, 0, 0);
 					}
 				}
-				
+
 				CalendarView.moveTaskToDateTime(dragData.jobId, dragData.taskId, newDateTime);
 			}
 		} catch (error) {
@@ -1365,7 +1395,7 @@ const CalendarView = {
 		// Ensure IDs are properly compared
 		const targetJobId = String(jobId);
 		const targetTaskId = String(taskId);
-		
+
 		// Find the job
 		const jobIndex = jobsData.findIndex((job) => String(job.id) === targetJobId);
 		if (jobIndex === -1) {
@@ -1374,15 +1404,17 @@ const CalendarView = {
 		}
 
 		// Find the task
-		const taskIndex = jobsData[jobIndex].tasks.findIndex((task) => String(task.id) === targetTaskId);
+		const taskIndex = jobsData[jobIndex].tasks.findIndex(
+			(task) => String(task.id) === targetTaskId
+		);
 		if (taskIndex === -1) {
 			console.error("Task not found:", targetTaskId);
 			return;
 		}
 
 		// Create a deep copy of the task to avoid mutations
-		const task = {...jobsData[jobIndex].tasks[taskIndex]};
-		const job = {...jobsData[jobIndex]};
+		const task = { ...jobsData[jobIndex].tasks[taskIndex] };
+		const job = { ...jobsData[jobIndex] };
 
 		// Update ONLY the specific task's due date
 		jobsData[jobIndex].tasks[taskIndex].dueDate = newDateTime.toISOString();
@@ -1409,11 +1441,12 @@ const CalendarView = {
 		const hours = newDate.getHours();
 		const minutes = newDate.getMinutes();
 		const timeStr = CalendarView.formatTime12Hour(hours, minutes);
-		
+
 		// Create more informative message
-		const message = hours >= 8 && hours <= 20 && (hours !== 0 || minutes !== 0) 
-			? `Moved with success to ${dateStr} at ${timeStr}`
-			: `Moved with success to ${dateStr}`;
+		const message =
+			hours >= 8 && hours <= 20 && (hours !== 0 || minutes !== 0)
+				? `Moved with success to ${dateStr} at ${timeStr}`
+				: `Moved with success to ${dateStr}`;
 
 		// Create temporary notification
 		const notification = h(

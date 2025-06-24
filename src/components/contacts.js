@@ -280,7 +280,7 @@ const ContactsModal = ({ job, onClose }) => {
 		if (contactIndex === -1) return;
 
 		jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
-		
+
 		saveToLocalStorage();
 
 		// Refresh the table without flicker
@@ -289,8 +289,6 @@ const ContactsModal = ({ job, onClose }) => {
 		// Update interface
 		refreshInterface();
 	};
-
-
 
 	const disableContactEditing = (contact, job) => {
 		// Just refresh the modal to restore display state
@@ -445,11 +443,7 @@ const ContactsModal = ({ job, onClose }) => {
 								h(
 									"tr",
 									{ key: contact.id, "data-contact-id": contact.id },
-									h(
-										"td",
-										{ className: "contact-name-cell" },
-										contact.name || "—"
-									),
+									h("td", { className: "contact-name-cell" }, contact.name || "—"),
 									h(
 										"td",
 										{ className: "contact-email-cell" },
@@ -478,11 +472,7 @@ const ContactsModal = ({ job, onClose }) => {
 												)
 											: "—"
 									),
-									h(
-										"td",
-										{ className: "contact-company-cell" },
-										contact.company || "—"
-									),
+									h("td", { className: "contact-company-cell" }, contact.company || "—"),
 									h(
 										"td",
 										{ className: "contacts-table-actions" },
@@ -665,7 +655,7 @@ const ContactsModal = ({ job, onClose }) => {
 							saveToLocalStorage();
 							refreshContactsModal(job);
 							refreshInterface();
-						}
+						},
 					},
 					h(
 						"div",
@@ -679,7 +669,7 @@ const ContactsModal = ({ job, onClose }) => {
 									e.preventDefault();
 									e.target.closest("form").dispatchEvent(new Event("submit"));
 								}
-							}
+							},
 						}),
 						h("input", {
 							type: "email",
@@ -690,7 +680,7 @@ const ContactsModal = ({ job, onClose }) => {
 									e.preventDefault();
 									e.target.closest("form").dispatchEvent(new Event("submit"));
 								}
-							}
+							},
 						}),
 						h("input", {
 							type: "tel",
@@ -701,7 +691,7 @@ const ContactsModal = ({ job, onClose }) => {
 									e.preventDefault();
 									e.target.closest("form").dispatchEvent(new Event("submit"));
 								}
-							}
+							},
 						}),
 						h("input", {
 							type: "text",
@@ -712,7 +702,7 @@ const ContactsModal = ({ job, onClose }) => {
 									e.preventDefault();
 									e.target.closest("form").dispatchEvent(new Event("submit"));
 								}
-							}
+							},
 						})
 					),
 					h(
@@ -802,30 +792,30 @@ const enableContactEditing = (contact, job) => {
 	// Replace display with simple inline inputs
 	contactRow.innerHTML = `
 		<td class="contact-name-cell">
-			<input type="text" value="${contact.name || ''}" class="contact-edit-input" data-field="name" placeholder="${I18n.t('modals.contacts.placeholderName')}">
+			<input type="text" value="${contact.name || ""}" class="contact-edit-input" data-field="name" placeholder="${I18n.t("modals.contacts.placeholderName")}">
 		</td>
 		<td class="contact-email-cell">
-			<input type="email" value="${contact.email || ''}" class="contact-edit-input" data-field="email" placeholder="${I18n.t('modals.contacts.placeholderEmail')}">
+			<input type="email" value="${contact.email || ""}" class="contact-edit-input" data-field="email" placeholder="${I18n.t("modals.contacts.placeholderEmail")}">
 		</td>
 		<td class="contact-phone-cell">
-			<input type="tel" value="${contact.phone || ''}" class="contact-edit-input" data-field="phone" placeholder="${I18n.t('modals.contacts.placeholderPhone')}">
+			<input type="tel" value="${contact.phone || ""}" class="contact-edit-input" data-field="phone" placeholder="${I18n.t("modals.contacts.placeholderPhone")}">
 		</td>
 		<td class="contact-company-cell">
-			<input type="text" value="${contact.company || ''}" class="contact-edit-input" data-field="company" placeholder="${I18n.t('modals.contacts.placeholderCompany')}">
+			<input type="text" value="${contact.company || ""}" class="contact-edit-input" data-field="company" placeholder="${I18n.t("modals.contacts.placeholderCompany")}">
 		</td>
 		<td class="contacts-table-actions">
-			<button class="action-btn save-contact-btn icon-btn-transparent" title="${I18n.t('modals.common.save')}">
+			<button class="action-btn save-contact-btn icon-btn-transparent" title="${I18n.t("modals.common.save")}">
 				<span class="material-symbols-outlined icon-14">check</span>
 			</button>
-			<button class="action-btn cancel-contact-btn icon-btn-transparent" title="${I18n.t('modals.common.cancel')}">
+			<button class="action-btn cancel-contact-btn icon-btn-transparent" title="${I18n.t("modals.common.cancel")}">
 				<span class="material-symbols-outlined icon-14">close</span>
 			</button>
 		</td>
 	`;
 
 	// Add event listeners
-	const saveBtn = contactRow.querySelector('.save-contact-btn');
-	const cancelBtn = contactRow.querySelector('.cancel-contact-btn');
+	const saveBtn = contactRow.querySelector(".save-contact-btn");
+	const cancelBtn = contactRow.querySelector(".cancel-contact-btn");
 
 	saveBtn.onclick = () => saveContactEdits(contact, job);
 	cancelBtn.onclick = () => cancelContactEdits(contact, job);
@@ -843,29 +833,29 @@ const saveContactEdits = (contact, job) => {
 	if (!contactRow) return;
 
 	// Get all values directly from inputs
-	const inputs = contactRow.querySelectorAll('.contact-edit-input');
+	const inputs = contactRow.querySelectorAll(".contact-edit-input");
 	const newData = {};
-	
-	inputs.forEach(input => {
+
+	inputs.forEach((input) => {
 		newData[input.dataset.field] = input.value.trim();
 	});
 
-	console.log('Saving contact with data:', newData);
+	console.log("Saving contact with data:", newData);
 
 	// Validation
 	if (!newData.name) {
-		alert('Name is required');
+		alert("Name is required");
 		return;
 	}
 
-	if (newData.email && !newData.email.includes('@')) {
-		alert('Please enter a valid email');
+	if (newData.email && !newData.email.includes("@")) {
+		alert("Please enter a valid email");
 		return;
 	}
 
 	// Update data
-	const jobIndex = jobsData.findIndex(j => j.id === job.id);
-	const contactIndex = jobsData[jobIndex].contacts.findIndex(c => c.id === contact.id);
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
 
 	jobsData[jobIndex].contacts[contactIndex].name = newData.name;
 	jobsData[jobIndex].contacts[contactIndex].email = newData.email;
@@ -937,11 +927,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 							h(
 								"tr",
 								{ key: contact.id, "data-contact-id": contact.id },
-								h(
-									"td",
-									{ className: "contact-name-cell" },
-									contact.name || "—"
-								),
+								h("td", { className: "contact-name-cell" }, contact.name || "—"),
 								h(
 									"td",
 									{ className: "contact-email-cell" },
@@ -970,11 +956,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 											)
 										: "—"
 								),
-								h(
-									"td",
-									{ className: "contact-company-cell" },
-									contact.company || "—"
-								),
+								h("td", { className: "contact-company-cell" }, contact.company || "—"),
 								h(
 									"td",
 									{ className: "contacts-table-actions" },
@@ -1085,8 +1067,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 										h("button", {
 											className: "action-btn archive-btn icon-btn-transparent",
 											title: I18n.t("modals.contacts.unarchiveTitle"),
-											innerHTML:
-												'<span class="material-symbols-outlined icon-14">unarchive</span>',
+											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => handleArchiveContact(contact),
 										})
 									)
@@ -1157,7 +1138,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 						saveToLocalStorage();
 						refreshContactsModal(job);
 						refreshInterface();
-					}
+					},
 				},
 				h(
 					"div",
@@ -1171,7 +1152,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 								e.preventDefault();
 								e.target.closest("form").dispatchEvent(new Event("submit"));
 							}
-						}
+						},
 					}),
 					h("input", {
 						type: "email",
@@ -1182,7 +1163,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 								e.preventDefault();
 								e.target.closest("form").dispatchEvent(new Event("submit"));
 							}
-						}
+						},
 					}),
 					h("input", {
 						type: "tel",
@@ -1193,7 +1174,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 								e.preventDefault();
 								e.target.closest("form").dispatchEvent(new Event("submit"));
 							}
-						}
+						},
 					}),
 					h("input", {
 						type: "text",
@@ -1204,7 +1185,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 								e.preventDefault();
 								e.target.closest("form").dispatchEvent(new Event("submit"));
 							}
-						}
+						},
 					})
 				),
 				h(
@@ -1228,12 +1209,12 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 const updateContactRowDisplay = (contactRow, contact, job) => {
 	// Remove editing state
 	contactRow.dataset.editing = "false";
-	
+
 	// Update each cell with new values
 	const nameCell = contactRow.querySelector(".contact-name-cell");
 	nameCell.innerHTML = "";
 	nameCell.textContent = contact.name || "—";
-	
+
 	const emailCell = contactRow.querySelector(".contact-email-cell");
 	emailCell.innerHTML = "";
 	if (contact.email) {
@@ -1245,7 +1226,7 @@ const updateContactRowDisplay = (contactRow, contact, job) => {
 	} else {
 		emailCell.textContent = "—";
 	}
-	
+
 	const phoneCell = contactRow.querySelector(".contact-phone-cell");
 	phoneCell.innerHTML = "";
 	if (contact.phone) {
@@ -1257,15 +1238,15 @@ const updateContactRowDisplay = (contactRow, contact, job) => {
 	} else {
 		phoneCell.textContent = "—";
 	}
-	
+
 	const companyCell = contactRow.querySelector(".contact-company-cell");
 	companyCell.innerHTML = "";
 	companyCell.textContent = contact.company || "—";
-	
+
 	// Restore action buttons
 	const actionsCell = contactRow.querySelector(".contacts-table-actions");
 	actionsCell.innerHTML = "";
-	
+
 	// Add edit button
 	const editBtn = document.createElement("button");
 	editBtn.className = "action-btn edit-contact-btn icon-btn-transparent";
@@ -1273,7 +1254,7 @@ const updateContactRowDisplay = (contactRow, contact, job) => {
 	editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">edit</span>';
 	editBtn.onclick = () => enableContactEditing(contact, job);
 	actionsCell.appendChild(editBtn);
-	
+
 	// Add archive button
 	const archiveBtn = document.createElement("button");
 	archiveBtn.className = "action-btn archive-btn icon-btn-transparent";
@@ -1309,7 +1290,9 @@ const getLatestContact = (contacts = []) => {
 	if (activeContacts.length === 0) return null;
 
 	// Sort by date and get the most recent
-	const sorted = [...activeContacts].sort((a, b) => new Date(b.date || b.id) - new Date(a.date || a.id));
+	const sorted = [...activeContacts].sort(
+		(a, b) => new Date(b.date || b.id) - new Date(a.date || a.id)
+	);
 	return sorted[0];
 };
 

@@ -31,7 +31,6 @@ const TextareaField = ({ value = "", className = "editable", placeholder = "", r
 	return h("textarea", props);
 };
 
-
 // Priority select component
 const createPrioritySelect = (selectedPriority = "medium", disabled = false, className = "") => {
 	const props = {

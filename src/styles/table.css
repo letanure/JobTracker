@@ -666,7 +666,6 @@ tr.editing .actions-cell button {
 	min-height: 44px;
 	line-height: 1.4;
 	overflow: hidden;
-	rows: 2;
 }
 
 /* Task description textarea in second row */
@@ -677,7 +676,6 @@ tr.editing .actions-cell button {
 	font-style: italic;
 	color: var(--gray-600);
 	padding: 8px;
-	rows: 2;
 	line-height: 1.4;
 	resize: vertical;
 }

@@ -207,24 +207,10 @@
 }
 
 .kanban-priority-dot {
+	/* Extends .priority-dot utility */
 	position: absolute;
 	top: 8px;
 	right: 8px;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-}
-
-.kanban-priority-dot.priority-high {
-	background: var(--red-500);
-}
-
-.kanban-priority-dot.priority-medium {
-	background: var(--orange-500);
-}
-
-.kanban-priority-dot.priority-low {
-	background: var(--green-500);
 }
 
 .kanban-job-header {
@@ -351,29 +337,8 @@ a.kanban-source-link {
 }
 
 .kanban-icon-btn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 24px;
-	height: 24px;
-	background: transparent;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: var(--gray-500);
-	cursor: pointer;
-	transition: var(--transition-fast);
-	padding: 0;
-	min-width: auto;
-	box-shadow: none;
+	/* Extends .icon-btn utility */
 	position: relative;
-}
-
-.kanban-icon-btn:hover {
-	background: var(--gray-100);
-	color: var(--gray-700);
-	border-color: var(--gray-300);
-	transform: none;
-	box-shadow: none;
 }
 
 .kanban-icon-btn .material-symbols-outlined {

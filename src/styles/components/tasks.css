@@ -406,24 +406,10 @@
 }
 
 .tasks-priority-dot {
+	/* Extends .priority-dot utility */
 	position: absolute;
 	top: 8px;
 	right: 8px;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-}
-
-.tasks-priority-dot.priority-high {
-	background: var(--red-500);
-}
-
-.tasks-priority-dot.priority-medium {
-	background: var(--orange-500);
-}
-
-.tasks-priority-dot.priority-low {
-	background: var(--green-500);
 }
 
 .tasks-task-content {

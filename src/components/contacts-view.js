@@ -197,7 +197,7 @@ const ContactsView = {
 					title: `View job: ${contact.jobPosition} at ${contact.jobCompany}`,
 					onclick: () => {
 						// Find the job and open edit modal
-						const job = jobsData.find(j => j.id === contact.jobId);
+						const job = jobsData.find((j) => j.id === contact.jobId);
 						if (job && window.KanbanBoard) {
 							window.KanbanBoard.openJobEditModal(job);
 						}

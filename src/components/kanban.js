@@ -40,15 +40,16 @@ const KanbanBoard = {
 					"div",
 					{ className: "kanban-column-actions" },
 					// Add "Add Job" button for wishlist column (left of counter)
-					phase === "wishlist" && h(
-						"button",
-						{
-							className: "kanban-add-job-btn",
-							onclick: () => KanbanBoard.openAddJobModal(),
-						},
-						h("span", { className: "material-symbols-outlined" }, "add"),
-						I18n.t("kanban.addJob") || "Add Job"
-					),
+					phase === "wishlist" &&
+						h(
+							"button",
+							{
+								className: "kanban-add-job-btn",
+								onclick: () => KanbanBoard.openAddJobModal(),
+							},
+							h("span", { className: "material-symbols-outlined" }, "add"),
+							I18n.t("kanban.addJob") || "Add Job"
+						),
 					h("span", { className: "kanban-column-count" }, phaseJobs.length.toString())
 				)
 			)
@@ -140,19 +141,20 @@ const KanbanBoard = {
 			"div",
 			{ className: "kanban-action-icons" },
 			// Source link icon if sourceUrl exists (first position)
-			job.sourceUrl && h(
-				"a",
-				{
-					className: "kanban-icon-btn kanban-source-link",
-					href: job.sourceUrl,
-					target: "_blank",
-					rel: "noopener noreferrer",
-					title: "View job posting",
-					onclick: (e) => e.stopPropagation(),
-				},
-				h("span", { className: "material-symbols-outlined" }, "link")
-			),
-			
+			job.sourceUrl &&
+				h(
+					"a",
+					{
+						className: "kanban-icon-btn kanban-source-link",
+						href: job.sourceUrl,
+						target: "_blank",
+						rel: "noopener noreferrer",
+						title: "View job posting",
+						onclick: (e) => e.stopPropagation(),
+					},
+					h("span", { className: "material-symbols-outlined" }, "link")
+				),
+
 			h(
 				"button",
 				{
@@ -230,7 +232,8 @@ const KanbanBoard = {
 		const completedSubsteps = job.completedSubsteps || [];
 		// Use selected substeps for this phase, fallback to all available substeps
 		const selectedSubsteps = job.selectedSubsteps?.[currentPhase] || [];
-		const availableSubsteps = selectedSubsteps.length > 0 ? selectedSubsteps : getSubstepsForPhase(currentPhase);
+		const availableSubsteps =
+			selectedSubsteps.length > 0 ? selectedSubsteps : getSubstepsForPhase(currentPhase);
 
 		const phaseHeader = h(
 			"div",
@@ -288,11 +291,14 @@ const KanbanBoard = {
 
 	// Drag and drop handlers
 	handleDragStart: (e, job) => {
-		e.dataTransfer.setData("text/plain", JSON.stringify({
-			jobId: job.id,
-			sourcePhase: job.currentPhase,
-			sourceSortOrder: job.sortOrder || 0
-		}));
+		e.dataTransfer.setData(
+			"text/plain",
+			JSON.stringify({
+				jobId: job.id,
+				sourcePhase: job.currentPhase,
+				sourceSortOrder: job.sortOrder || 0,
+			})
+		);
 		e.target.classList.add("dragging");
 		document.querySelectorAll(".kanban-column").forEach((col) => {
 			col.classList.add("drag-active");
@@ -304,9 +310,9 @@ const KanbanBoard = {
 		document.querySelectorAll(".kanban-column").forEach((col) => {
 			col.classList.remove("drag-active", "drag-over");
 		});
-		
+
 		// Clean up all drop indicators and placeholders
-		document.querySelectorAll('.drop-indicator, .drop-placeholder').forEach(element => {
+		document.querySelectorAll(".drop-indicator, .drop-placeholder").forEach((element) => {
 			element.remove();
 		});
 	},
@@ -323,12 +329,12 @@ const KanbanBoard = {
 	// Add visual placeholder showing where the card will be dropped
 	updateDropIndicator: (e) => {
 		const columnBody = e.currentTarget;
-		const cards = Array.from(columnBody.children).filter(card => 
-			card.classList.contains('kanban-job-card') && !card.classList.contains('dragging')
+		const cards = Array.from(columnBody.children).filter(
+			(card) => card.classList.contains("kanban-job-card") && !card.classList.contains("dragging")
 		);
 
 		// Remove existing drop placeholders and indicators
-		columnBody.querySelectorAll('.drop-indicator, .drop-placeholder').forEach(placeholder => {
+		columnBody.querySelectorAll(".drop-indicator, .drop-placeholder").forEach((placeholder) => {
 			placeholder.remove();
 		});
 
@@ -339,7 +345,7 @@ const KanbanBoard = {
 		for (let i = 0; i < cards.length; i++) {
 			const cardRect = cards[i].getBoundingClientRect();
 			const cardCenter = cardRect.top + cardRect.height / 2;
-			
+
 			if (mouseY < cardCenter) {
 				insertIndex = i;
 				break;
@@ -347,13 +353,23 @@ const KanbanBoard = {
 		}
 
 		// Create placeholder card that matches the dragged card's size
-		const placeholder = h('div', { 
-			className: 'drop-placeholder kanban-job-card',
-			style: 'opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;'
-		}, h('div', { 
-			style: 'height: 80px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;'
-		}, 'Drop here'));
-		
+		const placeholder = h(
+			"div",
+			{
+				className: "drop-placeholder kanban-job-card",
+				style:
+					"opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;",
+			},
+			h(
+				"div",
+				{
+					style:
+						"height: 80px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;",
+				},
+				"Drop here"
+			)
+		);
+
 		if (insertIndex === cards.length) {
 			// Insert at the end
 			columnBody.appendChild(placeholder);
@@ -365,49 +381,52 @@ const KanbanBoard = {
 
 	handleDrop: (e, targetPhase) => {
 		e.preventDefault();
-		
+
 		try {
 			const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
 			const { jobId, sourcePhase } = dragData;
 			const job = jobsData.find((j) => j.id === jobId);
-			
+
 			if (!job) return;
 
 			// Calculate drop position based on placeholder location
 			const columnBody = e.currentTarget;
-			const placeholder = columnBody.querySelector('.drop-placeholder');
-			
+			const placeholder = columnBody.querySelector(".drop-placeholder");
+
 			let targetPosition = 0;
-			
+
 			if (placeholder) {
 				// Find the position of the placeholder among actual job cards
 				const allCards = Array.from(columnBody.children);
 				const placeholderIndex = allCards.indexOf(placeholder);
-				
+
 				// Count how many actual job cards are before the placeholder
 				targetPosition = 0;
 				for (let i = 0; i < placeholderIndex; i++) {
-					if (allCards[i].classList.contains('kanban-job-card') && 
-						!allCards[i].classList.contains('drop-placeholder') && 
-						!allCards[i].classList.contains('dragging')) {
+					if (
+						allCards[i].classList.contains("kanban-job-card") &&
+						!allCards[i].classList.contains("drop-placeholder") &&
+						!allCards[i].classList.contains("dragging")
+					) {
 						targetPosition++;
 					}
 				}
 			} else {
 				// Fallback: use mouse position if no placeholder found
-				const cards = Array.from(columnBody.children).filter(card => 
-					card.classList.contains('kanban-job-card') && 
-					!card.classList.contains('dragging') && 
-					!card.classList.contains('drop-placeholder')
+				const cards = Array.from(columnBody.children).filter(
+					(card) =>
+						card.classList.contains("kanban-job-card") &&
+						!card.classList.contains("dragging") &&
+						!card.classList.contains("drop-placeholder")
 				);
-				
+
 				const mouseY = e.clientY;
 				targetPosition = cards.length;
-				
+
 				for (let i = 0; i < cards.length; i++) {
 					const cardRect = cards[i].getBoundingClientRect();
 					const cardCenter = cardRect.top + cardRect.height / 2;
-					
+
 					if (mouseY < cardCenter) {
 						targetPosition = i;
 						break;
@@ -455,9 +474,9 @@ const KanbanBoard = {
 		document.querySelectorAll(".kanban-column").forEach((col) => {
 			col.classList.remove("drag-active", "drag-over");
 		});
-		
+
 		// Clean up all drop indicators and placeholders
-		document.querySelectorAll('.drop-indicator, .drop-placeholder').forEach(element => {
+		document.querySelectorAll(".drop-indicator, .drop-placeholder").forEach((element) => {
 			element.remove();
 		});
 	},
@@ -469,20 +488,20 @@ const KanbanBoard = {
 			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
 		// Remove the moved job from its current position
-		const movedJobIndex = phaseJobs.findIndex(job => job.id === movedJobId);
+		const movedJobIndex = phaseJobs.findIndex((job) => job.id === movedJobId);
 		if (movedJobIndex !== -1) {
 			phaseJobs.splice(movedJobIndex, 1);
 		}
 
 		// Insert the moved job at the target position
-		const movedJob = jobsData.find(job => job.id === movedJobId);
+		const movedJob = jobsData.find((job) => job.id === movedJobId);
 		if (movedJob) {
 			phaseJobs.splice(targetPosition, 0, movedJob);
 		}
 
 		// Update sortOrder for all jobs in this phase
 		phaseJobs.forEach((job, index) => {
-			const jobIndex = jobsData.findIndex(j => j.id === job.id);
+			const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 			if (jobIndex !== -1) {
 				jobsData[jobIndex].sortOrder = index;
 			}
@@ -491,27 +510,31 @@ const KanbanBoard = {
 
 	// Create current step selector with optgroups
 	createCurrentStepSelector: (job) => {
-		const select = h("select", { 
+		const select = h("select", {
 			name: "currentStep",
 			className: "current-step-selector",
-			onchange: (e) => KanbanBoard.handleCurrentStepChange(e, job)
+			onchange: (e) => KanbanBoard.handleCurrentStepChange(e, job),
 		});
 
 		// Add option groups for each phase
-		PHASES.forEach(phase => {
+		PHASES.forEach((phase) => {
 			const selectedSubsteps = job.selectedSubsteps?.[phase] || [];
-			
+
 			// Only show phases that have selected substeps
 			if (selectedSubsteps.length > 0) {
 				// Create optgroup for this phase
 				const optgroup = h("optgroup", { label: getPhaseText(phase) });
-				
+
 				// Add substep options only (no phase-level option)
-				selectedSubsteps.forEach(substep => {
-					const substepOption = h("option", { 
-						value: `${phase}:${substep}`,
-						selected: job.currentPhase === phase && job.currentSubstep === substep
-					}, getSubstepText(substep));
+				selectedSubsteps.forEach((substep) => {
+					const substepOption = h(
+						"option",
+						{
+							value: `${phase}:${substep}`,
+							selected: job.currentPhase === phase && job.currentSubstep === substep,
+						},
+						getSubstepText(substep)
+					);
 					optgroup.appendChild(substepOption);
 				});
 
@@ -524,27 +547,27 @@ const KanbanBoard = {
 
 	// Refresh current step selector when workflow changes
 	refreshCurrentStepSelector: (modal, job) => {
-		const currentStepSelector = modal.querySelector('.current-step-selector');
+		const currentStepSelector = modal.querySelector(".current-step-selector");
 		if (currentStepSelector) {
 			// Store the current value before replacement
 			const currentValue = currentStepSelector.value;
-			
+
 			// Create new selector
 			const newSelector = KanbanBoard.createCurrentStepSelector(job);
-			
+
 			// Check if the current value is still valid in the new selector
 			const isCurrentValueStillValid = newSelector.querySelector(`option[value="${currentValue}"]`);
-			
+
 			// If current value is still valid, preserve it; otherwise go to first available
 			if (isCurrentValueStillValid) {
 				newSelector.value = currentValue;
 			} else {
 				// Find the first available option and select it
-				const firstOption = newSelector.querySelector('option[value]');
+				const firstOption = newSelector.querySelector("option[value]");
 				if (firstOption) {
 					newSelector.value = firstOption.value;
 					// Update the job's current step to match the first available option
-					const [phase, substep] = firstOption.value.split(':');
+					const [phase, substep] = firstOption.value.split(":");
 					job.currentPhase = phase;
 					job.currentSubstep = substep;
 				} else {
@@ -553,7 +576,7 @@ const KanbanBoard = {
 					job.currentSubstep = null;
 				}
 			}
-			
+
 			// Replace the old one
 			currentStepSelector.parentNode.replaceChild(newSelector, currentStepSelector);
 		}
@@ -561,42 +584,44 @@ const KanbanBoard = {
 
 	// Handle current step change
 	handleCurrentStepChange: (e, job) => {
-		const [phase, substep] = e.target.value.split(':');
-		
+		const [phase, substep] = e.target.value.split(":");
+
 		// Update job current phase and substep
 		job.currentPhase = phase;
 		job.currentSubstep = substep;
 
 		// Update workflow selector visual state
-		const modal = e.target.closest('.modal');
-		
+		const modal = e.target.closest(".modal");
+
 		// Remove current indicators from all substeps
-		const allSubsteps = modal.querySelectorAll('.workflow-substep-item');
-		allSubsteps.forEach(item => {
-			item.classList.remove('current');
-			const indicator = item.querySelector('.current-indicator');
+		const allSubsteps = modal.querySelectorAll(".workflow-substep-item");
+		allSubsteps.forEach((item) => {
+			item.classList.remove("current");
+			const indicator = item.querySelector(".current-indicator");
 			if (indicator) {
 				indicator.remove();
 			}
 		});
 
 		// Remove current phase highlighting
-		const allPhases = modal.querySelectorAll('.workflow-phase');
-		allPhases.forEach(phaseEl => phaseEl.classList.remove('current-phase'));
+		const allPhases = modal.querySelectorAll(".workflow-phase");
+		allPhases.forEach((phaseEl) => phaseEl.classList.remove("current-phase"));
 
 		// Add current phase highlighting
 		const currentPhaseElement = modal.querySelector(`[data-phase="${phase}"]`);
 		if (currentPhaseElement) {
-			currentPhaseElement.classList.add('current-phase');
+			currentPhaseElement.classList.add("current-phase");
 		}
 
 		// Add current substep highlighting if it's not the phase itself
 		if (substep !== phase) {
-			const currentSubstepElement = modal.querySelector(`[data-phase="${phase}"][data-substep="${substep}"]`);
+			const currentSubstepElement = modal.querySelector(
+				`[data-phase="${phase}"][data-substep="${substep}"]`
+			);
 			if (currentSubstepElement) {
-				currentSubstepElement.classList.add('current');
-				const toggle = currentSubstepElement.querySelector('.workflow-substep-toggle');
-				if (toggle && !toggle.querySelector('.current-indicator')) {
+				currentSubstepElement.classList.add("current");
+				const toggle = currentSubstepElement.querySelector(".workflow-substep-toggle");
+				if (toggle && !toggle.querySelector(".current-indicator")) {
 					toggle.appendChild(h("span", { className: "current-indicator" }, "current"));
 				}
 			}
@@ -619,12 +644,12 @@ const KanbanBoard = {
 		Object.entries(PHASE_SUBSTEPS).forEach(([phase, substeps]) => {
 			const selectedSubsteps = job.selectedSubsteps?.[phase] || [];
 			const isCurrentPhase = job.currentPhase === phase;
-			
+
 			const phaseSection = h(
 				"div",
-				{ 
-					className: `workflow-phase ${isCurrentPhase ? 'current-phase' : ''}`,
-					"data-phase": phase
+				{
+					className: `workflow-phase ${isCurrentPhase ? "current-phase" : ""}`,
+					"data-phase": phase,
 				},
 				// Phase header
 				h(
@@ -634,31 +659,35 @@ const KanbanBoard = {
 						"button",
 						{
 							type: "button",
-							className: `workflow-phase-toggle ${selectedSubsteps.length > 0 ? 'has-substeps' : ''}`,
+							className: `workflow-phase-toggle ${selectedSubsteps.length > 0 ? "has-substeps" : ""}`,
 							onclick: (e) => KanbanBoard.togglePhaseExpansion(e, phase),
 						},
 						h("span", { className: "material-symbols-outlined" }, "expand_more"),
 						h("span", { className: "workflow-phase-title" }, getPhaseText(phase)),
-						h("span", { className: "workflow-phase-count" }, `${selectedSubsteps.length}/${substeps.length}`)
+						h(
+							"span",
+							{ className: "workflow-phase-count" },
+							`${selectedSubsteps.length}/${substeps.length}`
+						)
 					)
 				),
 				// Substeps list (initially collapsed)
 				h(
 					"div",
-					{ 
+					{
 						className: "workflow-substeps-list",
-						style: "display: none;"
+						style: "display: none;",
 					},
-					...substeps.map(substep => {
+					...substeps.map((substep) => {
 						const isSelected = selectedSubsteps.includes(substep);
 						const isCurrent = job.currentSubstep === substep && isCurrentPhase;
-						
+
 						return h(
 							"div",
-							{ 
-								className: `workflow-substep-item ${isSelected ? 'selected' : ''} ${isCurrent ? 'current' : ''}`,
+							{
+								className: `workflow-substep-item ${isSelected ? "selected" : ""} ${isCurrent ? "current" : ""}`,
 								"data-phase": phase,
-								"data-substep": substep
+								"data-substep": substep,
 							},
 							h(
 								"button",
@@ -675,7 +704,11 @@ const KanbanBoard = {
 										}
 									},
 								},
-								h("span", { className: "material-symbols-outlined" }, isSelected ? "check_circle" : "radio_button_unchecked"),
+								h(
+									"span",
+									{ className: "material-symbols-outlined" },
+									isSelected ? "check_circle" : "radio_button_unchecked"
+								),
 								h("span", { className: "workflow-substep-text" }, getSubstepText(substep)),
 								isCurrent && h("span", { className: "current-indicator" }, "current")
 							)
@@ -683,7 +716,7 @@ const KanbanBoard = {
 					})
 				)
 			);
-			
+
 			workflowContainer.appendChild(phaseSection);
 		});
 
@@ -693,25 +726,25 @@ const KanbanBoard = {
 	// Toggle phase expansion in workflow selector
 	togglePhaseExpansion: (e, phase) => {
 		e.preventDefault();
-		const phaseElement = e.target.closest('.workflow-phase');
-		const substepsList = phaseElement.querySelector('.workflow-substeps-list');
-		const toggleIcon = phaseElement.querySelector('.material-symbols-outlined');
-		
-		if (substepsList.style.display === 'none') {
-			substepsList.style.display = 'block';
-			toggleIcon.textContent = 'expand_less';
-			phaseElement.classList.add('expanded');
+		const phaseElement = e.target.closest(".workflow-phase");
+		const substepsList = phaseElement.querySelector(".workflow-substeps-list");
+		const toggleIcon = phaseElement.querySelector(".material-symbols-outlined");
+
+		if (substepsList.style.display === "none") {
+			substepsList.style.display = "block";
+			toggleIcon.textContent = "expand_less";
+			phaseElement.classList.add("expanded");
 		} else {
-			substepsList.style.display = 'none';
-			toggleIcon.textContent = 'expand_more';
-			phaseElement.classList.remove('expanded');
+			substepsList.style.display = "none";
+			toggleIcon.textContent = "expand_more";
+			phaseElement.classList.remove("expanded");
 		}
 	},
 
 	// Toggle substep selection in workflow selector
 	toggleSubstep: (e, job, phase, substep) => {
 		e.preventDefault();
-		
+
 		// Initialize selectedSubsteps if not exists
 		if (!job.selectedSubsteps) {
 			job.selectedSubsteps = {};
@@ -722,40 +755,40 @@ const KanbanBoard = {
 
 		const selectedSubsteps = job.selectedSubsteps[phase];
 		const isSelected = selectedSubsteps.includes(substep);
-		
+
 		if (isSelected) {
 			// Remove substep
-			job.selectedSubsteps[phase] = selectedSubsteps.filter(s => s !== substep);
+			job.selectedSubsteps[phase] = selectedSubsteps.filter((s) => s !== substep);
 		} else {
 			// Add substep
 			job.selectedSubsteps[phase].push(substep);
 		}
 
 		// Update the visual state
-		const substepElement = e.target.closest('.workflow-substep-item');
-		const icon = substepElement.querySelector('.material-symbols-outlined');
-		
+		const substepElement = e.target.closest(".workflow-substep-item");
+		const icon = substepElement.querySelector(".material-symbols-outlined");
+
 		if (isSelected) {
-			substepElement.classList.remove('selected');
-			icon.textContent = 'radio_button_unchecked';
+			substepElement.classList.remove("selected");
+			icon.textContent = "radio_button_unchecked";
 		} else {
-			substepElement.classList.add('selected');
-			icon.textContent = 'check_circle';
+			substepElement.classList.add("selected");
+			icon.textContent = "check_circle";
 		}
 
 		// Update phase counter
-		const phaseElement = e.target.closest('.workflow-phase');
-		const counter = phaseElement.querySelector('.workflow-phase-count');
+		const phaseElement = e.target.closest(".workflow-phase");
+		const counter = phaseElement.querySelector(".workflow-phase-count");
 		const totalSubsteps = PHASE_SUBSTEPS[phase].length;
 		const selectedCount = job.selectedSubsteps[phase].length;
 		counter.textContent = `${selectedCount}/${totalSubsteps}`;
 
 		// Update phase toggle styling
-		const phaseToggle = phaseElement.querySelector('.workflow-phase-toggle');
+		const phaseToggle = phaseElement.querySelector(".workflow-phase-toggle");
 		if (selectedCount > 0) {
-			phaseToggle.classList.add('has-substeps');
+			phaseToggle.classList.add("has-substeps");
 		} else {
-			phaseToggle.classList.remove('has-substeps');
+			phaseToggle.classList.remove("has-substeps");
 		}
 
 		// If this substep was the current one and we're removing it, clear current substep
@@ -766,7 +799,7 @@ const KanbanBoard = {
 		}
 
 		// Refresh the current step selector to reflect new available substeps
-		KanbanBoard.refreshCurrentStepSelector(e.target.closest('.modal'), job);
+		KanbanBoard.refreshCurrentStepSelector(e.target.closest(".modal"), job);
 
 		// Save changes
 		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
@@ -780,16 +813,16 @@ const KanbanBoard = {
 	// Set current substep in workflow selector
 	setCurrentSubstep: (e, job, phase, substep) => {
 		e.preventDefault();
-		
+
 		// Update current phase and substep
 		job.currentPhase = phase;
 		job.currentSubstep = substep;
 
 		// Update the input fields
-		const modal = e.target.closest('.modal');
+		const modal = e.target.closest(".modal");
 		const phaseSelect = modal.querySelector('select[name="phase"]');
 		const substepInput = modal.querySelector('input[name="substep"]');
-		
+
 		if (phaseSelect) {
 			phaseSelect.value = phase;
 		}
@@ -798,30 +831,30 @@ const KanbanBoard = {
 		}
 
 		// Update visual state - remove current indicator from all substeps
-		const allSubsteps = modal.querySelectorAll('.workflow-substep-item');
-		allSubsteps.forEach(item => {
-			item.classList.remove('current');
-			const indicator = item.querySelector('.current-indicator');
+		const allSubsteps = modal.querySelectorAll(".workflow-substep-item");
+		allSubsteps.forEach((item) => {
+			item.classList.remove("current");
+			const indicator = item.querySelector(".current-indicator");
 			if (indicator) {
 				indicator.remove();
 			}
 		});
 
 		// Add current indicator to selected substep
-		const substepElement = e.target.closest('.workflow-substep-item');
-		substepElement.classList.add('current');
-		const toggle = substepElement.querySelector('.workflow-substep-toggle');
-		if (!toggle.querySelector('.current-indicator')) {
+		const substepElement = e.target.closest(".workflow-substep-item");
+		substepElement.classList.add("current");
+		const toggle = substepElement.querySelector(".workflow-substep-toggle");
+		if (!toggle.querySelector(".current-indicator")) {
 			toggle.appendChild(h("span", { className: "current-indicator" }, "current"));
 		}
 
 		// Update current phase highlighting
-		const allPhases = modal.querySelectorAll('.workflow-phase');
-		allPhases.forEach(phaseEl => phaseEl.classList.remove('current-phase'));
-		
+		const allPhases = modal.querySelectorAll(".workflow-phase");
+		allPhases.forEach((phaseEl) => phaseEl.classList.remove("current-phase"));
+
 		const currentPhaseElement = modal.querySelector(`[data-phase="${phase}"]`);
 		if (currentPhaseElement) {
-			currentPhaseElement.classList.add('current-phase');
+			currentPhaseElement.classList.add("current-phase");
 		}
 
 		// Refresh the current step selector to reflect the new selection
@@ -884,7 +917,7 @@ const KanbanBoard = {
 		// Open the edit modal for the new job
 		const modal = KanbanBoard.createJobEditModal(newJob);
 		modal.classList.add("add-job-modal");
-		
+
 		// Modify the modal title
 		const title = modal.querySelector(".modal-title");
 		if (title) {
@@ -901,8 +934,10 @@ const KanbanBoard = {
 			const form = modal.querySelector("form");
 
 			// Get current step from selector
-			const currentStepSelect = form.querySelector('.current-step-selector');
-			const [currentPhase, currentSubstep] = currentStepSelect ? currentStepSelect.value.split(':') : [job.currentPhase, job.currentSubstep];
+			const currentStepSelect = form.querySelector(".current-step-selector");
+			const [currentPhase, currentSubstep] = currentStepSelect
+				? currentStepSelect.value.split(":")
+				: [job.currentPhase, job.currentSubstep];
 
 			// Get form values manually
 			const updatedJob = {
@@ -1104,7 +1139,12 @@ const KanbanBoard = {
 								"div",
 								{ className: "form-field full-width" },
 								h("label", {}, I18n.t("kanban.workflowConfig") || "Workflow Configuration"),
-								h("div", { className: "workflow-description" }, I18n.t("kanban.workflowDescription") || "Select and configure the steps for each phase of this job:"),
+								h(
+									"div",
+									{ className: "workflow-description" },
+									I18n.t("kanban.workflowDescription") ||
+										"Select and configure the steps for each phase of this job:"
+								),
 								KanbanBoard.createWorkflowSelector(job)
 							)
 						)
@@ -1122,14 +1162,15 @@ const KanbanBoard = {
 							onclick: async () => {
 								// Check if this is an existing job (has company and position filled)
 								const isExistingJob = job.company && job.position;
-								
+
 								if (isExistingJob) {
 									// For existing jobs, confirm deletion
 									const confirmed = await confirm(
-										I18n.t("messages.confirmDelete", { 
-											position: job.position, 
-											company: job.company 
-										}) || `Are you sure you want to delete the application for ${job.position} at ${job.company}?`
+										I18n.t("messages.confirmDelete", {
+											position: job.position,
+											company: job.company,
+										}) ||
+											`Are you sure you want to delete the application for ${job.position} at ${job.company}?`
 									);
 									if (confirmed) {
 										// Remove from array
@@ -1185,10 +1226,10 @@ const KanbanBoard = {
 				form.salaryRange.value = job.salaryRange || "";
 				form.location.value = job.location || "";
 				form.sourceUrl.value = job.sourceUrl || "";
-				
+
 				// Set current step selector value
 				const currentStepValue = `${job.currentPhase}:${job.currentSubstep || job.currentPhase}`;
-				const currentStepSelect = form.querySelector('.current-step-selector');
+				const currentStepSelect = form.querySelector(".current-step-selector");
 				if (currentStepSelect) {
 					currentStepSelect.value = currentStepValue;
 				}
@@ -1209,15 +1250,15 @@ const KanbanBoard = {
 				if (form) {
 					const company = form.company?.value?.trim() || "";
 					const position = form.position?.value?.trim() || "";
-					
+
 					// If both company and position are empty, remove the job
 					if (!company && !position) {
 						// Find the job in jobsData by looking for recent entries with empty fields
-						const jobToRemove = jobsData.find(job => 
-							!job.company && !job.position && job.currentPhase === "wishlist"
+						const jobToRemove = jobsData.find(
+							(job) => !job.company && !job.position && job.currentPhase === "wishlist"
 						);
 						if (jobToRemove) {
-							const index = jobsData.findIndex(j => j.id === jobToRemove.id);
+							const index = jobsData.findIndex((j) => j.id === jobToRemove.id);
 							if (index !== -1) {
 								jobsData.splice(index, 1);
 								saveToLocalStorage();

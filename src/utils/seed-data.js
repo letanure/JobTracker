@@ -16,7 +16,7 @@ const DEMO_DATA = [
 		selectedSubsteps: {
 			applied: ["application_review", "hr_phone_screen"],
 			interview: ["phone_screening", "coding_challenge", "technical_interview", "team_interview"],
-			offer: ["offer_discussion", "salary_negotiation"]
+			offer: ["offer_discussion", "salary_negotiation"],
 		},
 		salaryRange: "$120k - $150k",
 		location: "San Francisco, CA",
@@ -103,7 +103,7 @@ const DEMO_DATA = [
 		selectedSubsteps: {
 			applied: ["application_review", "hr_phone_screen", "recruiter_call"],
 			interview: ["take_home_assignment", "technical_interview", "behavioral_interview"],
-			offer: ["reference_check", "offer_discussion"]
+			offer: ["reference_check", "offer_discussion"],
 		},
 		salaryRange: "$90k - $110k + equity",
 		location: "Remote",

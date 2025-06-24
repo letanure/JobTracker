@@ -13,10 +13,6 @@ const PT_TRANSLATIONS = {
 		viewJob: "Ver Vaga",
 		chooseJob: "Escolha uma vaga...",
 	},
-	validation: {
-		jobRequired: "Por favor, selecione uma vaga",
-		taskRequired: "Por favor, digite uma descrição da tarefa",
-	},
 	tabs: {
 		dashboard: "Painel",
 		jobs: "Empregos",
@@ -181,9 +177,6 @@ const PT_TRANSLATIONS = {
 				jobRequired: "Por favor, selecione uma vaga",
 				taskRequired: "Por favor, digite uma descrição da tarefa",
 			},
-			statusTodo: "A Fazer",
-			statusInProgress: "Em Progresso",
-			statusDone: "Concluído",
 			daysOverdue: "{days} dias atrasado",
 			dueToday: "Vence hoje",
 			dueTomorrow: "Vence amanhã",

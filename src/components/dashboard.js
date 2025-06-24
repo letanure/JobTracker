@@ -29,7 +29,9 @@ const Dashboard = {
 	createStatsSection: () => {
 		const stats = Dashboard.calculateStats();
 
-		const statsGrid = h("div", { className: "dashboard-stats-grid" },
+		const statsGrid = h(
+			"div",
+			{ className: "dashboard-stats-grid" },
 			// Total Jobs
 			Dashboard.createStatCard(
 				"work",
@@ -126,7 +128,7 @@ const Dashboard = {
 				h("div", { className: "empty-state" }, I18n.t("dashboard.todayTasks.noTasks"))
 			);
 		} else {
-			todayTasks.forEach(task => {
+			todayTasks.forEach((task) => {
 				tasksList.appendChild(Dashboard.createTaskItem(task));
 			});
 		}
@@ -152,7 +154,7 @@ const Dashboard = {
 				h("div", { className: "empty-state" }, I18n.t("dashboard.tomorrowTasks.noTasks"))
 			);
 		} else {
-			tomorrowTasks.forEach(task => {
+			tomorrowTasks.forEach((task) => {
 				tasksList.appendChild(Dashboard.createTaskItem(task));
 			});
 		}
@@ -174,20 +176,16 @@ const Dashboard = {
 		let timeStr = "";
 		if (task.dueDate) {
 			const dueDate = new Date(task.dueDate);
-			timeStr = dueDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+			timeStr = dueDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 		}
 
 		return h(
 			"div",
-			{ 
+			{
 				className: `dashboard-task-item ${priorityClass}`,
-				onclick: () => Dashboard.openTaskModal(task)
+				onclick: () => Dashboard.openTaskModal(task),
 			},
-			h(
-				"div",
-				{ className: "task-time" },
-				timeStr || "—"
-			),
+			h("div", { className: "task-time" }, timeStr || "—"),
 			h(
 				"div",
 				{ className: "task-info" },
@@ -199,17 +197,13 @@ const Dashboard = {
 					h("span", {}, `${task.jobCompany} - ${task.jobPosition}`)
 				)
 			),
-			h(
-				"div",
-				{ className: `task-status ${statusClass}` },
-				getTaskStatusText(task.status)
-			)
+			h("div", { className: `task-status ${statusClass}` }, getTaskStatusText(task.status))
 		);
 	},
 
 	// Calculate dashboard statistics
 	calculateStats: () => {
-		let totalJobs = jobsData.length;
+		const totalJobs = jobsData.length;
 		let activeApplications = 0;
 		let interviews = 0;
 		let offers = 0;
@@ -219,7 +213,7 @@ const Dashboard = {
 		let tasksThisWeek = 0;
 
 		// Calculate job-related stats
-		jobsData.forEach(job => {
+		jobsData.forEach((job) => {
 			// Active applications (not rejected/withdrawn)
 			if (job.currentPhase !== "rejected_withdrawn") {
 				activeApplications++;
@@ -237,7 +231,7 @@ const Dashboard = {
 
 			// Count tasks
 			if (job.tasks) {
-				job.tasks.forEach(task => {
+				job.tasks.forEach((task) => {
 					if (!task.archived && task.status !== "done") {
 						activeTasks++;
 					}
@@ -260,12 +254,12 @@ const Dashboard = {
 
 			// Count contacts
 			if (job.contacts) {
-				totalContacts += job.contacts.filter(c => !c.archived).length;
+				totalContacts += job.contacts.filter((c) => !c.archived).length;
 			}
 
 			// Count notes
 			if (job.notes) {
-				totalNotes += job.notes.filter(n => !n.archived).length;
+				totalNotes += job.notes.filter((n) => !n.archived).length;
 			}
 		});
 
@@ -277,7 +271,7 @@ const Dashboard = {
 			activeTasks,
 			totalContacts,
 			totalNotes,
-			tasksThisWeek
+			tasksThisWeek,
 		};
 	},
 
@@ -286,9 +280,9 @@ const Dashboard = {
 		const tasks = [];
 		const dateStr = date.toDateString();
 
-		jobsData.forEach(job => {
+		jobsData.forEach((job) => {
 			if (job.tasks) {
-				job.tasks.forEach(task => {
+				job.tasks.forEach((task) => {
 					if (!task.archived && task.dueDate) {
 						const taskDate = new Date(task.dueDate);
 						if (taskDate.toDateString() === dateStr) {
@@ -297,7 +291,7 @@ const Dashboard = {
 								jobId: job.id,
 								jobCompany: job.company,
 								jobPosition: job.position,
-								jobPhase: job.currentPhase
+								jobPhase: job.currentPhase,
 							});
 						}
 					}
@@ -317,7 +311,7 @@ const Dashboard = {
 
 	// Open task modal
 	openTaskModal: (task) => {
-		const job = jobsData.find(j => j.id === task.jobId);
+		const job = jobsData.find((j) => j.id === task.jobId);
 		if (job) {
 			openTasksModal(job);
 		}
@@ -338,7 +332,7 @@ const Dashboard = {
 	// Refresh dashboard
 	refresh: () => {
 		Dashboard.init();
-	}
+	},
 };
 
 // Make Dashboard available globally

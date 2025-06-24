@@ -194,33 +194,151 @@
 }
 
 /* Common spacing utilities */
-.gap-sm { gap: var(--space-2); }
-.gap-md { gap: var(--space-4); }
-.gap-lg { gap: var(--space-6); }
+.gap-sm {
+	gap: var(--space-2);
+}
+.gap-md {
+	gap: var(--space-4);
+}
+.gap-lg {
+	gap: var(--space-6);
+}
 
-.mt-sm { margin-top: var(--space-2); }
-.mt-md { margin-top: var(--space-4); }
-.mt-lg { margin-top: var(--space-6); }
+.mt-sm {
+	margin-top: var(--space-2);
+}
+.mt-md {
+	margin-top: var(--space-4);
+}
+.mt-lg {
+	margin-top: var(--space-6);
+}
 
-.mb-sm { margin-bottom: var(--space-2); }
-.mb-md { margin-bottom: var(--space-4); }
-.mb-lg { margin-bottom: var(--space-6); }
+.mb-sm {
+	margin-bottom: var(--space-2);
+}
+.mb-md {
+	margin-bottom: var(--space-4);
+}
+.mb-lg {
+	margin-bottom: var(--space-6);
+}
 
 /* Common width utilities */
-.w-full { width: 100%; }
-.w-auto { width: auto; }
-.min-w-0 { min-width: 0; }
+.w-full {
+	width: 100%;
+}
+.w-auto {
+	width: auto;
+}
+.min-w-0 {
+	min-width: 0;
+}
+
+/* Common border radius utilities */
+.rounded-sm {
+	border-radius: var(--radius-sm);
+}
+.rounded-md {
+	border-radius: var(--radius-md);
+}
+.rounded-lg {
+	border-radius: var(--radius-lg);
+}
+.rounded-xl {
+	border-radius: var(--radius-xl);
+}
+
+/* Common transition utilities */
+.transition-fast {
+	transition: var(--transition-fast);
+}
+.transition-smooth {
+	transition: var(--transition-smooth);
+}
+
+/* Common hover effects */
+.hover-lift:hover {
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-md);
+}
+
+.hover-scale:hover {
+	transform: scale(1.02);
+}
+
+/* Status indicator utilities */
+.status-indicator {
+	padding: var(--space-1) var(--space-2);
+	border-radius: var(--radius-full);
+	font-size: var(--font-size-xs);
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.status-todo {
+	background: var(--gray-100);
+	color: var(--gray-700);
+}
+
+.status-in-progress {
+	background: var(--yellow-100);
+	color: var(--yellow-800);
+}
+
+.status-done {
+	background: var(--green-100);
+	color: var(--green-800);
+}
+
+/* Common button size variants */
+.btn-xs {
+	padding: var(--space-1) var(--space-2);
+	font-size: var(--font-size-xs);
+	min-height: 24px;
+}
+
+.btn-sm {
+	padding: var(--space-1) var(--space-3);
+	font-size: var(--font-size-sm);
+	min-height: 28px;
+}
+
+.btn-md {
+	padding: var(--space-2) var(--space-4);
+	font-size: var(--font-size-sm);
+	min-height: 32px;
+}
+
+.btn-lg {
+	padding: var(--space-3) var(--space-6);
+	font-size: var(--font-size-md);
+	min-height: 40px;
+}
 
 /* Common visibility utilities */
-.hidden { display: none; }
-.visible { display: block; }
+.hidden {
+	display: none;
+}
+.visible {
+	display: block;
+}
 
 @media (max-width: 768px) {
-	.hidden-mobile { display: none; }
-	.visible-mobile { display: block; }
+	.hidden-mobile {
+		display: none;
+	}
+	.visible-mobile {
+		display: block;
+	}
 }
 
 @media (min-width: 769px) {
-	.hidden-desktop { display: none; }
-	.visible-desktop { display: block; }
+	.hidden-desktop {
+		display: none;
+	}
+	.visible-desktop {
+		display: block;
+	}
 }

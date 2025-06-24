@@ -2,7 +2,7 @@
 // CALENDAR UTILITIES - Date formatting and helper functions
 // ============================================================================
 
-import { CALENDAR_CONSTANTS } from '../../utils/shared-constants.js';
+import { CALENDAR_CONSTANTS } from "../../utils/shared-constants.js";
 
 /**
  * Calendar utility functions for date manipulation and formatting
@@ -14,7 +14,7 @@ export const CalendarUtils = {
 	formatTime12Hour: (hour, minute) => {
 		const period = hour < 12 ? "AM" : "PM";
 		const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-		const minuteStr = minute === 0 ? "" : `:${minute.toString().padStart(2, '0')}`;
+		const minuteStr = minute === 0 ? "" : `:${minute.toString().padStart(2, "0")}`;
 		return `${hour12}${minuteStr} ${period}`;
 	},
 
@@ -46,7 +46,7 @@ export const CalendarUtils = {
 	 * Format date as YYYY-MM-DD key
 	 */
 	formatDateKey: (date) => {
-		return date.toISOString().split('T')[0];
+		return date.toISOString().split("T")[0];
 	},
 
 	/**
@@ -90,18 +90,18 @@ export const CalendarUtils = {
 	generateTimeSlots: () => {
 		const slots = [];
 		const { START, END } = CALENDAR_CONSTANTS.BUSINESS_HOURS;
-		
+
 		// Generate slots from business start to end in 30-minute intervals
 		for (let hour = START; hour <= END; hour++) {
 			for (let minute = 0; minute < 60; minute += 30) {
-				const time24 = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+				const time24 = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 				const time12 = CalendarUtils.formatTime12Hour(hour, minute);
-				
+
 				slots.push({
 					time24,
 					time12,
 					hour,
-					minute
+					minute,
 				});
 			}
 		}
@@ -125,14 +125,14 @@ export const CalendarUtils = {
 		// Calculate position: each 30-min slot is TIME_SLOT_HEIGHT pixels
 		const slotsFromStart = (hours - START) * 2 + Math.floor(minutes / 30);
 		const topPosition = slotsFromStart * CALENDAR_CONSTANTS.TIME_SLOT_HEIGHT;
-		
+
 		// Height is proportional to duration
 		const height = Math.max(15, (durationMinutes / 30) * CALENDAR_CONSTANTS.TIME_SLOT_HEIGHT);
 
 		return {
 			top: topPosition,
 			height,
-			style: `position: absolute; top: ${topPosition}px; height: ${height}px; width: calc(100% - 8px); margin: 2px 4px; z-index: 1;`
+			style: `position: absolute; top: ${topPosition}px; height: ${height}px; width: calc(100% - 8px); margin: 2px 4px; z-index: 1;`,
 		};
 	},
 
@@ -142,32 +142,36 @@ export const CalendarUtils = {
 	calculateTimeFromPosition: (mouseY, containerTop = 0) => {
 		const relativeY = mouseY - containerTop;
 		const { START } = CALENDAR_CONSTANTS.BUSINESS_HOURS;
-		
+
 		// Calculate which 15-minute slot the mouse is over
 		const quarterSlotHeight = CALENDAR_CONSTANTS.QUARTER_SLOT_HEIGHT;
 		const slotIndex = Math.floor(relativeY / quarterSlotHeight);
 		const totalQuarters = slotIndex;
 		const hours = Math.floor(totalQuarters / 4) + START;
 		const minutes = (totalQuarters % 4) * 15;
-		
-		return { hours, minutes, valid: hours >= START && hours <= CALENDAR_CONSTANTS.BUSINESS_HOURS.END };
+
+		return {
+			hours,
+			minutes,
+			valid: hours >= START && hours <= CALENDAR_CONSTANTS.BUSINESS_HOURS.END,
+		};
 	},
 
 	/**
 	 * Format event time display
 	 */
 	formatEventTime: (event) => {
-		if (!event.date) return '';
-		
+		if (!event.date) return "";
+
 		const date = new Date(event.date);
 		const hours = date.getHours();
 		const minutes = date.getMinutes();
-		
+
 		// Show time only if it's set (not midnight)
 		if (hours === 0 && minutes === 0) {
-			return '';
+			return "";
 		}
-		
+
 		return CalendarUtils.formatTime12Hour(hours, minutes);
 	},
 
@@ -176,14 +180,14 @@ export const CalendarUtils = {
 	 */
 	getEventStartMinutes: (event) => {
 		if (!event.date) return null;
-		
+
 		const date = new Date(event.date);
 		const hours = date.getHours();
 		const minutes = date.getMinutes();
 		const { START, END } = CALENDAR_CONSTANTS.BUSINESS_HOURS;
-		
+
 		if (hours < START || hours > END) return null;
-		
+
 		return (hours - START) * 60 + minutes;
 	},
 
@@ -193,13 +197,13 @@ export const CalendarUtils = {
 	getEventEndMinutes: (event) => {
 		const startMinutes = CalendarUtils.getEventStartMinutes(event);
 		if (startMinutes === null) return null;
-		
+
 		// Default duration if not specified
 		let durationMinutes = 30;
-		if (event.task && event.task.duration) {
+		if (event.task?.duration) {
 			durationMinutes = CalendarUtils.parseDuration(event.task.duration) || 30;
 		}
-		
+
 		return startMinutes + durationMinutes;
 	},
 
@@ -208,16 +212,16 @@ export const CalendarUtils = {
 	 */
 	parseDuration: (duration) => {
 		if (!duration) return null;
-		
+
 		const durationMap = {
 			"15min": 15,
 			"30min": 30,
 			"1h": 60,
 			"1h30": 90,
 			"2h": 120,
-			"3h": 180
+			"3h": 180,
 		};
-		
+
 		return durationMap[duration] || null;
 	},
 
@@ -242,14 +246,14 @@ export const CalendarUtils = {
 		const groups = [];
 		const processed = new Set();
 
-		events.forEach(event => {
+		events.forEach((event) => {
 			if (processed.has(event.id)) return;
 
 			const group = [event];
 			processed.add(event.id);
 
 			// Find all events that overlap with this one
-			events.forEach(otherEvent => {
+			events.forEach((otherEvent) => {
 				if (processed.has(otherEvent.id)) return;
 
 				if (CalendarUtils.eventsOverlap(event, otherEvent)) {
@@ -262,5 +266,5 @@ export const CalendarUtils = {
 		});
 
 		return groups;
-	}
+	},
 };
