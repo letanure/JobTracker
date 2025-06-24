@@ -325,6 +325,7 @@
 	color: var(--text-color);
 }
 
+.note-edit-textarea,
 .task-edit-textarea {
 	width: 100%;
 	padding: 8px 12px;

@@ -638,8 +638,10 @@ const CalendarView = {
 							CalendarView.handleDragStart(e, event);
 						}
 					}},
-				h('div.calendar-event-time', CalendarView.formatEventTime(event)),
-				h('div.calendar-event-title', event.title)
+				h('div.calendar-event-header',
+					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
+					h('div.calendar-event-title', event.title)
+				)
 			);
 		});
 	},
@@ -817,11 +819,11 @@ const CalendarView = {
 					}},
 				h('div.calendar-event-header',
 					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
+					h('div.calendar-event-title', event.title),
 					event.type === "task" &&
 						event.priority &&
 						h('span', { className: `calendar-event-priority priority-${event.priority}` })
 				),
-				h('div.calendar-event-title', event.title),
 				h('div.calendar-event-subtitle',
 					`${event.job.company} - ${event.job.position}`
 				)

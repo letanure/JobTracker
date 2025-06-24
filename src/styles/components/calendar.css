@@ -292,7 +292,7 @@
 	border-radius: 6px;
 	height: auto;
 	max-height: calc(100vh - 200px);
-	overflow: hidden;
+	overflow-y: auto;
 }
 
 .calendar-week-times {
@@ -359,12 +359,18 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.calendar-event-header {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .calendar-event-time {
 	font-size: 11px;
-	margin-bottom: 2px;
 	display: flex;
 	align-items: center;
 	gap: 4px;
+	flex-shrink: 0;
 }
 
 .calendar-event-time .material-symbols-outlined {
@@ -374,6 +380,7 @@
 .calendar-event-title {
 	font-weight: 500;
 	line-height: 1.3;
+	flex: 1;
 }
 
 /* Day View */
@@ -386,7 +393,7 @@
 	border-radius: 6px;
 	height: auto;
 	max-height: calc(100vh - 200px);
-	overflow: hidden;
+	overflow-y: auto;
 }
 
 .calendar-day-times {

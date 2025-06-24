@@ -117,10 +117,10 @@
 .contacts-archived-header {
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 0;
 	cursor: pointer;
-	margin: 0 0 16px 0;
-	font-size: 16px;
+	margin: 0 0 06px 0;
+	font-size: 13px;
 	font-weight: 600;
 	color: var(--gray-600);
 	padding: 8px;

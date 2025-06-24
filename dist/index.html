@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T14:30:53.879Z
-Cache Version: 1750775453879
+Generated: 2025-06-24T16:00:13.538Z
+Cache Version: 1750780813538
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750775453879
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750775453879">
-    <meta name="build-date" content="2025-06-24T14:30:53.879Z">
+    <meta name="build-version" content="1750780813538">
+    <meta name="build-date" content="2025-06-24T16:00:13.538Z">
     <style>
 
 /* ============================================================================ */
@@ -2240,10 +2240,10 @@ textarea {
 .contacts-archived-header {
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 0;
 	cursor: pointer;
-	margin: 0 0 16px 0;
-	font-size: 16px;
+	margin: 0 0 06px 0;
+	font-size: 13px;
 	font-weight: 600;
 	color: var(--gray-600);
 	padding: 8px;
@@ -3948,7 +3948,7 @@ a.kanban-source-link {
 	border-radius: 6px;
 	height: auto;
 	max-height: calc(100vh - 200px);
-	overflow: hidden;
+	overflow-y: auto;
 }
 
 .calendar-week-times {
@@ -4015,12 +4015,18 @@ a.kanban-source-link {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.calendar-event-header {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .calendar-event-time {
 	font-size: 11px;
-	margin-bottom: 2px;
 	display: flex;
 	align-items: center;
 	gap: 4px;
+	flex-shrink: 0;
 }
 
 .calendar-event-time .material-symbols-outlined {
@@ -4030,6 +4036,7 @@ a.kanban-source-link {
 .calendar-event-title {
 	font-weight: 500;
 	line-height: 1.3;
+	flex: 1;
 }
 
 /* Day View */
@@ -4042,7 +4049,7 @@ a.kanban-source-link {
 	border-radius: 6px;
 	height: auto;
 	max-height: calc(100vh - 200px);
-	overflow: hidden;
+	overflow-y: auto;
 }
 
 .calendar-day-times {
@@ -4669,6 +4676,7 @@ a.kanban-source-link {
 	color: var(--text-color);
 }
 
+.note-edit-textarea,
 .task-edit-textarea {
 	width: 100%;
 	padding: 8px 12px;
@@ -6044,16 +6052,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750775453879';
-window.BUILD_DATE = '2025-06-24T14:30:53.879Z';
+window.BUILD_VERSION = '1750780813538';
+window.BUILD_DATE = '2025-06-24T16:00:13.538Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T14:30:53.870Z
+// Generated: 2025-06-24T16:00:13.529Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T14:30:53.870Z");
+console.log("JobTracker - Built at: 2025-06-24T16:00:13.529Z");
 
 
 // ============================================================================
@@ -8757,7 +8765,7 @@ const TasksModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
-	const enableTaskEditing = (task, job) => {
+	const enableTaskModalEditing = (task, job) => {
 		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
 		if (!taskElement) return;
 
@@ -8824,7 +8832,7 @@ const TasksModal = ({ job, onClose }) => {
 		const cancelBtn = h("button.action-btn.cancel-btn", {
 			title: I18n.t("modals.common.cancel"),
 			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
-			onclick: () => disableTaskEditing(task, job),
+			onclick: () => disableTaskModalEditing(task, job),
 		});
 		actionsCell.appendChild(cancelBtn);
 
@@ -8859,7 +8867,7 @@ const TasksModal = ({ job, onClose }) => {
 					saveTaskChanges(task, job);
 				} else if (e.key === "Escape") {
 					e.preventDefault();
-					disableTaskEditing(task, job);
+					disableTaskModalEditing(task, job);
 				}
 			});
 
@@ -8932,7 +8940,7 @@ const TasksModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
-	const disableTaskEditing = (task, job) => {
+	const disableTaskModalEditing = (task, job) => {
 		// Just refresh the modal to restore display state
 		// No need to find the taskRow since refreshTasksModal will recreate everything
 		refreshTasksModal(job);
@@ -9190,7 +9198,7 @@ const TasksModal = ({ job, onClose }) => {
 											h("button.action-btn.edit-task-btn", {
 												title: I18n.t("modals.tasks.editTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-												onclick: () => enableTaskEditing(task, job),
+												onclick: () => enableTaskModalEditing(task, job),
 											}),
 											h("button.action-btn.archive-btn", {
 												title: I18n.t("modals.tasks.archiveTitle"),
@@ -14272,8 +14280,10 @@ const CalendarView = {
 							CalendarView.handleDragStart(e, event);
 						}
 					}},
-				h('div.calendar-event-time', CalendarView.formatEventTime(event)),
-				h('div.calendar-event-title', event.title)
+				h('div.calendar-event-header',
+					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
+					h('div.calendar-event-title', event.title)
+				)
 			);
 		});
 	},
@@ -14451,11 +14461,11 @@ const CalendarView = {
 					}},
 				h('div.calendar-event-header',
 					h('div.calendar-event-time', CalendarView.formatEventTime(event)),
+					h('div.calendar-event-title', event.title),
 					event.type === "task" &&
 						event.priority &&
 						h('span', { className: `calendar-event-priority priority-${event.priority}` })
 				),
-				h('div.calendar-event-title', event.title),
 				h('div.calendar-event-subtitle',
 					`${event.job.company} - ${event.job.position}`
 				)

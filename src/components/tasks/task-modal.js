@@ -75,7 +75,7 @@ const TasksModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
-	const enableTaskEditing = (task, job) => {
+	const enableTaskModalEditing = (task, job) => {
 		const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
 		if (!taskElement) return;
 
@@ -142,7 +142,7 @@ const TasksModal = ({ job, onClose }) => {
 		const cancelBtn = h("button.action-btn.cancel-btn", {
 			title: I18n.t("modals.common.cancel"),
 			innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
-			onclick: () => disableTaskEditing(task, job),
+			onclick: () => disableTaskModalEditing(task, job),
 		});
 		actionsCell.appendChild(cancelBtn);
 
@@ -177,7 +177,7 @@ const TasksModal = ({ job, onClose }) => {
 					saveTaskChanges(task, job);
 				} else if (e.key === "Escape") {
 					e.preventDefault();
-					disableTaskEditing(task, job);
+					disableTaskModalEditing(task, job);
 				}
 			});
 
@@ -250,7 +250,7 @@ const TasksModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
-	const disableTaskEditing = (task, job) => {
+	const disableTaskModalEditing = (task, job) => {
 		// Just refresh the modal to restore display state
 		// No need to find the taskRow since refreshTasksModal will recreate everything
 		refreshTasksModal(job);
@@ -508,7 +508,7 @@ const TasksModal = ({ job, onClose }) => {
 											h("button.action-btn.edit-task-btn", {
 												title: I18n.t("modals.tasks.editTitle"),
 												innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-												onclick: () => enableTaskEditing(task, job),
+												onclick: () => enableTaskModalEditing(task, job),
 											}),
 											h("button.action-btn.archive-btn", {
 												title: I18n.t("modals.tasks.archiveTitle"),
