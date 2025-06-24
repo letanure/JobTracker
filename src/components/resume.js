@@ -30,6 +30,39 @@ const ResumeBuilder = {
 	// Track section collapsed states
 	collapsedSections: {},
 
+	// Country codes for country selector
+	countryCodes: [
+		"US", "DE", "BR", "IN", "CN", "JP", "RU", "FR", "IT", "GB",
+		"ES", "CA", "AU", "MX", "KR", "NL", "TR", "AR", "SA", "ZA",
+		"PL", "SE", "NO", "DK", "FI", "BE", "CH", "IE", "AT", "PT",
+		"GR", "HU", "CZ", "SK", "RO", "IL", "NZ", "TH", "ID", "MY",
+		"PH", "VN", "EG", "NG", "KE", "PK", "UA", "BD", "CL", "CO"
+	],
+
+	// Get country options for select dropdown
+	getCountryOptions: () => {
+		try {
+			const regionNames = new Intl.DisplayNames([navigator.language], { type: "region" });
+			const countries = ResumeBuilder.countryCodes.map(code => ({
+				code,
+				name: regionNames.of(code)
+			}));
+			
+			// Sort by name in user's locale
+			countries.sort((a, b) => a.name.localeCompare(b.name, navigator.language));
+			
+			return countries.map(country => 
+				h('option', { value: country.code }, country.name)
+			);
+		} catch (error) {
+			// Fallback to country codes if Intl.DisplayNames is not supported
+			console.error('Intl.DisplayNames not supported:', error);
+			return ResumeBuilder.countryCodes.map(code => 
+				h('option', { value: code }, code)
+			);
+		}
+	},
+
 	// Toggle section collapse state
 	toggleSection: (sectionId) => {
 		ResumeBuilder.collapsedSections[sectionId] = !ResumeBuilder.collapsedSections[sectionId];
@@ -302,13 +335,16 @@ const ResumeBuilder = {
 				),
 				h('div.form-field',
 					h('label', I18n.t("resume.basics.country")),
-					h('input[type="text"]', {
+					h('select', {
 						value: ResumeBuilder.data.basics.location.country,
-						oninput: (e) => {
+						onchange: (e) => {
 							ResumeBuilder.data.basics.location.country = e.target.value;
 							ResumeBuilder.updateJSON();
 						}
-					})
+					},
+						h('option', { value: '' }, ''),
+						...ResumeBuilder.getCountryOptions()
+					)
 				)
 			),
 			h('div.form-field',

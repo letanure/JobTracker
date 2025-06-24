@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T21:01:27.771Z
-Cache Version: 1750798887771
+Generated: 2025-06-24T21:03:58.836Z
+Cache Version: 1750799038836
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750798887771
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750798887771">
-    <meta name="build-date" content="2025-06-24T21:01:27.771Z">
+    <meta name="build-version" content="1750799038836">
+    <meta name="build-date" content="2025-06-24T21:03:58.836Z">
     <style>
 
 /* ============================================================================ */
@@ -6714,16 +6714,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750798887771';
-window.BUILD_DATE = '2025-06-24T21:01:27.771Z';
+window.BUILD_VERSION = '1750799038836';
+window.BUILD_DATE = '2025-06-24T21:03:58.836Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T21:01:27.761Z
+// Generated: 2025-06-24T21:03:58.825Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T21:01:27.761Z");
+console.log("JobTracker - Built at: 2025-06-24T21:03:58.825Z");
 
 
 // ============================================================================
@@ -16896,6 +16896,39 @@ const ResumeBuilder = {
 	// Track section collapsed states
 	collapsedSections: {},
 
+	// Country codes for country selector
+	countryCodes: [
+		"US", "DE", "BR", "IN", "CN", "JP", "RU", "FR", "IT", "GB",
+		"ES", "CA", "AU", "MX", "KR", "NL", "TR", "AR", "SA", "ZA",
+		"PL", "SE", "NO", "DK", "FI", "BE", "CH", "IE", "AT", "PT",
+		"GR", "HU", "CZ", "SK", "RO", "IL", "NZ", "TH", "ID", "MY",
+		"PH", "VN", "EG", "NG", "KE", "PK", "UA", "BD", "CL", "CO"
+	],
+
+	// Get country options for select dropdown
+	getCountryOptions: () => {
+		try {
+			const regionNames = new Intl.DisplayNames([navigator.language], { type: "region" });
+			const countries = ResumeBuilder.countryCodes.map(code => ({
+				code,
+				name: regionNames.of(code)
+			}));
+			
+			// Sort by name in user's locale
+			countries.sort((a, b) => a.name.localeCompare(b.name, navigator.language));
+			
+			return countries.map(country => 
+				h('option', { value: country.code }, country.name)
+			);
+		} catch (error) {
+			// Fallback to country codes if Intl.DisplayNames is not supported
+			console.error('Intl.DisplayNames not supported:', error);
+			return ResumeBuilder.countryCodes.map(code => 
+				h('option', { value: code }, code)
+			);
+		}
+	},
+
 	// Toggle section collapse state
 	toggleSection: (sectionId) => {
 		ResumeBuilder.collapsedSections[sectionId] = !ResumeBuilder.collapsedSections[sectionId];
@@ -17168,13 +17201,16 @@ const ResumeBuilder = {
 				),
 				h('div.form-field',
 					h('label', I18n.t("resume.basics.country")),
-					h('input[type="text"]', {
+					h('select', {
 						value: ResumeBuilder.data.basics.location.country,
-						oninput: (e) => {
+						onchange: (e) => {
 							ResumeBuilder.data.basics.location.country = e.target.value;
 							ResumeBuilder.updateJSON();
 						}
-					})
+					},
+						h('option', { value: '' }, ''),
+						...ResumeBuilder.getCountryOptions()
+					)
 				)
 			),
 			h('div.form-field',
