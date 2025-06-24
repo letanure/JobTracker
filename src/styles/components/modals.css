@@ -1,0 +1,101 @@
+/* ============================================================================ */
+/* GITHUB-STYLE MODALS */
+/* ============================================================================ */
+
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--modal-backdrop);
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	z-index: 2000;
+	padding: 40px 16px 16px;
+	overflow-y: auto;
+}
+
+.modal {
+	background: var(--white);
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+	border: var(--border-width) solid var(--border-color);
+	max-width: 800px;
+	width: 100%;
+	max-height: calc(100vh - 80px);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.modal-header {
+	padding: 16px 24px;
+	border-bottom: var(--border-width) solid var(--border-color);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: var(--gray-50);
+	border-radius: 12px 12px 0 0;
+}
+
+.modal-title {
+	margin: 0;
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	color: var(--text-color);
+	line-height: 1.25;
+}
+
+.modal-close {
+	background: none;
+	border: none;
+	font-size: var(--font-size-xs);
+	cursor: pointer;
+	color: var(--gray-500);
+	min-width: auto;
+	height: auto;
+	padding: 4px;
+	border-radius: 6px;
+	box-shadow: none;
+}
+
+.modal-close:hover {
+	color: var(--gray-700);
+	background: var(--gray-100);
+	transform: none;
+	box-shadow: none;
+}
+
+.modal-body {
+	padding: 24px;
+	overflow-y: auto;
+	flex: 1;
+	background: var(--white);
+}
+
+.modal-footer {
+	padding: 16px 24px;
+	border-top: var(--border-width) solid var(--border-color);
+	background: var(--gray-50);
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	border-radius: 0 0 12px 12px;
+}
+
+/* Modal content font size standardization */
+.modal-body,
+.modal-body p,
+.modal-empty-message {
+	font-size: var(--font-size-xs);
+}
+
+.modal-empty-message {
+	text-align: center;
+	color: var(--gray-600);
+	font-style: italic;
+	margin: 24px 0;
+}

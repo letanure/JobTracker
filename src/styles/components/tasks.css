@@ -1,0 +1,543 @@
+/* ============================================================================ */
+/* TASKS BOARD */
+/* ============================================================================ */
+
+.tasks-container {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	height: 100%;
+	min-height: 0;
+}
+
+.tasks-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.tasks-title {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+}
+
+.tasks-board {
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
+	gap: 16px;
+	overflow-x: auto;
+	padding: 8px 0;
+	flex: 1;
+	align-items: stretch;
+	height: 100%;
+}
+
+.tasks-column {
+	flex: 1;
+	min-width: 0;
+	background: var(--gray-50);
+	border-radius: 12px;
+	border: var(--border-width) solid var(--border-color);
+	display: flex;
+	flex-direction: column;
+	transition: var(--transition-fast);
+	max-height: 100%;
+}
+
+.tasks-column.drag-active {
+	border-color: var(--blue-300);
+}
+
+.tasks-column.drag-over {
+	background: var(--blue-50);
+	border-color: var(--blue-500);
+	transform: scale(1.02);
+}
+
+.tasks-column-header {
+	padding: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+	background: var(--white);
+	border-radius: 12px 12px 0 0;
+}
+
+.tasks-column-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.tasks-column-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.tasks-column-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.tasks-column-count {
+	background: var(--gray-200);
+	color: var(--gray-700);
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+	min-width: 20px;
+	text-align: center;
+}
+
+.tasks-add-task-btn {
+	background: var(--gray-50);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+	padding: 2px 6px;
+	border-radius: 6px;
+	font-size: 12px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	height: 20px;
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.tasks-add-task-btn:hover {
+	background-color: var(--gray-100);
+	border-color: var(--gray-300);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.tasks-add-task-btn .material-symbols-outlined {
+	font-size: 12px;
+	font-weight: 400;
+}
+
+/* Task form grid layout */
+.task-form-grid {
+	display: flex;
+	gap: 8px;
+}
+
+.task-form-grid > * {
+	flex: 1;
+}
+
+/* Due date indicator for task cards */
+.tasks-due-date-indicator {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 500;
+}
+
+.tasks-due-date-indicator .material-symbols-outlined {
+	font-size: 12px;
+}
+
+.tasks-due-date-indicator.due-soon {
+	background: var(--orange-50);
+	color: var(--orange-600);
+	border: 1px solid var(--orange-200);
+}
+
+.tasks-due-date-indicator.due-today {
+	background: var(--blue-50);
+	color: var(--blue-600);
+	border: 1px solid var(--blue-200);
+}
+
+.tasks-due-date-indicator.overdue {
+	background: var(--red-50);
+	color: var(--red-600);
+	border: 1px solid var(--red-200);
+}
+
+/* Task card footer layout */
+.tasks-card-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--gray-200);
+}
+
+/* Workflow Selector Styles - Compact */
+.workflow-description {
+	font-size: 11px;
+	color: var(--gray-600);
+	margin-bottom: 6px;
+}
+
+.workflow-selector {
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	background: var(--gray-50);
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+.workflow-phase {
+	border-bottom: 1px solid var(--border-color);
+}
+
+.workflow-phase:last-child {
+	border-bottom: none;
+}
+
+.workflow-phase.current-phase {
+	background: var(--blue-50);
+	border-left: 3px solid var(--blue-500);
+}
+
+.workflow-phase-header {
+	padding: 0;
+}
+
+.workflow-phase-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 12px;
+	background: transparent;
+	border: none;
+	text-align: left;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.workflow-phase-toggle:hover {
+	background: var(--gray-100);
+}
+
+.workflow-phase-toggle.has-substeps {
+	color: var(--blue-600);
+}
+
+.workflow-phase-toggle .material-symbols-outlined {
+	font-size: 14px;
+	transition: transform var(--transition-fast);
+}
+
+.workflow-phase.expanded .workflow-phase-toggle .material-symbols-outlined {
+	transform: rotate(180deg);
+}
+
+.workflow-phase-title {
+	flex: 1;
+}
+
+.workflow-phase-count {
+	font-size: 10px;
+	background: var(--gray-200);
+	color: var(--gray-700);
+	padding: 1px 4px;
+	border-radius: 8px;
+	min-width: 24px;
+	text-align: center;
+}
+
+.workflow-phase-toggle.has-substeps .workflow-phase-count {
+	background: var(--blue-100);
+	color: var(--blue-700);
+}
+
+.workflow-substeps-list {
+	background: var(--white);
+	border-top: 1px solid var(--border-color);
+}
+
+.workflow-substep-item {
+	border-bottom: 1px solid var(--gray-100);
+}
+
+.workflow-substep-item:last-child {
+	border-bottom: none;
+}
+
+.workflow-substep-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 12px 4px 24px;
+	background: transparent;
+	border: none;
+	text-align: left;
+	cursor: pointer;
+	font-size: 11px;
+	transition: var(--transition-fast);
+}
+
+.workflow-substep-toggle:hover {
+	background: var(--gray-50);
+}
+
+.workflow-substep-item.selected .workflow-substep-toggle {
+	color: var(--blue-600);
+	background: var(--blue-25);
+}
+
+.workflow-substep-item.current .workflow-substep-toggle {
+	background: var(--blue-50);
+	font-weight: 600;
+}
+
+.workflow-substep-toggle .material-symbols-outlined {
+	font-size: 14px;
+	color: var(--gray-400);
+}
+
+.workflow-substep-item.selected .workflow-substep-toggle .material-symbols-outlined {
+	color: var(--blue-600);
+}
+
+.workflow-substep-text {
+	flex: 1;
+}
+
+.current-indicator {
+	font-size: 9px;
+	background: var(--blue-600);
+	color: var(--white);
+	padding: 1px 3px;
+	border-radius: 2px;
+	text-transform: uppercase;
+	font-weight: 500;
+}
+
+/* Compact Job Edit Form */
+.job-edit-form .form-row {
+	margin-bottom: 8px;
+}
+
+.job-edit-form .form-field {
+	margin-bottom: 0;
+}
+
+.job-edit-form label {
+	font-size: var(--font-size-xs);
+	font-weight: 500;
+	margin-bottom: 2px;
+	display: block;
+}
+
+.job-edit-form input,
+.job-edit-form select {
+	padding: 4px 6px;
+	font-size: 13px;
+	height: 28px;
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+}
+
+.job-edit-form input[readonly] {
+	background: var(--gray-50);
+	color: var(--gray-600);
+}
+
+/* Compact modal */
+.modal {
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+.modal-body {
+	padding: 12px 16px;
+}
+
+.modal-header {
+	padding: 8px 16px;
+}
+
+.modal-footer {
+	padding: 8px 16px;
+}
+
+.tasks-column-body {
+	padding: 12px;
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 0;
+}
+
+.tasks-task-card {
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 8px;
+	padding: 12px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tasks-task-card:hover {
+	border-color: var(--blue-300);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-1px);
+}
+
+.tasks-task-card.dragging {
+	opacity: 0.5;
+	transform: rotate(5deg);
+}
+
+.tasks-priority-dot {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.tasks-priority-dot.priority-high {
+	background: var(--red-500);
+}
+
+.tasks-priority-dot.priority-medium {
+	background: var(--orange-500);
+}
+
+.tasks-priority-dot.priority-low {
+	background: var(--green-500);
+}
+
+.tasks-task-content {
+	margin-bottom: 12px;
+	padding-right: 16px;
+}
+
+.tasks-task-text {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-color);
+	line-height: 1.4;
+	word-wrap: break-word;
+}
+
+.tasks-job-context {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-bottom: 12px;
+}
+
+.tasks-job-info,
+.tasks-job-phase {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.tasks-job-icon,
+.tasks-phase-icon {
+	font-size: 12px;
+	color: var(--gray-500);
+	flex-shrink: 0;
+}
+
+.tasks-job-text,
+.tasks-phase-text {
+	font-size: 11px;
+	color: var(--gray-600);
+	line-height: 1.2;
+}
+
+.tasks-action-icons {
+	display: flex;
+	gap: 4px;
+}
+
+.tasks-icon-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: var(--gray-500);
+	cursor: pointer;
+	transition: var(--transition-fast);
+	padding: 0;
+	min-width: auto;
+	box-shadow: none;
+	position: relative;
+}
+
+.tasks-icon-btn:hover {
+	background: var(--gray-100);
+	color: var(--gray-700);
+	border-color: var(--gray-300);
+	transform: none;
+	box-shadow: none;
+}
+
+.tasks-icon-btn .material-symbols-outlined {
+	font-size: 14px;
+}
+
+.tasks-job-filter {
+	padding: 4px 8px;
+	background: var(--white);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	color: var(--text-color);
+	font-size: 12px;
+	font-weight: 500;
+	min-width: 150px;
+	max-width: 200px;
+	cursor: pointer;
+	height: 28px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tasks-job-filter:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+/* Responsive tasks board */
+@media (max-width: 768px) {
+	.tasks-container {
+		padding: 16px;
+	}
+
+	.tasks-board {
+		gap: 12px;
+	}
+
+	.tasks-column {
+		min-width: 200px;
+	}
+
+	.tasks-task-card {
+		padding: 10px;
+	}
+}

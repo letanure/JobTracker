@@ -1,0 +1,66 @@
+/* ============================================================================ */
+/* DROPDOWNS */
+/* ============================================================================ */
+
+.header-with-filter {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: var(--space-1);
+}
+
+.filter-dropdown-icon {
+	cursor: pointer;
+	font-size: 12px;
+	color: var(--gray-500);
+	user-select: none;
+	padding: 2px;
+	border-radius: 3px;
+	transition: var(--transition-fast);
+	display: inline-flex;
+	align-items: center;
+}
+
+.filter-dropdown-icon:hover {
+	color: var(--gray-700);
+	background: var(--gray-100);
+}
+
+.filter-dropdown-icon .material-symbols-outlined {
+	font-size: 14px;
+}
+
+.filter-dropdown {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+	z-index: 1500;
+	min-width: 120px;
+	margin-top: 4px;
+}
+
+.dropdown-option {
+	padding: 6px 12px;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.dropdown-option:hover {
+	background: var(--background-color);
+}
+
+.dropdown-option:first-child {
+	border-top-left-radius: var(--radius-md);
+	border-top-right-radius: var(--radius-md);
+}
+
+.dropdown-option:last-child {
+	border-bottom-left-radius: var(--radius-md);
+	border-bottom-right-radius: var(--radius-md);
+}

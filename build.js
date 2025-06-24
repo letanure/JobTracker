@@ -54,8 +54,21 @@ const BUILD_CONFIG = {
   // CSS files to inline
   cssFiles: [
     'src/styles/base.css',
-    'src/styles/layout.css', 
-    'src/styles/components.css',
+    'src/styles/layout.css',
+    // Component CSS files (in order)
+    'src/styles/components/buttons.css',
+    'src/styles/components/forms.css',
+    'src/styles/components/contacts.css',
+    'src/styles/components/dropdowns.css',
+    'src/styles/components/modals.css',
+    'src/styles/components/badges.css',
+    'src/styles/components/language-switcher.css',
+    'src/styles/components/tabs.css',
+    'src/styles/components/kanban.css',
+    'src/styles/components/tasks.css',
+    'src/styles/components/calendar.css',
+    'src/styles/components/dialogs.css',
+    // Remaining CSS files
     'src/styles/table.css',
     'src/styles/dashboard.css'
   ],

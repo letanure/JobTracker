@@ -1,0 +1,547 @@
+/* ============================================================================ */
+/* GITHUB-STYLE KANBAN BOARD */
+/* ============================================================================ */
+
+.kanban-container {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	height: 100%;
+	overflow: hidden;
+}
+
+.kanban-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.kanban-title {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-color);
+	margin: 0;
+}
+
+.kanban-board {
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
+	gap: 16px;
+	overflow-x: auto;
+	padding: 8px 0;
+	flex: 1;
+	align-items: stretch;
+	height: 100%;
+}
+
+.kanban-column {
+	min-width: 280px;
+	width: 280px;
+	background: var(--gray-50);
+	border-radius: 12px;
+	border: var(--border-width) solid var(--border-color);
+	display: flex;
+	flex-direction: column;
+	transition: var(--transition-fast);
+	max-height: 100%;
+}
+
+.kanban-column.drag-active {
+	border-color: var(--blue-300);
+}
+
+.kanban-column.drag-over {
+	background: var(--blue-50);
+	border-color: var(--blue-500);
+	transform: scale(1.02);
+}
+
+.kanban-column-header {
+	padding: 16px;
+	border-bottom: var(--border-width) solid var(--border-color);
+	background: var(--white);
+	border-radius: 12px 12px 0 0;
+}
+
+.kanban-column-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.kanban-column-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.kanban-column-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.kanban-column-count {
+	background: var(--gray-200);
+	color: var(--gray-700);
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+	min-width: 20px;
+	text-align: center;
+}
+
+.kanban-add-job-btn {
+	background: var(--gray-50);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+	padding: 2px 6px;
+	border-radius: 6px;
+	font-size: 12px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	height: 20px;
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.kanban-add-job-btn:hover {
+	background-color: var(--gray-100);
+	border-color: var(--gray-300);
+	box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.kanban-add-job-btn .material-symbols-outlined {
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.kanban-column-body {
+	padding: 12px;
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 0;
+}
+
+.kanban-job-card {
+	background: var(--white);
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 8px;
+	padding: 12px;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-job-card:hover {
+	border-color: var(--blue-300);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-1px);
+}
+
+.kanban-job-card.dragging {
+	opacity: 0.5;
+	transform: rotate(5deg);
+}
+
+/* Drop indicator for reordering */
+.drop-indicator {
+	height: 2px;
+	background: var(--blue-500);
+	margin: 4px 8px;
+	border-radius: 1px;
+	opacity: 0.8;
+	animation: pulse 1s infinite;
+}
+
+/* Drop placeholder showing where card will be placed */
+.drop-placeholder {
+	pointer-events: none; /* Don't interfere with drag events */
+	margin: 8px 0;
+	opacity: 0.4;
+	border: 2px dashed var(--blue-500) !important;
+	background: var(--blue-50) !important;
+	transform: none !important;
+	box-shadow: none !important;
+	animation: placeholderPulse 1.5s infinite ease-in-out;
+}
+
+.drop-placeholder:hover {
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 0.8;
+	}
+	50% {
+		opacity: 0.4;
+	}
+}
+
+@keyframes placeholderPulse {
+	0%,
+	100% {
+		opacity: 0.4;
+		border-color: var(--blue-500);
+	}
+	50% {
+		opacity: 0.6;
+		border-color: var(--blue-400);
+	}
+}
+
+.kanban-priority-dot {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.kanban-priority-dot.priority-high {
+	background: var(--red-500);
+}
+
+.kanban-priority-dot.priority-medium {
+	background: var(--orange-500);
+}
+
+.kanban-priority-dot.priority-low {
+	background: var(--green-500);
+}
+
+.kanban-job-header {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 8px;
+}
+
+.kanban-job-icon {
+	font-size: 14px;
+	flex-shrink: 0;
+	color: var(--gray-600);
+}
+
+.kanban-job-title {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	flex: 1;
+}
+
+.kanban-job-company {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+	line-height: 1.3;
+	word-break: break-word;
+}
+
+.kanban-job-position {
+	font-size: 13px;
+	font-weight: 400;
+	color: var(--gray-600);
+	line-height: 1.3;
+	word-break: break-word;
+}
+
+/* Source link inherits kanban-icon-btn styles but as an anchor */
+a.kanban-source-link {
+	text-decoration: none;
+	color: inherit;
+}
+
+.kanban-phase-section {
+	margin-bottom: 8px;
+}
+
+.kanban-phase-header {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin-bottom: 4px;
+}
+
+.kanban-phase-icon {
+	font-size: 12px;
+	color: var(--gray-500);
+}
+
+.kanban-phase-text {
+	font-size: 11px;
+	font-weight: 500;
+	color: var(--gray-600);
+}
+
+.kanban-substeps-list {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin-left: 16px;
+}
+
+.kanban-substep-item {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 0;
+}
+
+.kanban-substep-icon {
+	font-size: 10px;
+	width: 12px;
+	flex-shrink: 0;
+}
+
+.kanban-substep-text {
+	font-size: 10px;
+	line-height: 1.2;
+}
+
+.kanban-substep-item.completed .kanban-substep-text {
+	color: var(--green-600);
+}
+
+.kanban-substep-item.completed .kanban-substep-icon {
+	color: var(--green-600);
+}
+
+.kanban-substep-item.current .kanban-substep-text {
+	color: var(--orange-600);
+	font-weight: 500;
+}
+
+.kanban-substep-item.current .kanban-substep-icon {
+	color: var(--orange-600);
+}
+
+.kanban-substep-item.pending .kanban-substep-text {
+	color: var(--gray-500);
+}
+
+.kanban-substep-item.pending .kanban-substep-icon {
+	color: var(--gray-400);
+}
+
+.kanban-action-icons {
+	display: flex;
+	gap: 4px;
+	justify-content: flex-end;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--gray-200);
+}
+
+.kanban-icon-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: var(--gray-500);
+	cursor: pointer;
+	transition: var(--transition-fast);
+	padding: 0;
+	min-width: auto;
+	box-shadow: none;
+	position: relative;
+}
+
+.kanban-icon-btn:hover {
+	background: var(--gray-100);
+	color: var(--gray-700);
+	border-color: var(--gray-300);
+	transform: none;
+	box-shadow: none;
+}
+
+.kanban-icon-btn .material-symbols-outlined {
+	font-size: 14px;
+}
+
+.kanban-count-badge {
+	position: absolute;
+	top: -4px;
+	right: -4px;
+	background: var(--gray-200);
+	color: var(--gray-700);
+	font-size: 10px;
+	font-weight: 500;
+	min-width: 16px;
+	height: 16px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 4px;
+	border: 1px solid var(--gray-300);
+	z-index: 1;
+}
+
+.kanban-job-metadata {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	margin-bottom: 8px;
+}
+
+.kanban-metadata-item {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.kanban-metadata-icon {
+	font-size: 10px;
+	width: 12px;
+	flex-shrink: 0;
+	color: var(--gray-500);
+}
+
+.kanban-metadata-text {
+	font-size: 10px;
+	color: var(--gray-600);
+	line-height: 1.2;
+}
+
+/* ============================================================================ */
+/* KANBAN JOB EDIT MODAL */
+/* ============================================================================ */
+
+.job-edit-modal {
+	max-width: 600px;
+	width: 100%;
+}
+
+.job-edit-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0px;
+}
+
+.form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.form-field.full-width {
+	grid-column: span 2;
+}
+
+.form-field label {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.form-field input,
+.form-field select {
+	width: 100%;
+	padding: 4px 12px;
+	border: var(--border-width) solid var(--border-color);
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: inherit;
+	background: var(--white);
+	color: var(--text-color);
+	transition: var(--transition-fast);
+}
+
+.form-field input:focus,
+.form-field select:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+.btn-secondary {
+	background: var(--gray-50);
+	color: var(--text-color);
+	border: var(--border-width) solid var(--border-color);
+}
+
+.btn-secondary:hover {
+	background: var(--gray-100);
+	border-color: var(--gray-300);
+}
+
+.btn-primary {
+	background: var(--green-500);
+	color: var(--white);
+	border: var(--border-width) solid var(--green-500);
+}
+
+.btn-primary:hover {
+	background: var(--green-600);
+	border-color: var(--green-600);
+}
+
+.btn-danger {
+	background: var(--red-500);
+	color: var(--white);
+	border: var(--border-width) solid var(--red-500);
+}
+
+.btn-danger:hover {
+	background: var(--red-600);
+	border-color: var(--red-600);
+}
+
+/* Responsive form */
+@media (max-width: 640px) {
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+
+	.form-field.full-width {
+		grid-column: span 1;
+	}
+}
+
+/* Responsive kanban board */
+@media (max-width: 768px) {
+	.kanban-container {
+		padding: 16px;
+	}
+
+	.kanban-board {
+		gap: 12px;
+	}
+
+	.kanban-column {
+		min-width: 240px;
+		width: 240px;
+	}
+
+	.kanban-job-card {
+		padding: 10px;
+	}
+}

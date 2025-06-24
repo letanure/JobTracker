@@ -1,0 +1,119 @@
+/* ============================================================================ */
+/* GITHUB-STYLE COUNTERS AND BADGES */
+/* ============================================================================ */
+
+/* Count badges in table cells (not stats) */
+td .notes-count,
+td .tasks-count,
+td .contacts-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 20px;
+	height: 20px;
+	padding: 0 6px;
+	background: var(--gray-200);
+	color: var(--gray-700);
+	border-radius: 10px;
+	font-size: 12px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: var(--transition-fast);
+	user-select: none;
+	border: none;
+}
+
+td .zero-count {
+	background: var(--gray-100);
+	color: var(--gray-500);
+	cursor: default;
+	border-color: var(--gray-200);
+}
+
+td .zero-count:hover {
+	background: var(--gray-100);
+	color: var(--gray-500);
+	border-color: var(--gray-200);
+}
+
+/* Priority indicators */
+.priority {
+	display: inline-block;
+	width: var(--priority-dot-size);
+	height: var(--priority-dot-size);
+	border-radius: var(--radius-full);
+	margin-right: var(--space-2);
+}
+
+.priority-high {
+	background: var(--priority-high);
+}
+
+.priority-medium {
+	background: var(--priority-medium);
+}
+
+.priority-low {
+	background: var(--priority-low);
+}
+
+/* ============================================================================ */
+/* GITHUB-STYLE STATUS BADGES */
+/* ============================================================================ */
+
+.status {
+	padding: 4px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+	text-align: center;
+	white-space: nowrap;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 60px;
+	height: 22px;
+	text-transform: none;
+	letter-spacing: normal;
+	border: 1px solid transparent;
+}
+
+.status-wishlist {
+	background: var(--status-wishlist-bg);
+	color: var(--status-wishlist-text);
+}
+
+.status-applied {
+	background: var(--status-applied-bg);
+	color: var(--status-applied-text);
+}
+
+.status-phone_screening {
+	background: var(--status-screening-bg);
+	color: var(--status-screening-text);
+}
+
+.status-interview {
+	background: var(--status-interview-bg);
+	color: var(--status-interview-text);
+}
+
+.status-final_round {
+	background: var(--status-final-bg);
+	color: var(--status-final-text);
+}
+
+.status-offer {
+	background: var(--status-offer-bg);
+	color: var(--status-offer-text);
+}
+
+.status-rejected {
+	background: var(--status-rejected-bg);
+	color: var(--status-rejected-text);
+}
+
+.status-withdrawn {
+	background: var(--status-withdrawn-bg);
+	color: var(--status-withdrawn-text);
+}

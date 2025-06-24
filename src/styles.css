@@ -1,23 +1,25 @@
 /* ============================================================================ */
 /* JOBTRACKER STYLES - MODULAR CSS SYSTEM */
 /* ============================================================================ */
-/*
- * This file serves as the main entry point for all styles.
- * 
- * The CSS has been split into modular files for better maintainability:
- * 
- * - base.css:       Variables, colors, typography, resets
- * - layout.css:     Containers, headers, basic structure
- * - components.css: Buttons, forms, modals, UI components
- * - table.css:      Table layout, inline editing, data display
- * 
- * For development, you can work with individual files.
- * The build process combines them into a single file for production.
- */
 
-/* This file is intentionally minimal to save tokens when reading.
-   All styles are now in the modular files listed above. */
+/* Import base styles first */
+@import url('./styles/base.css');
+@import url('./styles/layout.css');
 
-/* If you need to add any styles that don't fit the above categories,
-   add them here temporarily and then move them to the appropriate
-   modular file. */
+/* Import all component styles */
+@import url('./styles/components/buttons.css');
+@import url('./styles/components/forms.css');
+@import url('./styles/components/contacts.css');
+@import url('./styles/components/dropdowns.css');
+@import url('./styles/components/modals.css');
+@import url('./styles/components/badges.css');
+@import url('./styles/components/language-switcher.css');
+@import url('./styles/components/tabs.css');
+@import url('./styles/components/kanban.css');
+@import url('./styles/components/tasks.css');
+@import url('./styles/components/calendar.css');
+@import url('./styles/components/dialogs.css');
+
+/* Import remaining styles */
+@import url('./styles/table.css');
+@import url('./styles/dashboard.css');
