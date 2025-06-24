@@ -2535,7 +2535,8 @@ a.kanban-source-link {
 	background: var(--border-color);
 	border: var(--border-width) solid var(--border-color);
 	border-radius: 6px;
-	height: 600px;
+	height: auto;
+	max-height: calc(100vh - 200px);
 	overflow: hidden;
 }
 
@@ -2628,7 +2629,8 @@ a.kanban-source-link {
 	background: var(--border-color);
 	border: var(--border-width) solid var(--border-color);
 	border-radius: 6px;
-	height: 600px;
+	height: auto;
+	max-height: calc(100vh - 200px);
 	overflow: hidden;
 }
 
@@ -3013,20 +3015,20 @@ a.kanban-source-link {
 /* Calendar time grid styling */
 .calendar-week-day-events {
 	position: relative;
-	min-height: 780px; /* 13 slots (8am-8pm) * 60px */
+	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
 	flex: 1;
 }
 
 .calendar-day-events-column {
 	position: relative;
-	min-height: 780px; /* 13 slots (8am-8pm) * 60px */
+	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
 }
 .calendar-time-slot {
 	align-items: flex-start;
 	border-bottom: 1px solid var(--border-color);
 	color: var(--gray-600);
 	font-size: 11px;
-	height: 60px;
+	height: 20px;
 	padding: 4px 8px;
 	text-align: right;
 	user-select: none; /* Prevent text selection */

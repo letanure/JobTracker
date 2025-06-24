@@ -728,18 +728,20 @@ const CalendarView = {
 			return "";
 		}
 
-		// Calculate position: each 30-min slot is about 60px high
+		// Calculate position: each 30-min slot is about 20px high
 		const slotsFromStart = (hours - 8) * 2 + Math.floor(minutes / 30);
-		const topPosition = slotsFromStart * 60; // 60px per 30-min slot
+		const topPosition = slotsFromStart * 20; // 20px per 30-min slot
 		
-		// Calculate height based on duration if available
-		let height = 50; // default height
+		// Calculate height based on duration if available (default 30 min)
+		let durationMinutes = 30; // default 30 minutes if no duration
 		if (event.task.duration) {
-			const durationMinutes = CalendarView.parseDuration(event.task.duration);
-			if (durationMinutes) {
-				height = Math.max(30, (durationMinutes / 30) * 60); // 60px per 30-min
+			const parsedDuration = CalendarView.parseDuration(event.task.duration);
+			if (parsedDuration) {
+				durationMinutes = parsedDuration;
 			}
 		}
+		// Height is proportional to duration: 20px per 30 minutes
+		const height = Math.max(15, (durationMinutes / 30) * 20); // min 15px height
 
 		return `position: absolute; top: ${topPosition}px; height: ${height}px; width: calc(100% - 8px); margin: 2px 4px; z-index: 1;`;
 	},
@@ -1242,8 +1244,8 @@ const CalendarView = {
 
 	// Show time grid indicator for precise dropping
 	showTimeGridIndicator: (e, container) => {
-		// Remove existing indicators
-		container.querySelectorAll('.time-drop-indicator').forEach(indicator => {
+		// Remove ALL existing indicators from all containers
+		document.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
 			indicator.remove();
 		});
 
@@ -1251,8 +1253,8 @@ const CalendarView = {
 		const mouseY = e.clientY - rect.top;
 		
 		// Calculate which 15-minute slot the mouse is over
-		const slotHeight = 60; // 30-min slot = 60px
-		const quarterSlotHeight = slotHeight / 2; // 15-min = 30px
+		const slotHeight = 20; // 30-min slot = 20px
+		const quarterSlotHeight = slotHeight / 2; // 15-min = 10px
 		
 		const slotIndex = Math.floor(mouseY / quarterSlotHeight);
 		const snapY = slotIndex * quarterSlotHeight;
@@ -1285,16 +1287,27 @@ const CalendarView = {
 		// Remove visual feedback
 		const dayElement = e.currentTarget;
 		dayElement.classList.remove("drag-over");
+		
+		// Remove time indicators when leaving the container
+		document.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
+			indicator.remove();
+		});
 	},
 
 	handleDrop: (e, targetDate) => {
 		e.preventDefault();
 		e.stopPropagation();
 
+		// Prevent duplicate drops
+		if (CalendarView._isProcessingDrop) {
+			return;
+		}
+		CalendarView._isProcessingDrop = true;
+
 		// Remove visual feedback and indicators
 		const dayElement = e.currentTarget;
 		dayElement.classList.remove("drag-over");
-		dayElement.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
+		document.querySelectorAll('.time-drop-indicator, .time-drop-label').forEach(indicator => {
 			indicator.remove();
 		});
 
@@ -1304,9 +1317,15 @@ const CalendarView = {
 		});
 
 		try {
-			const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
+			const dragDataText = e.dataTransfer.getData("text/plain");
+			if (!dragDataText) {
+				console.error("No drag data found");
+				return;
+			}
+			
+			const dragData = JSON.parse(dragDataText);
 
-			if (dragData.eventType === "task") {
+			if (dragData.eventType === "task" && dragData.jobId && dragData.taskId) {
 				// Calculate new time if dropping on time grid
 				let newDateTime = new Date(targetDate);
 				
@@ -1317,7 +1336,7 @@ const CalendarView = {
 					const mouseY = e.clientY - rect.top;
 					
 					// Calculate 15-minute slot
-					const quarterSlotHeight = 30; // 15-min = 30px
+					const quarterSlotHeight = 10; // 15-min = 10px
 					const slotIndex = Math.floor(mouseY / quarterSlotHeight);
 					const totalQuarters = slotIndex;
 					const hours = Math.floor(totalQuarters / 4) + 8; // Start at 8am
@@ -1333,23 +1352,39 @@ const CalendarView = {
 			}
 		} catch (error) {
 			console.error("Error handling drop:", error);
+		} finally {
+			// Reset drop processing flag after a short delay
+			setTimeout(() => {
+				CalendarView._isProcessingDrop = false;
+			}, 100);
 		}
 	},
 
 	// Move task to new date and time
 	moveTaskToDateTime: (jobId, taskId, newDateTime) => {
+		// Ensure IDs are properly compared
+		const targetJobId = String(jobId);
+		const targetTaskId = String(taskId);
+		
 		// Find the job
-		const jobIndex = jobsData.findIndex((job) => job.id === parseInt(jobId));
-		if (jobIndex === -1) return;
+		const jobIndex = jobsData.findIndex((job) => String(job.id) === targetJobId);
+		if (jobIndex === -1) {
+			console.error("Job not found:", targetJobId);
+			return;
+		}
 
 		// Find the task
-		const taskIndex = jobsData[jobIndex].tasks.findIndex((task) => task.id.toString() === taskId.toString());
-		if (taskIndex === -1) return;
+		const taskIndex = jobsData[jobIndex].tasks.findIndex((task) => String(task.id) === targetTaskId);
+		if (taskIndex === -1) {
+			console.error("Task not found:", targetTaskId);
+			return;
+		}
 
-		const task = jobsData[jobIndex].tasks[taskIndex];
-		const job = jobsData[jobIndex];
+		// Create a deep copy of the task to avoid mutations
+		const task = {...jobsData[jobIndex].tasks[taskIndex]};
+		const job = {...jobsData[jobIndex]};
 
-		// Update task due date with new date and time
+		// Update ONLY the specific task's due date
 		jobsData[jobIndex].tasks[taskIndex].dueDate = newDateTime.toISOString();
 
 		// Save changes
@@ -1371,6 +1406,14 @@ const CalendarView = {
 	// Show confirmation of task move
 	showMoveConfirmation: (task, job, newDate) => {
 		const dateStr = newDate.toLocaleDateString();
+		const hours = newDate.getHours();
+		const minutes = newDate.getMinutes();
+		const timeStr = CalendarView.formatTime12Hour(hours, minutes);
+		
+		// Create more informative message
+		const message = hours >= 8 && hours <= 20 && (hours !== 0 || minutes !== 0) 
+			? `Moved with success to ${dateStr} at ${timeStr}`
+			: `Moved with success to ${dateStr}`;
 
 		// Create temporary notification
 		const notification = h(
@@ -1380,8 +1423,8 @@ const CalendarView = {
 				style:
 					"position: fixed; top: 20px; right: 20px; background: var(--green-100); color: var(--green-700); padding: 12px 16px; border-radius: 6px; border: 1px solid var(--green-300); z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);",
 			},
-			h("div", { style: "font-weight: 600; margin-bottom: 4px;" }, "Task moved successfully!"),
-			h("div", { style: "font-size: 12px;" }, `"${task.text}" moved to ${dateStr}`)
+			h("div", { style: "font-weight: 600; margin-bottom: 4px;" }, message),
+			h("div", { style: "font-size: 12px;" }, `"${task.text}"`)
 		);
 
 		document.body.appendChild(notification);
