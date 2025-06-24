@@ -121,10 +121,10 @@ const KanbanBoard = {
 
 		const metadataRow = metadata.length > 0 ? h("div.kanban-job-metadata", ...metadata) : null;
 
-		// Action icons with counts (notes, tasks, contacts)
-		const notesCount = job.notes ? job.notes.length : 0;
-		const tasksCount = job.tasks ? job.tasks.length : 0;
-		const contactsCount = job.contacts ? job.contacts.length : 0;
+		// Action icons with counts (notes, tasks, contacts) - exclude archived items
+		const notesCount = job.notes ? job.notes.filter(note => !note.archived).length : 0;
+		const tasksCount = job.tasks ? job.tasks.filter(task => !task.archived).length : 0;
+		const contactsCount = job.contacts ? job.contacts.filter(contact => !contact.archived).length : 0;
 
 		const actionIconsChildren = [];
 

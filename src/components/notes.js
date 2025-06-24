@@ -140,69 +140,6 @@ const NotesModal = ({ job, onClose }) => {
 		(a, b) => new Date(a.date) - new Date(b.date)
 	);
 
-	const handleAddNote = () => {
-		const textarea = document.querySelector(".add-note-textarea");
-		const noteText = textarea.value.trim();
-
-		if (!noteText) {
-			// Show error message instead of alert
-			showValidationError(textarea, "Note text is required");
-			return;
-		}
-
-		const newNote = {
-			id: Date.now(),
-			date: new Date().toISOString(),
-			phase: job.currentPhase,
-			text: noteText,
-		};
-
-		// Add note to job data
-		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-		if (jobIndex === -1) return;
-
-		if (!jobsData[jobIndex].notes) {
-			jobsData[jobIndex].notes = [];
-		}
-
-		jobsData[jobIndex].notes.push(newNote);
-		saveToLocalStorage();
-
-		// Update the job object for this modal
-		job.notes = jobsData[jobIndex].notes;
-
-		// Refresh modal without flicker
-		refreshNotesModal(job);
-
-		// Clear the textarea
-		textarea.value = "";
-
-		// Focus back to the textarea
-		setTimeout(() => {
-			const newTextarea = document.querySelector(".add-note-textarea");
-			if (newTextarea) newTextarea.focus();
-		}, 100);
-
-		// Update the notes count in the table (refresh interface for count update)
-		refreshInterface();
-	};
-
-	const archiveNote = (note, job) => {
-		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-		if (jobIndex === -1) return;
-
-		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
-		if (noteIndex === -1) return;
-
-		jobsData[jobIndex].notes[noteIndex].archived = !note.archived;
-		saveToLocalStorage();
-
-		// Refresh modal without flicker
-		refreshNotesModal(job);
-
-		// Update interface
-		refreshInterface();
-	};
 
 	const refreshNotesModal = (job) => {
 		const modalBody = document.querySelector(".modal-body");
@@ -223,12 +160,13 @@ const NotesModal = ({ job, onClose }) => {
 
 		// Recreate modal body content
 		modalBody.innerHTML = "";
-		modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote));
+		modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes));
 	};
 
 	return h(
 		"div.modal-overlay",
 		{
+			"data-job-id": job.id,
 			onclick: (e) => e.target === e.currentTarget && onClose(),
 		},
 		h(
@@ -241,7 +179,7 @@ const NotesModal = ({ job, onClose }) => {
 				),
 				h("button.modal-close", { onclick: onClose }, "×")
 			),
-			h("div.modal-body", createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote))
+			h("div.modal-body", createNotesContent(job, sortedActiveNotes, sortedArchivedNotes))
 		)
 	);
 };
@@ -280,7 +218,7 @@ const enableNoteEditing = (note, job) => {
 	// Replace entire row with editing structure
 	noteRow.innerHTML = `
 		<td class="note-date-cell">${formatDate(note.date)}</td>
-		<td class="note-phase-cell">${I18n.t(`phases.${note.phase}`)}</td>
+		<td class="note-phase-cell">${note.phase ? I18n.t(`phases.${note.phase}`) : ''}</td>
 		<td class="note-text-cell">
 			<textarea class="note-edit-textarea" rows="2" placeholder="${I18n.t("modals.notes.placeholder")}">${note.text || ""}</textarea>
 		</td>
@@ -364,7 +302,7 @@ const refreshNotesModal = (job) => {
 
 	// Recreate modal body content
 	modalBody.innerHTML = "";
-	modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote));
+	modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes));
 };
 
 // Open unified notes modal (for both viewing and adding notes)
@@ -388,8 +326,96 @@ const openNotesModal = (job) => {
 // Alias for backward compatibility
 const openAddNoteModal = openNotesModal;
 
+// Global note handling functions
+const handleAddNote = () => {
+	const textarea = document.querySelector(".add-note-textarea");
+	const noteText = textarea.value.trim();
+
+	if (!noteText) {
+		// Show error message instead of alert
+		showValidationError(textarea, "Note text is required");
+		return;
+	}
+
+	// Find the job from the modal
+	const modalTitle = document.querySelector(".modal-title");
+	if (!modalTitle) return;
+	
+	// Extract job info from title or use a data attribute approach
+	const currentModal = modalTitle.closest('.modal-overlay');
+	const jobId = currentModal.dataset.jobId;
+	const job = jobsData.find(j => j.id == jobId);
+	if (!job) return;
+
+	const newNote = {
+		id: Date.now(),
+		date: new Date().toISOString(),
+		phase: job.currentPhase,
+		text: noteText,
+	};
+
+	// Add note to job data
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	if (!jobsData[jobIndex].notes) {
+		jobsData[jobIndex].notes = [];
+	}
+
+	jobsData[jobIndex].notes.push(newNote);
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshNotesModal(job);
+
+	// Clear the textarea
+	textarea.value = "";
+
+	// Focus back to the textarea
+	setTimeout(() => {
+		const newTextarea = document.querySelector(".add-note-textarea");
+		if (newTextarea) newTextarea.focus();
+	}, 100);
+
+	// Update the notes count in the table (refresh interface for count update)
+	refreshInterface();
+};
+
+const archiveNote = (note, job) => {
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+	if (noteIndex === -1) return;
+
+	// Store archived section state before refresh
+	const archivedTable = document.getElementById("archived-notes-table");
+	const wasExpanded = archivedTable && archivedTable.style.display === "table";
+
+	jobsData[jobIndex].notes[noteIndex].archived = !note.archived;
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshNotesModal(job);
+
+	// Restore archived section state after refresh
+	if (wasExpanded) {
+		setTimeout(() => {
+			const newArchivedTable = document.getElementById("archived-notes-table");
+			const expandIcon = document.getElementById("archived-notes-icon");
+			if (newArchivedTable) {
+				newArchivedTable.style.display = "table";
+				if (expandIcon) expandIcon.textContent = "expand_less";
+			}
+		}, 0);
+	}
+
+	// Update interface
+	refreshInterface();
+};
+
 // Create notes content for modal (extracted to global scope for reuse)
-const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote) => {
+const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 	return h(
 		"div",
 		// Active notes table
@@ -539,5 +565,7 @@ window.openAddNoteModal = openAddNoteModal;
 window.enableNoteEditing = enableNoteEditing;
 window.saveNoteEdits = saveNoteEdits;
 window.cancelNoteEdits = cancelNoteEdits;
+window.handleAddNote = handleAddNote;
+window.archiveNote = archiveNote;
 window.createNotesContent = createNotesContent;
 window.refreshNotesModal = refreshNotesModal;

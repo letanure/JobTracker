@@ -315,7 +315,7 @@ const ContactsView = {
 							)
 						),
 						h('div.contact-form-row',
-							h('div.contact-form-field full-width',
+							h('div.contact-form-field.full-width',
 								h('label', I18n.t("contactsView.jobHeader")),
 								h('select.add-contact-job',
 									h('option', { value: "" }, I18n.t("contactsView.selectJob")),

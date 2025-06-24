@@ -56,8 +56,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				);
 			}
 
-			// Notes button
-			const notesCount = (job.notes || []).length;
+			// Notes button - exclude archived items
+			const notesCount = (job.notes || []).filter(note => !note.archived).length;
 			const notesButton = h('button.kanban-icon-btn', {
 					title: `Notes (${notesCount})`,
 					onclick: (e) => {
@@ -71,8 +71,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 			}
 			actionIconsChildren.push(notesButton);
 
-			// Tasks button
-			const tasksCount = (job.tasks || []).length;
+			// Tasks button - exclude archived items
+			const tasksCount = (job.tasks || []).filter(task => !task.archived).length;
 			const tasksButton = h('button.kanban-icon-btn', {
 					title: `Tasks (${tasksCount})`,
 					onclick: (e) => {
@@ -86,8 +86,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 			}
 			actionIconsChildren.push(tasksButton);
 
-			// Contacts button
-			const contactsCount = (job.contacts || []).length;
+			// Contacts button - exclude archived items
+			const contactsCount = (job.contacts || []).filter(contact => !contact.archived).length;
 			const contactsButton = h('button.kanban-icon-btn', {
 					title: `Contacts (${contactsCount})`,
 					onclick: (e) => {

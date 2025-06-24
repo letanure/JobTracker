@@ -23,13 +23,16 @@ const TasksBoard = {
 		jobsData.forEach((job) => {
 			if (job.tasks && job.tasks.length > 0) {
 				job.tasks.forEach((task) => {
-					// Add job context to task
-					allTasks.push({
-						...task,
-						jobId: job.id,
-						jobCompany: job.company,
-						jobPosition: job.position,
-						jobPhase: job.currentPhase});
+					// Only include non-archived tasks
+					if (!task.archived) {
+						// Add job context to task
+						allTasks.push({
+							...task,
+							jobId: job.id,
+							jobCompany: job.company,
+							jobPosition: job.position,
+							jobPhase: job.currentPhase});
+					}
 				});
 			}
 		});
@@ -56,7 +59,14 @@ const TasksBoard = {
 					// Add "Add Task" button for todo column (left of counter)
 					status === "todo" &&
 						h('button.tasks-add-task-btn', {
-								onclick: () => TasksBoard.openAddTaskModal()},
+								onclick: (e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									
+									// Create and show the add task modal directly
+									const addTaskModal = TasksBoard.createTaskModal();
+									document.body.appendChild(addTaskModal);
+								}},
 							h('span.material-symbols-outlined', "add"),
 							I18n.t("modals.tasks.addButton") || "Add Task"
 						),
@@ -120,11 +130,11 @@ const TasksBoard = {
 		// Job context information
 		const jobContext = h('div.tasks-job-context',
 			h('div.tasks-job-info',
-				h('span.material-symbols-outlined tasks-job-icon', "business"),
+				h('span.material-symbols-outlined.tasks-job-icon', "business"),
 				h('span.tasks-job-text', `${task.jobCompany} — ${task.jobPosition}`)
 			),
 			h('div.tasks-job-phase',
-				h('span.material-symbols-outlined tasks-phase-icon', "schedule"),
+				h('span.material-symbols-outlined.tasks-phase-icon', "schedule"),
 				h('span.tasks-phase-text', getPhaseText(task.jobPhase))
 			)
 		);

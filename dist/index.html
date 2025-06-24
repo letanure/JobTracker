@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T13:16:28.312Z
-Cache Version: 1750770988312
+Generated: 2025-06-24T14:30:53.879Z
+Cache Version: 1750775453879
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750770988312
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750770988312">
-    <meta name="build-date" content="2025-06-24T13:16:28.312Z">
+    <meta name="build-version" content="1750775453879">
+    <meta name="build-date" content="2025-06-24T14:30:53.879Z">
     <style>
 
 /* ============================================================================ */
@@ -1824,31 +1824,7 @@ textarea {
 }
 
 /* Archived tasks section */
-.archived-tasks-section {
-	margin-top: 24px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border-color);
-}
-
-.tasks-archived-header {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	cursor: pointer;
-	margin: 0 0 16px 0;
-	font-size: 16px;
-	font-weight: 600;
-	color: var(--text-color);
-}
-
-.tasks-archived-header:hover {
-	color: var(--blue-600);
-}
-
-.expand-icon {
-	font-size: 20px !important;
-	transition: transform 0.2s ease;
-}
+/* Archived tasks styles moved to modals.css for consistency */
 
 .archived-task-text-cell {
 	padding: 8px 12px;
@@ -2245,6 +2221,49 @@ textarea {
 	color: var(--gray-600);
 	font-style: italic;
 	margin: 24px 0;
+}
+
+/* ============================================================================ */
+/* ARCHIVED SECTIONS - CONSISTENT STYLING */
+/* ============================================================================ */
+
+.archived-notes-section,
+.archived-tasks-section,
+.archived-contacts-section {
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid var(--border-color);
+}
+
+.notes-archived-header,
+.tasks-archived-header,
+.contacts-archived-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	margin: 0 0 16px 0;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--gray-600);
+	padding: 8px;
+	border-radius: 6px;
+	transition: var(--transition-fast);
+}
+
+.notes-archived-header:hover,
+.tasks-archived-header:hover,
+.contacts-archived-header:hover {
+	background: var(--gray-50);
+	color: var(--blue-600);
+}
+
+.notes-archived-header .expand-icon,
+.tasks-archived-header .expand-icon,
+.contacts-archived-header .expand-icon {
+	font-size: 20px !important;
+	transition: transform 0.2s ease;
+	color: var(--gray-500);
 }
 
 
@@ -2755,7 +2774,11 @@ td .zero-count:hover {
 }
 
 .kanban-priority-dot {
-	/* Extends .priority-dot utility */
+	/* Extends .priority utility */
+	display: inline-block;
+	width: var(--priority-dot-size);
+	height: var(--priority-dot-size);
+	border-radius: var(--radius-full);
 	position: absolute;
 	top: 8px;
 	right: 8px;
@@ -5559,32 +5582,7 @@ tr.editing .actions-cell button {
 }
 
 /* Archived contacts section */
-.archived-contacts-section {
-	margin-top: 16px;
-}
-
-.contacts-archived-header {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin: 0 0 8px 0;
-	font-size: 14px;
-	font-weight: 600;
-	color: var(--gray-600);
-	cursor: pointer;
-	padding: 8px;
-	border-radius: 6px;
-	transition: background-color 0.15s ease;
-}
-
-.contacts-archived-header:hover {
-	background: var(--gray-50);
-}
-
-.contacts-archived-header .expand-icon {
-	font-size: 16px;
-	color: var(--gray-500);
-}
+/* Archived contacts styles moved to modals.css for consistency */
 
 /* ============================================================================ */
 /* RESPONSIVE TABLE */
@@ -6046,16 +6044,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750770988312';
-window.BUILD_DATE = '2025-06-24T13:16:28.312Z';
+window.BUILD_VERSION = '1750775453879';
+window.BUILD_DATE = '2025-06-24T14:30:53.879Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T13:16:28.302Z
+// Generated: 2025-06-24T14:30:53.870Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T13:16:28.302Z");
+console.log("JobTracker - Built at: 2025-06-24T14:30:53.870Z");
 
 
 // ============================================================================
@@ -7137,9 +7135,18 @@ const DEFAULT_SELECTED_SUBSTEPS = {
 	rejected_withdrawn: []};
 
 // Helper functions to get translated values
-const getPriorityText = (priorityKey) => I18n.t(`priorities.${priorityKey}`);
-const getPhaseText = (phaseKey) => I18n.t(`phases.${phaseKey}`);
-const getSubstepText = (substepKey) => I18n.t(`substeps.${substepKey}`);
+const getPriorityText = (priorityKey) => {
+	if (!priorityKey) return '';
+	return I18n.t(`priorities.${priorityKey}`);
+};
+const getPhaseText = (phaseKey) => {
+	if (!phaseKey) return '';
+	return I18n.t(`phases.${phaseKey}`);
+};
+const getSubstepText = (substepKey) => {
+	if (!substepKey) return '';
+	return I18n.t(`substeps.${substepKey}`);
+};
 
 // Helper function to get all substeps for a phase
 const getSubstepsForPhase = (phaseKey) => PHASE_SUBSTEPS[phaseKey] || [];
@@ -7741,7 +7748,7 @@ const CustomDialogs = {
 				),
 
 				// Body
-				h('div.modal-body custom-dialog-body',
+				h('div.modal-body.custom-dialog-body',
 					h('div.dialog-message', message),
 
 					// Input field for prompt
@@ -7767,7 +7774,7 @@ const CustomDialogs = {
 				),
 
 				// Footer with buttons
-				h('div.modal-footer dialog-footer',
+				h('div.modal-footer.dialog-footer',
 					...buttons.map((button) =>
 						h('button',
 							{
@@ -8032,69 +8039,6 @@ const NotesModal = ({ job, onClose }) => {
 		(a, b) => new Date(a.date) - new Date(b.date)
 	);
 
-	const handleAddNote = () => {
-		const textarea = document.querySelector(".add-note-textarea");
-		const noteText = textarea.value.trim();
-
-		if (!noteText) {
-			// Show error message instead of alert
-			showValidationError(textarea, "Note text is required");
-			return;
-		}
-
-		const newNote = {
-			id: Date.now(),
-			date: new Date().toISOString(),
-			phase: job.currentPhase,
-			text: noteText,
-		};
-
-		// Add note to job data
-		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-		if (jobIndex === -1) return;
-
-		if (!jobsData[jobIndex].notes) {
-			jobsData[jobIndex].notes = [];
-		}
-
-		jobsData[jobIndex].notes.push(newNote);
-		saveToLocalStorage();
-
-		// Update the job object for this modal
-		job.notes = jobsData[jobIndex].notes;
-
-		// Refresh modal without flicker
-		refreshNotesModal(job);
-
-		// Clear the textarea
-		textarea.value = "";
-
-		// Focus back to the textarea
-		setTimeout(() => {
-			const newTextarea = document.querySelector(".add-note-textarea");
-			if (newTextarea) newTextarea.focus();
-		}, 100);
-
-		// Update the notes count in the table (refresh interface for count update)
-		refreshInterface();
-	};
-
-	const archiveNote = (note, job) => {
-		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-		if (jobIndex === -1) return;
-
-		const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
-		if (noteIndex === -1) return;
-
-		jobsData[jobIndex].notes[noteIndex].archived = !note.archived;
-		saveToLocalStorage();
-
-		// Refresh modal without flicker
-		refreshNotesModal(job);
-
-		// Update interface
-		refreshInterface();
-	};
 
 	const refreshNotesModal = (job) => {
 		const modalBody = document.querySelector(".modal-body");
@@ -8115,12 +8059,13 @@ const NotesModal = ({ job, onClose }) => {
 
 		// Recreate modal body content
 		modalBody.innerHTML = "";
-		modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote));
+		modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes));
 	};
 
 	return h(
 		"div.modal-overlay",
 		{
+			"data-job-id": job.id,
 			onclick: (e) => e.target === e.currentTarget && onClose(),
 		},
 		h(
@@ -8133,7 +8078,7 @@ const NotesModal = ({ job, onClose }) => {
 				),
 				h("button.modal-close", { onclick: onClose }, "×")
 			),
-			h("div.modal-body", createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote))
+			h("div.modal-body", createNotesContent(job, sortedActiveNotes, sortedArchivedNotes))
 		)
 	);
 };
@@ -8172,7 +8117,7 @@ const enableNoteEditing = (note, job) => {
 	// Replace entire row with editing structure
 	noteRow.innerHTML = `
 		<td class="note-date-cell">${formatDate(note.date)}</td>
-		<td class="note-phase-cell">${I18n.t(`phases.${note.phase}`)}</td>
+		<td class="note-phase-cell">${note.phase ? I18n.t(`phases.${note.phase}`) : ''}</td>
 		<td class="note-text-cell">
 			<textarea class="note-edit-textarea" rows="2" placeholder="${I18n.t("modals.notes.placeholder")}">${note.text || ""}</textarea>
 		</td>
@@ -8256,7 +8201,7 @@ const refreshNotesModal = (job) => {
 
 	// Recreate modal body content
 	modalBody.innerHTML = "";
-	modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote));
+	modalBody.appendChild(createNotesContent(job, sortedActiveNotes, sortedArchivedNotes));
 };
 
 // Open unified notes modal (for both viewing and adding notes)
@@ -8280,8 +8225,96 @@ const openNotesModal = (job) => {
 // Alias for backward compatibility
 const openAddNoteModal = openNotesModal;
 
+// Global note handling functions
+const handleAddNote = () => {
+	const textarea = document.querySelector(".add-note-textarea");
+	const noteText = textarea.value.trim();
+
+	if (!noteText) {
+		// Show error message instead of alert
+		showValidationError(textarea, "Note text is required");
+		return;
+	}
+
+	// Find the job from the modal
+	const modalTitle = document.querySelector(".modal-title");
+	if (!modalTitle) return;
+	
+	// Extract job info from title or use a data attribute approach
+	const currentModal = modalTitle.closest('.modal-overlay');
+	const jobId = currentModal.dataset.jobId;
+	const job = jobsData.find(j => j.id == jobId);
+	if (!job) return;
+
+	const newNote = {
+		id: Date.now(),
+		date: new Date().toISOString(),
+		phase: job.currentPhase,
+		text: noteText,
+	};
+
+	// Add note to job data
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	if (!jobsData[jobIndex].notes) {
+		jobsData[jobIndex].notes = [];
+	}
+
+	jobsData[jobIndex].notes.push(newNote);
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshNotesModal(job);
+
+	// Clear the textarea
+	textarea.value = "";
+
+	// Focus back to the textarea
+	setTimeout(() => {
+		const newTextarea = document.querySelector(".add-note-textarea");
+		if (newTextarea) newTextarea.focus();
+	}, 100);
+
+	// Update the notes count in the table (refresh interface for count update)
+	refreshInterface();
+};
+
+const archiveNote = (note, job) => {
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	const noteIndex = jobsData[jobIndex].notes.findIndex((n) => n.id === note.id);
+	if (noteIndex === -1) return;
+
+	// Store archived section state before refresh
+	const archivedTable = document.getElementById("archived-notes-table");
+	const wasExpanded = archivedTable && archivedTable.style.display === "table";
+
+	jobsData[jobIndex].notes[noteIndex].archived = !note.archived;
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshNotesModal(job);
+
+	// Restore archived section state after refresh
+	if (wasExpanded) {
+		setTimeout(() => {
+			const newArchivedTable = document.getElementById("archived-notes-table");
+			const expandIcon = document.getElementById("archived-notes-icon");
+			if (newArchivedTable) {
+				newArchivedTable.style.display = "table";
+				if (expandIcon) expandIcon.textContent = "expand_less";
+			}
+		}, 0);
+	}
+
+	// Update interface
+	refreshInterface();
+};
+
 // Create notes content for modal (extracted to global scope for reuse)
-const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes, handleAddNote, archiveNote) => {
+const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 	return h(
 		"div",
 		// Active notes table
@@ -8431,6 +8464,8 @@ window.openAddNoteModal = openAddNoteModal;
 window.enableNoteEditing = enableNoteEditing;
 window.saveNoteEdits = saveNoteEdits;
 window.cancelNoteEdits = cancelNoteEdits;
+window.handleAddNote = handleAddNote;
+window.archiveNote = archiveNote;
 window.createNotesContent = createNotesContent;
 window.refreshNotesModal = refreshNotesModal;
 
@@ -8784,7 +8819,7 @@ const TasksModal = ({ job, onClose }) => {
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveTaskChanges(task, job);
 
-		// Add cancel button next to save button
+		// Add cancel button next to save button and hide archive button
 		const actionsCell = taskRow.querySelector(".tasks-table-actions");
 		const cancelBtn = h("button.action-btn.cancel-btn", {
 			title: I18n.t("modals.common.cancel"),
@@ -8792,6 +8827,12 @@ const TasksModal = ({ job, onClose }) => {
 			onclick: () => disableTaskEditing(task, job),
 		});
 		actionsCell.appendChild(cancelBtn);
+
+		// Hide archive button during editing
+		const archiveBtn = taskRow.querySelector(".archive-btn");
+		if (archiveBtn) {
+			archiveBtn.style.display = "none";
+		}
 
 		// Make task text editable
 		const taskTextRow = taskRow.nextElementSibling;
@@ -9341,6 +9382,7 @@ const TasksModal = ({ job, onClose }) => {
 	return h(
 		"div.modal-overlay",
 		{
+			"data-job-id": job.id,
 			onclick: (e) => e.target === e.currentTarget && onClose(),
 		},
 		h(
@@ -9358,8 +9400,80 @@ const TasksModal = ({ job, onClose }) => {
 	);
 };
 
+// Global task handling function  
+const handleAddTask = () => {
+	const textarea = document.querySelector(".add-task-textarea");
+	const statusSelect = document.querySelector(".add-task-status");
+	const prioritySelect = document.querySelector(".add-task-priority");
+	const dueDateInput = document.querySelector(".add-task-due-date");
+	const durationSelect = document.querySelector(".add-task-duration");
+	const taskText = textarea.value.trim();
+
+	if (!taskText) {
+		// Show error message instead of alert
+		showValidationError(textarea, "Task text is required");
+		return;
+	}
+
+	// Find the job from the modal
+	const modalTitle = document.querySelector(".modal-title");
+	if (!modalTitle) return;
+	
+	const currentModal = modalTitle.closest('.modal-overlay');
+	const jobId = currentModal.dataset.jobId;
+	const job = jobsData.find(j => j.id == jobId);
+	if (!job) return;
+
+	// Use datetime-local value directly
+	let dueDate = null;
+	if (dueDateInput.value) {
+		dueDate = new Date(dueDateInput.value).toISOString();
+	}
+
+	const newTask = {
+		id: Date.now(),
+		createdDate: new Date().toISOString(),
+		text: taskText,
+		status: statusSelect.value || "todo",
+		priority: prioritySelect.value || "medium",
+		dueDate: dueDate,
+		duration: durationSelect.value || null,
+	};
+
+	// Add task to job data
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	if (!jobsData[jobIndex].tasks) {
+		jobsData[jobIndex].tasks = [];
+	}
+
+	jobsData[jobIndex].tasks.push(newTask);
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshTasksModal(job);
+
+	// Clear the form
+	textarea.value = "";
+	statusSelect.value = "todo";
+	prioritySelect.value = "medium";
+	dueDateInput.value = "";
+	durationSelect.value = "";
+
+	// Focus back to the textarea
+	setTimeout(() => {
+		const newTextarea = document.querySelector(".add-task-textarea");
+		if (newTextarea) newTextarea.focus();
+	}, 100);
+
+	// Update interface
+	refreshInterface();
+};
+
 // Make TasksModal available globally
 window.TasksModal = TasksModal;
+window.handleAddTask = handleAddTask;
 
 
 // ============================================================================
@@ -9938,7 +10052,7 @@ const ContactItem = ({ contact, job }) => {
 			h('div.modal-header-content',
 				h('span.contact-date', formatDate(contact.date))
 			),
-			h('div.contact-actions modal-actions-row',
+			h('div.contact-actions.modal-actions-row',
 				h('button.action-btn.edit-contact-btn', {
 					title: I18n.t("modals.contacts.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
@@ -10380,7 +10494,7 @@ const ContactsModal = ({ job, onClose }) => {
 
 	return h('div.modal-overlay', {
 			onclick: (e) => e.target === e.currentTarget && onClose()},
-		h('div.modal contacts-modal',
+		h('div.modal.contacts-modal',
 			h('div.modal-header',
 				h('h3.modal-title',
 					I18n.t("modals.contacts.title", { position: job.position, company: job.company })
@@ -10826,6 +10940,43 @@ const formatContactForTable = (contact) => {
 	return parts.join("<br>") || I18n.t("modals.contacts.defaultContact");
 };
 
+// Global archive contact function
+const archiveContact = (contact, job) => {
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
+	if (contactIndex === -1) return;
+
+	// Store archived section state before refresh
+	const archivedTable = document.getElementById("archived-contacts-table");
+	const wasExpanded = archivedTable && archivedTable.style.display === "table";
+
+	jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshContactsModal(job);
+
+	// Restore archived section state after refresh
+	if (wasExpanded) {
+		setTimeout(() => {
+			const newArchivedTable = document.getElementById("archived-contacts-table");
+			const expandIcon = document.getElementById("archived-contacts-icon");
+			if (newArchivedTable) {
+				newArchivedTable.style.display = "table";
+				if (expandIcon) expandIcon.textContent = "expand_less";
+			}
+		}, 0);
+	}
+
+	// Update interface
+	refreshInterface();
+};
+
+// Global function to handle archive contact (for backward compatibility)
+const handleArchiveContact = (contact, job) => archiveContact(contact, job);
+
 // Make contact components and functions available globally for Vite
 window.ContactsCount = ContactsCount;
 window.ContactItem = ContactItem;
@@ -10839,6 +10990,8 @@ window.createContactsContent = createContactsContent;
 window.updateContactRowDisplay = updateContactRowDisplay;
 window.getLatestContact = getLatestContact;
 window.formatContactForTable = formatContactForTable;
+window.archiveContact = archiveContact;
+window.handleArchiveContact = handleArchiveContact;
 
 
 // ============================================================================
@@ -11465,10 +11618,10 @@ const KanbanBoard = {
 
 		const metadataRow = metadata.length > 0 ? h("div.kanban-job-metadata", ...metadata) : null;
 
-		// Action icons with counts (notes, tasks, contacts)
-		const notesCount = job.notes ? job.notes.length : 0;
-		const tasksCount = job.tasks ? job.tasks.length : 0;
-		const contactsCount = job.contacts ? job.contacts.length : 0;
+		// Action icons with counts (notes, tasks, contacts) - exclude archived items
+		const notesCount = job.notes ? job.notes.filter(note => !note.archived).length : 0;
+		const tasksCount = job.tasks ? job.tasks.filter(task => !task.archived).length : 0;
+		const contactsCount = job.contacts ? job.contacts.filter(contact => !contact.archived).length : 0;
 
 		const actionIconsChildren = [];
 
@@ -12640,13 +12793,16 @@ const TasksBoard = {
 		jobsData.forEach((job) => {
 			if (job.tasks && job.tasks.length > 0) {
 				job.tasks.forEach((task) => {
-					// Add job context to task
-					allTasks.push({
-						...task,
-						jobId: job.id,
-						jobCompany: job.company,
-						jobPosition: job.position,
-						jobPhase: job.currentPhase});
+					// Only include non-archived tasks
+					if (!task.archived) {
+						// Add job context to task
+						allTasks.push({
+							...task,
+							jobId: job.id,
+							jobCompany: job.company,
+							jobPosition: job.position,
+							jobPhase: job.currentPhase});
+					}
 				});
 			}
 		});
@@ -12673,7 +12829,14 @@ const TasksBoard = {
 					// Add "Add Task" button for todo column (left of counter)
 					status === "todo" &&
 						h('button.tasks-add-task-btn', {
-								onclick: () => TasksBoard.openAddTaskModal()},
+								onclick: (e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									
+									// Create and show the add task modal directly
+									const addTaskModal = TasksBoard.createTaskModal();
+									document.body.appendChild(addTaskModal);
+								}},
 							h('span.material-symbols-outlined', "add"),
 							I18n.t("modals.tasks.addButton") || "Add Task"
 						),
@@ -12737,11 +12900,11 @@ const TasksBoard = {
 		// Job context information
 		const jobContext = h('div.tasks-job-context',
 			h('div.tasks-job-info',
-				h('span.material-symbols-outlined tasks-job-icon', "business"),
+				h('span.material-symbols-outlined.tasks-job-icon', "business"),
 				h('span.tasks-job-text', `${task.jobCompany} — ${task.jobPosition}`)
 			),
 			h('div.tasks-job-phase',
-				h('span.material-symbols-outlined tasks-phase-icon', "schedule"),
+				h('span.material-symbols-outlined.tasks-phase-icon', "schedule"),
 				h('span.tasks-phase-text', getPhaseText(task.jobPhase))
 			)
 		);
@@ -14362,7 +14525,7 @@ const CalendarView = {
 				onclick: (e) => {
 					if (e.target.className === "modal-overlay") e.target.remove();
 				}},
-			h('div.modal calendar-events-modal',
+			h('div.modal.calendar-events-modal',
 				h('div.modal-header',
 					h('h3.modal-title', dateStr),
 					h('button.modal-close', {
@@ -14412,14 +14575,14 @@ const CalendarView = {
 					...[
 						event.task.dueDate &&
 							h('span.calendar-event-meta-item',
-								h('span.material-symbols-outlined calendar-meta-icon',
+								h('span.material-symbols-outlined.calendar-meta-icon',
 									"schedule"
 								),
 								CalendarView.formatTaskDateTime(event.task.dueDate)
 							),
 						event.task.duration &&
 							h('span.calendar-event-meta-item',
-								h('span.material-symbols-outlined calendar-meta-icon', "timer"),
+								h('span.material-symbols-outlined.calendar-meta-icon', "timer"),
 								event.task.duration
 							),
 					].filter(Boolean)
@@ -14443,7 +14606,7 @@ const CalendarView = {
 				onclick: (e) => {
 					if (e.target.className === "modal-overlay") e.target.remove();
 				}},
-			h('div.modal calendar-event-details-modal',
+			h('div.modal.calendar-event-details-modal',
 				h('div.modal-header',
 					h('h3.modal-title', event.title),
 					h('button.modal-close', {
@@ -15085,7 +15248,7 @@ const ContactsView = {
 							)
 						),
 						h('div.contact-form-row',
-							h('div.contact-form-field full-width',
+							h('div.contact-form-field.full-width',
 								h('label', I18n.t("contactsView.jobHeader")),
 								h('select.add-contact-job',
 									h('option', { value: "" }, I18n.t("contactsView.selectJob")),
@@ -15261,8 +15424,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				);
 			}
 
-			// Notes button
-			const notesCount = (job.notes || []).length;
+			// Notes button - exclude archived items
+			const notesCount = (job.notes || []).filter(note => !note.archived).length;
 			const notesButton = h('button.kanban-icon-btn', {
 					title: `Notes (${notesCount})`,
 					onclick: (e) => {
@@ -15276,8 +15439,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 			}
 			actionIconsChildren.push(notesButton);
 
-			// Tasks button
-			const tasksCount = (job.tasks || []).length;
+			// Tasks button - exclude archived items
+			const tasksCount = (job.tasks || []).filter(task => !task.archived).length;
 			const tasksButton = h('button.kanban-icon-btn', {
 					title: `Tasks (${tasksCount})`,
 					onclick: (e) => {
@@ -15291,8 +15454,8 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 			}
 			actionIconsChildren.push(tasksButton);
 
-			// Contacts button
-			const contactsCount = (job.contacts || []).length;
+			// Contacts button - exclude archived items
+			const contactsCount = (job.contacts || []).filter(contact => !contact.archived).length;
 			const contactsButton = h('button.kanban-icon-btn', {
 					title: `Contacts (${contactsCount})`,
 					onclick: (e) => {

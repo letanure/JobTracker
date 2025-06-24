@@ -147,7 +147,7 @@ const ContactItem = ({ contact, job }) => {
 			h('div.modal-header-content',
 				h('span.contact-date', formatDate(contact.date))
 			),
-			h('div.contact-actions modal-actions-row',
+			h('div.contact-actions.modal-actions-row',
 				h('button.action-btn.edit-contact-btn', {
 					title: I18n.t("modals.contacts.editTitle"),
 					innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
@@ -589,7 +589,7 @@ const ContactsModal = ({ job, onClose }) => {
 
 	return h('div.modal-overlay', {
 			onclick: (e) => e.target === e.currentTarget && onClose()},
-		h('div.modal contacts-modal',
+		h('div.modal.contacts-modal',
 			h('div.modal-header',
 				h('h3.modal-title',
 					I18n.t("modals.contacts.title", { position: job.position, company: job.company })
@@ -1035,6 +1035,43 @@ const formatContactForTable = (contact) => {
 	return parts.join("<br>") || I18n.t("modals.contacts.defaultContact");
 };
 
+// Global archive contact function
+const archiveContact = (contact, job) => {
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	const contactIndex = jobsData[jobIndex].contacts.findIndex((c) => c.id === contact.id);
+	if (contactIndex === -1) return;
+
+	// Store archived section state before refresh
+	const archivedTable = document.getElementById("archived-contacts-table");
+	const wasExpanded = archivedTable && archivedTable.style.display === "table";
+
+	jobsData[jobIndex].contacts[contactIndex].archived = !contact.archived;
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshContactsModal(job);
+
+	// Restore archived section state after refresh
+	if (wasExpanded) {
+		setTimeout(() => {
+			const newArchivedTable = document.getElementById("archived-contacts-table");
+			const expandIcon = document.getElementById("archived-contacts-icon");
+			if (newArchivedTable) {
+				newArchivedTable.style.display = "table";
+				if (expandIcon) expandIcon.textContent = "expand_less";
+			}
+		}, 0);
+	}
+
+	// Update interface
+	refreshInterface();
+};
+
+// Global function to handle archive contact (for backward compatibility)
+const handleArchiveContact = (contact, job) => archiveContact(contact, job);
+
 // Make contact components and functions available globally for Vite
 window.ContactsCount = ContactsCount;
 window.ContactItem = ContactItem;
@@ -1048,3 +1085,5 @@ window.createContactsContent = createContactsContent;
 window.updateContactRowDisplay = updateContactRowDisplay;
 window.getLatestContact = getLatestContact;
 window.formatContactForTable = formatContactForTable;
+window.archiveContact = archiveContact;
+window.handleArchiveContact = handleArchiveContact;

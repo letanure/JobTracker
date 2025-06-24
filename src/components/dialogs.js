@@ -119,7 +119,7 @@ const CustomDialogs = {
 				),
 
 				// Body
-				h('div.modal-body custom-dialog-body',
+				h('div.modal-body.custom-dialog-body',
 					h('div.dialog-message', message),
 
 					// Input field for prompt
@@ -145,7 +145,7 @@ const CustomDialogs = {
 				),
 
 				// Footer with buttons
-				h('div.modal-footer dialog-footer',
+				h('div.modal-footer.dialog-footer',
 					...buttons.map((button) =>
 						h('button',
 							{

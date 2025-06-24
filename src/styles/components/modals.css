@@ -99,3 +99,46 @@
 	font-style: italic;
 	margin: 24px 0;
 }
+
+/* ============================================================================ */
+/* ARCHIVED SECTIONS - CONSISTENT STYLING */
+/* ============================================================================ */
+
+.archived-notes-section,
+.archived-tasks-section,
+.archived-contacts-section {
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid var(--border-color);
+}
+
+.notes-archived-header,
+.tasks-archived-header,
+.contacts-archived-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	margin: 0 0 16px 0;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--gray-600);
+	padding: 8px;
+	border-radius: 6px;
+	transition: var(--transition-fast);
+}
+
+.notes-archived-header:hover,
+.tasks-archived-header:hover,
+.contacts-archived-header:hover {
+	background: var(--gray-50);
+	color: var(--blue-600);
+}
+
+.notes-archived-header .expand-icon,
+.tasks-archived-header .expand-icon,
+.contacts-archived-header .expand-icon {
+	font-size: 20px !important;
+	transition: transform 0.2s ease;
+	color: var(--gray-500);
+}

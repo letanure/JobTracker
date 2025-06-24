@@ -54,9 +54,18 @@ const DEFAULT_SELECTED_SUBSTEPS = {
 	rejected_withdrawn: []};
 
 // Helper functions to get translated values
-const getPriorityText = (priorityKey) => I18n.t(`priorities.${priorityKey}`);
-const getPhaseText = (phaseKey) => I18n.t(`phases.${phaseKey}`);
-const getSubstepText = (substepKey) => I18n.t(`substeps.${substepKey}`);
+const getPriorityText = (priorityKey) => {
+	if (!priorityKey) return '';
+	return I18n.t(`priorities.${priorityKey}`);
+};
+const getPhaseText = (phaseKey) => {
+	if (!phaseKey) return '';
+	return I18n.t(`phases.${phaseKey}`);
+};
+const getSubstepText = (substepKey) => {
+	if (!substepKey) return '';
+	return I18n.t(`substeps.${substepKey}`);
+};
 
 // Helper function to get all substeps for a phase
 const getSubstepsForPhase = (phaseKey) => PHASE_SUBSTEPS[phaseKey] || [];

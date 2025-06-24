@@ -137,7 +137,7 @@ const TasksModal = ({ job, onClose }) => {
 		editBtn.title = I18n.t("modals.common.save");
 		editBtn.onclick = () => saveTaskChanges(task, job);
 
-		// Add cancel button next to save button
+		// Add cancel button next to save button and hide archive button
 		const actionsCell = taskRow.querySelector(".tasks-table-actions");
 		const cancelBtn = h("button.action-btn.cancel-btn", {
 			title: I18n.t("modals.common.cancel"),
@@ -145,6 +145,12 @@ const TasksModal = ({ job, onClose }) => {
 			onclick: () => disableTaskEditing(task, job),
 		});
 		actionsCell.appendChild(cancelBtn);
+
+		// Hide archive button during editing
+		const archiveBtn = taskRow.querySelector(".archive-btn");
+		if (archiveBtn) {
+			archiveBtn.style.display = "none";
+		}
 
 		// Make task text editable
 		const taskTextRow = taskRow.nextElementSibling;
@@ -694,6 +700,7 @@ const TasksModal = ({ job, onClose }) => {
 	return h(
 		"div.modal-overlay",
 		{
+			"data-job-id": job.id,
 			onclick: (e) => e.target === e.currentTarget && onClose(),
 		},
 		h(
@@ -711,5 +718,77 @@ const TasksModal = ({ job, onClose }) => {
 	);
 };
 
+// Global task handling function  
+const handleAddTask = () => {
+	const textarea = document.querySelector(".add-task-textarea");
+	const statusSelect = document.querySelector(".add-task-status");
+	const prioritySelect = document.querySelector(".add-task-priority");
+	const dueDateInput = document.querySelector(".add-task-due-date");
+	const durationSelect = document.querySelector(".add-task-duration");
+	const taskText = textarea.value.trim();
+
+	if (!taskText) {
+		// Show error message instead of alert
+		showValidationError(textarea, "Task text is required");
+		return;
+	}
+
+	// Find the job from the modal
+	const modalTitle = document.querySelector(".modal-title");
+	if (!modalTitle) return;
+	
+	const currentModal = modalTitle.closest('.modal-overlay');
+	const jobId = currentModal.dataset.jobId;
+	const job = jobsData.find(j => j.id == jobId);
+	if (!job) return;
+
+	// Use datetime-local value directly
+	let dueDate = null;
+	if (dueDateInput.value) {
+		dueDate = new Date(dueDateInput.value).toISOString();
+	}
+
+	const newTask = {
+		id: Date.now(),
+		createdDate: new Date().toISOString(),
+		text: taskText,
+		status: statusSelect.value || "todo",
+		priority: prioritySelect.value || "medium",
+		dueDate: dueDate,
+		duration: durationSelect.value || null,
+	};
+
+	// Add task to job data
+	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	if (jobIndex === -1) return;
+
+	if (!jobsData[jobIndex].tasks) {
+		jobsData[jobIndex].tasks = [];
+	}
+
+	jobsData[jobIndex].tasks.push(newTask);
+	saveToLocalStorage();
+
+	// Refresh modal without flicker
+	refreshTasksModal(job);
+
+	// Clear the form
+	textarea.value = "";
+	statusSelect.value = "todo";
+	prioritySelect.value = "medium";
+	dueDateInput.value = "";
+	durationSelect.value = "";
+
+	// Focus back to the textarea
+	setTimeout(() => {
+		const newTextarea = document.querySelector(".add-task-textarea");
+		if (newTextarea) newTextarea.focus();
+	}, 100);
+
+	// Update interface
+	refreshInterface();
+};
+
 // Make TasksModal available globally
 window.TasksModal = TasksModal;
+window.handleAddTask = handleAddTask;

@@ -207,7 +207,11 @@
 }
 
 .kanban-priority-dot {
-	/* Extends .priority-dot utility */
+	/* Extends .priority utility */
+	display: inline-block;
+	width: var(--priority-dot-size);
+	height: var(--priority-dot-size);
+	border-radius: var(--radius-full);
 	position: absolute;
 	top: 8px;
 	right: 8px;

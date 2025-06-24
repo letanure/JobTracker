@@ -891,7 +891,7 @@ const CalendarView = {
 				onclick: (e) => {
 					if (e.target.className === "modal-overlay") e.target.remove();
 				}},
-			h('div.modal calendar-events-modal',
+			h('div.modal.calendar-events-modal',
 				h('div.modal-header',
 					h('h3.modal-title', dateStr),
 					h('button.modal-close', {
@@ -941,14 +941,14 @@ const CalendarView = {
 					...[
 						event.task.dueDate &&
 							h('span.calendar-event-meta-item',
-								h('span.material-symbols-outlined calendar-meta-icon',
+								h('span.material-symbols-outlined.calendar-meta-icon',
 									"schedule"
 								),
 								CalendarView.formatTaskDateTime(event.task.dueDate)
 							),
 						event.task.duration &&
 							h('span.calendar-event-meta-item',
-								h('span.material-symbols-outlined calendar-meta-icon', "timer"),
+								h('span.material-symbols-outlined.calendar-meta-icon', "timer"),
 								event.task.duration
 							),
 					].filter(Boolean)
@@ -972,7 +972,7 @@ const CalendarView = {
 				onclick: (e) => {
 					if (e.target.className === "modal-overlay") e.target.remove();
 				}},
-			h('div.modal calendar-event-details-modal',
+			h('div.modal.calendar-event-details-modal',
 				h('div.modal-header',
 					h('h3.modal-title', event.title),
 					h('button.modal-close', {

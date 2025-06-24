@@ -798,32 +798,7 @@ tr.editing .actions-cell button {
 }
 
 /* Archived contacts section */
-.archived-contacts-section {
-	margin-top: 16px;
-}
-
-.contacts-archived-header {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin: 0 0 8px 0;
-	font-size: 14px;
-	font-weight: 600;
-	color: var(--gray-600);
-	cursor: pointer;
-	padding: 8px;
-	border-radius: 6px;
-	transition: background-color 0.15s ease;
-}
-
-.contacts-archived-header:hover {
-	background: var(--gray-50);
-}
-
-.contacts-archived-header .expand-icon {
-	font-size: 16px;
-	color: var(--gray-500);
-}
+/* Archived contacts styles moved to modals.css for consistency */
 
 /* ============================================================================ */
 /* RESPONSIVE TABLE */

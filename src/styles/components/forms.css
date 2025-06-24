@@ -343,31 +343,7 @@ textarea {
 }
 
 /* Archived tasks section */
-.archived-tasks-section {
-	margin-top: 24px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border-color);
-}
-
-.tasks-archived-header {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	cursor: pointer;
-	margin: 0 0 16px 0;
-	font-size: 16px;
-	font-weight: 600;
-	color: var(--text-color);
-}
-
-.tasks-archived-header:hover {
-	color: var(--blue-600);
-}
-
-.expand-icon {
-	font-size: 20px !important;
-	transition: transform 0.2s ease;
-}
+/* Archived tasks styles moved to modals.css for consistency */
 
 .archived-task-text-cell {
 	padding: 8px 12px;
