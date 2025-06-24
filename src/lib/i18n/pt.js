@@ -19,6 +19,7 @@ const PT_TRANSLATIONS = {
 		tasks: "Quadro de Tarefas",
 		calendar: "Calendário",
 		contacts: "Contatos",
+		resume: "Currículo",
 		profile: "Perfil"},
 	headers: {
 		dashboard: "Painel",
@@ -26,7 +27,8 @@ const PT_TRANSLATIONS = {
 		applications: "Quadro de Candidaturas",
 		tasks: "Quadro de Tarefas",
 		calendar: "Vista do Calendário",
-		contacts: "Todos os Contatos"},
+		contacts: "Todos os Contatos",
+		resume: "Construtor de Currículo"},
 	kanban: {
 		title: "Quadro de Candidaturas",
 		totalJobs: "{count} candidaturas no total",
@@ -113,6 +115,132 @@ const PT_TRANSLATIONS = {
 		welcomeCancel: "Não, deixar vazio",
 		confirmDelete: "Tem certeza de que deseja excluir a candidatura para {position} na {company}?",
 		confirmArchive: "Tem certeza de que deseja arquivar a candidatura para {position} na {company}?"},
+	resume: {
+		basics: {
+			title: "Informações Básicas",
+			name: "Nome Completo",
+			label: "Título Profissional",
+			summary: "Resumo Profissional",
+			email: "Endereço de Email",
+			phone: "Telefone",
+			city: "Cidade",
+			country: "País",
+			personalStatement: "Declaração Pessoal",
+			locationTitle: "Localização"
+		},
+		profiles: {
+			title: "Perfis Online",
+			type: "Plataforma",
+			url: "URL do Perfil",
+			addProfile: "Adicionar Perfil",
+			platforms: {
+				linkedin: "LinkedIn",
+				github: "GitHub",
+				twitter: "Twitter",
+				website: "Website",
+				other: "Outro"
+			}
+		},
+		languages: {
+			title: "Idiomas",
+			language: "Idioma",
+			fluency: "Nível de Fluência",
+			addLanguage: "Adicionar Idioma",
+			levels: {
+				native: "Nativo",
+				fluent: "Fluente",
+				intermediate: "Intermediário",
+				beginner: "Iniciante"
+			}
+		},
+		skills: {
+			title: "Habilidades",
+			name: "Categoria de Habilidade",
+			keywords: "Habilidades (separadas por vírgula)",
+			addSkill: "Adicionar Categoria"
+		},
+		experience: {
+			title: "Experiência Profissional",
+			company: "Empresa",
+			position: "Cargo",
+			location: "Localização",
+			startDate: "Data de Início",
+			endDate: "Data de Término",
+			current: "Cargo Atual",
+			summary: "Resumo",
+			highlights: "Principais Conquistas (uma por linha)",
+			addExperience: "Adicionar Experiência"
+		},
+		projects: {
+			title: "Projetos",
+			name: "Nome do Projeto",
+			description: "Descrição",
+			url: "URL do Projeto",
+			tags: "Tecnologias (separadas por vírgula)",
+			addProject: "Adicionar Projeto"
+		},
+		portfolio: {
+			title: "Portfólio",
+			type: "Tipo",
+			title_field: "Título",
+			url: "URL",
+			addPortfolio: "Adicionar Item do Portfólio",
+			types: {
+				"case-study": "Estudo de Caso",
+				artwork: "Arte",
+				website: "Website",
+				app: "Aplicação",
+				other: "Outro"
+			}
+		},
+		education: {
+			title: "Educação",
+			institution: "Instituição",
+			area: "Área de Estudo",
+			studyType: "Tipo de Grau/Certificado",
+			startDate: "Data de Início",
+			endDate: "Data de Término",
+			addEducation: "Adicionar Educação"
+		},
+		certifications: {
+			title: "Certificações",
+			type: "Tipo",
+			name: "Nome da Certificação",
+			issuer: "Organização Emissora",
+			date: "Data de Emissão",
+			addCertification: "Adicionar Certificação"
+		},
+		awards: {
+			title: "Prêmios",
+			type: "Tipo de Prêmio",
+			title_field: "Título do Prêmio",
+			issuer: "Organismo Premiante",
+			date: "Data do Prêmio",
+			addAward: "Adicionar Prêmio"
+		},
+		volunteer: {
+			title: "Experiência Voluntária",
+			organization: "Organização",
+			role: "Papel",
+			startDate: "Data de Início",
+			endDate: "Data de Término",
+			addVolunteer: "Adicionar Experiência Voluntária"
+		},
+		interests: {
+			title: "Interesses",
+			type: "Categoria",
+			value: "Descrição",
+			addInterest: "Adicionar Interesse"
+		},
+		actions: {
+			save: "Salvar Currículo",
+			export: "Exportar JSON",
+			import: "Importar JSON",
+			clear: "Limpar Tudo",
+			add: "Adicionar",
+			remove: "Remover"
+		}
+	},
 	demo: {
 		notes1: "Ótimo encaixe cultural. Preciso pesquisar sua arquitetura de microsserviços.",
 		notes2: "Startup em estágio inicial. Alto potencial de crescimento, mas arriscado."},

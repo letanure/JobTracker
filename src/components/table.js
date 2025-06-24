@@ -119,7 +119,7 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 						title: I18n.t("actions.archive") || "Archive job",
 						onclick: (e) => {
 							e.stopPropagation();
-							archiveJob(job);
+							onDelete(job);
 						}},
 					h('span.material-symbols-outlined', "archive")
 				)

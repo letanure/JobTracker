@@ -176,7 +176,7 @@ function renderJobTable() {
 			const row = JobRow({
 				job,
 				onEdit: editJob,
-				onDelete: deleteJob});
+				onDelete: archiveJob});
 			tbody.appendChild(row);
 		} catch (error) {
 			console.error("Error rendering job row:", error, job);

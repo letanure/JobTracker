@@ -19,6 +19,7 @@ const EN_TRANSLATIONS = {
 		tasks: "Tasks Board",
 		calendar: "Calendar",
 		contacts: "Contacts",
+		resume: "Resume",
 		profile: "Profile"},
 	headers: {
 		dashboard: "Dashboard",
@@ -26,7 +27,8 @@ const EN_TRANSLATIONS = {
 		applications: "Applications Board",
 		tasks: "Tasks Board",
 		calendar: "Calendar View",
-		contacts: "All Contacts"},
+		contacts: "All Contacts",
+		resume: "Resume Builder"},
 	kanban: {
 		title: "Applications Board",
 		totalJobs: "{count} total applications",
@@ -112,6 +114,132 @@ const EN_TRANSLATIONS = {
 		welcomeCancel: "No, leave empty",
 		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
 		confirmArchive: "Are you sure you want to archive the application for {position} at {company}?"},
+	resume: {
+		basics: {
+			title: "Basic Information",
+			name: "Full Name",
+			label: "Professional Title",
+			summary: "Professional Summary",
+			email: "Email Address",
+			phone: "Phone Number",
+			city: "City",
+			country: "Country",
+			personalStatement: "Personal Statement",
+			locationTitle: "Location"
+		},
+		profiles: {
+			title: "Online Profiles",
+			type: "Platform",
+			url: "Profile URL",
+			addProfile: "Add Profile",
+			platforms: {
+				linkedin: "LinkedIn",
+				github: "GitHub",
+				twitter: "Twitter",
+				website: "Website",
+				other: "Other"
+			}
+		},
+		languages: {
+			title: "Languages",
+			language: "Language",
+			fluency: "Fluency Level",
+			addLanguage: "Add Language",
+			levels: {
+				native: "Native",
+				fluent: "Fluent",
+				intermediate: "Intermediate",
+				beginner: "Beginner"
+			}
+		},
+		skills: {
+			title: "Skills",
+			name: "Skill Category",
+			keywords: "Skills (comma separated)",
+			addSkill: "Add Skill Category"
+		},
+		experience: {
+			title: "Work Experience",
+			company: "Company",
+			position: "Position",
+			location: "Location",
+			startDate: "Start Date",
+			endDate: "End Date",
+			current: "Current Position",
+			summary: "Summary",
+			highlights: "Key Achievements (one per line)",
+			addExperience: "Add Experience"
+		},
+		projects: {
+			title: "Projects",
+			name: "Project Name",
+			description: "Description",
+			url: "Project URL",
+			tags: "Technologies (comma separated)",
+			addProject: "Add Project"
+		},
+		portfolio: {
+			title: "Portfolio",
+			type: "Type",
+			title_field: "Title",
+			url: "URL",
+			addPortfolio: "Add Portfolio Item",
+			types: {
+				"case-study": "Case Study",
+				artwork: "Artwork",
+				website: "Website",
+				app: "Application",
+				other: "Other"
+			}
+		},
+		education: {
+			title: "Education",
+			institution: "Institution",
+			area: "Field of Study",
+			studyType: "Degree/Certificate Type",
+			startDate: "Start Date",
+			endDate: "End Date",
+			addEducation: "Add Education"
+		},
+		certifications: {
+			title: "Certifications",
+			type: "Type",
+			name: "Certificate Name",
+			issuer: "Issuing Organization",
+			date: "Issue Date",
+			addCertification: "Add Certification"
+		},
+		awards: {
+			title: "Awards",
+			type: "Award Type",
+			title_field: "Award Title",
+			issuer: "Awarding Body",
+			date: "Award Date",
+			addAward: "Add Award"
+		},
+		volunteer: {
+			title: "Volunteer Experience",
+			organization: "Organization",
+			role: "Role",
+			startDate: "Start Date",
+			endDate: "End Date",
+			addVolunteer: "Add Volunteer Experience"
+		},
+		interests: {
+			title: "Interests",
+			type: "Category",
+			value: "Description",
+			addInterest: "Add Interest"
+		},
+		actions: {
+			save: "Save Resume",
+			export: "Export JSON",
+			import: "Import JSON",
+			clear: "Clear All",
+			add: "Add",
+			remove: "Remove"
+		}
+	},
 	demo: {
 		notes1: "Great culture fit. Need to research their microservices architecture.",
 		notes2: "Early stage startup. High growth potential but risky."},

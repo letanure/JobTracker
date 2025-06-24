@@ -14,6 +14,7 @@ const TabNavigation = {
 		{ id: "tasks", key: "tabs.tasks", icon: "task_alt" },
 		{ id: "calendar", key: "tabs.calendar", icon: "calendar_month" },
 		{ id: "contacts", key: "tabs.contacts", icon: "contacts" },
+		{ id: "resume", key: "tabs.resume", icon: "description" },
 	],
 
 	// Get tab from URL parameter
@@ -138,6 +139,10 @@ const TabNavigation = {
 				// Initialize contacts view if needed
 				TabNavigation.initializeContactsView();
 				break;
+			case "resume":
+				// Initialize resume builder if needed
+				TabNavigation.initializeResumeBuilder();
+				break;
 		}
 	},
 
@@ -173,6 +178,13 @@ const TabNavigation = {
 	initializeContactsView: () => {
 		if (typeof ContactsView !== "undefined") {
 			ContactsView.init();
+		}
+	},
+
+	// Initialize resume builder
+	initializeResumeBuilder: () => {
+		if (typeof ResumeBuilder !== "undefined") {
+			ResumeBuilder.init();
 		}
 	},
 

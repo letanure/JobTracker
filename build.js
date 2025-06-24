@@ -59,6 +59,7 @@ const BUILD_CONFIG = {
     'src/components/contacts-view.js',
     'src/components/table.js',
     'src/components/dashboard.js',
+    'src/components/resume.js',
     
     // Application modules
     'src/app/stats.js',
@@ -84,6 +85,7 @@ const BUILD_CONFIG = {
     'src/styles/components/kanban.css',
     'src/styles/components/tasks.css',
     'src/styles/components/calendar.css',
+    'src/styles/components/resume.css',
     'src/styles/components/dialogs.css',
     // Remaining CSS files
     'src/styles/table.css',

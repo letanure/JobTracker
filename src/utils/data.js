@@ -5,7 +5,7 @@
 // Save to localStorage
 const saveToLocalStorage = () => {
 	DataStore.save({
-		jobs: jobsData,
+		jobs: originalData || jobsData,
 		language: I18n.currentLanguage});
 };
 
