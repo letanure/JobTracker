@@ -1,8 +1,8 @@
 <!-- 
 ============================================================================
 JobTracker - Single File Build
-Generated: 2025-06-24T21:23:11.007Z
-Cache Version: 1750800191007
+Generated: 2025-06-24T21:27:28.759Z
+Cache Version: 1750800448759
 ============================================================================
 -->
 <!DOCTYPE html>
@@ -49,8 +49,8 @@ Cache Version: 1750800191007
     <script defer src="https://cloud.umami.is/script.js" data-website-id="33179b8a-4bc4-4489-9a2d-82d5699c3dfb"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
-    <meta name="build-version" content="1750800191007">
-    <meta name="build-date" content="2025-06-24T21:23:11.007Z">
+    <meta name="build-version" content="1750800448759">
+    <meta name="build-date" content="2025-06-24T21:27:28.759Z">
     <style>
 
 /* ============================================================================ */
@@ -6714,16 +6714,16 @@ tr.editing .actions-cell button {
     
     <script>
 // Build version for cache busting
-window.BUILD_VERSION = '1750800191007';
-window.BUILD_DATE = '2025-06-24T21:23:11.007Z';
+window.BUILD_VERSION = '1750800448759';
+window.BUILD_DATE = '2025-06-24T21:27:28.759Z';
 
 // ============================================================================
 // JobTracker - Built from modular source files
-// Generated: 2025-06-24T21:23:10.995Z
+// Generated: 2025-06-24T21:27:28.747Z
 // ============================================================================
 
 // Show build info in console
-console.log("JobTracker - Built at: 2025-06-24T21:23:10.995Z");
+console.log("JobTracker - Built at: 2025-06-24T21:27:28.747Z");
 
 
 // ============================================================================
@@ -16943,6 +16943,30 @@ const ResumeBuilder = {
 		]
 	},
 
+	// Degree types for education
+	degreeTypes: [
+		// Academic degrees
+		"Bachelor of Science (BSc)",
+		"Bachelor of Arts (BA)",
+		"Bachelor of Engineering (BEng)",
+		"Master of Science (MSc)",
+		"Master of Arts (MA)",
+		"Master of Engineering (MEng)",
+		"Doctor of Philosophy (PhD)",
+		"Doctor of Medicine (MD)",
+
+		// Professional / alternative
+		"Diploma",
+		"Associate Degree",
+		"Bootcamp Certificate",
+		"Nanodegree",
+		"Certificate of Completion",
+		"Professional Certification",
+		"Trade School Certificate",
+		"Online Course",
+		"Other"
+	],
+
 	// Get country options for select dropdown
 	getCountryOptions: () => {
 		try {
@@ -17880,8 +17904,14 @@ const ResumeBuilder = {
 				h('label', I18n.t("resume.education.studyType")),
 				h('input[type="text"]', {
 					value: edu.studyType,
+					list: `education-degree-list-${index}`,
 					oninput: (e) => ResumeBuilder.data.education[index].studyType = e.target.value
-				})
+				}),
+				h(`datalist#education-degree-list-${index}`,
+					...ResumeBuilder.degreeTypes.map(degree =>
+						h('option', { value: degree })
+					)
+				)
 			),
 			h('div.form-grid-2',
 				h('div.form-field',

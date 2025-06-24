@@ -77,6 +77,30 @@ const ResumeBuilder = {
 		]
 	},
 
+	// Degree types for education
+	degreeTypes: [
+		// Academic degrees
+		"Bachelor of Science (BSc)",
+		"Bachelor of Arts (BA)",
+		"Bachelor of Engineering (BEng)",
+		"Master of Science (MSc)",
+		"Master of Arts (MA)",
+		"Master of Engineering (MEng)",
+		"Doctor of Philosophy (PhD)",
+		"Doctor of Medicine (MD)",
+
+		// Professional / alternative
+		"Diploma",
+		"Associate Degree",
+		"Bootcamp Certificate",
+		"Nanodegree",
+		"Certificate of Completion",
+		"Professional Certification",
+		"Trade School Certificate",
+		"Online Course",
+		"Other"
+	],
+
 	// Get country options for select dropdown
 	getCountryOptions: () => {
 		try {
@@ -1014,8 +1038,14 @@ const ResumeBuilder = {
 				h('label', I18n.t("resume.education.studyType")),
 				h('input[type="text"]', {
 					value: edu.studyType,
+					list: `education-degree-list-${index}`,
 					oninput: (e) => ResumeBuilder.data.education[index].studyType = e.target.value
-				})
+				}),
+				h(`datalist#education-degree-list-${index}`,
+					...ResumeBuilder.degreeTypes.map(degree =>
+						h('option', { value: degree })
+					)
+				)
 			),
 			h('div.form-grid-2',
 				h('div.form-field',
