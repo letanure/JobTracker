@@ -651,59 +651,73 @@
 
 /* Week view events */
 .calendar-week-event.calendar-event-task-high {
+	background-color: var(--red-100);
 	border-left: 3px solid var(--red-500);
 }
 
 .calendar-week-event.calendar-event-task-medium {
+	background-color: var(--orange-100);
 	border-left: 3px solid var(--orange-500);
 }
 
 .calendar-week-event.calendar-event-task-low {
+	background-color: var(--green-100);
 	border-left: 3px solid var(--green-500);
 }
 
 .calendar-week-event.calendar-event-task-default {
+	background-color: var(--blue-100);
 	border-left: 3px solid var(--blue-500);
 }
 
 .calendar-week-event.calendar-event-applied {
+	background-color: var(--green-100);
 	border-left: 3px solid var(--green-500);
 }
 
 .calendar-week-event.calendar-event-interview {
+	background-color: var(--orange-100);
 	border-left: 3px solid var(--orange-500);
 }
 
 .calendar-week-event.calendar-event-followup {
+	background-color: var(--purple-100);
 	border-left: 3px solid var(--purple-500);
 }
 
 /* Day view events */
 .calendar-day-event.calendar-event-task-high {
+	background-color: var(--red-100);
 	border-left: 4px solid var(--red-500);
 }
 
 .calendar-day-event.calendar-event-task-medium {
+	background-color: var(--orange-100);
 	border-left: 4px solid var(--orange-500);
 }
 
 .calendar-day-event.calendar-event-task-low {
+	background-color: var(--green-100);
 	border-left: 4px solid var(--green-500);
 }
 
 .calendar-day-event.calendar-event-task-default {
+	background-color: var(--blue-100);
 	border-left: 4px solid var(--blue-500);
 }
 
 .calendar-day-event.calendar-event-applied {
+	background-color: var(--green-100);
 	border-left: 4px solid var(--green-500);
 }
 
 .calendar-day-event.calendar-event-interview {
+	background-color: var(--orange-100);
 	border-left: 4px solid var(--orange-500);
 }
 
 .calendar-day-event.calendar-event-followup {
+	background-color: var(--purple-100);
 	border-left: 4px solid var(--purple-500);
 }
 

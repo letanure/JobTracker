@@ -5,6 +5,7 @@
   "main": "dist/script.js",
   "scripts": {
     "build": "node build.js",
+    "build:analyze": "node build.js --analyze-css --report",
     "build:dev": "node build.js --dev",
     "build:separate": "node build.js --separate",
     "watch": "node build.js --watch",
@@ -35,6 +36,7 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
+    "@fullhuman/postcss-purgecss": "^7.0.2",
     "csso-cli": "^4.0.2",
     "html-minifier-terser": "^7.2.0",
     "postcss": "^8.5.6",
