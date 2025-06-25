@@ -388,12 +388,9 @@ const openTaskEditModal = (task, job) => {
 	}
 };
 
-// Make all functions available globally
-window.enableTaskEditing = enableTaskEditing;
-window.saveTaskEdits = saveTaskEdits;
-window.cancelTaskEdits = cancelTaskEdits;
+// Make only non-conflicting functions available globally
+// Note: createTasksContent, enableTaskEditing, saveTaskEdits are handled by task-modal.js
 window.refreshTasksModal = refreshTasksModal;
-window.createTasksContent = createTasksContent;
 window.openTasksModal = openTasksModal;
 window.openAddTaskModal = openAddTaskModal;
 window.openTaskEditModal = openTaskEditModal;

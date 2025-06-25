@@ -792,3 +792,6 @@ const handleAddTask = () => {
 // Make TasksModal available globally
 window.TasksModal = TasksModal;
 window.handleAddTask = handleAddTask;
+window.enableTaskModalEditing = enableTaskModalEditing;
+window.saveTaskChanges = saveTaskChanges;
+window.createTasksContent = createTasksContent;
