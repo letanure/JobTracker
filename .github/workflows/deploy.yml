@@ -25,19 +25,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Build project (with minification)
-        run: node build.js --minify
-
-      - name: Prepare deployment files
+      - name: Prepare deployment files (use pre-built dist/)
         run: |
           mkdir -p deploy
-          cp dist/index.min.html deploy/index.html
-          echo "Deployed minified version as index.html"
+          cp dist/index.html deploy/index.html
+          echo "Deployed pre-built version from dist/index.html"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

@@ -27,8 +27,9 @@
 	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
 }
 
-/* Shared icon button utility */
+/* Icon button aliases - use unified action button system */
 .icon-btn {
+	/* Use .action-btn-base .action-btn-lg instead */
 	padding: var(--space-1);
 	min-width: 24px;
 	height: 24px;
@@ -54,8 +55,9 @@
 	color: var(--gray-700);
 }
 
-/* Ghost button variant - transparent with hover effects only */
+/* Ghost button variants - now mapped to unified system */
 .icon-btn-ghost {
+	/* Use .action-btn-base .action-btn-sm instead */
 	padding: 2px;
 	min-width: 20px;
 	height: 20px;
@@ -86,8 +88,8 @@
 	outline-offset: 1px;
 }
 
-/* Small ghost button for table actions */
 .icon-btn-ghost-sm {
+	/* Use .action-btn-base .action-btn-xs instead */
 	padding: 1px;
 	min-width: 18px;
 	height: 18px;

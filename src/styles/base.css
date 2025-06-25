@@ -403,6 +403,51 @@
 }
 
 /* ============================================================================ */
+/* UNIFIED STATUS & PRIORITY SYSTEM */
+/* ============================================================================ */
+
+/* Priority system - consistent across all components */
+.priority-high { 
+	background-color: var(--red-100); 
+	color: var(--red-700); 
+	border-color: var(--red-500);
+}
+.priority-medium { 
+	background-color: var(--orange-100); 
+	color: var(--orange-700); 
+	border-color: var(--orange-500);
+}
+.priority-low { 
+	background-color: var(--green-100); 
+	color: var(--green-700); 
+	border-color: var(--green-500);
+}
+.priority-default { 
+	background-color: var(--blue-100); 
+	color: var(--blue-700); 
+	border-color: var(--blue-500);
+}
+
+/* Status system - consistent across all components */
+.status-todo { background-color: var(--gray-100); color: var(--gray-700); border-color: var(--gray-500); }
+.status-in-progress { background-color: var(--yellow-100); color: var(--yellow-800); border-color: var(--orange-500); }
+.status-done { background-color: var(--green-100); color: var(--green-800); border-color: var(--green-500); }
+.status-applied { background-color: var(--blue-100); color: var(--blue-700); border-color: var(--blue-500); }
+.status-interview { background-color: var(--orange-100); color: var(--orange-700); border-color: var(--orange-500); }
+.status-followup { background-color: var(--purple-100); color: var(--purple-700); border-color: var(--purple-500); }
+.status-rejected { background-color: var(--red-100); color: var(--red-700); border-color: var(--red-500); }
+
+/* Combined priority-status classes for calendar events */
+.calendar-event-task-high { background-color: var(--red-100); border-left-color: var(--red-500); }
+.calendar-event-task-medium { background-color: var(--orange-100); border-left-color: var(--orange-500); }
+.calendar-event-task-low { background-color: var(--green-100); border-left-color: var(--green-500); }
+.calendar-event-task-default { background-color: var(--blue-100); border-left-color: var(--blue-500); }
+.calendar-event-applied { background-color: var(--green-100); border-left-color: var(--green-500); }
+.calendar-event-interview { background-color: var(--orange-100); border-left-color: var(--orange-500); }
+.calendar-event-followup { background-color: var(--purple-100); border-left-color: var(--purple-500); }
+.calendar-event-default { background-color: var(--gray-100); border-left-color: var(--gray-500); }
+
+/* ============================================================================ */
 /* BASE RESETS AND GLOBAL STYLES */
 /* ============================================================================ */
 
