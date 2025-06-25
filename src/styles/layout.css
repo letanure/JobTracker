@@ -276,21 +276,38 @@ body {
 	color: var(--text-light);
 }
 
-/* Responsive Design */
+/* Mobile-first responsive design */
 @media (max-width: 768px) {
+	/* Fix body height and scrolling for mobile */
 	body {
-		padding: var(--space-2);
+		padding: var(--space-1);
+		min-height: 100vh;
+		height: auto;
+		overflow-x: hidden;
+	}
+
+	.container {
+		border-radius: 0;
+		border-left: none;
+		border-right: none;
+		height: auto;
+		min-height: calc(100vh - var(--space-2));
 	}
 
 	.header {
-		padding: var(--space-4);
+		padding: var(--space-3) var(--space-4);
 		flex-direction: column;
-		gap: var(--space-3);
+		gap: var(--space-2);
 		align-items: stretch;
 	}
 
+	.header h1 {
+		font-size: 18px;
+		text-align: center;
+	}
+
 	.controls {
-		padding: var(--space-4);
+		padding: var(--space-3) var(--space-4);
 		flex-direction: column;
 		align-items: stretch;
 		gap: var(--space-2);
@@ -302,25 +319,95 @@ body {
 		padding: var(--space-3) var(--space-4);
 	}
 
+	/* Fix tab content to be scrollable */
+	.tab-content-container {
+		min-height: calc(100vh - 200px);
+		height: auto;
+		position: relative;
+	}
+
+	.tab-content {
+		position: relative;
+		height: auto;
+		min-height: auto;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.tab-content.active {
+		position: relative;
+		height: auto;
+	}
+
+	/* Fix table container height for mobile */
+	.table-container {
+		max-height: calc(100vh - 300px);
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
 	.board-placeholder {
 		margin: var(--space-4);
-		min-height: 300px;
+		min-height: 200px;
+	}
+
+	.footer {
+		margin-top: var(--space-4);
+		padding: var(--space-3) var(--space-4);
 	}
 
 	.footer-content {
 		flex-direction: column;
 		gap: 8px;
+		text-align: center;
 	}
 }
 
-/* Responsive tabs */
-@media (max-width: 600px) {
+/* Prevent tab stacking - use horizontal scroll instead */
+@media (max-width: 640px) {
 	.tab-navigation {
-		flex-direction: column;
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		padding: 0 var(--space-4);
+		gap: 0;
+		/* Ensure tabs stay in one row */
+		flex-wrap: nowrap;
+		white-space: nowrap;
+	}
+
+	.tab-navigation::-webkit-scrollbar {
+		display: none;
 	}
 
 	.tab-button {
-		width: 100%;
-		justify-content: center;
+		/* Prevent shrinking and maintain minimum width */
+		flex-shrink: 0;
+		min-width: auto;
+		white-space: nowrap;
+		padding: 8px 12px;
+		font-size: 13px;
+	}
+
+	.tab-text {
+		/* Hide text on very small screens, keep only icons */
+		display: none;
+	}
+
+	.tab-icon {
+		font-size: 18px;
+	}
+}
+
+/* Show text again on slightly larger mobile screens */
+@media (min-width: 480px) and (max-width: 640px) {
+	.tab-text {
+		display: inline;
+	}
+	
+	.tab-button {
+		padding: 8px 14px;
 	}
 }
