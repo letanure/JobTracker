@@ -260,23 +260,49 @@
 
 	.dashboard-stats-grid {
 		grid-template-columns: repeat(2, 1fr);
-		gap: 12px;
+		gap: 8px;
 	}
 
 	.dashboard-stat-card {
 		padding: 12px;
+		gap: 8px;
 	}
 
 	.stat-icon {
-		width: 36px;
-		height: 36px;
+		width: 28px;
+		height: 28px;
 	}
 
 	.stat-icon .material-symbols-outlined {
-		font-size: 18px;
+		font-size: 16px;
 	}
 
 	.stat-value {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
+	}
+
+	.stat-label {
+		font-size: 10px;
+		line-height: 1.2;
+	}
+
+	.dashboard-tasks-section {
+		padding: 16px;
+		max-width: 100%;
+		overflow: hidden;
+	}
+
+	.dashboard-task-item {
+		padding: 8px 12px;
+		gap: 8px;
+	}
+
+	.task-text {
+		font-size: var(--font-size-sm);
+	}
+
+	.task-time {
+		min-width: 50px;
+		font-size: var(--font-size-xs);
 	}
 }

@@ -822,19 +822,59 @@ tr.editing .actions-cell button {
 @media (max-width: 768px) {
 	.table-container {
 		max-height: 60vh;
+		overflow-x: auto;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		border: var(--border-width) solid var(--border-color);
+		border-radius: 6px;
 	}
+
+	table {
+		min-width: 800px;
+		table-layout: fixed;
+	}
+
+	/* Fixed column widths for mobile to prevent mixing */
+	th:nth-child(1), td:nth-child(1) { width: 140px; min-width: 140px; }
+	th:nth-child(2), td:nth-child(2) { width: 120px; min-width: 120px; }
+	th:nth-child(3), td:nth-child(3) { width: 100px; min-width: 100px; }
+	th:nth-child(4), td:nth-child(4) { width: 80px; min-width: 80px; }
+	th:nth-child(5), td:nth-child(5) { width: 90px; min-width: 90px; }
+	th:nth-child(6), td:nth-child(6) { width: 80px; min-width: 80px; }
+	th:nth-child(7), td:nth-child(7) { width: 60px; min-width: 60px; }
+	th:nth-child(8), td:nth-child(8) { width: 100px; min-width: 100px; }
 
 	th,
 	td {
-		padding: var(--space-1);
+		padding: 6px 8px;
+		font-size: 12px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	td .current-phase {
-		max-width: var(--col-10);
+		max-width: 80px;
 	}
 
 	.salary,
 	.location {
-		font-size: var(--font-size-2xs);
+		font-size: 10px;
+	}
+
+	/* Stats grid mobile fix */
+	.stats {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 8px;
+		padding: 12px 16px;
+	}
+
+	.stats .stat {
+		padding: 8px;
+		font-size: 11px;
+	}
+
+	.stat-number {
+		font-size: 16px;
 	}
 }
