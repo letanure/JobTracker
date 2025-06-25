@@ -206,9 +206,62 @@ async function minifyJavaScript(code) {
 }
 
 /**
+ * Minify CSS custom properties (variables)
+ */
+function minifyCSSVariables(css) {
+  const varMap = new Map();
+  let counter = 0;
+  
+  // Generate short variable names
+  const getShortName = () => {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let name = '';
+    let num = counter++;
+    
+    do {
+      name = chars[num % chars.length] + name;
+      num = Math.floor(num / chars.length);
+    } while (num > 0);
+    
+    return `--${name}`;
+  };
+  
+  // Find all CSS variables declarations
+  const varRegex = /--([\w-]+)/g;
+  const foundVars = new Set();
+  
+  let match;
+  while ((match = varRegex.exec(css)) !== null) {
+    foundVars.add(match[0]);
+  }
+  
+  // Create mapping for variables (skip very short ones)
+  Array.from(foundVars)
+    .filter(varName => varName.length > 5) // Only minify vars longer than 5 chars
+    .sort((a, b) => b.length - a.length) // Sort by length to replace longer ones first
+    .forEach(varName => {
+      varMap.set(varName, getShortName());
+    });
+  
+  // Replace all occurrences
+  let minifiedCSS = css;
+  varMap.forEach((shortName, longName) => {
+    // CSS variables don't use word boundaries, so we need to be more careful
+    // Match the variable in property declarations and var() functions
+    const escapedName = longName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(^|[^\\w-])${escapedName}(?=[^\\w-]|$)`, 'g');
+    minifiedCSS = minifiedCSS.replace(regex, (match, prefix) => prefix + shortName);
+  });
+  
+  console.log(`   📐 CSS variables: ${varMap.size} minified`);
+  
+  return minifiedCSS;
+}
+
+/**
  * Advanced CSS minification using CSSO
  */
-function minifyCSS(css) {
+function minifyCSS(css, minifyVars = true) {
   if (!csso) {
     // Fallback to basic minification
     return css
@@ -221,13 +274,21 @@ function minifyCSS(css) {
   }
 
   try {
+    // First use CSSO for general minification
     const result = csso.minify(css, {
       restructure: true,
       forceMediaMerge: true,
       comments: false
     });
+    
+    let minifiedCSS = result.css;
+    
+    // Then minify CSS variables if requested
+    if (minifyVars) {
+      minifiedCSS = minifyCSSVariables(minifiedCSS);
+    }
 
-    return result.css;
+    return minifiedCSS;
   } catch (error) {
     console.error('⚠️  CSS minification error:', error.message);
     return css; // Return original CSS if minification fails

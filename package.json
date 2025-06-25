@@ -37,6 +37,10 @@
     "@biomejs/biome": "^1.8.3",
     "csso-cli": "^4.0.2",
     "html-minifier-terser": "^7.2.0",
+    "postcss": "^8.5.6",
+    "postcss-minify-params": "^7.0.3",
+    "postcss-minify-selectors": "^7.0.5",
+    "postcss-reduce-idents": "^7.0.1",
     "terser": "^5.43.1"
   },
   "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b"
