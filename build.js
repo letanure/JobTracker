@@ -167,25 +167,16 @@ function copyFile(srcPath, destPath) {
 }
 
 /**
- * Basic JavaScript minification that safely preserves template literals and strings
+ * Advanced JavaScript minification using Terser (async)
  */
-function minifyJavaScriptBasic(code) {
-  // Disable all minification for now - the regex patterns were corrupting strings
-  return code;
-}
-
-/**
- * Advanced JavaScript minification using Terser
- */
-function minifyJavaScript(code) {
+async function minifyJavaScript(code) {
   if (!terser) {
-    // Fallback to basic minification (now disabled for safety)
-    return minifyJavaScriptBasic(code);
+    console.log('⚠️  Terser not available, returning unminified code');
+    return code;
   }
 
   try {
-    // Check if terser.minify returns a Promise
-    const result = terser.minify(code, {
+    const result = await terser.minify(code, {
       compress: {
         dead_code: true,
         drop_console: false, // Keep console.log for debugging
@@ -201,12 +192,6 @@ function minifyJavaScript(code) {
         comments: false
       }
     });
-    
-    // If result is a Promise, fall back to basic minification
-    if (result && typeof result.then === 'function') {
-      console.log('⚠️  Terser returned a Promise, using basic minification instead');
-      return minifyJavaScriptBasic(code);
-    }
 
     if (result.error) {
       console.error('⚠️  Terser minification failed:', result.error.message);
@@ -250,32 +235,38 @@ function minifyCSS(css) {
 }
 
 /**
- * Advanced HTML minification using html-minifier-terser
+ * Advanced HTML minification using html-minifier-terser (async)
  */
-function minifyHTML(html) {
+async function minifyHTML(html) {
   if (!htmlMinifier) {
-    // Fallback to simple minification
-    return simpleMinifyHTML(html);
+    console.log('⚠️  html-minifier-terser not available, returning unminified HTML');
+    return html;
   }
 
   try {
-    // Use simpler options to avoid async issues
-    return htmlMinifier.minify(html, {
+    const minified = await htmlMinifier.minify(html, {
       collapseWhitespace: true,
       removeComments: true,
       removeRedundantAttributes: true,
       removeScriptTypeAttributes: true,
       removeStyleLinkTypeAttributes: true,
-      minifyCSS: false, // Disable CSS minification in HTML to avoid async
-      minifyJS: false,  // Disable JS minification in HTML to avoid async
+      minifyCSS: true,  // Enable CSS minification
+      minifyJS: true,   // Enable JS minification
       useShortDoctype: true,
       removeEmptyAttributes: true,
       caseSensitive: true,
-      keepClosingSlash: true
+      keepClosingSlash: true,
+      conservativeCollapse: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      sortAttributes: true,
+      sortClassName: true
     });
+    
+    return minified;
   } catch (error) {
     console.error('⚠️  HTML minification error:', error.message);
-    return simpleMinifyHTML(html); // Fallback to simple minification
+    return html; // Return original HTML if minification fails
   }
 }
 
@@ -469,10 +460,91 @@ function analyzeCompression(content) {
 }
 
 /**
- * Build minified version for deployment
+ * Build minified single file (now the default build output)
+ */
+async function buildMinifiedSingle() {
+  console.log('🗜️  Building optimized single file...\n');
+  
+  // Build JavaScript and CSS
+  const jsResult = buildJavaScript();
+  const cssResult = buildCSS();
+  
+  // Read HTML template
+  if (!fileExists(BUILD_CONFIG.htmlTemplate)) {
+    console.error(`❌ HTML template not found: ${BUILD_CONFIG.htmlTemplate}`);
+    return false;
+  }
+  
+  let htmlContent = readFile(BUILD_CONFIG.htmlTemplate);
+  if (htmlContent === null) {
+    return false;
+  }
+  
+  // Replace SEO placeholders with English content (default)
+  htmlContent = replaceSEOPlaceholders(htmlContent, 'en');
+  
+  // Remove external CSS links and script tags
+  htmlContent = htmlContent.replace(/<link rel="stylesheet" href="[^"]*">/g, '');
+  htmlContent = htmlContent.replace(/<script src="[^"]*"><\/script>/g, '');
+  
+  // Add minimal build metadata
+  const buildTimestamp = new Date().toISOString();
+  const cacheVersion = Date.now();
+  const buildComment = `<!-- 
+============================================================================
+JobTracker - Single File Build
+Generated: ${buildTimestamp}
+Cache Version: ${cacheVersion}
+============================================================================
+-->`;
+  
+  // Insert minified CSS (advanced minification)
+  console.log('🎨 Minifying CSS...');
+  const minifiedCSS = minifyCSS(cssResult.content);
+  console.log(`   📐 CSS: ${(cssResult.content.length / 1024).toFixed(2)} KB → ${(minifiedCSS.length / 1024).toFixed(2)} KB`);
+  const cssBlock = `<style>${minifiedCSS}</style>`;
+  htmlContent = htmlContent.replace('</head>', `${cssBlock}</head>`);
+  
+  // Insert minified JavaScript (advanced minification)
+  console.log('📦 Minifying JavaScript...');
+  const minifiedJS = await minifyJavaScript(jsResult.content);
+  console.log(`   📐 JS: ${(jsResult.content.length / 1024).toFixed(2)} KB → ${(minifiedJS.length / 1024).toFixed(2)} KB`);
+  const jsBlock = `<script>${minifiedJS}</script>`;
+  htmlContent = htmlContent.replace('</body>', `${jsBlock}</body>`);
+  
+  // Add build comment and minify HTML
+  htmlContent = buildComment + htmlContent;
+  console.log('🗜️  Minifying HTML...');
+  
+  // Use advanced HTML minification with packages
+  htmlContent = await minifyHTML(htmlContent);
+  
+  const output = BUILD_CONFIG.singleFileOutput; // This is 'dist/index.html'
+  
+  if (writeFile(output, htmlContent)) {
+    console.log(`🎉 Minified build complete!`);
+    console.log(`📦 Output: ${output}`);
+    
+    // Show file size
+    const stats = fs.statSync(output);
+    const sizeKB = (stats.size / 1024).toFixed(2);
+    console.log(`📏 Size: ${sizeKB} KB`);
+
+    // Create compressed versions for reference (but don't clutter the main directory)
+    console.log('\n📊 Compression Analysis:');
+    analyzeCompression(htmlContent);
+    
+    return true;
+  }
+  
+  return false;
+}
+
+/**
+ * Build minified version for deployment (extra minified version)
  */
 function buildMinified() {
-  console.log('🗜️  Building optimized version...\n');
+  console.log('🗜️  Building extra optimized version...\n');
   
   // Build JavaScript and CSS
   const jsResult = buildJavaScript();
@@ -526,7 +598,7 @@ Cache Version: ${cacheVersion}
   const minifiedOutput = 'dist/index.min.html';
   
   if (writeFile(minifiedOutput, htmlContent)) {
-    console.log(`🎉 Build complete!`);
+    console.log(`🎉 Extra minified build complete!`);
     console.log(`📦 Output: ${minifiedOutput}`);
     
     // Show file size
@@ -745,7 +817,7 @@ ${jsResult.content}    </script>`;
 /**
  * Main build function - builds minified single HTML file by default
  */
-function build(separateFiles = false) {
+async function build(separateFiles = false, unminified = false) {
   console.log('🏗️  Building JobTracker...\n');
   
   // Ensure dist directory exists
@@ -757,8 +829,10 @@ function build(separateFiles = false) {
   
   if (separateFiles) {
     return buildSeparateFiles();
+  } else if (unminified) {
+    return buildSingleFile(); // Build unminified single file version for development
   } else {
-    return buildSingleFile(); // Build regular single file version
+    return await buildMinifiedSingle(); // Build minified single file version by default
   }
 }
 
@@ -862,7 +936,7 @@ function buildSeparateFiles() {
 /**
  * Watch mode (simple file watching)
  */
-function watch(separateFiles = false) {
+async function watch(separateFiles = false, unminified = false) {
   console.log('👀 Watching for changes...\n');
   
   const watchedJSFiles = BUILD_CONFIG.files.filter(file => fileExists(file));
@@ -872,18 +946,18 @@ function watch(separateFiles = false) {
   const allWatchedFiles = [...watchedJSFiles, ...watchedCSSFiles, ...watchedHTMLFiles];
   
   // Initial build
-  build(separateFiles);
+  await build(separateFiles, unminified);
   
   // Watch all files for changes
   allWatchedFiles.forEach(file => {
-    fs.watchFile(file, { interval: 1000 }, () => {
+    fs.watchFile(file, { interval: 1000 }, async () => {
       console.log(`\n📝 ${file} changed - rebuilding...`);
-      build(separateFiles);
+      await build(separateFiles, unminified);
     });
   });
   
   console.log(`\nWatching ${allWatchedFiles.length} files. Press Ctrl+C to stop.`);
-  console.log(`Mode: ${separateFiles ? 'Separate files' : 'Single HTML file'}`);
+  console.log(`Mode: ${separateFiles ? 'Separate files' : unminified ? 'Single HTML file (unminified)' : 'Single HTML file (minified)'}`);
 }
 
 // CLI handling
@@ -892,31 +966,40 @@ const args = process.argv.slice(2);
 const separateFiles = args.includes('--separate') || args.includes('-s');
 const watchMode = args.includes('--watch') || args.includes('-w');
 const minified = args.includes('--minify') || args.includes('-m');
+const unminified = args.includes('--dev') || args.includes('-d');
 const showHelp = args.includes('--help') || args.includes('-h');
 
-if (showHelp) {
-  console.log(`
+// Main async function to handle CLI
+(async () => {
+  if (showHelp) {
+    console.log(`
 JobTracker Build Script
 
 Usage:
-  node build.js                    Build single HTML file (default)
+  node build.js                    Build minified single HTML file (default for production)
+  node build.js --dev              Build unminified single HTML file (for development)
   node build.js --separate         Build separate HTML, CSS, and JS files
-  node build.js --minify           Build regular + minified version
-  node build.js --watch            Build and watch for changes (single file mode)
+  node build.js --minify           Build regular + extra minified version
+  node build.js --watch            Build and watch for changes (minified mode)
+  node build.js --watch --dev      Build and watch for changes (unminified mode)
   node build.js --watch --separate Build and watch for changes (separate files mode)
   node build.js --help             Show this help
 
 Outputs:
-  Single file:    ${BUILD_CONFIG.singleFileOutput}
-  Minified file:  dist/index.min.html
+  Minified file:  ${BUILD_CONFIG.singleFileOutput} (default)
+  Extra minified: dist/index.min.html
   Separate files: ${BUILD_CONFIG.outputFile} + HTML/CSS files
 `);
-} else if (watchMode) {
-  watch(separateFiles);
-} else if (minified) {
-  // Build both regular and minified versions
-  build(separateFiles);
-  buildMinified();
-} else {
-  build(separateFiles);
-}
+  } else if (watchMode) {
+    await watch(separateFiles, unminified);
+  } else if (minified) {
+    // Build both regular and extra minified versions
+    await build(separateFiles, unminified);
+    await buildMinified();
+  } else {
+    await build(separateFiles, unminified);
+  }
+})().catch(error => {
+  console.error('❌ Build failed:', error.message);
+  process.exit(1);
+});
