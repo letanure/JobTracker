@@ -233,7 +233,6 @@ const PT_TRANSLATIONS = {
 			addInterest: "Adicionar Interesse"
 		},
 		actions: {
-			save: "Salvar Currículo",
 			export: "Exportar JSON",
 			import: "Importar JSON",
 			clear: "Limpar Tudo",

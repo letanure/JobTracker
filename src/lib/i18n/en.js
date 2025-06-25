@@ -232,7 +232,6 @@ const EN_TRANSLATIONS = {
 			addInterest: "Add Interest"
 		},
 		actions: {
-			save: "Save Resume",
 			export: "Export JSON",
 			import: "Import JSON",
 			clear: "Clear All",

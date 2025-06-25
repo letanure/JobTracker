@@ -277,13 +277,7 @@ const ResumeBuilder = {
 		const container = h('div.resume-container',
 			// Header
 			h('div.tab-header',
-				h('h2.tab-title', I18n.t("headers.resume")),
-				h('div.resume-stats',
-					h('button.btn-primary', {
-						type: 'button',
-						onclick: () => ResumeBuilder.save()
-					}, I18n.t("resume.actions.save"))
-				)
+				h('h2.tab-title', I18n.t("headers.resume"))
 			),
 
 			// Two-column layout: form + JSON preview
@@ -317,7 +311,7 @@ const ResumeBuilder = {
 		return container;
 	},
 
-	// Update resume preview
+	// Update resume preview and auto-save
 	updatePreview: () => {
 		const preview = document.getElementById('resume-html-preview');
 		if (preview) {
@@ -325,6 +319,9 @@ const ResumeBuilder = {
 			preview.appendChild(ResumeBuilder.generateResumeHTML());
 		}
 		ResumeBuilder.updateCompletionCounters();
+		
+		// Auto-save on every change
+		ResumeBuilder.save();
 	},
 
 	// Generate HTML resume
