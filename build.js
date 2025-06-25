@@ -10,13 +10,13 @@ const path = require('path');
 const zlib = require('zlib');
 
 // Import minification tools
-let terser, htmlMinifier, csso;
+let esbuild, htmlMinifier, csso;
 try {
-  terser = require('terser');
+  esbuild = require('esbuild');
   htmlMinifier = require('html-minifier-terser');
   csso = require('csso');
 } catch (error) {
-  console.log('⚠️  Minification packages not installed. Run: npm install --save-dev terser html-minifier-terser csso-cli');
+  console.log('⚠️  Minification packages not installed. Run: npm install --save-dev esbuild html-minifier-terser csso-cli');
 }
 
 // Build configuration
@@ -167,40 +167,34 @@ function copyFile(srcPath, destPath) {
 }
 
 /**
- * Advanced JavaScript minification using Terser (async)
+ * Advanced JavaScript minification using ESBuild
  */
 async function minifyJavaScript(code) {
-  if (!terser) {
-    console.log('⚠️  Terser not available, returning unminified code');
+  if (!esbuild) {
+    console.log('⚠️  ESBuild not available, returning unminified code');
     return code;
   }
 
   try {
-    const result = await terser.minify(code, {
-      compress: {
-        dead_code: true,
-        drop_console: false, // Keep console.log for debugging
-        drop_debugger: true,
-        keep_fnames: false,
-        passes: 2
-      },
-      mangle: {
-        toplevel: false,
-        keep_fnames: false
-      },
-      format: {
-        comments: false
-      }
+    const result = await esbuild.transform(code, {
+      minify: true,
+      target: 'es2018', // Good browser support
+      format: 'iife', // Immediately Invoked Function Expression
+      keepNames: false, // Allow name mangling
+      treeShaking: true,
+      // More aggressive minification options
+      minifyWhitespace: true,
+      minifyIdentifiers: true,
+      minifySyntax: true,
+      // Drop console in production
+      drop: ['console', 'debugger'], // Remove console.log and debugger statements
+      // Legal comments (keep license comments)
+      legalComments: 'none'
     });
 
-    if (result.error) {
-      console.error('⚠️  Terser minification failed:', result.error.message);
-      return code; // Return original code if minification fails
-    }
-
-    return result.code || code;
+    return result.code;
   } catch (error) {
-    console.error('⚠️  JavaScript minification error:', error.message);
+    console.error('⚠️  ESBuild minification error:', error.message);
     return code; // Return original code if minification fails
   }
 }
