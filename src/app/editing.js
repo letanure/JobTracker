@@ -51,21 +51,3 @@ function addRow() {
 	}
 }
 
-// Legacy functions - kept for compatibility but not used with modal interface
-function updateSubstepOptions(phaseSelect, jobId) {
-	// This function is no longer needed with the modal interface
-	// Kept for backward compatibility
-	console.warn("updateSubstepOptions is deprecated with modal interface");
-}
-
-function saveInlineEdit(jobId) {
-	// This function is no longer needed with the modal interface
-	// Kept for backward compatibility
-	console.warn("saveInlineEdit is deprecated with modal interface");
-}
-
-function cancelInlineEdit(jobId) {
-	// This function is no longer needed with the modal interface
-	// Kept for backward compatibility
-	console.warn("cancelInlineEdit is deprecated with modal interface");
-}
