@@ -575,50 +575,10 @@
 }
 
 /* ============================================================================ */
-/* CALENDAR EVENT COLOR CLASSES */
+/* CALENDAR EVENT COLOR CLASSES - Now using unified system from base.css */
 /* ============================================================================ */
 
-/* Task Priority Colors */
-.calendar-event-task-high {
-	background-color: var(--red-100);
-	border-left-color: var(--red-500);
-}
-
-.calendar-event-task-medium {
-	background-color: var(--orange-100);
-	border-left-color: var(--orange-500);
-}
-
-.calendar-event-task-low {
-	background-color: var(--green-100);
-	border-left-color: var(--green-500);
-}
-
-.calendar-event-task-default {
-	background-color: var(--blue-100);
-	border-left-color: var(--blue-500);
-}
-
-/* Event Type Colors */
-.calendar-event-applied {
-	background-color: var(--green-100);
-	border-left-color: var(--green-500);
-}
-
-.calendar-event-interview {
-	background-color: var(--orange-100);
-	border-left-color: var(--orange-500);
-}
-
-.calendar-event-followup {
-	background-color: var(--purple-100);
-	border-left-color: var(--purple-500);
-}
-
-.calendar-event-default {
-	background-color: var(--gray-100);
-	border-left-color: var(--gray-500);
-}
+/* Base calendar event classes - extends unified color system */
 
 /* Day event mini cards */
 .calendar-day-event-mini.calendar-event-task-high {
