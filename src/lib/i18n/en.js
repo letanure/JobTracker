@@ -4,14 +4,18 @@
 
 const EN_TRANSLATIONS = {
 	app: {
-		title: "JobTracker"},
+		title: "JobTracker",
+	},
 	buttons: {
-		addApplication: "+ Add Application"},
+		addApplication: "+ Add Application",
+	},
 	common: {
 		viewJob: "View Job",
-		chooseJob: "Choose a job..."},
+		chooseJob: "Choose a job...",
+	},
 	actions: {
-		archive: "Archive job"},
+		archive: "Archive job",
+	},
 	tabs: {
 		dashboard: "Dashboard",
 		jobs: "Jobs",
@@ -20,7 +24,8 @@ const EN_TRANSLATIONS = {
 		calendar: "Calendar",
 		contacts: "Contacts",
 		resume: "Resume",
-		profile: "Profile"},
+		profile: "Profile",
+	},
 	headers: {
 		dashboard: "Dashboard",
 		jobs: "Job Applications",
@@ -28,14 +33,16 @@ const EN_TRANSLATIONS = {
 		tasks: "Tasks Board",
 		calendar: "Calendar View",
 		contacts: "All Contacts",
-		resume: "Resume Builder"},
+		resume: "Resume Builder",
+	},
 	kanban: {
 		title: "Applications Board",
 		totalJobs: "{count} total applications",
 		editJob: "Edit Job",
 		addJob: "Add Job",
 		workflowConfig: "Workflow Configuration",
-		workflowDescription: "Select and configure the steps for each phase of this job:"},
+		workflowDescription: "Select and configure the steps for each phase of this job:",
+	},
 	table: {
 		headers: {
 			priority: "Priority",
@@ -49,27 +56,33 @@ const EN_TRANSLATIONS = {
 			contacts: "Contacts",
 			notes: "Notes",
 			tasks: "Tasks",
-			actions: "Actions"},
+			actions: "Actions",
+		},
 		filters: {
 			allPriorities: "All Priorities",
-			allPhases: "All Phases"},
+			allPhases: "All Phases",
+		},
 		placeholders: {
 			company: "Company Name",
 			position: "Position Title",
 
 			salaryRange: "Salary Range",
 			location: "Location",
-			sourceUrl: "Job Posting URL"}},
+			sourceUrl: "Job Posting URL",
+		},
+	},
 	priorities: {
 		high: "High",
 		medium: "Medium",
-		low: "Low"},
+		low: "Low",
+	},
 	phases: {
 		wishlist: "Wishlist",
 		applied: "Applied",
 		interview: "Interview",
 		offer: "Offer",
-		rejected_withdrawn: "Rejected / Withdrawn"},
+		rejected_withdrawn: "Rejected / Withdrawn",
+	},
 	substeps: {
 		none: "No substep",
 		wishlist: "Wishlist",
@@ -100,20 +113,23 @@ const EN_TRANSLATIONS = {
 		offer_discussion: "Offer Discussion",
 		salary_negotiation: "Salary Negotiation",
 		rejected: "Rejected",
-		withdrawn: "Withdrawn"},
+		withdrawn: "Withdrawn",
+	},
 	stats: {
 		totalApplications: "Total Applications",
 		active: "Active",
 		interviews: "Interviews",
 		offers: "Offers",
-		rejections: "Rejections"},
+		rejections: "Rejections",
+	},
 	messages: {
 		welcome:
 			"Welcome to JobTracker!\n\nWould you like to see 2 example job applications to understand how the tracker works?",
 		welcomeConfirm: "Yes, add examples",
 		welcomeCancel: "No, leave empty",
 		confirmDelete: "Are you sure you want to delete the application for {position} at {company}?",
-		confirmArchive: "Are you sure you want to archive the application for {position} at {company}?"},
+		confirmArchive: "Are you sure you want to archive the application for {position} at {company}?",
+	},
 	resume: {
 		basics: {
 			title: "Basic Information",
@@ -125,7 +141,7 @@ const EN_TRANSLATIONS = {
 			city: "City",
 			country: "Country",
 			personalStatement: "Personal Statement",
-			locationTitle: "Location"
+			locationTitle: "Location",
 		},
 		profiles: {
 			title: "Online Profiles",
@@ -137,8 +153,8 @@ const EN_TRANSLATIONS = {
 				github: "GitHub",
 				twitter: "Twitter",
 				website: "Website",
-				other: "Other"
-			}
+				other: "Other",
+			},
 		},
 		languages: {
 			title: "Languages",
@@ -149,14 +165,14 @@ const EN_TRANSLATIONS = {
 				native: "Native",
 				fluent: "Fluent",
 				intermediate: "Intermediate",
-				beginner: "Beginner"
-			}
+				beginner: "Beginner",
+			},
 		},
 		skills: {
 			title: "Skills",
 			name: "Skill Category",
 			keywords: "Skills",
-			addSkill: "Add Skill Category"
+			addSkill: "Add Skill Category",
 		},
 		experience: {
 			title: "Work Experience",
@@ -168,7 +184,7 @@ const EN_TRANSLATIONS = {
 			current: "Current Position",
 			summary: "Summary",
 			highlights: "Key Achievements (one per line)",
-			addExperience: "Add Experience"
+			addExperience: "Add Experience",
 		},
 		projects: {
 			title: "Projects",
@@ -176,7 +192,7 @@ const EN_TRANSLATIONS = {
 			description: "Description",
 			url: "Project URL",
 			tags: "Technologies",
-			addProject: "Add Project"
+			addProject: "Add Project",
 		},
 		portfolio: {
 			title: "Portfolio",
@@ -189,8 +205,8 @@ const EN_TRANSLATIONS = {
 				artwork: "Artwork",
 				website: "Website",
 				app: "Application",
-				other: "Other"
-			}
+				other: "Other",
+			},
 		},
 		education: {
 			title: "Education",
@@ -199,7 +215,7 @@ const EN_TRANSLATIONS = {
 			studyType: "Degree/Certificate Type",
 			startDate: "Start Date",
 			endDate: "End Date",
-			addEducation: "Add Education"
+			addEducation: "Add Education",
 		},
 		certifications: {
 			title: "Certifications",
@@ -207,7 +223,7 @@ const EN_TRANSLATIONS = {
 			name: "Certificate Name",
 			issuer: "Organization",
 			date: "Issue Date",
-			addCertification: "Add Certification"
+			addCertification: "Add Certification",
 		},
 		awards: {
 			title: "Awards",
@@ -215,7 +231,7 @@ const EN_TRANSLATIONS = {
 			title_field: "Award Title",
 			issuer: "Awarding Body",
 			date: "Award Date",
-			addAward: "Add Award"
+			addAward: "Add Award",
 		},
 		volunteer: {
 			title: "Volunteer Experience",
@@ -223,38 +239,40 @@ const EN_TRANSLATIONS = {
 			role: "Role",
 			startDate: "Start Date",
 			endDate: "End Date",
-			addVolunteer: "Add Volunteer Experience"
+			addVolunteer: "Add Volunteer Experience",
 		},
 		interests: {
 			title: "Interests",
 			type: "Category",
 			value: "Description",
-			addInterest: "Add Interest"
+			addInterest: "Add Interest",
 		},
 		actions: {
 			export: "Export JSON",
 			import: "Import JSON",
 			clear: "Clear All",
 			add: "Add",
-			remove: "Remove"
-		}
+			remove: "Remove",
+		},
 	},
 	demo: {
 		notes1: "Great culture fit. Need to research their microservices architecture.",
-		notes2: "Early stage startup. High growth potential but risky."},
+		notes2: "Early stage startup. High growth potential but risky.",
+	},
 	seo: {
 		title: "JobTracker - Free Local Job Tracker | No Login, No Tracking, Your Data Stays Private",
 		description:
 			"100% free job application tracker that works locally in your browser. No login required, no data tracking, no servers. Your job search data stays completely private on your device.",
 		keywords:
 			"free job tracker, local job application tracker, private job search, no login job tracker, offline job tracker, privacy-first job applications, no tracking career management, local storage job search",
-		author: "JobTracker Team",
+		author: "Luiz Tanure",
 		ogTitle: "JobTracker - Free Local Job Tracker (No Login Required)",
 		ogDescription:
 			"Track job applications privately in your browser. 100% free, no login, no tracking, your data never leaves your device.",
 		twitterTitle: "JobTracker - Private Job Application Tracker",
 		twitterDescription:
-			"Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device."},
+			"Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device.",
+	},
 	modals: {
 		notes: {
 			title: "Notes for {position} at {company}",
@@ -266,7 +284,8 @@ const EN_TRANSLATIONS = {
 			editTitle: "Edit note",
 			archiveTitle: "Archive note",
 			unarchiveTitle: "Unarchive note",
-			addButton: "Add Note"},
+			addButton: "Add Note",
+		},
 		tasks: {
 			title: "Tasks for {position} at {company}",
 			activeSection: "Active Tasks",
@@ -286,7 +305,8 @@ const EN_TRANSLATIONS = {
 			taskPlaceholder: "Enter task description...",
 			validation: {
 				jobRequired: "Please select a job",
-				taskRequired: "Please enter a task description"},
+				taskRequired: "Please enter a task description",
+			},
 			daysOverdue: "{days} days overdue",
 			dueToday: "Due today",
 			dueTomorrow: "Due tomorrow",
@@ -300,7 +320,8 @@ const EN_TRANSLATIONS = {
 			statusDone: "Done",
 			priorityLow: "Low",
 			priorityMedium: "Medium",
-			priorityHigh: "High"},
+			priorityHigh: "High",
+		},
 		contacts: {
 			title: "Contacts for {position} at {company}",
 			activeSection: "Active Contacts",
@@ -319,7 +340,9 @@ const EN_TRANSLATIONS = {
 			defaultContact: "Contact",
 			validation: {
 				nameRequired: "Name is required",
-				emailRequired: "Email is required"}},
+				emailRequired: "Email is required",
+			},
+		},
 		common: {
 			save: "Save",
 			cancel: "Cancel",
@@ -327,20 +350,25 @@ const EN_TRANSLATIONS = {
 			delete: "Delete",
 			ok: "OK",
 			yes: "Yes",
-			no: "No"},
+			no: "No",
+		},
 		dialogs: {
 			alert: "Alert",
 			confirm: "Confirm",
-			prompt: "Input Required"}},
+			prompt: "Input Required",
+		},
+	},
 	forms: {
 		saveChangesTitle: "Save changes",
 		cancelEditingTitle: "Cancel editing",
 		noDueDate: "No due date",
-		placeholderNameEmail: "Name\nEmail"},
+		placeholderNameEmail: "Name\nEmail",
+	},
 	footer: {
 		madeWith: "Made with",
 		by: "by",
-		foundBug: "Found a bug?"},
+		foundBug: "Found a bug?",
+	},
 	calendar: {
 		title: "Calendar View",
 		today: "Today",
@@ -370,10 +398,12 @@ const EN_TRANSLATIONS = {
 			"December",
 		],
 		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]},
+		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+	},
 	validation: {
 		companyPositionRequired: "Company and position are required",
-		currentStepRequired: "Current step is required"},
+		currentStepRequired: "Current step is required",
+	},
 	contactsView: {
 		title: "All Contacts",
 		totalContacts: "{count} total contacts",
@@ -397,7 +427,9 @@ const EN_TRANSLATIONS = {
 		deleteConfirmation: "Are you sure you want to delete {name}?",
 		validation: {
 			nameRequired: "Name is required",
-			jobRequired: "Please select a job"}},
+			jobRequired: "Please select a job",
+		},
+	},
 	dashboard: {
 		stats: {
 			title: "Overview",
@@ -408,13 +440,19 @@ const EN_TRANSLATIONS = {
 			activeApplications: "Active Applications",
 			interviews: "Interviews",
 			offers: "Offers",
-			thisWeek: "This Week"},
+			thisWeek: "This Week",
+		},
 		todayTasks: {
 			title: "Today's Tasks",
-			noTasks: "No tasks scheduled for today"},
+			noTasks: "No tasks scheduled for today",
+		},
 		tomorrowTasks: {
 			title: "Tomorrow's Tasks",
-			noTasks: "No tasks scheduled for tomorrow"},
+			noTasks: "No tasks scheduled for tomorrow",
+		},
 		recentActivity: {
 			title: "Recent Activity",
-			noActivity: "No recent activity"}}};
+			noActivity: "No recent activity",
+		},
+	},
+};

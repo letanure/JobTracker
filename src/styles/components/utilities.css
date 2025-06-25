@@ -135,7 +135,7 @@
 	box-shadow: var(--shadow-md);
 }
 
-/* Unified priority indicators */
+/* Priority dot - use unified system from base.css */
 .priority-dot {
 	width: var(--priority-dot-size);
 	height: var(--priority-dot-size);
@@ -143,17 +143,10 @@
 	flex-shrink: 0;
 }
 
-.priority-dot.high {
-	background-color: var(--priority-high);
-}
-
-.priority-dot.medium {
-	background-color: var(--priority-medium);
-}
-
-.priority-dot.low {
-	background-color: var(--priority-low);
-}
+/* Legacy aliases - use .priority-high .priority-medium .priority-low instead */
+.priority-dot.high { background-color: var(--priority-high); }
+.priority-dot.medium { background-color: var(--priority-medium); }
+.priority-dot.low { background-color: var(--priority-low); }
 
 /* Common form field styling */
 .form-field {
@@ -333,7 +326,7 @@
 	transform: scale(1.02);
 }
 
-/* Status indicator utilities */
+/* Status indicator base - use unified system from base.css */
 .status-indicator {
 	padding: var(--space-1) var(--space-2);
 	border-radius: var(--radius-full);
@@ -343,20 +336,7 @@
 	letter-spacing: 0.5px;
 }
 
-.status-todo {
-	background: var(--gray-100);
-	color: var(--gray-700);
-}
-
-.status-in-progress {
-	background: var(--yellow-100);
-	color: var(--yellow-800);
-}
-
-.status-done {
-	background: var(--green-100);
-	color: var(--green-800);
-}
+/* Legacy aliases - use .status-todo .status-in-progress .status-done instead from base.css */
 
 /* Common button size variants */
 .btn-xs {

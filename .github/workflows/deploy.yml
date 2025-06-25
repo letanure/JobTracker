@@ -29,7 +29,8 @@ jobs:
         run: |
           mkdir -p deploy
           cp dist/index.html deploy/index.html
-          echo "Deployed pre-built version from dist/index.html"
+          cp dist/jobtracker-share.png deploy/jobtracker-share.png
+          echo "Deployed pre-built version from dist/ with share image"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
