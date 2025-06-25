@@ -505,8 +505,13 @@ const KanbanBoard = {
 	createCurrentStepSelector: (job) => {
 		const select = h("select.current-step-selector", {
 			name: "currentStep",
+			required: true,
 			onchange: (e) => KanbanBoard.handleCurrentStepChange(e, job),
 		});
+
+		// Track if we have any options to determine default selection
+		let hasOptions = false;
+		let firstOptionValue = null;
 
 		// Add option groups for each phase
 		PHASES.forEach((phase) => {
@@ -519,10 +524,18 @@ const KanbanBoard = {
 
 				// Add substep options only (no phase-level option)
 				selectedSubsteps.forEach((substep) => {
+					const optionValue = `${phase}:${substep}`;
+					
+					// Track first available option for default selection
+					if (!hasOptions) {
+						firstOptionValue = optionValue;
+						hasOptions = true;
+					}
+
 					const substepOption = h(
 						"option",
 						{
-							value: `${phase}:${substep}`,
+							value: optionValue,
 							selected: job.currentPhase === phase && job.currentSubstep === substep,
 						},
 						getSubstepText(substep)
@@ -533,6 +546,22 @@ const KanbanBoard = {
 				select.appendChild(optgroup);
 			}
 		});
+
+		// If no current step is set but we have options, set the first one as default
+		if (hasOptions && (!job.currentPhase || !job.currentSubstep)) {
+			if (firstOptionValue) {
+				const [defaultPhase, defaultSubstep] = firstOptionValue.split(":");
+				job.currentPhase = defaultPhase;
+				job.currentSubstep = defaultSubstep;
+				
+				// Set the select value to the first option
+				setTimeout(() => {
+					if (select.value !== firstOptionValue) {
+						select.value = firstOptionValue;
+					}
+				}, 0);
+			}
+		}
 
 		return select;
 	},
@@ -948,6 +977,14 @@ const KanbanBoard = {
 				return;
 			}
 
+			// Validate current step is selected
+			if (!updatedJob.currentPhase || !updatedJob.currentSubstep) {
+				await alert(
+					I18n.t("validation.currentStepRequired") || "Current step is required"
+				);
+				return;
+			}
+
 			// Update job in data
 			const jobIndex = jobsData.findIndex((j) => j.id === job.id);
 			if (jobIndex !== -1) {
@@ -1094,7 +1131,7 @@ const KanbanBoard = {
 							"div.form-row",
 							h(
 								"div.form-field full-width",
-								h("label", "Current Step"),
+								h("label", h("span", "Current Step"), h("span.required-asterisk", " *")),
 								KanbanBoard.createCurrentStepSelector(job)
 							)
 						),

@@ -43,6 +43,12 @@ textarea::placeholder {
 	color: var(--text-lighter);
 }
 
+/* Required field styling */
+.required-asterisk {
+	color: var(--red-500);
+	font-weight: 600;
+}
+
 .filter-select {
 	padding: var(--padding-xs);
 	border: var(--border-width) solid var(--border-color);

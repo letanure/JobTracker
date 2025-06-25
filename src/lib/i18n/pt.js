@@ -373,7 +373,8 @@ const PT_TRANSLATIONS = {
 		weekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
 		weekdaysFull: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]},
 	validation: {
-		companyPositionRequired: "Empresa e posição são obrigatórias"},
+		companyPositionRequired: "Empresa e posição são obrigatórias",
+		currentStepRequired: "Etapa atual é obrigatória"},
 	contactsView: {
 		title: "Todos os Contatos",
 		totalContacts: "{count} contatos no total",

@@ -372,7 +372,8 @@ const EN_TRANSLATIONS = {
 		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 		weekdaysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]},
 	validation: {
-		companyPositionRequired: "Company and position are required"},
+		companyPositionRequired: "Company and position are required",
+		currentStepRequired: "Current step is required"},
 	contactsView: {
 		title: "All Contacts",
 		totalContacts: "{count} total contacts",
