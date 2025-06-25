@@ -41,21 +41,6 @@ function getPhaseClass(phase) {
 	return phase.toLowerCase().replace(/\s+/g, "_");
 }
 
-function getUniqueValues(array, property) {
-	return [...new Set(array.map((item) => item[property]))];
-}
-
-function createElement(tag, className, textContent) {
-	return $.create(tag, className, textContent);
-}
-
-function createOption(value, text, selected = false) {
-	const option = createElement("option");
-	option.value = value;
-	option.textContent = text;
-	if (selected) option.selected = true;
-	return option;
-}
 
 // Helper function for task status text
 const getTaskStatusText = (statusKey) => {
