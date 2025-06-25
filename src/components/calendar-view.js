@@ -553,7 +553,7 @@ const CalendarView = {
 		const cards = [];
 
 		displayEvents.forEach((event) => {
-			const color = CalendarView.getEventColor(event.type, event.task?.priority);
+			const eventColorClass = CalendarView.getEventClass(event.type, event.task?.priority || event.priority);
 			let eventText = "";
 
 			// Format event text based on type
@@ -575,8 +575,7 @@ const CalendarView = {
 			cards.push(
 				h('div',
 					{
-						className: `calendar-day-event-mini calendar-event-${event.type}`,
-						style: `background-color: var(--${color}-100); border-left: 2px solid var(--${color}-500);`,
+						className: `calendar-day-event-mini calendar-event-${event.type} ${eventColorClass}`,
 						draggable: event.type === "task", // Only tasks can be dragged
 						onclick: (e) => {
 							e.stopPropagation();
@@ -627,10 +626,12 @@ const CalendarView = {
 		const eventsWithPositions = CalendarView.calculateEventPositions(events);
 
 		return eventsWithPositions.map((event) => {
+			const eventColorClass = CalendarView.getEventClass(event.type, event.task?.priority || event.priority);
+			const positionClass = event.positionStyle ? 'calendar-event-positioned' : '';
 			return h('div',
 				{
-					className: `calendar-week-event calendar-event-${event.type}`,
-					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 3px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
+					className: `calendar-week-event calendar-event-${event.type} ${eventColorClass} ${positionClass}`.trim(),
+					style: event.positionStyle,
 					draggable: event.type === "task", // Only tasks can be dragged
 					onclick: () => {
 						if (
@@ -700,7 +701,7 @@ const CalendarView = {
 		// Height is proportional to duration: 20px per 30 minutes
 		const height = Math.max(15, (durationMinutes / 30) * 20); // min 15px height
 
-		return `position: absolute; top: ${topPosition}px; height: ${height}px; width: calc(100% - 8px); margin: 2px 4px; z-index: 1;`;
+		return `top: ${topPosition}px; height: ${height}px;`;
 	},
 
 	// Parse duration string to minutes
@@ -825,10 +826,12 @@ const CalendarView = {
 		const eventsWithPositions = CalendarView.calculateEventPositions(events);
 
 		return eventsWithPositions.map((event) => {
+			const eventColorClass = CalendarView.getEventClass(event.type, event.task?.priority || event.priority);
+			const positionClass = event.positionStyle ? 'calendar-event-positioned' : '';
 			return h('div',
 				{
-					className: `calendar-day-event calendar-event-${event.type}`,
-					style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); border-left: 4px solid var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-500); ${event.positionStyle}`,
+					className: `calendar-day-event calendar-event-${event.type} ${eventColorClass} ${positionClass}`.trim(),
+					style: event.positionStyle,
 					draggable: event.type === "task", // Only tasks can be dragged
 					onclick: () => {
 						if (
@@ -873,24 +876,24 @@ const CalendarView = {
 		});
 	},
 
-	// Get event color
-	getEventColor: (type, priority = null) => {
-		// For tasks, use priority-based colors
+	// Get event CSS class based on type and priority
+	getEventClass: (type, priority = null) => {
+		// For tasks, use priority-based classes
 		if (type === "task" && priority) {
-			const priorityColors = {
-				high: "red",
-				medium: "orange",
-				low: "green"};
-			return priorityColors[priority] || "blue";
+			return `calendar-event-task-${priority}`;
+		}
+		
+		// For tasks without priority, use default
+		if (type === "task") {
+			return "calendar-event-task-default";
 		}
 
-		// For other event types, use default colors
-		const colors = {
-			applied: "green",
-			task: "blue",
-			interview: "orange",
-			followup: "purple"};
-		return colors[type] || "gray";
+		// For other event types, use type-based classes
+		const typeClasses = {
+			applied: "calendar-event-applied",
+			interview: "calendar-event-interview",
+			followup: "calendar-event-followup"};
+		return typeClasses[type] || "calendar-event-default";
 	},
 
 	// Format event time
@@ -956,13 +959,14 @@ const CalendarView = {
 
 	// Render event card
 	renderEventCard: (event) => {
+		const eventColorClass = CalendarView.getEventClass(event.type, event.task?.priority || event.priority);
 		return h('div',
 			{
 				className: `calendar-event-card calendar-event-${event.type}`,
 				onclick: () => CalendarView.handleEventClick(event)},
 			h('div.calendar-event-card-header',
 				h('span.calendar-event-type-badge', {
-						style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`},
+						className: eventColorClass},
 					I18n.t(`calendar.${event.type}`)
 				),
 				event.type === "task" &&
@@ -1038,8 +1042,8 @@ const CalendarView = {
 							h('strong', "Type: "),
 							h('span',
 								{
-									className: `event-type-badge event-type-${event.type}`,
-									style: `background-color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-100); color: var(--${CalendarView.getEventColor(event.type, event.task?.priority)}-700);`},
+									className: `event-type-badge event-type-${event.type} ${CalendarView.getEventClass(event.type, event.task?.priority || event.priority)}`,
+								},
 								I18n.t(`calendar.${event.type}`)
 							)
 						),
@@ -1061,8 +1065,8 @@ const CalendarView = {
 									h('strong', "Priority: "),
 									h('span',
 										{
-											className: `priority-badge priority-${event.task.priority}`,
-											style: `background-color: var(--${CalendarView.getEventColor("task", event.task.priority)}-100); color: var(--${CalendarView.getEventColor("task", event.task.priority)}-700);`},
+											className: `priority-badge priority-${event.task.priority} ${CalendarView.getEventClass("task", event.task.priority)}`,
+										},
 										event.task.priority
 									)
 								),
@@ -1195,9 +1199,8 @@ const CalendarView = {
 			const timeStr = CalendarView.formatTime12Hour(hours, minutes);
 
 			const indicator = h('div.time-drop-indicator', {
-				style: `position: absolute; top: ${snapY}px; left: 4px; right: 4px; height: 24px; background: var(--blue-100); border: 2px dashed var(--blue-400); border-radius: 4px; z-index: 10; pointer-events: none; display: flex; align-items: center; justify-content: center;`},
-				h('div.time-drop-label', {
-					style: `color: var(--blue-600); font-size: 11px; font-weight: 500; pointer-events: none;`},
+				style: `top: ${snapY}px;`},
+				h('div.time-drop-label', {},
 					`Drop at ${timeStr}`
 				)
 			);
@@ -1343,11 +1346,9 @@ const CalendarView = {
 				: `Moved with success to ${dateStr}`;
 
 		// Create temporary notification
-		const notification = h('div.calendar-move-notification', {
-				style:
-					"position: fixed; top: 20px; right: 20px; background: var(--green-100); color: var(--green-700); padding: 12px 16px; border-radius: 6px; border: 1px solid var(--green-300); z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"},
-			h('div', { style: "font-weight: 600; margin-bottom: 4px;" }, message),
-			h('div', { style: "font-size: 12px;" }, `"${task.text}"`)
+		const notification = h('div.calendar-move-notification', {},
+			h('div.calendar-move-notification-title', {}, message),
+			h('div.calendar-move-notification-subtitle', {}, `"${task.text}"`)
 		);
 
 		document.body.appendChild(notification);

@@ -410,6 +410,30 @@
 	transform: rotate(5deg);
 }
 
+.drop-placeholder.tasks-task-card {
+	opacity: 0.3;
+	border: 2px dashed var(--blue-500);
+	background: var(--blue-50);
+	transform: none;
+}
+
+.tasks-drop-placeholder-content {
+	height: 120px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--blue-600);
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.job-info-display {
+	padding: 8px 12px;
+	background: var(--gray-50);
+	border-radius: 6px;
+	font-weight: 500;
+}
+
 .tasks-priority-dot {
 	/* Extends .priority-dot utility */
 	position: absolute;

@@ -469,7 +469,7 @@ const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 						"table.notes-table.archived",
 						{
 							id: "archived-notes-table",
-							style: "display: none",
+							className: "hidden",
 						},
 						h(
 							"thead",

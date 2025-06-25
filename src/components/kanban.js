@@ -349,16 +349,10 @@ const KanbanBoard = {
 		// Create placeholder card that matches the dragged card's size
 		const placeholder = h(
 			"div.drop-placeholder.kanban-job-card",
-			{
-				style:
-					"opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;",
-			},
+			{},
 			h(
-				"div",
-				{
-					style:
-						"height: 80px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;",
-				},
+				"div.drop-placeholder-content",
+				{},
 				"Drop here"
 			)
 		);
@@ -691,7 +685,7 @@ const KanbanBoard = {
 				h(
 					"div.workflow-substeps-list",
 					{
-						style: "display: none;",
+						className: "hidden",
 					},
 					...substeps.map((substep) => {
 						const isSelected = selectedSubsteps.includes(substep);

@@ -343,7 +343,7 @@ const ContactsModal = ({ job, onClose }) => {
 							I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
 						),
 						h('table.contacts-table.archived', {id: "archived-contacts-table",
-								style: "display: none"},
+								className: "hidden"},
 							h('thead',
 								h('tr',
 									h('th', I18n.t("modals.contacts.placeholderName")),
@@ -692,7 +692,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 						I18n.t("modals.contacts.archivedSection", { count: sortedArchivedContacts.length })
 					),
 					h('table.contacts-table.archived', {id: "archived-contacts-table",
-							style: "display: none"},
+							className: "hidden"},
 						h('thead',
 							h('tr',
 								h('th', I18n.t("modals.contacts.placeholderName")),

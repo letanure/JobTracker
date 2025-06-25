@@ -132,7 +132,8 @@ export const CalendarUtils = {
 		return {
 			top: topPosition,
 			height,
-			style: `position: absolute; top: ${topPosition}px; height: ${height}px; width: calc(100% - 8px); margin: 2px 4px; z-index: 1;`,
+			style: `top: ${topPosition}px; height: ${height}px;`,
+			className: 'calendar-event-positioned'
 		};
 	},
 

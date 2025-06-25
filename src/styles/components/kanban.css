@@ -184,6 +184,16 @@
 	box-shadow: none !important;
 }
 
+.drop-placeholder-content {
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--blue-600);
+	font-size: 14px;
+	font-weight: 500;
+}
+
 @keyframes pulse {
 	0%,
 	100% {

@@ -306,7 +306,7 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 					),
 					h(
 						"table.tasks-table.archived",
-						{ id: "archived-tasks-table", style: "display: none" },
+						{ id: "archived-tasks-table", className: "hidden" },
 						h(
 							"thead",
 							h(

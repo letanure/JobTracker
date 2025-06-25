@@ -291,13 +291,8 @@ const TasksBoard = {
 		}
 
 		// Create placeholder card that matches the dragged card's size
-		const placeholder = h('div.drop-placeholder.tasks-task-card', {
-				style:
-					"opacity: 0.3; border: 2px dashed var(--blue-500); background: var(--blue-50); transform: none;"},
-			h('div',
-				{
-					style:
-						"height: 120px; display: flex; align-items: center; justify-content: center; color: var(--blue-600); font-size: 14px; font-weight: 500;"},
+		const placeholder = h('div.drop-placeholder.tasks-task-card', {},
+			h('div.tasks-drop-placeholder-content', {},
 				"Drop here"
 			)
 		);
@@ -629,9 +624,7 @@ const TasksBoard = {
 						// Job selection (create mode) or job info (edit mode)
 						isEditMode
 							? h('div.add-task-job-row',
-									h('div.job-info-display', {
-											style:
-												"padding: 8px 12px; background: var(--gray-50); border-radius: 6px; font-weight: 500;"},
+									h('div.job-info-display', {},
 										`${job.company} - ${job.position}`
 									)
 								)
