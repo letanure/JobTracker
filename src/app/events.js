@@ -46,25 +46,3 @@ function toggleDropdown(dropdownId) {
 	dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 }
 
-// Tab switching function (legacy support)
-function switchTab(tabName) {
-	document.querySelectorAll(".tab-button").forEach((btn) => {
-		btn.classList.remove("active");
-	});
-	document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add("active");
-
-	document.querySelectorAll(".tab-content").forEach((content) => {
-		content.classList.remove("active");
-	});
-	document.getElementById(`${tabName}Tab`).classList.add("active");
-
-	if (tabName === "kanban") {
-		populateKanbanBoard();
-	}
-}
-
-// Kanban board population (placeholder)
-function populateKanbanBoard() {
-	// This would populate the kanban board
-	console.log("Populating kanban board");
-}
