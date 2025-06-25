@@ -1,8 +1,8 @@
 {
   "name": "job-tracker-plain",
   "version": "1.0.0",
-  "description": "A simple job application tracker with no dependencies",
-  "main": "dist/script.js",
+  "description": "A single-file job application tracker built with vanilla JavaScript. Born from frustration with expensive subscription services, evolved into a surprisingly capable tool that runs entirely in your browser with no backend required.",
+  "main": "dist/index.html",
   "scripts": {
     "build": "node build.js",
     "build:analyze": "node build.js --analyze-css --report",
@@ -30,8 +30,16 @@
   },
   "keywords": [
     "job-tracker",
-    "plain-js",
-    "no-dependencies"
+    "job-application",
+    "vanilla-javascript",
+    "single-file",
+    "no-backend",
+    "local-storage",
+    "kanban",
+    "calendar",
+    "offline-first",
+    "no-subscription",
+    "privacy-focused"
   ],
   "license": "MIT",
   "devDependencies": {

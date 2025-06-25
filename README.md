@@ -1,177 +1,142 @@
 # JobTracker
 
-A super simple, lightweight job application tracking tool that helps you manage your job search process efficiently. No login required, no complex setup - just open and start tracking!
+## The Story
 
-Why do this, in one file, no bundlers, no TS? just for fun =).
+I'm looking for a job, so I created a spreadsheet...
+But it was too simple, so I checked some services online - all of them try to sell expensive monthly subscriptions.
 
-## 🎯 Project Concept
+So I created a simple spreadsheet HTML page, single file...
+Now, let's add a select. If I add a select, I need to manage the options...
+another select, datalist, another, another
 
-This is a **minimalist job tracker** designed for simplicity and ease of use:
+and this idea - single HTML file, old school, 2000's JS - grew too much, but was fun! No build, no deps, all local.
 
-- **No backend required** - Everything runs in your browser
-- **No user accounts** - Just open the file and use it
-- **Single file application** - Self-contained HTML with embedded CSS/JS
-- **Local storage only** - Your data stays on your device
-- **Privacy-first** - No data collection or external dependencies
+After some refactoring and some more features, more refactoring, and now it looks like something usable. It was fun, but now I remember better why we evolved to the current FE complexity! 😅
 
-Perfect for job seekers who want a straightforward tool without the complexity of full-featured job tracking platforms.
+If someone finds useful, I will rebuild using react, Lit or something like this
+
+## 🎯 Philosophy
+
+**Local-First, Privacy-First** - Your job search data belongs to you, not in some company's database.
+
+**Single File Simplicity** - One HTML file with everything embedded. Open it, use it, done.
+
+**Old School Fun** - Vanilla JavaScript, manual DOM manipulation, no build complexity. Sometimes simple is better. not in this case, after one day
+
+**No Subscriptions** - Because job searching is stressful enough without monthly fees.
 
 ## ✨ Features
 
-### 📊 Core Functionality
-- **Job Application Tracking** - Add, edit, and delete job applications
-- **Status Management** - Track applications from wishlist to offer
-- **Priority System** - Set priorities (high, medium, low) for your applications
-- **Process Phases** - Monitor your progress through different interview stages
-- **Contact Management** - Store recruiter and hiring manager information
-- **Notes & Tasks** - Keep track of important details and next steps
+### 📊 Core Tracking
+- **Job Applications** - Add, edit, manage applications with full workflow
+- **Kanban Board** - Visual pipeline from wishlist to offer
+- **Task Management** - Track next steps and deadlines
+- **Calendar View** - See interviews and deadlines in month/week/day views
+- **Contact Management** - Store recruiter and hiring manager details
+- **Notes System** - Keep detailed notes on each application
 
-### 🔍 Smart Filtering
-- **Status Filters** - Filter by application status (wishlist, applied, interview, etc.)
-- **Priority Filters** - View applications by priority level
-- **Phase Filters** - Filter by current interview phase
-- **Real-time Updates** - Filters update automatically as you add new data
+### 🎨 Views & Interface
+- **Jobs Table** - Sortable, filterable list of all applications
+- **Application Board** - Kanban-style visual workflow
+- **Task Board** - Manage todos by status with drag & drop
+- **Calendar Views** - Month, week, and day views with task scheduling
+- **Dashboard** - Statistics and today's tasks overview
+- **Resume Builder** - Generate and preview your resume, I will add a export PDF, I promise
 
-### 🚀 User Experience
-- **Double-click Editing** - Double-click any row to quickly edit
-- **Keyboard Shortcuts** - Press ESC to cancel editing
-- **Auto-complete** - Smart suggestions for companies, positions, and locations
-- **Date Management** - Easy date picking for applications and due dates
-- **Statistics Dashboard** - Real-time stats on your job search progress
+### 🌍 User Experience  
+- **Multi-language** - English and Portuguese support
+- **Drag & Drop** - Move tasks and jobs between columns
+- **Auto-save** - Changes saved automatically to localStorage
 
-### 🌍 Internationalization
-- **Multi-language Support** - Currently supports English and Portuguese
-- **Automatic Detection** - Detects browser language preference
-- **Easy Translation** - Simple system for adding new languages
+### 🔧 Technical Features
+- **Single File Build** - Everything bundled into one HTML file (~300KB)
+- **Offline First** - No internet required after initial load
+- **Local Storage** - All data stays in your browser
 
-## 📋 Tracked Information
+## 📋 Workflow Support
 
-Each job application includes:
+Track your complete job search journey:
 
-| Field | Description |
-|-------|-------------|
-| **Priority** | High, Medium, or Low priority |
-| **Company** | Company name with autocomplete |
-| **Position** | Job title/position |
-| **Applied Date** | When you applied |
-| **Status** | Current status (Wishlist → Applied → Interview → Offer) |
-| **Current Phase** | Detailed interview phase tracking |
-| **Next Task** | What you need to do next |
-| **Due Date** | Important upcoming dates |
-| **Contact Person** | Recruiter/hiring manager details |
-| **Salary Range** | Expected or offered compensation |
-| **Location** | Job location (remote, city, etc.) |
-| **Notes** | Additional details and observations |
+**Wishlist** → **Applied** → **Screening** → **Interview** → **Final** → **Offer**
 
-## 🎨 Status Workflow
-
-The application supports a complete job search workflow:
-
-1. **Wishlist** 🎯 - Jobs you're interested in
-2. **Applied** 📤 - Applications submitted
-3. **Phone Screening** 📞 - Initial recruiter calls
-4. **Interview** 💼 - In the interview process
-5. **Final Round** 🏆 - Last stage interviews
-6. **Offer** 🎉 - Job offers received
-7. **Rejected** ❌ - Applications declined
-8. **Withdrawn** 🚫 - Applications you withdrew
-
-## 🛠️ Technical Features
-
-### Architecture
-- **Component-based Design** - React-like component system
-- **jQuery-style API** - Chainable DOM manipulation methods
-- **Modular Structure** - Clean separation of concerns
-- **Event-driven** - Responsive user interactions
-
-### Data Management
-- **LocalStorage Integration** - Persistent data storage
-- **JSON Data Format** - Easy to backup and transfer
-- **Auto-save** - Changes saved automatically
-- **Demo Data** - Sample applications for new users
-
-### UI/UX Enhancements
-- **Material Design Icons** - Clean, modern iconography
-- **Responsive Design** - Works on desktop and mobile
-- **Smooth Interactions** - Polished user experience
-- **Color-coded Status** - Visual status indicators
+Each stage has customizable substeps and automatic workflow progression.
 
 ## 🚀 Getting Started
 
-1. **Download** the HTML file
-2. **Open** it in any modern web browser
-3. **Start tracking** your job applications immediately!
+1. **Download** `dist/index.html` 
+2. **Open** in any modern browser
+3. **Start tracking jobs** - Demo data included to show features
 
-### First Run
-- The app will offer to create sample data to help you understand the features
-- All data is stored locally in your browser
-- No internet connection required after initial load
+### Live Demo
+Visit [jobtracker.cv](http://jobtracker.cv) to try it online.
 
 ## 💾 Data Management
 
-### Backup Your Data
-Your job search data is stored in your browser's local storage. To backup:
-1. Open browser developer tools (F12)
-2. Go to Application/Storage tab
-3. Find Local Storage → your file
-4. Copy the `jobTrackerData` value
+- **Local Storage** - Data saved in your browser
+- **Privacy** - No external services, no tracking*
 
-### Import/Export
-The application includes built-in data export functionality for easy backup and transfer between devices.
+*\*Note: Visit tracking works only on jobtracker.cv domain, not locally*
+
+## 🛠️ Development
+
+Built with vanilla JavaScript and a philosophy of simplicity:
+
+```bash
+# Build optimized single file
+npm run build
+
+# Build with dead CSS analysis  
+npm run build:analyze
+
+# Development server
+npm run dev
+
+# Watch mode
+npm run watch
+```
+
+### Architecture
+- **Component System** - Not so React-like components in vanilla JS + emmet style
+- **State Management** - Simple localStorage persistence  
+- **Modular CSS** - Component-based styling. that was the idea, right?
+- **Build System** - Custom bundler for single-file output.  dont try that at home, ok?
+
+## 🎨 Design Philosophy
+
+**Embrace Constraints** - Single file, no dependencies, old school JS
+**User Control** - Your data, your device, your rules
+**Feature Creep Resistance** - Every feature must solve a real job search problem
+**Progressive Enhancement** - Start simple, add complexity only when needed. if have more that 5 files, add a batle etsted server and build. I skiped because was kind of fun
+
+## 📁 Project Structure
+
+```
+src/
+├── components/        # UI components
+├── utils/            # Utilities and constants  
+├── styles/           # Modular CSS
+└── index.html        # Main template
+
+dist/
+└── index.html        # Built single file
+```
 
 ## 🔮 Future Ideas
 
-### Potential Enhancements
-- **Configurable Columns** - Show/hide table columns
-- **Export to PDF/CSV** - Generate reports and resumes
-- **Calendar Integration** - Interview scheduling
-- **Application Templates** - Quick application setup
-- **Search Functionality** - Find specific applications
-- **Dark Mode** - Alternative color scheme
-- **Backup to Cloud** - Optional cloud storage integration
-- **Mobile App** - Native mobile version
-- **Analytics** - Job search insights and trends
-
-### Advanced Features (Maybe)
-- **Interview Preparation** - Question banks and notes
-- **Salary Negotiation Tools** - Compensation tracking
-- **Network Management** - Contact relationship tracking
-- **Document Storage** - Resume and cover letter versions
-- **Follow-up Reminders** - Automated task management
-
-## 🎯 Design Philosophy
-
-**Simplicity First** - Every feature should be intuitive and add real value to the job search process.
-
-**Privacy by Design** - No external dependencies, no data collection, complete user control.
-
-**Single File Approach** - Easy to share, backup, and use without installation.
-
-**Progressive Enhancement** - Start simple, add features thoughtfully.
-
-## 📁 File Structure
-
-```
-job-tracker-plain/
-├── index.html          # Main application file
-├── styles.css          # Application styling
-├── constants.css       # CSS variables and theme
-├── script.js          # Application logic
-└── README.md          # This file
-```
+- **Better Resume Builder** - More templates and export formats
 
 ## 🤝 Contributing
 
-This project welcomes contributions! Ideas for improvements:
-- Additional language translations
-- UI/UX enhancements
-- New feature implementations
-- Bug fixes and optimizations
+Contributions welcome! If you're crazy enought, just create a MR or issue
+
+Ideas:
+- New language translations
+- UI improvements  
+- Feature additions
+- Performance optimizations
 
 ## 📄 License
 
-Open source - feel free to use, modify, and distribute as needed for your job search!
+MIT - Use it, modify it, share it. Happy job hunting! 🎯
 
 ---
-
-**Happy job hunting!** 🎯✨
