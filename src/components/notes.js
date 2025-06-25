@@ -184,26 +184,6 @@ const NotesModal = ({ job, onClose }) => {
 	);
 };
 
-const showValidationError = (element, message) => {
-	// Remove existing error
-	const existingError = element.parentNode.querySelector(".validation-error");
-	if (existingError) {
-		existingError.remove();
-	}
-
-	// Add error message
-	const errorElement = h("div.validation-error", message);
-
-	element.parentNode.appendChild(errorElement);
-	element.focus();
-
-	// Remove error after 3 seconds
-	setTimeout(() => {
-		if (errorElement.parentNode) {
-			errorElement.remove();
-		}
-	}, 3000);
-};
 
 
 // ============================================================================
