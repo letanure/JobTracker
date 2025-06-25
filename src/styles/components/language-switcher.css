@@ -97,3 +97,24 @@
 .language-button:hover .language-arrow {
 	color: var(--gray-700);
 }
+
+/* Mobile-only: icon-only language switcher */
+@media (max-width: 640px) {
+	.language-button {
+		padding: 5px 8px;
+		min-width: 32px;
+		justify-content: center;
+	}
+
+	.language-text {
+		display: none;
+	}
+
+	.language-arrow {
+		display: none;
+	}
+
+	.language-flag {
+		font-size: 18px;
+	}
+}

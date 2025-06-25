@@ -296,14 +296,17 @@ body {
 
 	.header {
 		padding: var(--space-3) var(--space-4);
-		flex-direction: column;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 		gap: var(--space-2);
-		align-items: stretch;
 	}
 
 	.header h1 {
 		font-size: 18px;
-		text-align: center;
+		text-align: left;
+		margin: 0;
+		flex: 1;
 	}
 
 	.controls {
@@ -314,9 +317,25 @@ body {
 	}
 
 	.stats {
-		grid-template-columns: repeat(auto-fit, minmax(var(--col-12), 1fr));
-		gap: var(--space-2);
-		padding: var(--space-3) var(--space-4);
+		grid-template-columns: repeat(2, 1fr);
+		gap: 6px;
+		padding: 8px 12px;
+	}
+
+	.stats .stat {
+		padding: 6px;
+		font-size: 10px;
+		white-space: nowrap;
+	}
+
+	.stat-number {
+		font-size: 14px;
+		white-space: nowrap;
+	}
+
+	.stat-label {
+		font-size: 9px;
+		white-space: nowrap;
 	}
 
 	/* Fix tab content to be scrollable */

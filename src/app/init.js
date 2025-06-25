@@ -30,11 +30,21 @@ async function initializeApp() {
 		// Show empty interface first
 		refreshInterface();
 
-		// Show welcome message for new users
-		const showDemo = await confirm(I18n.t("messages.welcome"), {
-			confirmText: I18n.t("messages.welcomeConfirm"),
-			cancelText: I18n.t("messages.welcomeCancel"),
-			focusConfirm: true});
+		// Check URL parameter for auto-seeding
+		const urlParams = new URLSearchParams(window.location.search);
+		const autoSeed = urlParams.has('seed') || urlParams.has('demo');
+		
+		let showDemo = false;
+		if (autoSeed) {
+			showDemo = true;
+		} else {
+			// Show welcome message for new users
+			showDemo = await confirm(I18n.t("messages.welcome"), {
+				confirmText: I18n.t("messages.welcomeConfirm"),
+				cancelText: I18n.t("messages.welcomeCancel"),
+				focusConfirm: true});
+		}
+		
 		if (showDemo) {
 			originalData = getDemoData();
 			jobsData = originalData.filter((job) => !job.archived);

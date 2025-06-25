@@ -236,7 +236,7 @@
 }
 
 /* Responsive */
-@media (max-width: 1400px) {
+@media (min-width: 1024px) {
 	.dashboard-stats-grid {
 		grid-template-columns: repeat(4, 1fr);
 	}
@@ -244,11 +244,70 @@
 
 @media (max-width: 1024px) {
 	.dashboard-stats-grid {
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
+	.dashboard-container {
+		padding: 16px;
+		gap: 24px;
+	}
+
+	.dashboard-tasks-container {
+		grid-template-columns: 1fr;
+	}
+
+	.dashboard-stats-grid {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.dashboard-stat-card {
+		padding: 12px;
+		gap: 8px;
+	}
+
+	.stat-icon {
+		width: 24px;
+		height: 24px;
+	}
+
+	.stat-icon .material-symbols-outlined {
+		font-size: 14px;
+	}
+
+	.stat-value {
+		font-size: var(--font-size-base);
+	}
+
+	.stat-label {
+		font-size: 10px;
+		line-height: 1.2;
+	}
+
+	.dashboard-tasks-section {
+		padding: 16px;
+		max-width: 100%;
+		overflow: hidden;
+	}
+
+	.dashboard-task-item {
+		padding: 8px 12px;
+		gap: 8px;
+	}
+
+	.task-text {
+		font-size: var(--font-size-sm);
+	}
+
+	.task-time {
+		min-width: 50px;
+		font-size: var(--font-size-xs);
+	}
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
 	.dashboard-container {
 		padding: 16px;
 		gap: 24px;
