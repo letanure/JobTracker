@@ -78,53 +78,6 @@ const enableTaskEditing = (task, job) => {
 	if (firstInput) firstInput.focus();
 };
 
-const saveTaskEdits = (task, job) => {
-	const taskRow = document.querySelector(`[data-task-id="${task.id}"]`);
-	if (!taskRow) return;
-
-	// Get all input values
-	const inputs = taskRow.querySelectorAll(".task-edit-input");
-	const newData = {};
-
-	inputs.forEach((input) => {
-		newData[input.dataset.field] = input.value.trim();
-	});
-
-	// Get textarea value from task text row
-	const taskTextRow = taskRow.nextElementSibling;
-	const textarea = taskTextRow?.querySelector(".task-text-edit");
-	if (textarea) {
-		newData.text = textarea.value.trim();
-	}
-
-	// Validation
-	if (!newData.text) {
-		alert("Task text is required");
-		return;
-	}
-
-	// Update data
-	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-	const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
-
-	jobsData[jobIndex].tasks[taskIndex].status = newData.status;
-	jobsData[jobIndex].tasks[taskIndex].priority = newData.priority;
-	jobsData[jobIndex].tasks[taskIndex].dueDate = newData.dueDate
-		? `${newData.dueDate}T23:59:59.999Z`
-		: null;
-	jobsData[jobIndex].tasks[taskIndex].duration = newData.duration || null;
-	jobsData[jobIndex].tasks[taskIndex].text = newData.text;
-
-	// Save and refresh in place (no flicker!)
-	saveToLocalStorage();
-	refreshTasksModal(job);
-	refreshInterface();
-};
-
-const cancelTaskEdits = (task, job) => {
-	// Refresh modal to restore original content (no flicker!)
-	refreshTasksModal(job);
-};
 
 
 

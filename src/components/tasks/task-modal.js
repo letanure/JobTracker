@@ -2,185 +2,133 @@
 // TASK MODAL COMPONENT
 // ============================================================================
 
-// Global task editing functions (moved outside component scope)
+// Simple task editing system (following notes pattern)
 const enableTaskModalEditing = (task, job) => {
-	const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
-	if (!taskElement) return;
-
-	const taskRow = taskElement.closest("tr");
+	// Find the task row by looking for the span with data-task-id
+	const taskSpan = document.querySelector(`[data-task-id="${task.id}"]`);
+	if (!taskSpan) return;
+	
+	const taskRow = taskSpan.closest("tr");
 	if (!taskRow) return;
 
-	// Store original state
-	taskRow.dataset.editing = "true";
+	// Replace the first row (status, priority, due date, duration, actions)
+	taskRow.innerHTML = `
+		<td class="task-status-cell">
+			<select class="task-edit-input" data-field="status">
+				<option value="todo" ${task.status === "todo" ? "selected" : ""}>${I18n.t("modals.tasks.statusTodo")}</option>
+				<option value="in-progress" ${task.status === "in-progress" ? "selected" : ""}>${I18n.t("modals.tasks.statusInProgress")}</option>
+				<option value="done" ${task.status === "done" ? "selected" : ""}>${I18n.t("modals.tasks.statusDone")}</option>
+			</select>
+		</td>
+		<td class="task-priority-cell">
+			<select class="task-edit-input" data-field="priority">
+				<option value="low" ${task.priority === "low" ? "selected" : ""}>${I18n.t("modals.tasks.priorityLow")}</option>
+				<option value="medium" ${task.priority === "medium" ? "selected" : ""}>${I18n.t("modals.tasks.priorityMedium")}</option>
+				<option value="high" ${task.priority === "high" ? "selected" : ""}>${I18n.t("modals.tasks.priorityHigh")}</option>
+			</select>
+		</td>
+		<td class="task-due-date-cell">
+			<input type="datetime-local" class="task-edit-input" data-field="dueDate" value="${task.dueDate ? task.dueDate.slice(0, 16) : ""}" />
+		</td>
+		<td class="task-duration-cell">
+			<select class="task-edit-input" data-field="duration">
+				<option value="" ${!task.duration ? "selected" : ""}>—</option>
+				<option value="15min" ${task.duration === "15min" ? "selected" : ""}>15 min</option>
+				<option value="30min" ${task.duration === "30min" ? "selected" : ""}>30 min</option>
+				<option value="1h" ${task.duration === "1h" ? "selected" : ""}>1h</option>
+				<option value="1h30" ${task.duration === "1h30" ? "selected" : ""}>1:30</option>
+				<option value="2h" ${task.duration === "2h" ? "selected" : ""}>2h</option>
+				<option value="3h" ${task.duration === "3h" ? "selected" : ""}>3h</option>
+			</select>
+		</td>
+		<td class="tasks-table-actions">
+			<button class="action-btn save-task-btn" title="${I18n.t("modals.common.save")}">
+				<span class="material-symbols-outlined icon-14">check</span>
+			</button>
+			<button class="action-btn cancel-task-btn" title="${I18n.t("modals.common.cancel")}">
+				<span class="material-symbols-outlined icon-14">close</span>
+			</button>
+		</td>
+	`;
 
-	// Replace status display with select
-	const statusDisplay = taskRow.querySelector(".task-status-display");
-	const statusSelect = h(
-		"select.task-status-edit",
-		{
-			value: task.status,
-		},
-		h("option", { value: "todo" }, I18n.t("modals.tasks.statusTodo")),
-		h("option", { value: "in-progress" }, I18n.t("modals.tasks.statusInProgress")),
-		h("option", { value: "done" }, I18n.t("modals.tasks.statusDone"))
-	);
-	statusDisplay.parentNode.replaceChild(statusSelect, statusDisplay);
-
-	// Replace priority display with select
-	const priorityDisplay = taskRow.querySelector(".task-priority-display");
-	const prioritySelect = h(
-		"select.task-priority-edit",
-		{
-			value: task.priority,
-		},
-		h("option", { value: "low" }, I18n.t("modals.tasks.priorityLow")),
-		h("option", { value: "medium" }, I18n.t("modals.tasks.priorityMedium")),
-		h("option", { value: "high" }, I18n.t("modals.tasks.priorityHigh"))
-	);
-	priorityDisplay.parentNode.replaceChild(prioritySelect, priorityDisplay);
-
-	// Replace due date display with input
-	const dueDateDisplay = taskRow.querySelector(".task-due-date-display");
-	const currentDate = task.dueDate ? task.dueDate.split("T")[0] : "";
-	const dateInput = h("input.task-due-date-edit", { type: "date", value: currentDate });
-	dueDateDisplay.parentNode.replaceChild(dateInput, dueDateDisplay);
-
-	// Replace duration display with select
-	const durationDisplay = taskRow.querySelector(".task-duration-display");
-	const durationSelect = h(
-		"select.task-duration-edit",
-		h("option", { value: "", selected: !task.duration }, "—"),
-		h("option", { value: "15min", selected: task.duration === "15min" }, "15 min"),
-		h("option", { value: "30min", selected: task.duration === "30min" }, "30 min"),
-		h("option", { value: "1h", selected: task.duration === "1h" }, "1h"),
-		h("option", { value: "1h30", selected: task.duration === "1h30" }, "1:30"),
-		h("option", { value: "2h", selected: task.duration === "2h" }, "2h"),
-		h("option", { value: "3h", selected: task.duration === "3h" }, "3h")
-	);
-	durationDisplay.parentNode.replaceChild(durationSelect, durationDisplay);
-
-	// Update edit button to save and add cancel button
-	const editBtn = taskRow.querySelector(".edit-task-btn");
-	editBtn.innerHTML = '<span class="material-symbols-outlined icon-14">check</span>';
-	editBtn.title = I18n.t("modals.common.save");
-	editBtn.onclick = () => saveTaskChanges(task, job);
-
-	// Add cancel button next to save button and hide archive button
-	const actionsCell = taskRow.querySelector(".tasks-table-actions");
-	const cancelBtn = h("button.action-btn.cancel-btn", {
-		title: I18n.t("modals.common.cancel"),
-		innerHTML: '<span class="material-symbols-outlined icon-14">close</span>',
-		onclick: () => disableTaskModalEditing(task, job),
-	});
-	actionsCell.appendChild(cancelBtn);
-
-	// Hide archive button during editing
-	const archiveBtn = taskRow.querySelector(".archive-btn");
-	if (archiveBtn) {
-		archiveBtn.style.display = "none";
-	}
-
-	// Make task text editable
+	// Find and replace the task text row (next sibling)
 	const taskTextRow = taskRow.nextElementSibling;
-	const taskTextCell = taskTextRow?.querySelector(".task-text-cell");
-	if (taskTextCell) {
-		const currentText = task.text || "";
-		const textarea = document.createElement("textarea");
-		textarea.value = currentText;
-		textarea.className = "task-text-edit";
-		textarea.rows = 2;
-		textarea.style.width = "100%";
-		textarea.style.resize = "vertical";
+	if (taskTextRow?.classList.contains("task-text-row")) {
+		taskTextRow.innerHTML = `
+			<td colspan="5" class="task-text-cell">
+				<textarea class="task-text-edit" rows="2" placeholder="${I18n.t("modals.tasks.placeholder")}">${task.text || ""}</textarea>
+			</td>
+		`;
 
-		// Add better event handling
-		textarea.addEventListener("input", (e) => {
-			// Store the current value in a data attribute for later retrieval
-			textarea.dataset.currentValue = e.target.value;
-		});
-
-		// Add keyboard shortcuts
-		textarea.addEventListener("keydown", (e) => {
-			if (e.key === "Enter" && e.ctrlKey) {
+		// Add Shift+Enter support for textarea
+		const textarea = taskTextRow.querySelector(".task-text-edit");
+		textarea.onkeydown = (e) => {
+			if (e.key === "Enter" && e.shiftKey) {
 				e.preventDefault();
-				saveTaskChanges(task, job);
-			} else if (e.key === "Escape") {
-				e.preventDefault();
-				disableTaskModalEditing(task, job);
+				saveTaskEdits(task, job);
 			}
-		});
-
-		taskTextCell.innerHTML = "";
-		taskTextCell.appendChild(textarea);
-		textarea.focus();
-		textarea.select(); // Select all text for easy editing
-
-		// Store reference to textarea for saving
-		taskRow.dataset.textarea = "true";
-		taskTextRow.dataset.textEditing = "true";
+		};
 	}
+
+	// Add event listeners to buttons
+	const saveBtn = taskRow.querySelector(".save-task-btn");
+	const cancelBtn = taskRow.querySelector(".cancel-task-btn");
+
+	saveBtn.onclick = () => saveTaskEdits(task, job);
+	cancelBtn.onclick = () => cancelTaskEdits(task, job);
+
+	// Focus first input
+	const firstInput = taskRow.querySelector(".task-edit-input");
+	if (firstInput) firstInput.focus();
 };
 
-const saveTaskChanges = (task, job) => {
-	// Get all form values before refreshing the modal
-	const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
-	if (!taskElement) return;
+const saveTaskEdits = (task, job) => {
+	// Find the row with the save button (since data-task-id is no longer there after editing)
+	const saveBtn = document.querySelector(".save-task-btn");
+	if (!saveBtn) return;
+	
+	const taskRow = saveBtn.closest("tr");
+	if (!taskRow) return;
 
-	const taskRow = taskElement.closest("tr");
-	const textRow = taskRow?.nextElementSibling;
+	// Get all input values
+	const inputs = taskRow.querySelectorAll(".task-edit-input");
+	const newData = {};
 
-	// Get all the form values
-	const statusSelect = taskRow?.querySelector(".task-status-edit");
-	const prioritySelect = taskRow?.querySelector(".task-priority-edit");
-	const dueDateInput = taskRow?.querySelector(".task-due-date-edit");
-	const durationSelect = taskRow?.querySelector(".task-duration-edit");
-	const textarea = textRow?.querySelector(".task-text-edit");
+	inputs.forEach((input) => {
+		newData[input.dataset.field] = input.value.trim();
+	});
 
-	// Validate task text
+	// Get textarea value from task text row
+	const taskTextRow = taskRow.nextElementSibling;
+	const textarea = taskTextRow?.querySelector(".task-text-edit");
 	if (textarea) {
-		const newText = textarea.value.trim();
-		if (!newText) {
-			showValidationError(textarea, "Task description is required");
-			return; // Don't refresh modal yet, let user fix the error
-		}
+		newData.text = textarea.value.trim();
 	}
 
-	// Update all fields in the data
+	// Validation
+	if (!newData.text) {
+		alert(I18n.t("modals.tasks.validation.taskRequired"));
+		return;
+	}
+
+	// Update data
 	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-	if (jobIndex === -1) return;
-
 	const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
-	if (taskIndex === -1) return;
 
-	// Update each field if the input exists
-	if (statusSelect) {
-		jobsData[jobIndex].tasks[taskIndex].status = statusSelect.value;
-	}
-	if (prioritySelect) {
-		jobsData[jobIndex].tasks[taskIndex].priority = prioritySelect.value;
-	}
-	if (dueDateInput) {
-		jobsData[jobIndex].tasks[taskIndex].dueDate = dueDateInput.value || null;
-	}
-	if (durationSelect) {
-		jobsData[jobIndex].tasks[taskIndex].duration = durationSelect.value || null;
-	}
-	if (textarea) {
-		jobsData[jobIndex].tasks[taskIndex].text = textarea.value.trim();
-	}
+	jobsData[jobIndex].tasks[taskIndex].status = newData.status;
+	jobsData[jobIndex].tasks[taskIndex].priority = newData.priority;
+	jobsData[jobIndex].tasks[taskIndex].dueDate = newData.dueDate ? new Date(newData.dueDate).toISOString() : null;
+	jobsData[jobIndex].tasks[taskIndex].duration = newData.duration || null;
+	jobsData[jobIndex].tasks[taskIndex].text = newData.text;
 
-	// Save to localStorage
+	// Save and refresh in place (no flicker!)
 	saveToLocalStorage();
-
-	// Refresh the modal to restore display state
 	refreshTasksModal(job);
-
-	// Update interface
 	refreshInterface();
 };
 
-const disableTaskModalEditing = (task, job) => {
-	// Just refresh the modal to restore display state
-	// No need to find the taskRow since refreshTasksModal will recreate everything
+const cancelTaskEdits = (task, job) => {
+	// Refresh modal to restore original content (no flicker!)
 	refreshTasksModal(job);
 };
 
@@ -676,7 +624,8 @@ const handleAddTask = () => {
 window.TasksModal = TasksModal;
 window.handleAddTask = handleAddTask;
 window.enableTaskModalEditing = enableTaskModalEditing;
-window.saveTaskChanges = saveTaskChanges;
-window.disableTaskModalEditing = disableTaskModalEditing;
+window.saveTaskEdits = saveTaskEdits;
+window.cancelTaskEdits = cancelTaskEdits;
 window.refreshTasksModal = refreshTasksModal;
 window.createTasksContent = createTasksContent;
+window.archiveTask = archiveTask;
