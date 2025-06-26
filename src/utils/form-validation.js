@@ -15,7 +15,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : `${fieldName} is required`,
+			errorMessage: isValid ? null : I18n.t("validation.required", { field: fieldName }) || `${fieldName} is required`,
 		};
 	},
 
@@ -34,7 +34,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : "Please enter a valid email address",
+			errorMessage: isValid ? null : I18n.t("validation.emailInvalid") || "Please enter a valid email address",
 		};
 	},
 
@@ -53,7 +53,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : "Please enter a valid phone number",
+			errorMessage: isValid ? null : I18n.t("validation.phoneInvalid") || "Please enter a valid phone number",
 		};
 	},
 
@@ -71,7 +71,7 @@ const FormValidation = {
 			new URL(url.trim());
 			return { isValid: true, errorMessage: null };
 		} catch {
-			return { isValid: false, errorMessage: "Please enter a valid URL" };
+			return { isValid: false, errorMessage: I18n.t("validation.urlInvalid") || "Please enter a valid URL" };
 		}
 	},
 
@@ -88,7 +88,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : `${fieldName} must be at least ${minLength} characters`,
+			errorMessage: isValid ? null : I18n.t("validation.minLength", { field: fieldName, min: minLength }) || `${fieldName} must be at least ${minLength} characters`,
 		};
 	},
 
@@ -105,7 +105,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : `${fieldName} must be no more than ${maxLength} characters`,
+			errorMessage: isValid ? null : I18n.t("validation.maxLength", { field: fieldName, max: maxLength }) || `${fieldName} must be no more than ${maxLength} characters`,
 		};
 	},
 
@@ -120,7 +120,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : `Please select a ${fieldName.toLowerCase()}`,
+			errorMessage: isValid ? null : I18n.t("validation.selectRequired", { field: fieldName.toLowerCase() }) || `Please select a ${fieldName.toLowerCase()}`,
 		};
 	},
 
@@ -140,7 +140,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : `Please enter a valid ${fieldName.toLowerCase()}`,
+			errorMessage: isValid ? null : I18n.t("validation.enterValid", { field: fieldName.toLowerCase() }) || `Please enter a valid ${fieldName.toLowerCase()}`,
 		};
 	},
 
@@ -166,7 +166,7 @@ const FormValidation = {
 
 		return {
 			isValid,
-			errorMessage: isValid ? null : `${fieldName} must be in the future`,
+			errorMessage: isValid ? null : I18n.t("validation.futureDateRequired", { field: fieldName }) || `${fieldName} must be in the future`,
 		};
 	},
 

@@ -59,7 +59,7 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 								href: job.sourceUrl,
 								target: "_blank",
 								rel: "noopener noreferrer",
-								title: "View job posting",
+								title: I18n.t("tooltips.viewJobPosting") || "View job posting",
 								onclick: (e) => e.stopPropagation(),
 							},
 							h("span.material-symbols-outlined", "link")
@@ -72,7 +72,7 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				const notesButton = h(
 					"button.kanban-icon-btn",
 					{
-						title: `Notes (${notesCount})`,
+						title: I18n.t("table.countFormat.notes", { count: notesCount }) || `Notes (${notesCount})`,
 						onclick: (e) => {
 							e.stopPropagation();
 							openNotesModal(job);
@@ -90,7 +90,7 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				const tasksButton = h(
 					"button.kanban-icon-btn",
 					{
-						title: `Tasks (${tasksCount})`,
+						title: I18n.t("table.countFormat.tasks", { count: tasksCount }) || `Tasks (${tasksCount})`,
 						onclick: (e) => {
 							e.stopPropagation();
 							openTasksModal(job);
@@ -108,7 +108,7 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 				const contactsButton = h(
 					"button.kanban-icon-btn",
 					{
-						title: `Contacts (${contactsCount})`,
+						title: I18n.t("table.countFormat.contacts", { count: contactsCount }) || `Contacts (${contactsCount})`,
 						onclick: (e) => {
 							e.stopPropagation();
 							openContactsModal(job);
@@ -126,7 +126,7 @@ const JobRow = ({ job, onEdit, onDelete }) => {
 					h(
 						"button.kanban-icon-btn",
 						{
-							title: "Edit job",
+							title: I18n.t("tooltips.editJob") || "Edit job",
 							onclick: (e) => {
 								e.stopPropagation();
 								onEdit(job);

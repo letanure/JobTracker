@@ -76,7 +76,7 @@ const TasksBoard = {
 								},
 							},
 							h("span.material-symbols-outlined", "add"),
-							I18n.t("modals.tasks.addButton") || "Add Task"
+							I18n.t("modals.common.addTask") || "Add Task"
 						),
 					h("span.tasks-column-count", statusTasks.length.toString())
 				)

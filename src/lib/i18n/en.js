@@ -15,6 +15,8 @@ const EN_TRANSLATIONS = {
 	},
 	actions: {
 		archive: "Archive job",
+		edit: "Edit job",
+		view: "View job posting",
 	},
 	tabs: {
 		dashboard: "Dashboard",
@@ -42,6 +44,14 @@ const EN_TRANSLATIONS = {
 		addJob: "Add Job",
 		workflowConfig: "Workflow Configuration",
 		workflowDescription: "Select and configure the steps for each phase of this job:",
+		dropHere: "Drop here",
+		current: "current",
+		stage: "Stage:",
+		messages: {
+			kanbanNotAvailable: "KanbanBoard not available for job editing",
+			kanbanNotAvailableCreation: "KanbanBoard not available for job creation",
+			archiveConfirmation: "Are you sure you want to archive the application for {position} at {company}?",
+		},
 	},
 	table: {
 		headers: {
@@ -57,6 +67,11 @@ const EN_TRANSLATIONS = {
 			notes: "Notes",
 			tasks: "Tasks",
 			actions: "Actions",
+		},
+		countFormat: {
+			notes: "Notes ({count})",
+			tasks: "Tasks ({count})",
+			contacts: "Contacts ({count})",
 		},
 		filters: {
 			allPriorities: "All Priorities",
@@ -273,9 +288,15 @@ const EN_TRANSLATIONS = {
 		twitterDescription:
 			"Free local job tracker with complete privacy. No login, no tracking, your job search data stays on your device.",
 	},
+	tooltips: {
+		viewJobPosting: "View job posting",
+		editJob: "Edit job",
+		archiveJob: "Archive job",
+	},
 	modals: {
 		notes: {
 			title: "Notes for {position} at {company}",
+			titleFormat: "{count} active note{s} ({archived} archived)",
 			activeSection: "Active Notes",
 			archivedSection: "Archived Notes ({count})",
 			emptyState: "No notes yet. Add your first note below.",
@@ -285,6 +306,15 @@ const EN_TRANSLATIONS = {
 			archiveTitle: "Archive note",
 			unarchiveTitle: "Unarchive note",
 			addButton: "Add Note",
+			validation: {
+				textRequired: "Note text is required",
+			},
+			tableHeaders: {
+				phase: "Phase",
+				date: "Date",
+				note: "Note",
+				actions: "Actions",
+			},
 		},
 		tasks: {
 			title: "Tasks for {position} at {company}",
@@ -324,6 +354,7 @@ const EN_TRANSLATIONS = {
 		},
 		contacts: {
 			title: "Contacts for {position} at {company}",
+			titleFormat: "{count} contact{s} ({archived} archived)",
 			activeSection: "Active Contacts",
 			archivedSection: "Archived Contacts ({count})",
 			emptyState: "No contacts yet. Add your first contact below.",
@@ -340,7 +371,13 @@ const EN_TRANSLATIONS = {
 			defaultContact: "Contact",
 			validation: {
 				nameRequired: "Name is required",
+				nameRequiredForContact: "Name is required for a contact",
 				emailRequired: "Email is required",
+				emailInvalid: "Please enter a valid email address",
+				emailInvalidFormat: "Please enter a valid email",
+			},
+			tableHeaders: {
+				actions: "Actions",
 			},
 		},
 		common: {
@@ -351,6 +388,7 @@ const EN_TRANSLATIONS = {
 			ok: "OK",
 			yes: "Yes",
 			no: "No",
+			addTask: "Add Task",
 		},
 		dialogs: {
 			alert: "Alert",
@@ -403,6 +441,15 @@ const EN_TRANSLATIONS = {
 	validation: {
 		companyPositionRequired: "Company and position are required",
 		currentStepRequired: "Current step is required",
+		required: "{field} is required",
+		emailInvalid: "Please enter a valid email address",
+		phoneInvalid: "Please enter a valid phone number",
+		urlInvalid: "Please enter a valid URL",
+		minLength: "{field} must be at least {min} characters",
+		maxLength: "{field} must be no more than {max} characters",
+		selectRequired: "Please select a {field}",
+		enterValid: "Please enter a valid {field}",
+		futureDateRequired: "{field} must be in the future",
 	},
 	contactsView: {
 		title: "All Contacts",

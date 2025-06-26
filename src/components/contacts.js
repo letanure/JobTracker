@@ -12,7 +12,7 @@ const ContactsCount = ({ contacts = [], onClick }) => {
 		className,
 		onclick: onClick, // Always allow clicks to open modal
 		textContent: count.toString(),
-		title: `${count} contact${count !== 1 ? "s" : ""}${contacts.length !== count ? ` (${contacts.length - count} archived)` : ""}`,
+		title: I18n.t("modals.contacts.titleFormat", { count, s: count !== 1 ? "s" : "", archived: contacts.length - count }) || `${count} contact${count !== 1 ? "s" : ""}${contacts.length !== count ? ` (${contacts.length - count} archived)` : ""}`,
 	});
 };
 
@@ -59,25 +59,25 @@ const ContactItem = ({ contact, job }) => {
 		const nameInput = h("input.contact-edit-input", {
 			type: "text",
 			value: contact.name || "",
-			placeholder: "Name",
+			placeholder: I18n.t("modals.contacts.placeholderName") || "Name",
 		});
 
 		const emailInput = h("input.contact-edit-input", {
 			type: "email",
 			value: contact.email || "",
-			placeholder: "Email",
+			placeholder: I18n.t("modals.contacts.placeholderEmail") || "Email",
 		});
 
 		const phoneInput = h("input.contact-edit-input", {
 			type: "tel",
 			value: contact.phone || "",
-			placeholder: "Phone",
+			placeholder: I18n.t("modals.contacts.placeholderPhone") || "Phone",
 		});
 
 		const companyInput = h("input.contact-edit-input", {
 			type: "text",
 			value: contact.company || "",
-			placeholder: "Company",
+			placeholder: I18n.t("modals.contacts.placeholderCompany") || "Company",
 		});
 
 		const saveBtn = h("button.action-btn.edit-btn.edit-save-btn", {
@@ -207,12 +207,12 @@ const ContactsModal = ({ job, onClose }) => {
 		const company = companyInput.value.trim();
 
 		if (!name) {
-			showValidationError(nameInput, "Name is required for a contact");
+			showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequiredForContact") || "Name is required for a contact");
 			return;
 		}
 
 		if (email && !email.includes("@")) {
-			showValidationError(emailInput, "Please enter a valid email address");
+			showValidationError(emailInput, I18n.t("modals.contacts.validation.emailInvalid") || "Please enter a valid email address");
 			return;
 		}
 
@@ -626,12 +626,12 @@ const saveContactEdits = (contact, job) => {
 
 	// Validation
 	if (!newData.name) {
-		alert("Name is required");
+		alert(I18n.t("modals.contacts.validation.nameRequired") || "Name is required");
 		return;
 	}
 
 	if (newData.email && !newData.email.includes("@")) {
-		alert("Please enter a valid email");
+		alert(I18n.t("modals.contacts.validation.emailInvalidFormat") || "Please enter a valid email");
 		return;
 	}
 

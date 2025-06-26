@@ -15,6 +15,8 @@ const PT_TRANSLATIONS = {
 	},
 	actions: {
 		archive: "Arquivar vaga",
+		edit: "Editar vaga",
+		view: "Ver publicação da vaga",
 	},
 	tabs: {
 		dashboard: "Painel",
@@ -42,6 +44,14 @@ const PT_TRANSLATIONS = {
 		addJob: "Adicionar Vaga",
 		workflowConfig: "Configuração do Fluxo",
 		workflowDescription: "Selecione e configure as etapas para cada fase desta vaga:",
+		dropHere: "Solte aqui",
+		current: "atual",
+		stage: "Fase:",
+		messages: {
+			kanbanNotAvailable: "KanbanBoard não disponível para edição de vaga",
+			kanbanNotAvailableCreation: "KanbanBoard não disponível para criação de vaga",
+			archiveConfirmation: "Tem certeza de que deseja arquivar a candidatura para {position} na {company}?",
+		},
 	},
 	table: {
 		headers: {
@@ -58,6 +68,11 @@ const PT_TRANSLATIONS = {
 			notes: "Notas",
 			tasks: "Tarefas",
 			actions: "Ações",
+		},
+		countFormat: {
+			notes: "Notas ({count})",
+			tasks: "Tarefas ({count})",
+			contacts: "Contatos ({count})",
 		},
 		filters: {
 			allPriorities: "Todas as Prioridades",
@@ -275,9 +290,15 @@ const PT_TRANSLATIONS = {
 		twitterDescription:
 			"Rastreador local gratuito com total privacidade. Sem login, sem rastreamento, seus dados de busca de emprego ficam no seu dispositivo.",
 	},
+	tooltips: {
+		viewJobPosting: "Ver publicação da vaga",
+		editJob: "Editar vaga",
+		archiveJob: "Arquivar vaga",
+	},
 	modals: {
 		notes: {
 			title: "Notas para {position} na {company}",
+			titleFormat: "{count} nota{s} ativa{s} ({archived} arquivada{s})",
 			activeSection: "Notas Ativas",
 			archivedSection: "Notas Arquivadas ({count})",
 			emptyState: "Sem notas ainda. Adicione sua primeira nota abaixo.",
@@ -287,6 +308,15 @@ const PT_TRANSLATIONS = {
 			archiveTitle: "Arquivar nota",
 			unarchiveTitle: "Desarquivar nota",
 			addButton: "Adicionar Nota",
+			validation: {
+				textRequired: "O texto da nota é obrigatório",
+			},
+			tableHeaders: {
+				phase: "Fase",
+				date: "Data",
+				note: "Nota",
+				actions: "Ações",
+			},
 		},
 		tasks: {
 			title: "Tarefas para {position} na {company}",
@@ -326,6 +356,7 @@ const PT_TRANSLATIONS = {
 		},
 		contacts: {
 			title: "Contatos para {position} na {company}",
+			titleFormat: "{count} contato{s} ({archived} arquivado{s})",
 			activeSection: "Contatos Ativos",
 			archivedSection: "Contatos Arquivados ({count})",
 			emptyState: "Sem contatos ainda. Adicione seu primeiro contato abaixo.",
@@ -342,7 +373,13 @@ const PT_TRANSLATIONS = {
 			defaultContact: "Contato",
 			validation: {
 				nameRequired: "Nome é obrigatório",
+				nameRequiredForContact: "Nome é obrigatório para um contato",
 				emailRequired: "Email é obrigatório",
+				emailInvalid: "Por favor, insira um endereço de email válido",
+				emailInvalidFormat: "Por favor, insira um email válido",
+			},
+			tableHeaders: {
+				actions: "Ações",
 			},
 		},
 		common: {
@@ -353,6 +390,7 @@ const PT_TRANSLATIONS = {
 			ok: "OK",
 			yes: "Sim",
 			no: "Não",
+			addTask: "Adicionar Tarefa",
 		},
 		dialogs: {
 			alert: "Alerta",
@@ -405,6 +443,15 @@ const PT_TRANSLATIONS = {
 	validation: {
 		companyPositionRequired: "Empresa e posição são obrigatórias",
 		currentStepRequired: "Etapa atual é obrigatória",
+		required: "{field} é obrigatório",
+		emailInvalid: "Por favor, insira um endereço de email válido",
+		phoneInvalid: "Por favor, insira um número de telefone válido",
+		urlInvalid: "Por favor, insira uma URL válida",
+		minLength: "{field} deve ter pelo menos {min} caracteres",
+		maxLength: "{field} deve ter no máximo {max} caracteres",
+		selectRequired: "Por favor, selecione um(a) {field}",
+		enterValid: "Por favor, insira um(a) {field} válido(a)",
+		futureDateRequired: "{field} deve estar no futuro",
 	},
 	contactsView: {
 		title: "Todos os Contatos",

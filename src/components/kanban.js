@@ -139,7 +139,7 @@ const KanbanBoard = {
 						href: job.sourceUrl,
 						target: "_blank",
 						rel: "noopener noreferrer",
-						title: "View job posting",
+						title: I18n.t("tooltips.viewJobPosting"),
 						onclick: (e) => e.stopPropagation(),
 					},
 					h("span.material-symbols-outlined", "link")
@@ -151,7 +151,7 @@ const KanbanBoard = {
 		const notesButton = h(
 			"button.kanban-icon-btn",
 			{
-				title: `Notes (${notesCount})`,
+				title: I18n.t("table.countFormat.notes", { count: notesCount }),
 				onclick: (e) => {
 					e.stopPropagation();
 					openNotesModal(job);
@@ -168,7 +168,7 @@ const KanbanBoard = {
 		const tasksButton = h(
 			"button.kanban-icon-btn",
 			{
-				title: `Tasks (${tasksCount})`,
+				title: I18n.t("table.countFormat.tasks", { count: tasksCount }),
 				onclick: (e) => {
 					e.stopPropagation();
 					openTasksModal(job);
@@ -185,7 +185,7 @@ const KanbanBoard = {
 		const contactsButton = h(
 			"button.kanban-icon-btn",
 			{
-				title: `Contacts (${contactsCount})`,
+				title: I18n.t("table.countFormat.contacts", { count: contactsCount }),
 				onclick: (e) => {
 					e.stopPropagation();
 					openContactsModal(job);
@@ -352,7 +352,7 @@ const KanbanBoard = {
 		const placeholder = h(
 			"div.drop-placeholder.kanban-job-card",
 			{},
-			h("div.drop-placeholder-content", {}, "Drop here")
+			h("div.drop-placeholder-content", {}, I18n.t("kanban.dropHere"))
 		);
 
 		if (insertIndex === cards.length) {
@@ -635,7 +635,7 @@ const KanbanBoard = {
 				currentSubstepElement.classList.add("current");
 				const toggle = currentSubstepElement.querySelector(".workflow-substep-toggle");
 				if (toggle && !toggle.querySelector(".current-indicator")) {
-					toggle.appendChild(h("span.current-indicator", "current"));
+					toggle.appendChild(h("span.current-indicator", I18n.t("kanban.current")));
 				}
 			}
 		}
