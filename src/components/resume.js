@@ -620,7 +620,10 @@ const ResumeBuilder = {
 			h(
 				"div.cv-experience-meta",
 				exp.startDate || exp.endDate
-					? h("span.cv-experience-dates", `${exp.startDate || ""} - ${exp.endDate || I18n.t("resume.present")}`)
+					? h(
+							"span.cv-experience-dates",
+							`${exp.startDate || ""} - ${exp.endDate || I18n.t("resume.present")}`
+						)
 					: "",
 				exp.location ? h("span.cv-experience-location", exp.location) : ""
 			),
@@ -656,7 +659,10 @@ const ResumeBuilder = {
 			edu.area ? h("h5.cv-education-field", edu.area) : "",
 			edu.institution ? h("h6.cv-education-institution", edu.institution) : "",
 			edu.startDate || edu.endDate
-				? h("span.cv-education-dates", `${edu.startDate || ""} - ${edu.endDate || I18n.t("resume.present")}`)
+				? h(
+						"span.cv-education-dates",
+						`${edu.startDate || ""} - ${edu.endDate || I18n.t("resume.present")}`
+					)
 				: ""
 		);
 	},
@@ -818,7 +824,10 @@ const ResumeBuilder = {
 			h("h4.cv-volunteer-role", vol.position || vol.role),
 			h("h5.cv-volunteer-organization", vol.organization),
 			vol.startDate || vol.endDate
-				? h("span.cv-volunteer-dates", `${vol.startDate || ""} - ${vol.endDate || I18n.t("resume.present")}`)
+				? h(
+						"span.cv-volunteer-dates",
+						`${vol.startDate || ""} - ${vol.endDate || I18n.t("resume.present")}`
+					)
 				: ""
 		);
 	},

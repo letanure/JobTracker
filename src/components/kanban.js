@@ -1121,7 +1121,11 @@ const KanbanBoard = {
 							"div.form-row",
 							h(
 								"div.form-field full-width",
-								h("label", h("span", I18n.t("forms.currentStep")), h("span.required-asterisk", I18n.t("forms.requiredAsterisk"))),
+								h(
+									"label",
+									h("span", I18n.t("forms.currentStep")),
+									h("span.required-asterisk", I18n.t("forms.requiredAsterisk"))
+								),
 								KanbanBoard.createCurrentStepSelector(job)
 							)
 						),

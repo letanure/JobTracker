@@ -12,7 +12,13 @@ const ContactsCount = ({ contacts = [], onClick }) => {
 		className,
 		onclick: onClick, // Always allow clicks to open modal
 		textContent: count.toString(),
-		title: I18n.t("modals.contacts.titleFormat", { count, s: count !== 1 ? "s" : "", archived: contacts.length - count }) || `${count} contact${count !== 1 ? "s" : ""}${contacts.length !== count ? ` (${contacts.length - count} archived)` : ""}`,
+		title:
+			I18n.t("modals.contacts.titleFormat", {
+				count,
+				s: count !== 1 ? "s" : "",
+				archived: contacts.length - count,
+			}) ||
+			`${count} contact${count !== 1 ? "s" : ""}${contacts.length !== count ? ` (${contacts.length - count} archived)` : ""}`,
 	});
 };
 
@@ -207,12 +213,19 @@ const ContactsModal = ({ job, onClose }) => {
 		const company = companyInput.value.trim();
 
 		if (!name) {
-			showValidationError(nameInput, I18n.t("modals.contacts.validation.nameRequiredForContact") || "Name is required for a contact");
+			showValidationError(
+				nameInput,
+				I18n.t("modals.contacts.validation.nameRequiredForContact") ||
+					"Name is required for a contact"
+			);
 			return;
 		}
 
 		if (email && !email.includes("@")) {
-			showValidationError(emailInput, I18n.t("modals.contacts.validation.emailInvalid") || "Please enter a valid email address");
+			showValidationError(
+				emailInput,
+				I18n.t("modals.contacts.validation.emailInvalid") || "Please enter a valid email address"
+			);
 			return;
 		}
 

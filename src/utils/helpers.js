@@ -223,9 +223,30 @@ function updateUILanguage() {
 		setupFilters();
 	}
 
-	// Update dashboard if it's the active tab
-	if (typeof Dashboard !== "undefined" && TabNavigation.activeTab === "dashboard") {
-		Dashboard.refresh();
+	// Update active tab content with new language
+	if (typeof TabNavigation !== "undefined" && TabNavigation.activeTab) {
+		switch (TabNavigation.activeTab) {
+			case "dashboard":
+				if (typeof Dashboard !== "undefined") {
+					Dashboard.refresh();
+				}
+				break;
+			case "calendar":
+				if (typeof CalendarView !== "undefined") {
+					CalendarView.init();
+				}
+				break;
+			case "contacts":
+				if (typeof ContactsView !== "undefined") {
+					ContactsView.init();
+				}
+				break;
+			case "resume":
+				if (typeof ResumeBuilder !== "undefined") {
+					ResumeBuilder.init();
+				}
+				break;
+		}
 	}
 
 	// Re-render the table to update all dynamic content

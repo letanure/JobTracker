@@ -12,7 +12,13 @@ const NotesCount = ({ notes = [], onClick }) => {
 		className,
 		onclick: onClick, // Always allow clicks to open modal
 		textContent: count.toString(),
-		title: I18n.t("modals.notes.titleFormat", { count, s: count !== 1 ? "s" : "", archived: notes.length - count }) || `${count} active note${count !== 1 ? "s" : ""}${notes.length !== count ? ` (${notes.length - count} archived)` : ""}`,
+		title:
+			I18n.t("modals.notes.titleFormat", {
+				count,
+				s: count !== 1 ? "s" : "",
+				archived: notes.length - count,
+			}) ||
+			`${count} active note${count !== 1 ? "s" : ""}${notes.length !== count ? ` (${notes.length - count} archived)` : ""}`,
 	});
 };
 
@@ -310,7 +316,10 @@ const handleAddNote = () => {
 
 	if (!noteText) {
 		// Show error message instead of alert
-		showValidationError(textarea, I18n.t("modals.notes.validation.textRequired") || "Note text is required");
+		showValidationError(
+			textarea,
+			I18n.t("modals.notes.validation.textRequired") || "Note text is required"
+		);
 		return;
 	}
 
@@ -403,7 +412,13 @@ const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 						"table.notes-table",
 						h(
 							"thead",
-							h("tr", h("th", I18n.t("modals.notes.tableHeaders.phase") || "Phase"), h("th", I18n.t("modals.notes.tableHeaders.date") || "Date"), h("th", I18n.t("modals.notes.tableHeaders.note") || "Note"), h("th", I18n.t("modals.notes.tableHeaders.actions") || "Actions"))
+							h(
+								"tr",
+								h("th", I18n.t("modals.notes.tableHeaders.phase") || "Phase"),
+								h("th", I18n.t("modals.notes.tableHeaders.date") || "Date"),
+								h("th", I18n.t("modals.notes.tableHeaders.note") || "Note"),
+								h("th", I18n.t("modals.notes.tableHeaders.actions") || "Actions")
+							)
 						),
 						h(
 							"tbody",
@@ -470,7 +485,13 @@ const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 						},
 						h(
 							"thead",
-							h("tr", h("th", I18n.t("modals.notes.tableHeaders.phase") || "Phase"), h("th", I18n.t("modals.notes.tableHeaders.date") || "Date"), h("th", I18n.t("modals.notes.tableHeaders.note") || "Note"), h("th", I18n.t("modals.notes.tableHeaders.actions") || "Actions"))
+							h(
+								"tr",
+								h("th", I18n.t("modals.notes.tableHeaders.phase") || "Phase"),
+								h("th", I18n.t("modals.notes.tableHeaders.date") || "Date"),
+								h("th", I18n.t("modals.notes.tableHeaders.note") || "Note"),
+								h("th", I18n.t("modals.notes.tableHeaders.actions") || "Actions")
+							)
 						),
 						h(
 							"tbody",

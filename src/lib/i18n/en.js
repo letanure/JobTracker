@@ -50,7 +50,8 @@ const EN_TRANSLATIONS = {
 		messages: {
 			kanbanNotAvailable: "KanbanBoard not available for job editing",
 			kanbanNotAvailableCreation: "KanbanBoard not available for job creation",
-			archiveConfirmation: "Are you sure you want to archive the application for {position} at {company}?",
+			archiveConfirmation:
+				"Are you sure you want to archive the application for {position} at {company}?",
 		},
 	},
 	table: {

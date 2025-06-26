@@ -17,7 +17,10 @@ async function archiveJob(job) {
 	// Confirm archiving using async confirm dialog
 	const confirmed = await confirm(
 		I18n.t("messages.confirmArchive", { position: job.position, company: job.company }) ||
-			I18n.t("kanban.messages.archiveConfirmation", { position: job.position, company: job.company })
+			I18n.t("kanban.messages.archiveConfirmation", {
+				position: job.position,
+				company: job.company,
+			})
 	);
 
 	if (confirmed) {

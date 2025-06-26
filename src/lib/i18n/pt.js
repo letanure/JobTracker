@@ -50,7 +50,8 @@ const PT_TRANSLATIONS = {
 		messages: {
 			kanbanNotAvailable: "KanbanBoard não disponível para edição de vaga",
 			kanbanNotAvailableCreation: "KanbanBoard não disponível para criação de vaga",
-			archiveConfirmation: "Tem certeza de que deseja arquivar a candidatura para {position} na {company}?",
+			archiveConfirmation:
+				"Tem certeza de que deseja arquivar a candidatura para {position} na {company}?",
 		},
 	},
 	table: {
