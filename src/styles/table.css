@@ -585,6 +585,95 @@ tr.editing .actions-cell button {
 	border-top: none;
 }
 
+/* Notes list layout - modern flex/grid approach */
+.notes-list-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	width: 100%;
+}
+
+.note-item {
+	background: var(--white);
+	border: 1px solid var(--border-color);
+	border-bottom: 0;
+	overflow: hidden;
+	font-size: var(--font-size-xs);
+}
+
+.note-item:last-child {
+	border-bottom: 1px solid var(--border-color);
+}
+
+.note-item.archived {
+	opacity: 0.7;
+	filter: grayscale(0.3);
+}
+
+.note-header {
+	display: grid;
+	grid-template-columns: auto auto 1fr;
+	align-items: center;
+	padding: 0px 12px;
+	background: var(--gray-50);
+	border-bottom: 1px solid var(--border-light);
+	gap: 12px;
+	min-height: 25px;
+}
+
+.note-date {
+	font-size: 11px;
+	color: var(--gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.note-phase {
+	font-size: 11px;
+	color: var(--gray-700);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.note-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	justify-content: flex-end;
+}
+
+.note-text {
+	padding: 8px 12px;
+	color: var(--gray-600);
+	font-size: 13px;
+	line-height: 1.4;
+	word-wrap: break-word;
+	min-height: 32px;
+	display: flex;
+	align-items: center;
+}
+
+.note-text .note-edit-textarea {
+	width: 100%;
+	border: none;
+	outline: none;
+	resize: vertical;
+	font-size: 13px;
+	color: var(--text-color);
+	background: transparent;
+	padding: 0;
+	line-height: 1.4;
+	min-height: 60px;
+}
+
+.note-text .note-edit-textarea:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	background: var(--white);
+	border-radius: 4px;
+	padding: 4px;
+}
+
 /* Excel-like inline editing for tasks and notes tables */
 .notes-table tr.editing,
 .tasks-table tr.editing {
@@ -924,4 +1013,218 @@ tr.editing .actions-cell button {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+}
+
+/* Contacts list layout - exactly same as notes/tasks but with 4 columns */
+.contacts-list-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	width: 100%;
+}
+
+.contact-item {
+	background: var(--white);
+	border: 1px solid var(--border-color);
+	border-bottom: 0;
+	overflow: hidden;
+	font-size: var(--font-size-xs);
+}
+
+.contact-item:last-child {
+	border-bottom: 1px solid var(--border-color);
+}
+
+.contact-item.archived {
+	opacity: 0.7;
+	filter: grayscale(0.3);
+}
+
+.contact-header {
+	display: grid;
+	grid-template-columns: auto auto auto auto 1fr;
+	align-items: center;
+	padding: 0px 12px;
+	background: var(--gray-50);
+	border-bottom: 1px solid var(--border-light);
+	gap: 12px;
+	min-height: 25px;
+}
+
+.contact-name {
+	font-size: 11px;
+	color: var(--gray-700);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.contact-email {
+	font-size: 11px;
+	color: var(--gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.contact-phone {
+	font-size: 11px;
+	color: var(--gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.contact-company {
+	font-size: 11px;
+	color: var(--gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.contact-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	justify-content: flex-end;
+}
+
+.contact-edit-input {
+	width: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 11px;
+	color: var(--text-color);
+	padding: 2px 4px;
+	border-radius: 3px;
+}
+
+.contact-edit-input:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	background: var(--white);
+	padding: 4px;
+}
+
+/* Tasks list layout - exactly same as notes but with 5 columns */
+.tasks-list-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	width: 100%;
+}
+
+.task-item {
+	background: var(--white);
+	border: 1px solid var(--border-color);
+	border-bottom: 0;
+	overflow: hidden;
+	font-size: var(--font-size-xs);
+}
+
+.task-item:last-child {
+	border-bottom: 1px solid var(--border-color);
+}
+
+.task-item.archived {
+	opacity: 0.7;
+	filter: grayscale(0.3);
+}
+
+.task-header {
+	display: grid;
+	grid-template-columns: auto auto auto auto 1fr;
+	align-items: center;
+	padding: 0px 12px;
+	background: var(--gray-50);
+	border-bottom: 1px solid var(--border-light);
+	gap: 12px;
+	min-height: 25px;
+}
+
+.task-status,
+.task-status-display {
+	font-size: 11px;
+	color: var(--gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.task-priority,
+.task-priority-display {
+	font-size: 11px;
+	color: var(--gray-700);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.task-due-date,
+.task-due-date-display {
+	font-size: 11px;
+	color: var(--gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.task-duration,
+.task-duration-display {
+	font-size: 11px;
+	color: var(--gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.task-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	justify-content: flex-end;
+}
+
+.task-text {
+	padding: 8px 12px;
+	color: var(--gray-600);
+	font-size: 13px;
+	line-height: 1.4;
+	word-wrap: break-word;
+	min-height: 32px;
+	display: flex;
+	align-items: center;
+}
+
+.task-text .task-text-edit {
+	width: 100%;
+	border: none;
+	outline: none;
+	resize: vertical;
+	font-size: 13px;
+	color: var(--text-color);
+	background: transparent;
+	padding: 0;
+	line-height: 1.4;
+	min-height: 60px;
+	padding: 4px;
+}
+
+.task-text .task-text-edit:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	background: var(--white);
+	border-radius: 4px;
+}
+
+.task-edit-input {
+	width: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 11px;
+	color: var(--text-color);
+	padding: 2px 4px;
+	border-radius: 3px;
+}
+
+.task-edit-input:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	background: var(--white);
+	padding: 4px;
 }
