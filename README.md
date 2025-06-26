@@ -1,5 +1,7 @@
 # JobTracker
 
+A local-first, privacy-focused job application tracker that runs entirely in your browser. No backend, no subscriptions, no tracking - just you and your job search data.
+
 ## The Story
 
 I'm looking for a job, so I created a spreadsheet...
@@ -29,29 +31,36 @@ If someone finds useful, I will rebuild using react, Lit or something like this
 
 ### 📊 Core Tracking
 - **Job Applications** - Add, edit, manage applications with full workflow
-- **Kanban Board** - Visual pipeline from wishlist to offer
-- **Task Management** - Track next steps and deadlines
-- **Calendar View** - See interviews and deadlines in month/week/day views
+- **Kanban Board** - Visual pipeline from wishlist to offer with drag & drop
+- **Task Management** - Track next steps and deadlines with status boards
+- **Calendar Views** - Month, week, and day views for interviews and deadlines
 - **Contact Management** - Store recruiter and hiring manager details
 - **Notes System** - Keep detailed notes on each application
+- **CV/Resume Builder** - Generate and preview your resume
 
 ### 🎨 Views & Interface
+- **Dashboard** - Statistics overview and today's tasks at a glance
 - **Jobs Table** - Sortable, filterable list of all applications
-- **Application Board** - Kanban-style visual workflow
-- **Task Board** - Manage todos by status with drag & drop
-- **Calendar Views** - Month, week, and day views with task scheduling
-- **Dashboard** - Statistics and today's tasks overview
-- **Resume Builder** - Generate and preview your resume, I will add a export PDF, I promise
+- **Applications Board** - Kanban-style visual workflow (Wishlist → Applied → Screening → Interview → Final → Offer)
+- **Task Board** - Manage todos by status (TODO → In Progress → Done)
+- **Calendar** - Visualize your schedule with month, week, and day views
+- **Contacts** - Centralized contact management for your network
 
 ### 🌍 User Experience  
-- **Multi-language** - English and Portuguese support
+- **Multi-language** - English and Portuguese support (i18n ready)
+- **Mobile Responsive** - Optimized layouts for all screen sizes
 - **Drag & Drop** - Move tasks and jobs between columns
+- **Keyboard Shortcuts** - Efficient navigation (Shift+Enter to submit forms)
 - **Auto-save** - Changes saved automatically to localStorage
+- **Demo Mode** - Try with sample data before adding your own
 
 ### 🔧 Technical Features
 - **Single File Build** - Everything bundled into one HTML file (~300KB)
 - **Offline First** - No internet required after initial load
 - **Local Storage** - All data stays in your browser
+- **No Dependencies** - Pure vanilla JavaScript, no runtime dependencies
+- **Component Architecture** - Modular design with reusable components
+- **Event Delegation** - Centralized event management system
 
 ## 📋 Workflow Support
 
