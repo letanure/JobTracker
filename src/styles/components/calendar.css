@@ -725,8 +725,8 @@
 
 .calendar-event-positioned {
 	position: absolute;
-	width: calc(100% - 8px);
-	margin: 2px 4px;
+	width: calc(100% - 16px);
+	margin: 2px 0;
 	z-index: 1;
 }
 

@@ -8,7 +8,7 @@ function editJob(job) {
 	if (typeof KanbanBoard !== "undefined" && KanbanBoard.openJobEditModal) {
 		KanbanBoard.openJobEditModal(job);
 	} else {
-		console.error(I18n.t("kanban.messages.kanbanNotAvailable") || "KanbanBoard not available for job editing");
+		console.error(I18n.t("kanban.messages.kanbanNotAvailable"));
 	}
 }
 
@@ -17,7 +17,7 @@ async function archiveJob(job) {
 	// Confirm archiving using async confirm dialog
 	const confirmed = await confirm(
 		I18n.t("messages.confirmArchive", { position: job.position, company: job.company }) ||
-			I18n.t("kanban.messages.archiveConfirmation", { position: job.position, company: job.company }) || `Are you sure you want to archive the application for ${job.position} at ${job.company}?`
+			I18n.t("kanban.messages.archiveConfirmation", { position: job.position, company: job.company })
 	);
 
 	if (confirmed) {
@@ -47,6 +47,6 @@ function addRow() {
 	if (typeof KanbanBoard !== "undefined" && KanbanBoard.openAddJobModal) {
 		KanbanBoard.openAddJobModal();
 	} else {
-		console.error(I18n.t("kanban.messages.kanbanNotAvailableCreation") || "KanbanBoard not available for job creation");
+		console.error(I18n.t("kanban.messages.kanbanNotAvailableCreation"));
 	}
 }

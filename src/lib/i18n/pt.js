@@ -81,10 +81,11 @@ const PT_TRANSLATIONS = {
 		placeholders: {
 			company: "Nome da Empresa",
 			position: "Cargo",
-
 			salaryRange: "Faixa Salarial",
+			salaryExample: "ex: R$ 5.000 - R$ 7.000",
 			location: "Localização",
 			sourceUrl: "URL da Vaga",
+			urlExample: "https://",
 		},
 	},
 	priorities: {
@@ -148,6 +149,8 @@ const PT_TRANSLATIONS = {
 			"Tem certeza de que deseja arquivar a candidatura para {position} na {company}?",
 	},
 	resume: {
+		previewHeader: "Visualização do Currículo",
+		present: "Atual",
 		basics: {
 			title: "Informações Básicas",
 			name: "Nome Completo",
@@ -159,6 +162,11 @@ const PT_TRANSLATIONS = {
 			country: "País",
 			personalStatement: "Declaração Pessoal",
 			locationTitle: "Localização",
+		},
+		contact: {
+			email: "Email",
+			phone: "Telefone",
+			location: "Localização",
 		},
 		profiles: {
 			title: "Perfis Online",
@@ -403,6 +411,8 @@ const PT_TRANSLATIONS = {
 		cancelEditingTitle: "Cancelar edição",
 		noDueDate: "Sem data de vencimento",
 		placeholderNameEmail: "Nome\nEmail",
+		currentStep: "Etapa Atual",
+		requiredAsterisk: " *",
 	},
 	footer: {
 		madeWith: "Feito com",
@@ -423,6 +433,37 @@ const PT_TRANSLATIONS = {
 		task: "Tarefa",
 		interview: "Entrevista",
 		followUp: "Acompanhamento",
+		eventPrefixes: {
+			applied: "Candidatou-se:",
+			interview: "Entrevista:",
+			followup: "Acompanhar:",
+		},
+		timeFormat: {
+			am: "AM",
+			pm: "PM",
+			today: "Hoje",
+			tomorrow: "Amanhã",
+		},
+		eventDetails: {
+			type: "Tipo:",
+			company: "Empresa:",
+			position: "Cargo:",
+			date: "Data:",
+			priority: "Prioridade:",
+			status: "Status:",
+		},
+		actions: {
+			openTasks: "Abrir Tarefas",
+			viewJob: "Ver Vaga",
+			close: "Fechar",
+		},
+		messages: {
+			moreEvents: "+{count} mais",
+			viewJobTooltip: "Ver vaga:",
+			dropAt: "Soltar em",
+			moveSuccess: "Movido com sucesso para",
+			moveSuccessAt: "em",
+		},
 		months: [
 			"Janeiro",
 			"Fevereiro",

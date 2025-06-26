@@ -80,10 +80,11 @@ const EN_TRANSLATIONS = {
 		placeholders: {
 			company: "Company Name",
 			position: "Position Title",
-
 			salaryRange: "Salary Range",
+			salaryExample: "e.g. $50k - $70k",
 			location: "Location",
 			sourceUrl: "Job Posting URL",
+			urlExample: "https://",
 		},
 	},
 	priorities: {
@@ -146,6 +147,8 @@ const EN_TRANSLATIONS = {
 		confirmArchive: "Are you sure you want to archive the application for {position} at {company}?",
 	},
 	resume: {
+		previewHeader: "Resume Preview",
+		present: "Present",
 		basics: {
 			title: "Basic Information",
 			name: "Full Name",
@@ -157,6 +160,11 @@ const EN_TRANSLATIONS = {
 			country: "Country",
 			personalStatement: "Personal Statement",
 			locationTitle: "Location",
+		},
+		contact: {
+			email: "Email",
+			phone: "Phone",
+			location: "Location",
 		},
 		profiles: {
 			title: "Online Profiles",
@@ -401,6 +409,8 @@ const EN_TRANSLATIONS = {
 		cancelEditingTitle: "Cancel editing",
 		noDueDate: "No due date",
 		placeholderNameEmail: "Name\nEmail",
+		currentStep: "Current Step",
+		requiredAsterisk: " *",
 	},
 	footer: {
 		madeWith: "Made with",
@@ -421,6 +431,37 @@ const EN_TRANSLATIONS = {
 		task: "Task",
 		interview: "Interview",
 		followUp: "Follow-up",
+		eventPrefixes: {
+			applied: "Applied:",
+			interview: "Interview:",
+			followup: "Follow up:",
+		},
+		timeFormat: {
+			am: "AM",
+			pm: "PM",
+			today: "Today",
+			tomorrow: "Tomorrow",
+		},
+		eventDetails: {
+			type: "Type:",
+			company: "Company:",
+			position: "Position:",
+			date: "Date:",
+			priority: "Priority:",
+			status: "Status:",
+		},
+		actions: {
+			openTasks: "Open Tasks",
+			viewJob: "View Job",
+			close: "Close",
+		},
+		messages: {
+			moreEvents: "+{count} more",
+			viewJobTooltip: "View job:",
+			dropAt: "Drop at",
+			moveSuccess: "Moved with success to",
+			moveSuccessAt: "at",
+		},
 		months: [
 			"January",
 			"February",

@@ -599,13 +599,13 @@ const CalendarView = {
 					eventText = event.task.text;
 					break;
 				case "applied":
-					eventText = `Applied: ${event.job.company}`;
+					eventText = `${I18n.t("calendar.eventPrefixes.applied")} ${event.job.company}`;
 					break;
 				case "interview":
-					eventText = `Interview: ${event.job.position}`;
+					eventText = `${I18n.t("calendar.eventPrefixes.interview")} ${event.job.position}`;
 					break;
 				case "followup":
-					eventText = `Follow up: ${event.job.company}`;
+					eventText = `${I18n.t("calendar.eventPrefixes.followup")} ${event.job.company}`;
 					break;
 			}
 

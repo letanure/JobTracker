@@ -432,7 +432,7 @@ const ResumeBuilder = {
 				// Right column: Resume preview
 				h(
 					"div.resume-preview-column",
-					h("div.preview-header", "Resume Preview"),
+					h("div.preview-header", I18n.t("resume.previewHeader")),
 					h(
 						"div.cv-container",
 						{
@@ -534,7 +534,7 @@ const ResumeBuilder = {
 			contactItems.push(
 				h(
 					"div.cv-contact-item",
-					h("span.cv-contact-label", "Email"),
+					h("span.cv-contact-label", I18n.t("resume.contact.email")),
 					h("a.cv-contact-value", { href: `mailto:${basics.email}` }, basics.email)
 				)
 			);
@@ -544,7 +544,7 @@ const ResumeBuilder = {
 			contactItems.push(
 				h(
 					"div.cv-contact-item",
-					h("span.cv-contact-label", "Phone"),
+					h("span.cv-contact-label", I18n.t("resume.contact.phone")),
 					h("span.cv-contact-value", basics.phone)
 				)
 			);
@@ -555,7 +555,7 @@ const ResumeBuilder = {
 			contactItems.push(
 				h(
 					"div.cv-contact-item",
-					h("span.cv-contact-label", "Location"),
+					h("span.cv-contact-label", I18n.t("resume.contact.location")),
 					h("span.cv-contact-value", location)
 				)
 			);
@@ -620,7 +620,7 @@ const ResumeBuilder = {
 			h(
 				"div.cv-experience-meta",
 				exp.startDate || exp.endDate
-					? h("span.cv-experience-dates", `${exp.startDate || ""} - ${exp.endDate || "Present"}`)
+					? h("span.cv-experience-dates", `${exp.startDate || ""} - ${exp.endDate || I18n.t("resume.present")}`)
 					: "",
 				exp.location ? h("span.cv-experience-location", exp.location) : ""
 			),
@@ -656,7 +656,7 @@ const ResumeBuilder = {
 			edu.area ? h("h5.cv-education-field", edu.area) : "",
 			edu.institution ? h("h6.cv-education-institution", edu.institution) : "",
 			edu.startDate || edu.endDate
-				? h("span.cv-education-dates", `${edu.startDate || ""} - ${edu.endDate || "Present"}`)
+				? h("span.cv-education-dates", `${edu.startDate || ""} - ${edu.endDate || I18n.t("resume.present")}`)
 				: ""
 		);
 	},
@@ -818,7 +818,7 @@ const ResumeBuilder = {
 			h("h4.cv-volunteer-role", vol.position || vol.role),
 			h("h5.cv-volunteer-organization", vol.organization),
 			vol.startDate || vol.endDate
-				? h("span.cv-volunteer-dates", `${vol.startDate || ""} - ${vol.endDate || "Present"}`)
+				? h("span.cv-volunteer-dates", `${vol.startDate || ""} - ${vol.endDate || I18n.t("resume.present")}`)
 				: ""
 		);
 	},

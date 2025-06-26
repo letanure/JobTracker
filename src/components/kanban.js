@@ -240,7 +240,7 @@ const KanbanBoard = {
 		const phaseHeader = h(
 			"div.kanban-phase-header",
 			h("span.material-symbols-outlined kanban-phase-icon", "schedule"),
-			h("span.kanban-phase-text", `${getPhaseText(currentPhase)} Stage:`)
+			h("span.kanban-phase-text", `${getPhaseText(currentPhase)} ${I18n.t("kanban.stage")}`)
 		);
 
 		const substepsList = h("div.kanban-substeps-list");
@@ -715,7 +715,7 @@ const KanbanBoard = {
 									isSelected ? "check_circle" : "radio_button_unchecked"
 								),
 								h("span.workflow-substep-text", getSubstepText(substep)),
-								isCurrent && h("span.current-indicator", "current")
+								isCurrent && h("span.current-indicator", I18n.t("kanban.current"))
 							)
 						);
 					})
@@ -850,7 +850,7 @@ const KanbanBoard = {
 		substepElement.classList.add("current");
 		const toggle = substepElement.querySelector(".workflow-substep-toggle");
 		if (!toggle.querySelector(".current-indicator")) {
-			toggle.appendChild(h("span.current-indicator", "current"));
+			toggle.appendChild(h("span.current-indicator", I18n.t("kanban.current")));
 		}
 
 		// Update current phase highlighting
@@ -1072,7 +1072,7 @@ const KanbanBoard = {
 								h("input", {
 									type: "text",
 									name: "salaryRange",
-									placeholder: "e.g. $50k - $70k",
+									placeholder: I18n.t("table.placeholders.salaryExample"),
 								})
 							),
 							h(
@@ -1100,7 +1100,7 @@ const KanbanBoard = {
 								h("input", {
 									type: "url",
 									name: "sourceUrl",
-									placeholder: "https://",
+									placeholder: I18n.t("table.placeholders.urlExample"),
 								})
 							),
 							h(
@@ -1121,7 +1121,7 @@ const KanbanBoard = {
 							"div.form-row",
 							h(
 								"div.form-field full-width",
-								h("label", h("span", "Current Step"), h("span.required-asterisk", " *")),
+								h("label", h("span", I18n.t("forms.currentStep")), h("span.required-asterisk", I18n.t("forms.requiredAsterisk"))),
 								KanbanBoard.createCurrentStepSelector(job)
 							)
 						),
