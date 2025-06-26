@@ -575,9 +575,8 @@ const CalendarView = {
 		CalendarView.selectedDate = date;
 		const events = CalendarView.getEventsForDate(date);
 
-		if (events.length > 0) {
-			CalendarView.showDateEvents(date, events);
-		}
+		// Always show the day view modal with tasks for this date
+		CalendarView.showDayTasksModal(date, events);
 	},
 
 	// Render day event cards (mini cards with text)
@@ -1033,6 +1032,193 @@ const CalendarView = {
 		document.body.appendChild(modal);
 	},
 
+	// Show day tasks modal (enhanced version that shows all tasks for a day)
+	showDayTasksModal: (date, events) => {
+		const months = I18n.t("calendar.months");
+		const weekdays = I18n.t("calendar.weekdaysFull");
+		const dateStr = `${weekdays[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+
+		// Get all tasks for this date from all jobs
+		const allTasks = CalendarView.getAllTasksForDate(date);
+
+		// Filter tasks into calendar events (with specific times) and other tasks
+		const timedTasks = allTasks.filter(
+			(task) => task.dueDate && CalendarView.hasSpecificTime(task.dueDate)
+		);
+		const otherTasks = allTasks.filter(
+			(task) => !task.dueDate || !CalendarView.hasSpecificTime(task.dueDate)
+		);
+
+		const modal = h(
+			"div.modal-overlay",
+			{
+				onclick: (e) => {
+					if (e.target.className === "modal-overlay") e.target.remove();
+				},
+			},
+			h(
+				"div.modal.calendar-day-tasks-modal",
+				h(
+					"div.modal-header",
+					h("h3.modal-title", `${I18n.t("calendar.tasksForDate") || "Tasks for"} ${dateStr}`),
+					h(
+						"button.modal-close",
+						{
+							onclick: (e) => e.target.closest(".modal-overlay").remove(),
+						},
+						"×"
+					)
+				),
+				h(
+					"div.modal-body",
+					// Calendar events section
+					events.length > 0 &&
+						h(
+							"div.day-modal-section",
+							h(
+								"h4.day-modal-section-title",
+								I18n.t("calendar.calendarEvents") || "Calendar Events"
+							),
+							h(
+								"div.calendar-events-list",
+								...events.map((event) => CalendarView.renderEventCard(event))
+							)
+						),
+
+					// Timed tasks section
+					timedTasks.length > 0 &&
+						h(
+							"div.day-modal-section",
+							h(
+								"h4.day-modal-section-title",
+								I18n.t("calendar.scheduledTasks") || "Scheduled Tasks"
+							),
+							h(
+								"div.day-tasks-list",
+								...timedTasks.map((task) => CalendarView.renderTaskCard(task))
+							)
+						),
+
+					// Other tasks section
+					otherTasks.length > 0 &&
+						h(
+							"div.day-modal-section",
+							h("h4.day-modal-section-title", I18n.t("calendar.otherTasks") || "Other Tasks Due"),
+							h(
+								"div.day-tasks-list",
+								...otherTasks.map((task) => CalendarView.renderTaskCard(task))
+							)
+						),
+
+					// Empty state
+					events.length === 0 &&
+						allTasks.length === 0 &&
+						h(
+							"div.empty-state",
+							h("p", I18n.t("calendar.noTasksForDay") || "No tasks or events for this day"),
+							h(
+								"p.empty-state-hint",
+								I18n.t("calendar.createTaskHint") || "You can create tasks from the Tasks tab"
+							)
+						)
+				)
+			)
+		);
+
+		document.body.appendChild(modal);
+	},
+
+	// Get all tasks for a specific date (from all jobs)
+	getAllTasksForDate: (date) => {
+		const targetDateStr = CalendarView.formatDateKey(date);
+		const tasks = [];
+
+		jobsData.forEach((job) => {
+			if (job.tasks && job.tasks.length > 0) {
+				job.tasks.forEach((task) => {
+					if (!task.archived && task.dueDate) {
+						const taskDateStr = CalendarView.formatDateKey(new Date(task.dueDate));
+						if (taskDateStr === targetDateStr) {
+							tasks.push({
+								...task,
+								jobId: job.id,
+								jobCompany: job.company,
+								jobPosition: job.position,
+								job: job,
+							});
+						}
+					}
+				});
+			}
+		});
+
+		return tasks;
+	},
+
+	// Check if a date has a specific time (not just date)
+	hasSpecificTime: (dateString) => {
+		const date = new Date(dateString);
+		return date.getHours() !== 0 || date.getMinutes() !== 0;
+	},
+
+	// Render task card for the day modal
+	renderTaskCard: (task) => {
+		const priorityClass = task.priority ? `priority-${task.priority}` : "";
+		const statusClass = task.status ? `status-${task.status}` : "";
+
+		return h(
+			"div",
+			{
+				className: `day-task-card ${priorityClass}`,
+				onclick: () => CalendarView.openTaskForEdit(task),
+			},
+			h(
+				"div.day-task-header",
+				h("div.day-task-title", task.text || task.task || "Untitled task"),
+				task.priority &&
+					h("span.task-priority-badge", {
+						className: `priority-dot priority-${task.priority}`,
+					}),
+				h(
+					"span.task-status-badge",
+					{
+						className: `status-indicator ${statusClass}`,
+					},
+					getTaskStatusText(task.status)
+				)
+			),
+			h(
+				"div.day-task-meta",
+				h("span.day-task-job", `${task.jobCompany} - ${task.jobPosition}`),
+				task.dueDate &&
+					CalendarView.hasSpecificTime(task.dueDate) &&
+					h(
+						"span.day-task-time",
+						new Date(task.dueDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+					)
+			)
+		);
+	},
+
+	// Open task for editing
+	openTaskForEdit: (task) => {
+		// Close the day modal first
+		const dayModal = document.querySelector(".calendar-day-tasks-modal");
+		if (dayModal) {
+			dayModal.closest(".modal-overlay").remove();
+		}
+
+		// Open task edit modal if TasksBoard is available
+		if (typeof TasksBoard !== "undefined" && TasksBoard.openTaskEditModal) {
+			TasksBoard.openTaskEditModal(task);
+		} else {
+			// Fallback - could implement a simple task view/edit
+			alert(
+				`Task: ${task.text}\nJob: ${task.jobCompany} - ${task.jobPosition}\nStatus: ${getTaskStatusText(task.status)}`
+			);
+		}
+	},
+
 	// Render event card
 	renderEventCard: (event) => {
 		const eventColorClass = CalendarView.getEventClass(
@@ -1285,8 +1471,8 @@ const CalendarView = {
 		const mouseY = e.clientY - rect.top;
 
 		// Calculate which 15-minute slot the mouse is over
-		const slotHeight = 20; // 30-min slot = 20px
-		const quarterSlotHeight = slotHeight / 2; // 15-min = 10px
+		const slotHeight = 30; // 30-min slot = 30px
+		const quarterSlotHeight = 15; // 15-min = 15px
 
 		const slotIndex = Math.floor(mouseY / quarterSlotHeight);
 		const snapY = slotIndex * quarterSlotHeight;

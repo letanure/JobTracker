@@ -124,7 +124,7 @@ const TasksBoard = {
 
 		// Priority indicator
 		const priorityDot = h("div", {
-			className: `tasks-priority-dot priority-${task.priority}`,
+			className: `tasks-priority-dot priority-dot priority-${task.priority}`,
 		});
 
 		// Due date indicator

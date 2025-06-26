@@ -15,7 +15,6 @@ textarea {
 	color: var(--text-color);
 	transition: var(--transition-fast);
 	min-height: 32px;
-	box-shadow: inset 0 1px 0 rgba(27, 31, 35, 0.075);
 }
 
 .contact-field-input {
@@ -84,9 +83,11 @@ textarea {
 
 .contact-form-row {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 8px;
+	grid-template-columns: 150px 180px 130px 170px 1fr;
+	gap: 12px;
 	margin-bottom: 0;
+	align-items: center;
+	min-height: 40px;
 }
 
 .add-contact-name,
@@ -96,20 +97,21 @@ textarea {
 	width: 100%;
 	padding: 6px 8px;
 	border: 1px solid var(--border-color);
-	border-radius: 6px;
-	font-size: var(--font-size-xs);
+	border-radius: 4px;
+	font-size: 13px;
 	background: var(--white);
-	min-height: 28px;
+	min-height: 32px;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	box-sizing: border-box;
 }
 
 .add-contact-name:focus,
 .add-contact-email:focus,
 .add-contact-phone:focus,
 .add-contact-company:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
 	border-color: var(--blue-500);
-	box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
-	outline: none;
 }
 
 /* GitHub-style add forms */

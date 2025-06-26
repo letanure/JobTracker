@@ -17,9 +17,13 @@ const Dashboard = {
 			Dashboard.createTomorrowTasksSection()
 		);
 
+		// Create archived jobs section
+		const archivedJobsSection = Dashboard.createArchivedJobsSection();
+
 		// Assemble dashboard
 		container.appendChild(statsSection);
 		container.appendChild(tasksContainer);
+		container.appendChild(archivedJobsSection);
 
 		return container;
 	},
@@ -146,6 +150,97 @@ const Dashboard = {
 			"div.dashboard-tasks-section",
 			h("h3.dashboard-section-title", I18n.t("dashboard.tomorrowTasks.title")),
 			tasksList
+		);
+	},
+
+	// Create archived jobs section
+	createArchivedJobsSection: () => {
+		// Get archived jobs from originalData
+		const archivedJobs =
+			typeof originalData !== "undefined" ? originalData.filter((job) => job.archived) : [];
+
+		const jobsList = h("div.dashboard-archived-jobs-list");
+
+		if (archivedJobs.length === 0) {
+			jobsList.appendChild(
+				h("div.empty-state", I18n.t("dashboard.archivedJobs.noJobs") || "No archived jobs")
+			);
+		} else {
+			// Show only the most recent 5 archived jobs
+			const recentArchivedJobs = archivedJobs
+				.sort(
+					(a, b) =>
+						new Date(b.archivedAt || b.appliedDate) - new Date(a.archivedAt || a.appliedDate)
+				)
+				.slice(0, 5);
+
+			recentArchivedJobs.forEach((job) => {
+				jobsList.appendChild(Dashboard.createArchivedJobItem(job));
+			});
+
+			// If there are more than 5, show a "view all" link
+			if (archivedJobs.length > 5) {
+				jobsList.appendChild(
+					h(
+						"div.view-all-archived",
+						h(
+							"button.view-all-btn",
+							{
+								onclick: () => Dashboard.openArchivedJobsModal(archivedJobs),
+							},
+							`View all ${archivedJobs.length} archived jobs`
+						)
+					)
+				);
+			}
+		}
+
+		return h(
+			"div.dashboard-archived-section",
+			h(
+				"h3.dashboard-section-title",
+				I18n.t("dashboard.archivedJobs.title") || "Archived Jobs",
+				h("span.section-count", archivedJobs.length.toString())
+			),
+			jobsList
+		);
+	},
+
+	// Create an archived job item
+	createArchivedJobItem: (job) => {
+		const archivedDate = job.archivedAt
+			? new Date(job.archivedAt).toLocaleDateString()
+			: job.appliedDate
+				? new Date(job.appliedDate).toLocaleDateString()
+				: "Unknown";
+
+		return h(
+			"div.dashboard-archived-job-item",
+			{
+				onclick: () => Dashboard.openArchivedJobModal(job),
+			},
+			h(
+				"div.archived-job-info",
+				h("div.archived-job-title", `${job.position} at ${job.company}`),
+				h("div.archived-job-phase", getPhaseText(job.currentPhase))
+			),
+			h("div.archived-job-date", archivedDate)
+		);
+	},
+
+	// Open archived jobs modal (placeholder for now)
+	openArchivedJobsModal: (archivedJobs) => {
+		// For now, just show an alert - can be enhanced later
+		alert(
+			`You have ${archivedJobs.length} archived jobs. This modal can be enhanced to show all archived jobs.`
+		);
+	},
+
+	// Open single archived job modal (placeholder for now)
+	openArchivedJobModal: (job) => {
+		// For now, just show an alert - can be enhanced later
+		alert(
+			`Archived job: ${job.position} at ${job.company}\nPhase: ${getPhaseText(job.currentPhase)}`
 		);
 	},
 

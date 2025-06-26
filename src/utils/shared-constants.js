@@ -92,8 +92,8 @@ export const CALENDAR_CONSTANTS = {
 		START: 8, // 8am
 		END: 20, // 8pm
 	},
-	TIME_SLOT_HEIGHT: 20, // pixels
-	QUARTER_SLOT_HEIGHT: 10, // 15-minute intervals
+	TIME_SLOT_HEIGHT: 30, // pixels
+	QUARTER_SLOT_HEIGHT: 7.5, // 15-minute intervals (30px / 4)
 	WEEKDAYS: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 	WEEKDAYS_SHORT: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 };

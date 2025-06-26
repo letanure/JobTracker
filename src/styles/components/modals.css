@@ -107,9 +107,8 @@
 .archived-notes-section,
 .archived-tasks-section,
 .archived-contacts-section {
-	margin-top: 24px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border-color);
+	margin-top: 12px;
+	padding-top: 0;
 }
 
 .notes-archived-header,

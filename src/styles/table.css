@@ -1042,7 +1042,7 @@ tr.editing .actions-cell button {
 
 .contact-header {
 	display: grid;
-	grid-template-columns: 140px 160px 120px 120px 1fr;
+	grid-template-columns: 150px 180px 130px 170px 1fr;
 	align-items: center;
 	padding: 0px 12px;
 	background: var(--gray-50);
@@ -1058,27 +1058,18 @@ tr.editing .actions-cell button {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: 140px;
+	max-width: 150px;
 }
 
-.contact-email {
+.contact-email a,
+.contact-phone a {
 	font-size: 13px;
 	color: var(--gray-600);
 	font-weight: 500;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: 160px;
-}
-
-.contact-phone {
-	font-size: 13px;
-	color: var(--gray-600);
-	font-weight: 500;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	max-width: 120px;
+	max-width: 180px;
 }
 
 .contact-company {
@@ -1088,7 +1079,7 @@ tr.editing .actions-cell button {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: 120px;
+	max-width: 170px;
 }
 
 .contact-actions {
@@ -1119,7 +1110,7 @@ tr.editing .actions-cell button {
 /* Add contact form grid layout */
 .add-contact-grid-row {
 	display: grid;
-	grid-template-columns: 140px 160px 120px 120px 1fr;
+	grid-template-columns: 150px 180px 130px 170px 1fr;
 	align-items: center;
 	padding: 8px 12px;
 	background: var(--gray-50);

@@ -4,64 +4,57 @@
 
 // Simple task editing system (following notes pattern)
 const enableTaskModalEditing = (task, job) => {
-	// Find the task row by looking for the span with data-task-id
-	const taskSpan = document.querySelector(`[data-task-id="${task.id}"]`);
-	if (!taskSpan) return;
+	const taskItem = document.querySelector(`[data-task-id="${task.id}"]`);
+	if (!taskItem) return;
 
-	const taskRow = taskSpan.closest("tr");
-	if (!taskRow) return;
-
-	// Replace the first row (status, priority, due date, duration, actions)
-	taskRow.innerHTML = `
-		<td class="task-status-cell">
-			<select class="task-edit-input" data-field="status">
-				<option value="todo" ${task.status === "todo" ? "selected" : ""}>${I18n.t("modals.tasks.statusTodo")}</option>
-				<option value="in-progress" ${task.status === "in-progress" ? "selected" : ""}>${I18n.t("modals.tasks.statusInProgress")}</option>
-				<option value="done" ${task.status === "done" ? "selected" : ""}>${I18n.t("modals.tasks.statusDone")}</option>
-			</select>
-		</td>
-		<td class="task-priority-cell">
-			<select class="task-edit-input" data-field="priority">
-				<option value="low" ${task.priority === "low" ? "selected" : ""}>${I18n.t("modals.tasks.priorityLow")}</option>
-				<option value="medium" ${task.priority === "medium" ? "selected" : ""}>${I18n.t("modals.tasks.priorityMedium")}</option>
-				<option value="high" ${task.priority === "high" ? "selected" : ""}>${I18n.t("modals.tasks.priorityHigh")}</option>
-			</select>
-		</td>
-		<td class="task-due-date-cell">
-			<input type="datetime-local" class="task-edit-input" data-field="dueDate" value="${task.dueDate ? task.dueDate.slice(0, 16) : ""}" />
-		</td>
-		<td class="task-duration-cell">
-			<select class="task-edit-input" data-field="duration">
-				<option value="" ${!task.duration ? "selected" : ""}>—</option>
-				<option value="15min" ${task.duration === "15min" ? "selected" : ""}>15 min</option>
-				<option value="30min" ${task.duration === "30min" ? "selected" : ""}>30 min</option>
-				<option value="1h" ${task.duration === "1h" ? "selected" : ""}>1h</option>
-				<option value="1h30" ${task.duration === "1h30" ? "selected" : ""}>1:30</option>
-				<option value="2h" ${task.duration === "2h" ? "selected" : ""}>2h</option>
-				<option value="3h" ${task.duration === "3h" ? "selected" : ""}>3h</option>
-			</select>
-		</td>
-		<td class="tasks-table-actions">
-			<button class="action-btn save-task-btn" title="${I18n.t("modals.common.save")}">
-				<span class="material-symbols-outlined icon-14">check</span>
-			</button>
-			<button class="action-btn cancel-task-btn" title="${I18n.t("modals.common.cancel")}">
-				<span class="material-symbols-outlined icon-14">close</span>
-			</button>
-		</td>
+	// Replace the task item with editing structure
+	taskItem.innerHTML = `
+		<div class="task-header">
+			<div class="task-status">
+				<select class="task-edit-input" data-field="status">
+					<option value="todo" ${task.status === "todo" ? "selected" : ""}>${I18n.t("modals.tasks.statusTodo")}</option>
+					<option value="in-progress" ${task.status === "in-progress" ? "selected" : ""}>${I18n.t("modals.tasks.statusInProgress")}</option>
+					<option value="done" ${task.status === "done" ? "selected" : ""}>${I18n.t("modals.tasks.statusDone")}</option>
+				</select>
+			</div>
+			<div class="task-priority">
+				<select class="task-edit-input" data-field="priority">
+					<option value="low" ${task.priority === "low" ? "selected" : ""}>${I18n.t("modals.tasks.priorityLow")}</option>
+					<option value="medium" ${task.priority === "medium" ? "selected" : ""}>${I18n.t("modals.tasks.priorityMedium")}</option>
+					<option value="high" ${task.priority === "high" ? "selected" : ""}>${I18n.t("modals.tasks.priorityHigh")}</option>
+				</select>
+			</div>
+			<div class="task-due-date">
+				<input type="datetime-local" class="task-edit-input" data-field="dueDate" value="${task.dueDate ? task.dueDate.slice(0, 16) : ""}" />
+			</div>
+			<div class="task-duration">
+				<select class="task-edit-input" data-field="duration">
+					<option value="" ${!task.duration ? "selected" : ""}>—</option>
+					<option value="15min" ${task.duration === "15min" ? "selected" : ""}>15 min</option>
+					<option value="30min" ${task.duration === "30min" ? "selected" : ""}>30 min</option>
+					<option value="1h" ${task.duration === "1h" ? "selected" : ""}>1h</option>
+					<option value="1h30" ${task.duration === "1h30" ? "selected" : ""}>1:30</option>
+					<option value="2h" ${task.duration === "2h" ? "selected" : ""}>2h</option>
+					<option value="3h" ${task.duration === "3h" ? "selected" : ""}>3h</option>
+				</select>
+			</div>
+			<div class="task-actions">
+				<button class="action-btn save-task-btn" title="${I18n.t("modals.common.save")}">
+					<span class="material-symbols-outlined icon-14">check</span>
+				</button>
+				<button class="action-btn cancel-task-btn" title="${I18n.t("modals.common.cancel")}">
+					<span class="material-symbols-outlined icon-14">close</span>
+				</button>
+			</div>
+		</div>
+		<div class="task-text">
+			<textarea class="task-text-edit" rows="3" placeholder="${I18n.t("modals.tasks.placeholder")}">${task.text || ""}</textarea>
+		</div>
 	`;
 
-	// Find and replace the task text row (next sibling)
-	const taskTextRow = taskRow.nextElementSibling;
-	if (taskTextRow?.classList.contains("task-text-row")) {
-		taskTextRow.innerHTML = `
-			<td colspan="5" class="task-text-cell">
-				<textarea class="task-text-edit" rows="2" placeholder="${I18n.t("modals.tasks.placeholder")}">${task.text || ""}</textarea>
-			</td>
-		`;
-
-		// Add Shift+Enter support for textarea
-		const textarea = taskTextRow.querySelector(".task-text-edit");
+	// Add Shift+Enter support for textarea
+	const textarea = taskItem.querySelector(".task-text-edit");
+	if (textarea) {
 		textarea.onkeydown = (e) => {
 			if (e.key === "Enter" && e.shiftKey) {
 				e.preventDefault();
@@ -71,8 +64,8 @@ const enableTaskModalEditing = (task, job) => {
 	}
 
 	// Add event listeners to buttons
-	const saveBtn = taskRow.querySelector(".save-task-btn");
-	const cancelBtn = taskRow.querySelector(".cancel-task-btn");
+	const saveBtn = taskItem.querySelector(".save-task-btn");
+	const cancelBtn = taskItem.querySelector(".cancel-task-btn");
 
 	saveBtn.onclick = () => saveTaskEdits(task, job);
 	cancelBtn.onclick = () => cancelTaskEdits(task, job);
@@ -112,8 +105,8 @@ const saveTaskEdits = (task, job) => {
 	}
 
 	// Update data
-	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
-	const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+	const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
+	const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => String(t.id) === String(task.id));
 
 	jobsData[jobIndex].tasks[taskIndex].status = newData.status;
 	jobsData[jobIndex].tasks[taskIndex].priority = newData.priority;
@@ -152,15 +145,15 @@ const formatDuration = (duration) => {
 };
 
 const archiveTask = (task, job) => {
-	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
 	if (jobIndex === -1) return;
 
-	const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => t.id === task.id);
+	const taskIndex = jobsData[jobIndex].tasks.findIndex((t) => String(t.id) === String(task.id));
 	if (taskIndex === -1) return;
 
 	// Store archived section state before refresh
-	const archivedTable = document.getElementById("archived-tasks-table");
-	const wasExpanded = archivedTable && archivedTable.style.display === "table";
+	const archivedList = document.getElementById("archived-tasks-list");
+	const wasExpanded = archivedList && archivedList.style.display === "block";
 
 	jobsData[jobIndex].tasks[taskIndex].archived = !task.archived;
 	saveToLocalStorage();
@@ -171,10 +164,10 @@ const archiveTask = (task, job) => {
 	// Restore archived section state after refresh
 	if (wasExpanded) {
 		setTimeout(() => {
-			const newArchivedTable = document.getElementById("archived-tasks-table");
+			const newArchivedList = document.getElementById("archived-tasks-list");
 			const expandIcon = document.getElementById("archived-tasks-icon");
-			if (newArchivedTable) {
-				newArchivedTable.style.display = "table";
+			if (newArchivedList) {
+				newArchivedList.style.display = "block";
 				if (expandIcon) expandIcon.textContent = "expand_less";
 			}
 		}, 0);
@@ -188,93 +181,75 @@ const archiveTask = (task, job) => {
 const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 	return h(
 		"div",
-		// Active tasks table
+		// Active tasks list
 		sortedActiveTasks.length > 0
 			? h(
-					"div.tasks-table-container",
-					h(
-						"table.tasks-table",
+					"div.tasks-list-container",
+					...sortedActiveTasks.map((task) =>
 						h(
-							"thead",
+							"div.task-item",
+							{ key: task.id, "data-task-id": task.id },
 							h(
-								"tr",
-								h("th", "Status"),
-								h("th", "Priority"),
-								h("th", "Due Date"),
-								h("th", "Duration"),
-								h("th", "Actions")
-							)
-						),
-						h(
-							"tbody",
-							...sortedActiveTasks.flatMap((task) => [
+								"div.task-header",
 								h(
-									"tr.task-info-row",
-									{ key: task.id },
+									"div.task-status",
 									h(
-										"td.task-status-cell",
-										h(
-											"span.task-status-display",
-											{
-												"data-task-id": task.id,
-												"data-field": "status",
-											},
-											getTaskStatusText(task.status)
-										)
-									),
-									h(
-										"td.task-priority-cell",
-										h(
-											"span.task-priority-display",
-											{
-												"data-task-id": task.id,
-												"data-field": "priority",
-											},
-											getPriorityText(task.priority)
-										)
-									),
-									h(
-										"td.task-due-date-cell",
-										h(
-											"span.task-due-date-display",
-											{
-												"data-task-id": task.id,
-												"data-field": "dueDate",
-											},
-											task.dueDate ? formatDate(task.dueDate) : "—"
-										)
-									),
-									h(
-										"td.task-duration-cell",
-										h(
-											"span.task-duration-display",
-											{
-												"data-task-id": task.id,
-												"data-field": "duration",
-											},
-											formatDuration(task.duration)
-										)
-									),
-									h(
-										"td.tasks-table-actions",
-										h("button.action-btn.edit-task-btn", {
-											title: I18n.t("modals.tasks.editTitle"),
-											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-											onclick: () => enableTaskModalEditing(task, job),
-										}),
-										h("button.action-btn.archive-btn", {
-											title: I18n.t("modals.tasks.archiveTitle"),
-											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
-											onclick: () => archiveTask(task, job),
-										})
+										"span.task-status-display",
+										{
+											"data-task-id": task.id,
+											"data-field": "status",
+										},
+										getTaskStatusText(task.status)
 									)
 								),
 								h(
-									"tr",
-									{ key: `${task.id}-text`, className: "task-text-row" },
-									h("td.task-text-cell", { colspan: 5 }, task.text)
+									"div.task-priority",
+									h(
+										"span.task-priority-display",
+										{
+											"data-task-id": task.id,
+											"data-field": "priority",
+										},
+										getPriorityText(task.priority)
+									)
 								),
-							])
+								h(
+									"div.task-due-date",
+									h(
+										"span.task-due-date-display",
+										{
+											"data-task-id": task.id,
+											"data-field": "dueDate",
+										},
+										task.dueDate ? formatDate(task.dueDate) : "—"
+									)
+								),
+								h(
+									"div.task-duration",
+									h(
+										"span.task-duration-display",
+										{
+											"data-task-id": task.id,
+											"data-field": "duration",
+										},
+										formatDuration(task.duration)
+									)
+								),
+								h(
+									"div.task-actions",
+									h("button.action-btn.edit-task-btn", {
+										title: I18n.t("modals.tasks.editTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
+										onclick: () => enableTaskModalEditing(task, job),
+									}),
+									h("button.action-btn.archive-btn", {
+										title: I18n.t("modals.tasks.archiveTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+										onclick: () => archiveTask(task, job),
+									})
+								)
+							),
+							h("div.task-text", task.text)
 						)
 					)
 				)
@@ -288,13 +263,13 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 						"h4.tasks-archived-header",
 						{
 							onclick: () => {
-								const archivedTable = document.getElementById("archived-tasks-table");
+								const archivedList = document.getElementById("archived-tasks-list");
 								const expandIcon = document.getElementById("archived-tasks-icon");
-								if (archivedTable.style.display === "none") {
-									archivedTable.style.display = "table";
+								if (archivedList.style.display === "none") {
+									archivedList.style.display = "block";
 									expandIcon.textContent = "expand_less";
 								} else {
-									archivedTable.style.display = "none";
+									archivedList.style.display = "none";
 									expandIcon.textContent = "expand_more";
 								}
 							},
@@ -307,38 +282,28 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 						I18n.t("modals.tasks.archivedSection", { count: sortedArchivedTasks.length })
 					),
 					h(
-						"table.tasks-table.archived",
-						{ id: "archived-tasks-table", className: "hidden" },
-						h(
-							"thead",
+						"div.tasks-list-container.archived",
+						{ id: "archived-tasks-list", style: "display: none;" },
+						...sortedArchivedTasks.map((task) =>
 							h(
-								"tr",
-								h("th", "Status"),
-								h("th", "Priority"),
-								h("th", "Task"),
-								h("th", "Due Date"),
-								h("th", "Actions")
-							)
-						),
-						h(
-							"tbody",
-							...sortedArchivedTasks.map((task) =>
+								"div.task-item.archived",
+								{ key: task.id },
 								h(
-									"tr",
-									{ key: task.id },
-									h("td", getTaskStatusText(task.status)),
-									h("td", getPriorityText(task.priority)),
-									h("td.archived-task-text-cell", task.text),
-									h("td", task.dueDate ? formatDate(task.dueDate) : "—"),
+									"div.task-header",
+									h("div.task-status", getTaskStatusText(task.status)),
+									h("div.task-priority", getPriorityText(task.priority)),
+									h("div.task-due-date", task.dueDate ? formatDate(task.dueDate) : "—"),
+									h("div.task-duration", formatDuration(task.duration)),
 									h(
-										"td.tasks-table-actions",
+										"div.task-actions",
 										h("button.action-btn.archive-btn", {
 											title: I18n.t("modals.tasks.unarchiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => archiveTask(task, job),
 										})
 									)
-								)
+								),
+								h("div.task-text", task.text)
 							)
 						)
 					)
@@ -433,7 +398,7 @@ const refreshTasksModal = (job) => {
 	if (!modalBody) return;
 
 	// Get updated data
-	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
 	if (jobIndex === -1) return;
 
 	job.tasks = jobsData[jobIndex].tasks || [];
@@ -495,7 +460,7 @@ const TasksModal = ({ job, onClose }) => {
 		};
 
 		// Add task to job data
-		const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+		const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
 		if (jobIndex === -1) return;
 
 		if (!jobsData[jobIndex].tasks) {
@@ -567,7 +532,7 @@ const handleAddTask = () => {
 
 	const currentModal = modalTitle.closest(".modal-overlay");
 	const jobId = currentModal.dataset.jobId;
-	const job = jobsData.find((j) => j.id === jobId);
+	const job = jobsData.find((j) => String(j.id) === String(jobId));
 	if (!job) return;
 
 	// Use datetime-local value directly
@@ -587,7 +552,7 @@ const handleAddTask = () => {
 	};
 
 	// Add task to job data
-	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
 	if (jobIndex === -1) return;
 
 	if (!jobsData[jobIndex].tasks) {

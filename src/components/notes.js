@@ -195,30 +195,32 @@ const NotesModal = ({ job, onClose }) => {
 
 // Simple note editing system
 const enableNoteEditing = (note, job) => {
-	const noteRow = document.querySelector(`[data-note-id="${note.id}"]`);
-	if (!noteRow) return;
+	const noteItem = document.querySelector(`[data-note-id="${note.id}"]`);
+	if (!noteItem) return;
 
-	// Replace entire row with editing structure
-	noteRow.innerHTML = `
-		<td class="note-date-cell">${formatDate(note.date)}</td>
-		<td class="note-phase-cell">${note.phase ? I18n.t(`phases.${note.phase}`) : ""}</td>
-		<td class="note-text-cell">
-			<textarea class="note-edit-textarea" rows="2" placeholder="${I18n.t("modals.notes.placeholder")}">${note.text || ""}</textarea>
-		</td>
-		<td class="notes-table-actions">
-			<button class="action-btn save-note-btn " title="${I18n.t("modals.common.save")}">
-				<span class="material-symbols-outlined icon-14">check</span>
-			</button>
-			<button class="action-btn cancel-note-btn " title="${I18n.t("modals.common.cancel")}">
-				<span class="material-symbols-outlined icon-14">close</span>
-			</button>
-		</td>
+	// Replace the note item with editing structure
+	noteItem.innerHTML = `
+		<div class="note-header">
+			<div class="note-date">${formatDate(note.date)}</div>
+			<div class="note-phase">${note.phase ? I18n.t(`phases.${note.phase}`) : ""}</div>
+			<div class="note-actions">
+				<button class="action-btn save-note-btn" title="${I18n.t("modals.common.save")}">
+					<span class="material-symbols-outlined icon-14">check</span>
+				</button>
+				<button class="action-btn cancel-note-btn" title="${I18n.t("modals.common.cancel")}">
+					<span class="material-symbols-outlined icon-14">close</span>
+				</button>
+			</div>
+		</div>
+		<div class="note-text">
+			<textarea class="note-edit-textarea" rows="3" placeholder="${I18n.t("modals.notes.placeholder")}">${note.text || ""}</textarea>
+		</div>
 	`;
 
 	// Add event listeners
-	const saveBtn = noteRow.querySelector(".save-note-btn");
-	const cancelBtn = noteRow.querySelector(".cancel-note-btn");
-	const textarea = noteRow.querySelector(".note-edit-textarea");
+	const saveBtn = noteItem.querySelector(".save-note-btn");
+	const cancelBtn = noteItem.querySelector(".cancel-note-btn");
+	const textarea = noteItem.querySelector(".note-edit-textarea");
 
 	saveBtn.onclick = () => saveNoteEdits(note, job);
 	cancelBtn.onclick = () => cancelNoteEdits(note, job);
@@ -237,10 +239,10 @@ const enableNoteEditing = (note, job) => {
 };
 
 const saveNoteEdits = (note, job) => {
-	const noteRow = document.querySelector(`[data-note-id="${note.id}"]`);
-	if (!noteRow) return;
+	const noteItem = document.querySelector(`[data-note-id="${note.id}"]`);
+	if (!noteItem) return;
 
-	const textarea = noteRow.querySelector(".note-edit-textarea");
+	const textarea = noteItem.querySelector(".note-edit-textarea");
 	const newText = textarea.value.trim();
 
 	if (!newText) {
@@ -330,7 +332,7 @@ const handleAddNote = () => {
 	// Extract job info from title or use a data attribute approach
 	const currentModal = modalTitle.closest(".modal-overlay");
 	const jobId = currentModal.dataset.jobId;
-	const job = jobsData.find((j) => j.id === jobId);
+	const job = jobsData.find((j) => String(j.id) === String(jobId));
 	if (!job) return;
 
 	const newNote = {
@@ -341,7 +343,7 @@ const handleAddNote = () => {
 	};
 
 	// Add note to job data
-	const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+	const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
 	if (jobIndex === -1) return;
 
 	if (!jobsData[jobIndex].notes) {
@@ -375,8 +377,8 @@ const archiveNote = (note, job) => {
 	if (noteIndex === -1) return;
 
 	// Store archived section state before refresh
-	const archivedTable = document.getElementById("archived-notes-table");
-	const wasExpanded = archivedTable && archivedTable.style.display === "table";
+	const archivedList = document.getElementById("archived-notes-list");
+	const wasExpanded = archivedList && archivedList.style.display === "block";
 
 	jobsData[jobIndex].notes[noteIndex].archived = !note.archived;
 	saveToLocalStorage();
@@ -387,10 +389,10 @@ const archiveNote = (note, job) => {
 	// Restore archived section state after refresh
 	if (wasExpanded) {
 		setTimeout(() => {
-			const newArchivedTable = document.getElementById("archived-notes-table");
+			const newArchivedList = document.getElementById("archived-notes-list");
 			const expandIcon = document.getElementById("archived-notes-icon");
-			if (newArchivedTable) {
-				newArchivedTable.style.display = "table";
+			if (newArchivedList) {
+				newArchivedList.style.display = "block";
 				if (expandIcon) expandIcon.textContent = "expand_less";
 			}
 		}, 0);
@@ -404,46 +406,33 @@ const archiveNote = (note, job) => {
 const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 	return h(
 		"div",
-		// Active notes table
+		// Active notes list
 		sortedActiveNotes.length > 0
 			? h(
-					"div.notes-table-container",
-					h(
-						"table.notes-table",
+					"div.notes-list-container",
+					...sortedActiveNotes.map((note) =>
 						h(
-							"thead",
+							"div.note-item",
+							{ key: note.id, "data-note-id": note.id },
 							h(
-								"tr",
-								h("th", I18n.t("modals.notes.tableHeaders.phase") || "Phase"),
-								h("th", I18n.t("modals.notes.tableHeaders.date") || "Date"),
-								h("th", I18n.t("modals.notes.tableHeaders.note") || "Note"),
-								h("th", I18n.t("modals.notes.tableHeaders.actions") || "Actions")
-							)
-						),
-						h(
-							"tbody",
-							...sortedActiveNotes.map((note) =>
+								"div.note-header",
+								h("div.note-date", formatDate(note.date)),
+								h("div.note-phase", getPhaseText(note.phase)),
 								h(
-									"tr",
-									{ key: note.id, "data-note-id": note.id },
-									h("td.note-phase-cell", getPhaseText(note.phase)),
-									h("td.note-date-cell", formatDate(note.date)),
-									h("td.note-text-cell", note.text),
-									h(
-										"td.notes-table-actions",
-										h("button.action-btn.edit-note-btn", {
-											title: I18n.t("modals.notes.editTitle"),
-											innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
-											onclick: () => enableNoteEditing(note, job),
-										}),
-										h("button.action-btn.archive-btn", {
-											title: I18n.t("modals.notes.archiveTitle"),
-											innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
-											onclick: () => archiveNote(note, job),
-										})
-									)
+									"div.note-actions",
+									h("button.action-btn.edit-note-btn", {
+										title: I18n.t("modals.notes.editTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">edit</span>',
+										onclick: () => enableNoteEditing(note, job),
+									}),
+									h("button.action-btn.archive-btn", {
+										title: I18n.t("modals.notes.archiveTitle"),
+										innerHTML: '<span class="material-symbols-outlined icon-14">archive</span>',
+										onclick: () => archiveNote(note, job),
+									})
 								)
-							)
+							),
+							h("div.note-text", note.text)
 						)
 					)
 				)
@@ -457,13 +446,13 @@ const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 						"h4.notes-archived-header",
 						{
 							onclick: () => {
-								const archivedTable = document.getElementById("archived-notes-table");
+								const archivedList = document.getElementById("archived-notes-list");
 								const expandIcon = document.getElementById("archived-notes-icon");
-								if (archivedTable.style.display === "none") {
-									archivedTable.style.display = "table";
+								if (archivedList.style.display === "none") {
+									archivedList.style.display = "block";
 									expandIcon.textContent = "expand_less";
 								} else {
-									archivedTable.style.display = "none";
+									archivedList.style.display = "none";
 									expandIcon.textContent = "expand_more";
 								}
 							},
@@ -478,39 +467,29 @@ const createNotesContent = (job, sortedActiveNotes, sortedArchivedNotes) => {
 						I18n.t("modals.notes.archivedSection", { count: sortedArchivedNotes.length })
 					),
 					h(
-						"table.notes-table.archived",
+						"div.notes-list-container.archived",
 						{
-							id: "archived-notes-table",
-							className: "hidden",
+							id: "archived-notes-list",
+							style: "display: none;",
 						},
-						h(
-							"thead",
+						...sortedArchivedNotes.map((note) =>
 							h(
-								"tr",
-								h("th", I18n.t("modals.notes.tableHeaders.phase") || "Phase"),
-								h("th", I18n.t("modals.notes.tableHeaders.date") || "Date"),
-								h("th", I18n.t("modals.notes.tableHeaders.note") || "Note"),
-								h("th", I18n.t("modals.notes.tableHeaders.actions") || "Actions")
-							)
-						),
-						h(
-							"tbody",
-							...sortedArchivedNotes.map((note) =>
+								"div.note-item.archived",
+								{ key: note.id },
 								h(
-									"tr",
-									{ key: note.id },
-									h("td", getPhaseText(note.phase)),
-									h("td", formatDate(note.date)),
-									h("td.note-text-cell", note.text),
+									"div.note-header",
+									h("div.note-date", formatDate(note.date)),
+									h("div.note-phase", getPhaseText(note.phase)),
 									h(
-										"td.notes-table-actions",
+										"div.note-actions",
 										h("button.action-btn.archive-btn", {
 											title: I18n.t("modals.notes.unarchiveTitle"),
 											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => archiveNote(note, job),
 										})
 									)
-								)
+								),
+								h("div.note-text", note.text)
 							)
 						)
 					)

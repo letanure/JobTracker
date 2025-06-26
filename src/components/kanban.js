@@ -370,7 +370,7 @@ const KanbanBoard = {
 		try {
 			const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
 			const { jobId, sourcePhase } = dragData;
-			const job = jobsData.find((j) => j.id === jobId);
+			const job = jobsData.find((j) => String(j.id) === String(jobId));
 
 			if (!job) return;
 
@@ -473,20 +473,20 @@ const KanbanBoard = {
 			.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
 		// Remove the moved job from its current position
-		const movedJobIndex = phaseJobs.findIndex((job) => job.id === movedJobId);
+		const movedJobIndex = phaseJobs.findIndex((job) => String(job.id) === String(movedJobId));
 		if (movedJobIndex !== -1) {
 			phaseJobs.splice(movedJobIndex, 1);
 		}
 
 		// Insert the moved job at the target position
-		const movedJob = jobsData.find((job) => job.id === movedJobId);
+		const movedJob = jobsData.find((job) => String(job.id) === String(movedJobId));
 		if (movedJob) {
 			phaseJobs.splice(targetPosition, 0, movedJob);
 		}
 
 		// Update sortOrder for all jobs in this phase
 		phaseJobs.forEach((job, index) => {
-			const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+			const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
 			if (jobIndex !== -1) {
 				jobsData[jobIndex].sortOrder = index;
 			}
@@ -539,8 +539,12 @@ const KanbanBoard = {
 			}
 		});
 
-		// If no current step is set but we have options, set the first one as default
-		if (hasOptions && (!job.currentPhase || !job.currentSubstep)) {
+		// Check if current step is valid in available options
+		const currentStepValue = `${job.currentPhase}:${job.currentSubstep}`;
+		const hasValidCurrentStep = select.querySelector(`option[value="${currentStepValue}"]`);
+
+		// If no valid current step is set but we have options, set the first one as default
+		if (hasOptions && !hasValidCurrentStep) {
 			if (firstOptionValue) {
 				const [defaultPhase, defaultSubstep] = firstOptionValue.split(":");
 				job.currentPhase = defaultPhase;
@@ -916,7 +920,8 @@ const KanbanBoard = {
 			contacts: [],
 		};
 
-		// Add to jobsData temporarily
+		// Add to both originalData and jobsData for persistence
+		originalData.push(newJob);
 		jobsData.push(newJob);
 
 		// Open the edit modal for the new job
@@ -976,7 +981,9 @@ const KanbanBoard = {
 			}
 
 			// Update job in data
-			const jobIndex = jobsData.findIndex((j) => j.id === job.id);
+			const jobIndex = jobsData.findIndex((j) => String(j.id) === String(job.id));
+			const originalJobIndex = originalData.findIndex((j) => String(j.id) === String(job.id));
+
 			if (jobIndex !== -1) {
 				// Track when job moves to applied status
 				if (
@@ -987,7 +994,11 @@ const KanbanBoard = {
 					updatedJob.appliedDate = new Date().toISOString();
 				}
 
+				// Update both jobsData and originalData
 				Object.assign(jobsData[jobIndex], updatedJob);
+				if (originalJobIndex !== -1) {
+					Object.assign(originalData[originalJobIndex], updatedJob);
+				}
 				saveToLocalStorage();
 
 				// Refresh kanban board
@@ -1168,7 +1179,7 @@ const KanbanBoard = {
 									);
 									if (confirmed) {
 										// Remove from array
-										const index = jobsData.findIndex((j) => j.id === job.id);
+										const index = jobsData.findIndex((j) => String(j.id) === String(job.id));
 										if (index !== -1) {
 											jobsData.splice(index, 1);
 											saveToLocalStorage();
@@ -1244,12 +1255,23 @@ const KanbanBoard = {
 							(job) => !job.company && !job.position && job.currentPhase === "wishlist"
 						);
 						if (jobToRemove) {
-							const index = jobsData.findIndex((j) => j.id === jobToRemove.id);
-							if (index !== -1) {
-								jobsData.splice(index, 1);
-								saveToLocalStorage();
-								KanbanBoard.refresh();
+							// Remove from both originalData and jobsData
+							const jobsDataIndex = jobsData.findIndex(
+								(j) => String(j.id) === String(jobToRemove.id)
+							);
+							const originalDataIndex = originalData.findIndex(
+								(j) => String(j.id) === String(jobToRemove.id)
+							);
+
+							if (jobsDataIndex !== -1) {
+								jobsData.splice(jobsDataIndex, 1);
 							}
+							if (originalDataIndex !== -1) {
+								originalData.splice(originalDataIndex, 1);
+							}
+
+							saveToLocalStorage();
+							KanbanBoard.refresh();
 						}
 					}
 				}

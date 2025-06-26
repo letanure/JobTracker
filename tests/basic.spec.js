@@ -169,4 +169,78 @@ test.describe("JobTracker Basic Functionality", () => {
 			await expect(page).toHaveScreenshot(`${tabName.toLowerCase()}-tab.png`);
 		}
 	});
+
+	test("should open modals from first job row action buttons", async ({ page }) => {
+		// Load with demo data
+		await page.goto("http://localhost:3000?demo");
+
+		// Wait for page to load and go to Jobs tab
+		await page.click("text=Jobs");
+		await page.waitForTimeout(500);
+		await page.waitForSelector('table tbody tr:first-child');
+
+		// Test Notes Modal
+		await test.step("should open notes modal", async () => {
+			// Click notes button on first job row
+			await page.click('tbody tr:first-child [data-testid="notes-button"]');
+			
+			// Wait for modal to appear
+			await page.waitForSelector('.modal-overlay');
+			
+			// Verify it's the notes modal
+			await expect(page.locator('.modal-title')).toContainText('Notes');
+			
+			// Close modal
+			await page.click('.modal-close');
+			await page.waitForSelector('.modal-overlay', { state: 'detached' });
+		});
+
+		// Test Tasks Modal
+		await test.step("should open tasks modal", async () => {
+			// Click tasks button on first job row
+			await page.click('tbody tr:first-child [data-testid="tasks-button"]');
+			
+			// Wait for modal to appear
+			await page.waitForSelector('.modal-overlay');
+			
+			// Verify it's the tasks modal
+			await expect(page.locator('.modal-title')).toContainText('Tasks');
+			
+			// Close modal
+			await page.click('.modal-close');
+			await page.waitForSelector('.modal-overlay', { state: 'detached' });
+		});
+
+		// Test Contacts Modal
+		await test.step("should open contacts modal", async () => {
+			// Click contacts button on first job row
+			await page.click('tbody tr:first-child [data-testid="contacts-button"]');
+			
+			// Wait for modal to appear
+			await page.waitForSelector('.modal-overlay');
+			
+			// Verify it's the contacts modal
+			await expect(page.locator('.modal-title')).toContainText('Contacts');
+			
+			// Close modal
+			await page.click('.modal-close');
+			await page.waitForSelector('.modal-overlay', { state: 'detached' });
+		});
+
+		// Test Edit Job Modal
+		await test.step("should open edit job modal", async () => {
+			// Click edit button on first job row
+			await page.click('tbody tr:first-child [data-testid="edit-job-button"]');
+			
+			// Wait for modal to appear
+			await page.waitForSelector('.modal-overlay');
+			
+			// Verify it's the edit job modal
+			await expect(page.locator('.modal-title')).toContainText('Edit Job');
+			
+			// Close modal
+			await page.click('.modal-close');
+			await page.waitForSelector('.modal-overlay', { state: 'detached' });
+		});
+	});
 });
