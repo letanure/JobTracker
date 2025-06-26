@@ -4,20 +4,21 @@
 
 /* CSS Variables */
 .cv-container {
-	--cv-font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	--cv-font-family-serif: 'Merriweather', Georgia, serif;
+	--cv-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+		Arial, sans-serif;
+	--cv-font-family-serif: "Merriweather", Georgia, serif;
 	--cv-font-size: 12px;
 	--cv-line-height: 1.4;
-	
-	/* Colors */
-	--cv-color-primary: #3a3a7a;
-	--cv-color-secondary: #fc5c7d;
-	--cv-color-text: #2d3748;
-	--cv-color-text-light: #718096;
-	--cv-color-bg: #ffffff;
-	--cv-color-bg-alt: #f7fafc;
-	--cv-color-border: #e2e8f0;
-	
+
+	/* Colors - Use main color system */
+	--cv-color-primary: var(--purple-600);
+	--cv-color-secondary: var(--pink-500);
+	--cv-color-text: var(--text-color);
+	--cv-color-text-light: var(--text-light);
+	--cv-color-bg: var(--white);
+	--cv-color-bg-alt: var(--gray-50);
+	--cv-color-border: var(--border-color);
+
 	/* Spacing */
 	--cv-space-xs: 0.25rem;
 	--cv-space-sm: 0.5rem;
@@ -25,14 +26,22 @@
 	--cv-space-lg: 1.5rem;
 	--cv-space-xl: 2rem;
 	--cv-space-2xl: 3rem;
-	
+
 	/* Shadows */
 	--cv-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 	--cv-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	
+
 	/* Gradients */
-	--cv-gradient-primary: linear-gradient(135deg, var(--cv-color-primary) 0%, var(--cv-color-secondary) 100%);
-	--cv-gradient-text: linear-gradient(135deg, var(--cv-color-primary) 0%, var(--cv-color-secondary) 100%);
+	--cv-gradient-primary: linear-gradient(
+		135deg,
+		var(--cv-color-primary) 0%,
+		var(--cv-color-secondary) 100%
+	);
+	--cv-gradient-text: linear-gradient(
+		135deg,
+		var(--cv-color-primary) 0%,
+		var(--cv-color-secondary) 100%
+	);
 }
 
 /* Container */
@@ -131,9 +140,6 @@
 }
 
 /* Contact section */
-.cv-contact {
-	
-}
 
 .cv-contact-list {
 	display: flex;
@@ -167,9 +173,6 @@
 }
 
 /* Languages section */
-.cv-languages {
-	
-}
 
 .cv-languages-list {
 	display: flex;
@@ -196,18 +199,11 @@
 }
 
 /* Skills section */
-.cv-skills {
-	
-}
 
 .cv-skills-list {
 	display: flex;
 	flex-direction: column;
 	gap: var(--cv-space-lg);
-}
-
-.cv-skill-item {
-	
 }
 
 .cv-skill-category {
@@ -234,9 +230,6 @@
 }
 
 /* Summary section */
-.cv-summary {
-	
-}
 
 .cv-summary-text {
 	margin: 0 0 var(--cv-space-md) 0;
@@ -250,9 +243,6 @@
 }
 
 /* Experience section */
-.cv-experience {
-	
-}
 
 .cv-experience-list {
 	display: flex;
@@ -328,9 +318,6 @@
 }
 
 /* Education section */
-.cv-education {
-	
-}
 
 .cv-education-list {
 	display: flex;
@@ -376,9 +363,6 @@
 }
 
 /* Projects section */
-.cv-projects {
-	
-}
 
 .cv-projects-list {
 	display: flex;
@@ -439,11 +423,6 @@
 }
 
 /* Certifications, Awards, Volunteer sections */
-.cv-certifications,
-.cv-awards,
-.cv-volunteer {
-	
-}
 
 .cv-certifications-list,
 .cv-awards-list,
@@ -504,20 +483,20 @@
 		max-width: none;
 		min-height: auto;
 	}
-	
+
 	.cv-name {
 		font-size: 2rem;
 	}
-	
+
 	.cv-title {
 		font-size: 1.1rem;
 	}
-	
+
 	.cv-section-title {
 		font-size: 1rem;
 		padding: var(--cv-space-xs) var(--cv-space-sm);
 	}
-	
+
 	/* Prevent page breaks inside items */
 	.cv-experience-item,
 	.cv-education-item,
@@ -528,7 +507,7 @@
 		break-inside: avoid;
 		page-break-inside: avoid;
 	}
-	
+
 	/* Prevent orphaned headers */
 	.cv-section-title {
 		break-after: avoid;
@@ -546,25 +525,25 @@
 			"sidebar";
 		padding: var(--cv-space-lg);
 	}
-	
+
 	.cv-sidebar {
 		padding-left: 0;
 	}
-	
+
 	.cv-content {
 		padding-right: 0;
 	}
-	
+
 	.cv-experience-meta {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--cv-space-xs);
 	}
-	
+
 	.cv-name {
 		font-size: 2rem;
 	}
-	
+
 	.cv-title {
 		font-size: 1rem;
 	}

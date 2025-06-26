@@ -100,7 +100,7 @@ class DOMElement {
 // Enhanced $ function with jQuery-style API
 const $ = (selector) => {
 	if (typeof selector === "string") {
-		if (selector.startsWith('#')) {
+		if (selector.startsWith("#")) {
 			// ID selector
 			const element = document.getElementById(selector.slice(1));
 			return element ? new DOMElement(element) : null;
@@ -158,7 +158,8 @@ Object.assign($, {
 	toggle: (element) => {
 		const isVisible = element.style.display === "block";
 		element.style.display = isVisible ? "none" : "block";
-	}});
+	},
+});
 
 // Enhanced h function with Emmet-style syntax support
 const h = (selector, propsOrChildren, ...children) => {
@@ -168,7 +169,7 @@ const h = (selector, propsOrChildren, ...children) => {
 
 	// Apply parsed attributes
 	if (parsed.id) element.id = parsed.id;
-	if (parsed.classes.length) element.className = parsed.classes.join(' ');
+	if (parsed.classes.length) element.className = parsed.classes.join(" ");
 	if (parsed.attributes) {
 		for (const [key, value] of Object.entries(parsed.attributes)) {
 			element.setAttribute(key, value);
@@ -182,10 +183,10 @@ const h = (selector, propsOrChildren, ...children) => {
 	if (Array.isArray(propsOrChildren)) {
 		// h('div.class', [children])
 		childrenArray = propsOrChildren;
-	} else if (typeof propsOrChildren === 'string' || typeof propsOrChildren === 'number') {
+	} else if (typeof propsOrChildren === "string" || typeof propsOrChildren === "number") {
 		// h('div.class', 'text content')
 		childrenArray = [propsOrChildren];
-	} else if (propsOrChildren && typeof propsOrChildren === 'object' && !propsOrChildren.nodeType) {
+	} else if (propsOrChildren && typeof propsOrChildren === "object" && !propsOrChildren.nodeType) {
 		// h('div.class', {props}, ...children)
 		props = propsOrChildren;
 		childrenArray = children;
@@ -198,19 +199,19 @@ const h = (selector, propsOrChildren, ...children) => {
 	for (const [key, value] of Object.entries(props)) {
 		if (key === "className") {
 			// Merge with existing classes from selector
-			const existingClasses = element.className ? element.className.split(' ') : [];
-			const newClasses = value.split(' ');
-			element.className = [...new Set([...existingClasses, ...newClasses])].join(' ');
+			const existingClasses = element.className ? element.className.split(" ") : [];
+			const newClasses = value.split(" ");
+			element.className = [...new Set([...existingClasses, ...newClasses])].join(" ");
 		} else if (key === "style" && typeof value === "object") {
 			Object.assign(element.style, value);
 		} else if (key === "innerHTML") {
 			element.innerHTML = value;
 		} else if (key === "textContent") {
 			element.textContent = value;
-		} else if (key.startsWith('on') && typeof value === "function") {
+		} else if (key.startsWith("on") && typeof value === "function") {
 			const eventType = key.slice(2).toLowerCase();
 			element.addEventListener(eventType, value);
-		} else if (key.startsWith('data-')) {
+		} else if (key.startsWith("data-")) {
 			element.setAttribute(key, value);
 		} else {
 			element.setAttribute(key, value);
@@ -232,12 +233,13 @@ const h = (selector, propsOrChildren, ...children) => {
 };
 
 // Parse Emmet-style selector
-const parseSelector = (selector) => {
+const parseSelector = (selectorStr) => {
 	// Default tag is div
-	let tag = 'div';
-	let id = '';
+	let tag = "div";
+	let id = "";
 	let classes = [];
-	let attributes = {};
+	const attributes = {};
+	let selector = selectorStr;
 
 	// Extract tag name (everything before first . # or [)
 	const tagMatch = selector.match(/^([a-zA-Z][a-zA-Z0-9]*)/);
@@ -250,14 +252,14 @@ const parseSelector = (selector) => {
 	const idMatch = selector.match(/#([a-zA-Z][a-zA-Z0-9_-]*)/);
 	if (idMatch) {
 		id = idMatch[1];
-		selector = selector.replace(idMatch[0], '');
+		selector = selector.replace(idMatch[0], "");
 	}
 
 	// Extract classes (.class1.class2)
 	const classMatches = selector.match(/\.([a-zA-Z][a-zA-Z0-9_-]*)/g);
 	if (classMatches) {
-		classes = classMatches.map(match => match.slice(1));
-		selector = selector.replace(/\.([a-zA-Z][a-zA-Z0-9_-]*)/g, '');
+		classes = classMatches.map((match) => match.slice(1));
+		selector = selector.replace(/\.([a-zA-Z][a-zA-Z0-9_-]*)/g, "");
 	}
 
 	// Extract attributes ([attr=value attr2="value with spaces"])
@@ -266,11 +268,12 @@ const parseSelector = (selector) => {
 		const attrString = attrMatch[1];
 		// Parse attributes - handle both quoted and unquoted values
 		const attrRegex = /([a-zA-Z][a-zA-Z0-9_-]*)(?:=(?:"([^"]*)"|'([^']*)'|([^\s]+)))?/g;
-		let match;
-		while ((match = attrRegex.exec(attrString)) !== null) {
+		let match = attrRegex.exec(attrString);
+		while (match !== null) {
 			const attrName = match[1];
-			const attrValue = match[2] || match[3] || match[4] || '';
+			const attrValue = match[2] || match[3] || match[4] || "";
 			attributes[attrName] = attrValue;
+			match = attrRegex.exec(attrString);
 		}
 	}
 

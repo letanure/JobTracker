@@ -19,9 +19,11 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(true);
-						}},
+						},
+					},
 				],
-				type: "alert"});
+				type: "alert",
+			});
 
 			CustomDialogs.showDialog(modal);
 		});
@@ -34,7 +36,8 @@ const CustomDialogs = {
 				title = null,
 				confirmText = I18n.t("modals.common.ok") || "OK",
 				cancelText = I18n.t("modals.common.cancel") || "Cancel",
-				focusConfirm = false} = options;
+				focusConfirm = false,
+			} = options;
 
 			const modal = CustomDialogs.createModal({
 				title: title || I18n.t("modals.dialogs.confirm") || "Confirm",
@@ -46,17 +49,20 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(false);
-						}},
+						},
+					},
 					{
 						text: confirmText,
 						className: focusConfirm ? "btn-primary" : "btn-secondary",
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(true);
-						}},
+						},
+					},
 				],
 				type: "confirm",
-				focusConfirm});
+				focusConfirm,
+			});
 
 			CustomDialogs.showDialog(modal, focusConfirm);
 		});
@@ -76,7 +82,8 @@ const CustomDialogs = {
 					placeholder: message,
 					onChange: (value) => {
 						inputValue = value;
-					}},
+					},
+				},
 				buttons: [
 					{
 						text: I18n.t("modals.common.cancel") || "Cancel",
@@ -84,16 +91,19 @@ const CustomDialogs = {
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(null);
-						}},
+						},
+					},
 					{
 						text: I18n.t("modals.common.ok") || "OK",
 						className: "btn-primary",
 						onClick: () => {
 							CustomDialogs.closeDialog();
 							resolve(inputValue);
-						}},
+						},
+					},
 				],
-				type: "prompt"});
+				type: "prompt",
+			});
 
 			CustomDialogs.showDialog(modal);
 		});
@@ -101,31 +111,40 @@ const CustomDialogs = {
 
 	// Create modal structure
 	createModal: ({ title, message, buttons, input, type, focusConfirm = false }) => {
-		const modal = h('div.modal-overlay.custom-dialog', {
+		const modal = h(
+			"div.modal-overlay.custom-dialog",
+			{
 				onclick: (e) => {
 					if (e.target.className.includes("modal-overlay")) {
 						// Don't auto-close on backdrop click for dialogs
 						// User must explicitly choose an option
 					}
-				}},
-			h('div',
+				},
+			},
+			h(
+				"div",
 				{
 					className: `modal custom-dialog-modal dialog-${type}`,
-					onclick: (e) => e.stopPropagation()},
+					onclick: (e) => e.stopPropagation(),
+				},
 				// Header
-				h('div.modal-header',
-					h('h3.modal-title', title)
+				h(
+					"div.modal-header",
+					h("h3.modal-title", title)
 					// No close button - force user to choose an option
 				),
 
 				// Body
-				h('div.modal-body.custom-dialog-body',
-					h('div.dialog-message', message),
+				h(
+					"div.modal-body.custom-dialog-body",
+					h("div.dialog-message", message),
 
 					// Input field for prompt
 					input
-						? h('div.dialog-input-container',
-								h('input.dialog-input', {type: input.type,
+						? h(
+								"div.dialog-input-container",
+								h("input.dialog-input", {
+									type: input.type,
 									value: input.value,
 									placeholder: input.placeholder,
 									oninput: (e) => input.onChange(e.target.value),
@@ -133,24 +152,29 @@ const CustomDialogs = {
 										if (e.key === "Enter") {
 											// Trigger the primary button (last button)
 											const primaryBtn = modal.querySelector(".btn-primary");
-											if (primaryBtn) primaryBtn.click();}
+											if (primaryBtn) primaryBtn.click();
+										}
 										if (e.key === "Escape") {
 											// Trigger the secondary button (first button)
 											const secondaryBtn = modal.querySelector(".btn-secondary");
 											if (secondaryBtn) secondaryBtn.click();
 										}
-									}})
+									},
+								})
 							)
 						: null
 				),
 
 				// Footer with buttons
-				h('div.modal-footer.dialog-footer',
+				h(
+					"div.modal-footer.dialog-footer",
 					...buttons.map((button) =>
-						h('button',
+						h(
+							"button",
 							{
 								className: `btn-subtle ${button.className}`,
-								onclick: button.onClick},
+								onclick: button.onClick,
+							},
 							button.text
 						)
 					)
@@ -230,7 +254,8 @@ const CustomDialogs = {
 			}
 			CustomDialogs.activeDialog = null;
 		}
-	}};
+	},
+};
 
 // Helper for simple confirm dialogs with custom buttons
 CustomDialogs.confirmCustom = (
@@ -244,7 +269,8 @@ CustomDialogs.confirmCustom = (
 		title,
 		confirmText,
 		cancelText,
-		focusConfirm});
+		focusConfirm,
+	});
 };
 
 // Override native dialogs globally

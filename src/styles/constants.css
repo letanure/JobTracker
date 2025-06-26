@@ -1,0 +1,152 @@
+/* ============================================================================ */
+/* CSS CONSTANTS - CENTRAL MAGIC NUMBERS DEFINITIONS */
+/* ============================================================================ */
+
+:root {
+	/* ============================================================================ */
+	/* LAYOUT CONSTANTS */
+	/* ============================================================================ */
+
+	/* Container and viewport constants */
+	--container-max-height: calc(100vh - 400px);
+	--container-min-height: 600px;
+	--board-placeholder-min-height: 400px;
+	--mobile-container-min-height: calc(100vh - var(--space-2));
+	--mobile-table-max-height: calc(100vh - 300px);
+
+	/* Header and section spacing */
+	--header-padding: var(--space-4) var(--space-6);
+	--section-padding: var(--space-4);
+	--controls-padding: var(--space-4) var(--space-6);
+	--footer-padding: var(--space-4) var(--space-6);
+	--table-actions-padding: var(--space-4) 0;
+
+	/* ============================================================================ */
+	/* COMPONENT CONSTANTS */
+	/* ============================================================================ */
+
+	/* Button and form constants */
+	--button-height: var(--base-button-height);
+	--input-min-height: var(--button-height);
+	--form-gap: var(--space-3);
+	--form-section-gap: var(--space-6);
+
+	/* Modal constants */
+	--modal-border-radius: var(--radius-lg);
+	--modal-max-width: 600px;
+	--modal-padding: var(--space-6);
+	--modal-header-padding: var(--space-4) var(--space-6);
+
+	/* Card constants */
+	--card-border-radius: var(--radius-md);
+	--card-padding: var(--space-4);
+	--card-gap: var(--space-3);
+
+	/* ============================================================================ */
+	/* ANIMATION CONSTANTS */
+	/* ============================================================================ */
+
+	/* Transition durations */
+	--transition-fast: 0.15s ease;
+	--transition-normal: 0.3s ease;
+	--transition-slow: 0.5s ease;
+	--transition-very-slow: 1s ease;
+
+	/* Animation durations */
+	--animation-quick: 0.2s;
+	--animation-normal: 0.3s;
+	--animation-slow: 0.5s;
+	--animation-heartbeat: 1.5s;
+	--animation-wiggle: 0.6s;
+
+	/* ============================================================================ */
+	/* TYPOGRAPHY CONSTANTS */
+	/* ============================================================================ */
+
+	/* Font sizes for specific components */
+	--header-title-size: var(--font-size-xl);
+	--section-title-size: var(--font-size-lg);
+	--label-font-size: var(--font-size-xs);
+	--caption-font-size: var(--font-size-2xs);
+	--footer-font-size: var(--font-size-xs);
+
+	/* Line heights */
+	--line-height-tight: 1.25;
+	--line-height-normal: 1.5;
+	--line-height-relaxed: 1.75;
+
+	/* ============================================================================ */
+	/* LAYOUT GRID CONSTANTS */
+	/* ============================================================================ */
+
+	/* Grid and flexbox gaps */
+	--grid-gap-sm: var(--space-2);
+	--grid-gap-md: var(--space-3);
+	--grid-gap-lg: var(--space-4);
+	--grid-gap-xl: var(--space-6);
+
+	/* Column counts for responsive grids */
+	--stats-cols-mobile: 2;
+	--stats-cols-tablet: 4;
+	--stats-cols-desktop: 8;
+
+	/* ============================================================================ */
+	/* VISUAL CONSTANTS */
+	/* ============================================================================ */
+
+	/* Border radius values */
+	--radius-sm: calc(var(--base-radius-unit) * 1); /* 2px */
+	--radius-md: calc(var(--base-radius-unit) * 2); /* 4px */
+	--radius-lg: calc(var(--base-radius-unit) * 4); /* 8px */
+	--radius-xl: calc(var(--base-radius-unit) * 6); /* 12px */
+	--radius-2xl: calc(var(--base-radius-unit) * 8); /* 16px */
+	--radius-full: 9999px;
+
+	/* Border widths */
+	--border-width: calc(var(--base-border-width) * 1); /* 1px */
+	--border-width-2: calc(var(--base-border-width) * 2); /* 2px */
+	--border-width-4: calc(var(--base-border-width) * 4); /* 4px */
+
+	/* Icon sizes */
+	--icon-size-sm: calc(var(--base-icon-size) * 0.75); /* 12px */
+	--icon-size-md: var(--base-icon-size); /* 16px */
+	--icon-size-lg: calc(var(--base-icon-size) * 1.25); /* 20px */
+	--icon-size-xl: calc(var(--base-icon-size) * 1.5); /* 24px */
+
+	/* Shadow constants */
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+	/* ============================================================================ */
+	/* RESPONSIVE BREAKPOINTS */
+	/* ============================================================================ */
+
+	/* Breakpoint values */
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+
+	/* Container max widths */
+	--max-width-sm: 640px;
+	--max-width-md: 768px;
+	--max-width-lg: 1024px;
+	--max-width-xl: 1280px;
+	--max-width-container: var(--max-width-lg);
+
+	/* ============================================================================ */
+	/* Z-INDEX SCALE */
+	/* ============================================================================ */
+
+	/* Z-index layers for consistent stacking */
+	--z-index-dropdown: 1000;
+	--z-index-sticky: 1020;
+	--z-index-fixed: 1030;
+	--z-index-modal-backdrop: 1040;
+	--z-index-modal: 1050;
+	--z-index-popover: 1060;
+	--z-index-tooltip: 1070;
+	--z-index-toast: 1080;
+}

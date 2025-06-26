@@ -173,7 +173,8 @@ export const DragDropUtils = {
 			type,
 			id,
 			timestamp: Date.now(),
-			...additionalData};
+			...additionalData,
+		};
 	},
 
 	/**
@@ -226,4 +227,5 @@ export const DragDropUtils = {
 		});
 
 		return element;
-	}};
+	},
+};

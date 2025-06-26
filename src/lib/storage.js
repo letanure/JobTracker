@@ -42,4 +42,5 @@ const DataStore = {
 			console.error("Error clearing data:", error);
 			return false;
 		}
-	}};
+	},
+};

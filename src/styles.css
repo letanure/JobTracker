@@ -2,25 +2,34 @@
 /* JOBTRACKER STYLES - MODULAR CSS SYSTEM */
 /* ============================================================================ */
 
-/* Import base styles first */
+/* 1. FOUNDATION STYLES - Variables, constants, and base styles */
 @import url("./styles/base.css");
+@import url("./styles/constants.css");
+
+/* 2. LAYOUT STYLES - Structure and grid system */
 @import url("./styles/layout.css");
 
-/* Import all component styles */
+/* 3. UTILITY COMPONENTS - Basic building blocks */
 @import url("./styles/components/utilities.css");
 @import url("./styles/components/buttons.css");
 @import url("./styles/components/forms.css");
-@import url("./styles/components/contacts.css");
+@import url("./styles/components/badges.css");
+
+/* 4. INTERACTION COMPONENTS - Dropdowns, modals, dialogs */
 @import url("./styles/components/dropdowns.css");
 @import url("./styles/components/modals.css");
-@import url("./styles/components/badges.css");
-@import url("./styles/components/language-switcher.css");
+@import url("./styles/components/dialogs.css");
+
+/* 5. NAVIGATION COMPONENTS - Tabs and UI chrome */
 @import url("./styles/components/tabs.css");
+@import url("./styles/components/language-switcher.css");
+
+/* 6. DATA DISPLAY COMPONENTS - Tables and complex layouts */
+@import url("./styles/table.css");
+
+/* 7. FEATURE COMPONENTS - Main application features */
 @import url("./styles/components/kanban.css");
 @import url("./styles/components/tasks.css");
 @import url("./styles/components/calendar.css");
-@import url("./styles/components/dialogs.css");
-
-/* Import remaining styles */
-@import url("./styles/table.css");
+@import url("./styles/components/contacts.css");
 @import url("./styles/dashboard.css");

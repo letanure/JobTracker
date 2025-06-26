@@ -45,4 +45,3 @@ function toggleDropdown(dropdownId) {
 	// Toggle this dropdown
 	dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 }
-

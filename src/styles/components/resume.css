@@ -60,7 +60,7 @@
 	flex: 1;
 	overflow-y: auto;
 	overflow-x: hidden;
-	background: #f0f2f5;
+	background: var(--gray-100);
 	padding: var(--space-4);
 	height: 0; /* Force flex to constrain height */
 }

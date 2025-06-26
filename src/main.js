@@ -11,8 +11,11 @@ import "./lib/i18n.js";
 import "./utils/constants.js";
 import "./utils/helpers.js";
 import "./utils/data.js";
+import "./utils/event-manager.js";
+import "./utils/form-validation.js";
 
 // Components
+import "./components/modal-base.js";
 import "./components/notes.js";
 import "./components/tasks.js";
 import "./components/contacts.js";

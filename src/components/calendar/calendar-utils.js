@@ -133,7 +133,7 @@ export const CalendarUtils = {
 			top: topPosition,
 			height,
 			style: `top: ${topPosition}px; height: ${height}px;`,
-			className: 'calendar-event-positioned'
+			className: "calendar-event-positioned",
 		};
 	},
 

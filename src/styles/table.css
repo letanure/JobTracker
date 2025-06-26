@@ -388,29 +388,19 @@ tr.editing .actions-cell button {
 	line-height: 1.4;
 }
 
-/* Fixed column widths for notes table */
-.notes-table th:nth-child(1),
-.notes-table td:nth-child(1) {
+/* Semantic column width classes for notes table */
+.notes-table .col-date {
 	width: 100px;
 	min-width: 100px;
 	max-width: 100px;
 }
 
-.notes-table th:nth-child(2),
-.notes-table td:nth-child(2) {
-	width: 100px;
-	min-width: 100px;
-	max-width: 100px;
-}
-
-.notes-table th:nth-child(3),
-.notes-table td:nth-child(3) {
+.notes-table .col-content {
 	width: auto;
 	min-width: 200px;
 }
 
-.notes-table th:nth-child(4),
-.notes-table td:nth-child(4) {
+.notes-table .col-actions {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
@@ -504,37 +494,32 @@ tr.editing .actions-cell button {
 	text-align: center;
 }
 
-/* Fixed column widths to prevent shifting during edit mode */
-.tasks-table th:nth-child(1),
-.tasks-table td:nth-child(1) {
+/* Semantic column classes for tasks table */
+.tasks-table .col-status {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
 }
 
-.tasks-table th:nth-child(2),
-.tasks-table td:nth-child(2) {
+.tasks-table .col-priority {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
 }
 
-.tasks-table th:nth-child(3),
-.tasks-table td:nth-child(3) {
+.tasks-table .col-title {
 	width: 100px;
 	min-width: 100px;
 	max-width: 100px;
 }
 
-.tasks-table th:nth-child(4),
-.tasks-table td:nth-child(4) {
+.tasks-table .col-due-date {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
 }
 
-.tasks-table th:nth-child(5),
-.tasks-table td:nth-child(5) {
+.tasks-table .col-actions {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
@@ -761,37 +746,32 @@ tr.editing .actions-cell button {
 	font-style: italic;
 }
 
-/* Fixed column widths for contacts table */
-.contacts-table th:nth-child(1),
-.contacts-table td:nth-child(1) {
+/* Semantic column classes for contacts table */
+.contacts-table .col-name {
 	width: 180px;
 	min-width: 180px;
 	max-width: 180px;
 }
 
-.contacts-table th:nth-child(2),
-.contacts-table td:nth-child(2) {
+.contacts-table .col-role {
 	width: 180px;
 	min-width: 180px;
 	max-width: 180px;
 }
 
-.contacts-table th:nth-child(3),
-.contacts-table td:nth-child(3) {
+.contacts-table .col-email {
 	width: 140px;
 	min-width: 140px;
 	max-width: 140px;
 }
 
-.contacts-table th:nth-child(4),
-.contacts-table td:nth-child(4) {
+.contacts-table .col-phone {
 	width: 140px;
 	min-width: 140px;
 	max-width: 140px;
 }
 
-.contacts-table th:nth-child(5),
-.contacts-table td:nth-child(5) {
+.contacts-table .col-actions {
 	width: 80px;
 	min-width: 80px;
 	max-width: 80px;
@@ -835,14 +815,46 @@ tr.editing .actions-cell button {
 	}
 
 	/* Fixed column widths for mobile to prevent mixing */
-	th:nth-child(1), td:nth-child(1) { width: 140px; min-width: 140px; }
-	th:nth-child(2), td:nth-child(2) { width: 120px; min-width: 120px; }
-	th:nth-child(3), td:nth-child(3) { width: 100px; min-width: 100px; }
-	th:nth-child(4), td:nth-child(4) { width: 80px; min-width: 80px; }
-	th:nth-child(5), td:nth-child(5) { width: 90px; min-width: 90px; }
-	th:nth-child(6), td:nth-child(6) { width: 120px; min-width: 120px; }
-	th:nth-child(7), td:nth-child(7) { width: 120px; min-width: 120px; }
-	th:nth-child(8), td:nth-child(8) { width: 140px; min-width: 140px; }
+	th:nth-child(1),
+	td:nth-child(1) {
+		width: 140px;
+		min-width: 140px;
+	}
+	th:nth-child(2),
+	td:nth-child(2) {
+		width: 120px;
+		min-width: 120px;
+	}
+	th:nth-child(3),
+	td:nth-child(3) {
+		width: 100px;
+		min-width: 100px;
+	}
+	th:nth-child(4),
+	td:nth-child(4) {
+		width: 80px;
+		min-width: 80px;
+	}
+	th:nth-child(5),
+	td:nth-child(5) {
+		width: 90px;
+		min-width: 90px;
+	}
+	th:nth-child(6),
+	td:nth-child(6) {
+		width: 120px;
+		min-width: 120px;
+	}
+	th:nth-child(7),
+	td:nth-child(7) {
+		width: 120px;
+		min-width: 120px;
+	}
+	th:nth-child(8),
+	td:nth-child(8) {
+		width: 140px;
+		min-width: 140px;
+	}
 
 	th,
 	td {
@@ -862,7 +874,6 @@ tr.editing .actions-cell button {
 		font-size: 10px;
 	}
 
-
 	/* Contacts table mobile fixes - copy jobs table solution */
 	.contacts-table-container {
 		max-height: 60vh;
@@ -879,11 +890,31 @@ tr.editing .actions-cell button {
 	}
 
 	/* Fixed column widths for contacts table mobile to prevent mixing */
-	.contacts-table th:nth-child(1), .contacts-table td:nth-child(1) { width: 120px; min-width: 120px; }
-	.contacts-table th:nth-child(2), .contacts-table td:nth-child(2) { width: 150px; min-width: 150px; }
-	.contacts-table th:nth-child(3), .contacts-table td:nth-child(3) { width: 120px; min-width: 120px; }
-	.contacts-table th:nth-child(4), .contacts-table td:nth-child(4) { width: 120px; min-width: 120px; }
-	.contacts-table th:nth-child(5), .contacts-table td:nth-child(5) { width: 90px; min-width: 90px; }
+	.contacts-table th:nth-child(1),
+	.contacts-table td:nth-child(1) {
+		width: 120px;
+		min-width: 120px;
+	}
+	.contacts-table th:nth-child(2),
+	.contacts-table td:nth-child(2) {
+		width: 150px;
+		min-width: 150px;
+	}
+	.contacts-table th:nth-child(3),
+	.contacts-table td:nth-child(3) {
+		width: 120px;
+		min-width: 120px;
+	}
+	.contacts-table th:nth-child(4),
+	.contacts-table td:nth-child(4) {
+		width: 120px;
+		min-width: 120px;
+	}
+	.contacts-table th:nth-child(5),
+	.contacts-table td:nth-child(5) {
+		width: 90px;
+		min-width: 90px;
+	}
 
 	.contacts-table th,
 	.contacts-table td {

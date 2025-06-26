@@ -8,14 +8,16 @@ const InputField = ({
 	type = "text",
 	className = "editable",
 	placeholder = "",
-	list = null}) => {
+	list = null,
+}) => {
 	const props = {
 		className,
 		type,
 		value,
-		placeholder};
+		placeholder,
+	};
 	if (list) props.list = list;
-	return h('input', props);
+	return h("input", props);
 };
 
 // Textarea field component
@@ -23,15 +25,16 @@ const TextareaField = ({ value = "", className = "editable", placeholder = "", r
 	const props = {
 		className,
 		placeholder,
-		textContent: value};
+		textContent: value,
+	};
 	if (rows) props.rows = rows;
-	return h('textarea', props);
+	return h("textarea", props);
 };
 
 // Priority select component
 const createPrioritySelect = (selectedPriority = "medium", disabled = false, className = "") => {
 	const props = {
-		className
+		className,
 	};
 
 	// Only add disabled property if it's actually true
@@ -39,24 +42,31 @@ const createPrioritySelect = (selectedPriority = "medium", disabled = false, cla
 		props.disabled = true;
 	}
 
-	return h('select',
+	return h(
+		"select",
 		props,
-		h('option',
+		h(
+			"option",
 			{
 				value: "high",
-				selected: selectedPriority === "high"},
+				selected: selectedPriority === "high",
+			},
 			I18n.t("priorities.high")
 		),
-		h('option',
+		h(
+			"option",
 			{
 				value: "medium",
-				selected: selectedPriority === "medium"},
+				selected: selectedPriority === "medium",
+			},
 			I18n.t("priorities.medium")
 		),
-		h('option',
+		h(
+			"option",
 			{
 				value: "low",
-				selected: selectedPriority === "low"},
+				selected: selectedPriority === "low",
+			},
 			I18n.t("priorities.low")
 		)
 	);
@@ -65,7 +75,7 @@ const createPrioritySelect = (selectedPriority = "medium", disabled = false, cla
 // Phase select component
 const createPhaseSelect = (selectedPhase = "wishlist", disabled = false, className = "") => {
 	const props = {
-		className
+		className,
 	};
 
 	// Only add disabled property if it's actually true
@@ -73,36 +83,47 @@ const createPhaseSelect = (selectedPhase = "wishlist", disabled = false, classNa
 		props.disabled = true;
 	}
 
-	return h('select',
+	return h(
+		"select",
 		props,
-		h('option',
+		h(
+			"option",
 			{
 				value: "wishlist",
-				selected: selectedPhase === "wishlist"},
+				selected: selectedPhase === "wishlist",
+			},
 			I18n.t("phases.wishlist")
 		),
-		h('option',
+		h(
+			"option",
 			{
 				value: "applied",
-				selected: selectedPhase === "applied"},
+				selected: selectedPhase === "applied",
+			},
 			I18n.t("phases.applied")
 		),
-		h('option',
+		h(
+			"option",
 			{
 				value: "interview",
-				selected: selectedPhase === "interview"},
+				selected: selectedPhase === "interview",
+			},
 			I18n.t("phases.interview")
 		),
-		h('option',
+		h(
+			"option",
 			{
 				value: "offer",
-				selected: selectedPhase === "offer"},
+				selected: selectedPhase === "offer",
+			},
 			I18n.t("phases.offer")
 		),
-		h('option',
+		h(
+			"option",
 			{
 				value: "rejected_withdrawn",
-				selected: selectedPhase === "rejected_withdrawn"},
+				selected: selectedPhase === "rejected_withdrawn",
+			},
 			I18n.t("phases.rejected_withdrawn")
 		)
 	);
@@ -110,16 +131,23 @@ const createPhaseSelect = (selectedPhase = "wishlist", disabled = false, classNa
 
 // Edit actions cell component
 const EditActionsCell = ({ jobId, onSave, onCancel }) => {
-	return h('div.edit-actions',
-		h('button.action-btn.edit-btn', {
+	return h(
+		"div.edit-actions",
+		h(
+			"button.action-btn.edit-btn",
+			{
 				onclick: (e) => onSave(e.target.closest("button")),
-				title: I18n.t("forms.saveChangesTitle")},
-			h('span.material-symbols-outlined', "save")
+				title: I18n.t("forms.saveChangesTitle"),
+			},
+			h("span.material-symbols-outlined", "save")
 		),
-		h('button.action-btn.cancel-btn', {
+		h(
+			"button.action-btn.cancel-btn",
+			{
 				onclick: (e) => onCancel(e.target.closest("button")),
-				title: I18n.t("forms.cancelEditingTitle")},
-			h('span.material-symbols-outlined', "close")
+				title: I18n.t("forms.cancelEditingTitle"),
+			},
+			h("span.material-symbols-outlined", "close")
 		)
 	);
 };

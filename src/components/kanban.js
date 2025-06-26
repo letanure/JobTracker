@@ -4,7 +4,7 @@
 
 const KanbanBoard = {
 	// Create the kanban board
-	create: () => {
+	createBoard: () => {
 		const boardContainer = h("div.kanban-board");
 
 		// Create columns for each phase
@@ -122,9 +122,11 @@ const KanbanBoard = {
 		const metadataRow = metadata.length > 0 ? h("div.kanban-job-metadata", ...metadata) : null;
 
 		// Action icons with counts (notes, tasks, contacts) - exclude archived items
-		const notesCount = job.notes ? job.notes.filter(note => !note.archived).length : 0;
-		const tasksCount = job.tasks ? job.tasks.filter(task => !task.archived).length : 0;
-		const contactsCount = job.contacts ? job.contacts.filter(contact => !contact.archived).length : 0;
+		const notesCount = job.notes ? job.notes.filter((note) => !note.archived).length : 0;
+		const tasksCount = job.tasks ? job.tasks.filter((task) => !task.archived).length : 0;
+		const contactsCount = job.contacts
+			? job.contacts.filter((contact) => !contact.archived).length
+			: 0;
 
 		const actionIconsChildren = [];
 
@@ -350,11 +352,7 @@ const KanbanBoard = {
 		const placeholder = h(
 			"div.drop-placeholder.kanban-job-card",
 			{},
-			h(
-				"div.drop-placeholder-content",
-				{},
-				"Drop here"
-			)
+			h("div.drop-placeholder-content", {}, "Drop here")
 		);
 
 		if (insertIndex === cards.length) {
@@ -519,7 +517,7 @@ const KanbanBoard = {
 				// Add substep options only (no phase-level option)
 				selectedSubsteps.forEach((substep) => {
 					const optionValue = `${phase}:${substep}`;
-					
+
 					// Track first available option for default selection
 					if (!hasOptions) {
 						firstOptionValue = optionValue;
@@ -547,7 +545,7 @@ const KanbanBoard = {
 				const [defaultPhase, defaultSubstep] = firstOptionValue.split(":");
 				job.currentPhase = defaultPhase;
 				job.currentSubstep = defaultSubstep;
-				
+
 				// Set the select value to the first option
 				setTimeout(() => {
 					if (select.value !== firstOptionValue) {
@@ -973,9 +971,7 @@ const KanbanBoard = {
 
 			// Validate current step is selected
 			if (!updatedJob.currentPhase || !updatedJob.currentSubstep) {
-				await alert(
-					I18n.t("validation.currentStepRequired") || "Current step is required"
-				);
+				await alert(I18n.t("validation.currentStepRequired") || "Current step is required");
 				return;
 			}
 
@@ -1278,7 +1274,7 @@ const KanbanBoard = {
 				);
 
 				// Create the kanban board
-				const board = KanbanBoard.create();
+				const board = KanbanBoard.createBoard();
 
 				// Add to container
 				const container = h("div.kanban-container");

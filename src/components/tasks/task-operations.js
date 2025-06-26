@@ -78,9 +78,6 @@ const enableTaskEditing = (task, job) => {
 	if (firstInput) firstInput.focus();
 };
 
-
-
-
 // Open unified tasks modal
 const openTasksModal = (job) => {
 	const modal = TasksModal({

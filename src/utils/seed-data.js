@@ -25,7 +25,8 @@ const DEMO_DATA = [
 		selectedSubsteps: {
 			applied: ["application_review", "hr_phone_screen"],
 			interview: ["phone_screening", "coding_challenge", "technical_interview", "team_interview"],
-			offer: ["offer_discussion", "salary_negotiation"]},
+			offer: ["offer_discussion", "salary_negotiation"],
+		},
 		salaryRange: "$120k - $150k",
 		location: "San Francisco, CA",
 		notes: "demo.notes1",
@@ -40,7 +41,8 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: getRelativeDate(1), // Due tomorrow
 				duration: "2h",
-				sortOrder: 0},
+				sortOrder: 0,
+			},
 			{
 				id: "2",
 				text: "Review company tech stack",
@@ -50,7 +52,8 @@ const DEMO_DATA = [
 				completedAt: getRelativeDate(-8, 14, 30),
 				dueDate: null,
 				duration: "1h",
-				sortOrder: 0},
+				sortOrder: 0,
+			},
 			{
 				id: "3",
 				text: "Complete coding assessment",
@@ -60,7 +63,8 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: getRelativeDate(4, 23, 59), // Due in 4 days
 				duration: "3h",
-				sortOrder: 1},
+				sortOrder: 1,
+			},
 			{
 				id: "4",
 				text: "Research team members on LinkedIn",
@@ -70,7 +74,8 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: getRelativeDate(8), // Due in 8 days
 				duration: null,
-				sortOrder: 2},
+				sortOrder: 2,
+			},
 		],
 		contacts: [
 			{
@@ -81,7 +86,8 @@ const DEMO_DATA = [
 				company: "TechCorp Inc",
 				role: "Technical Recruiter",
 				createdAt: getRelativeDate(-9),
-				archived: false},
+				archived: false,
+			},
 			{
 				id: "2",
 				name: "Mike Chen",
@@ -90,8 +96,10 @@ const DEMO_DATA = [
 				company: "TechCorp Inc",
 				role: "Engineering Manager",
 				createdAt: getRelativeDate(-8, 14),
-				archived: false},
-		]},
+				archived: false,
+			},
+		],
+	},
 	{
 		id: 2,
 		priority: "medium",
@@ -104,7 +112,8 @@ const DEMO_DATA = [
 		selectedSubsteps: {
 			applied: ["application_review", "hr_phone_screen", "recruiter_call"],
 			interview: ["take_home_assignment", "technical_interview", "behavioral_interview"],
-			offer: ["reference_check", "offer_discussion"]},
+			offer: ["reference_check", "offer_discussion"],
+		},
 		salaryRange: "$90k - $110k + equity",
 		location: "Remote",
 		notes: "demo.notes2",
@@ -119,7 +128,8 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-06-26T17:00:00.000Z",
 				duration: "30min",
-				sortOrder: 0},
+				sortOrder: 0,
+			},
 			{
 				id: "6",
 				text: "Prepare portfolio projects showcase",
@@ -129,7 +139,8 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-06-30T17:00:00.000Z",
 				duration: "1h30",
-				sortOrder: 0},
+				sortOrder: 0,
+			},
 			{
 				id: "7",
 				text: "Write thank you note after interview",
@@ -139,7 +150,8 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: null,
 				duration: "15min",
-				sortOrder: 1},
+				sortOrder: 1,
+			},
 			{
 				id: "8",
 				text: "Review equity compensation guide",
@@ -149,7 +161,8 @@ const DEMO_DATA = [
 				completedAt: null,
 				dueDate: "2025-07-10T10:00:00.000Z",
 				duration: null,
-				sortOrder: 2},
+				sortOrder: 2,
+			},
 		],
 		contacts: [
 			{
@@ -160,8 +173,10 @@ const DEMO_DATA = [
 				company: "StartupXYZ",
 				role: "CTO",
 				createdAt: "2025-06-12T09:00:00.000Z",
-				archived: false},
-		]},
+				archived: false,
+			},
+		],
+	},
 ];
 
 // Helper function to get demo data with translations
@@ -169,15 +184,17 @@ const getDemoData = () => {
 	return DEMO_DATA.map((job) => ({
 		...job,
 
-		notes: job.notes.startsWith('demo.')
+		notes: job.notes.startsWith("demo.")
 			? [
 					{
 						id: Date.now() + Math.random(),
 						date: job.appliedDate || new Date().toISOString(),
 						phase: job.currentPhase || "applied",
-						text: I18n.t(job.notes)},
+						text: I18n.t(job.notes),
+					},
 				]
 			: Array.isArray(job.notes)
 				? job.notes
-				: []}));
+				: [],
+	}));
 };

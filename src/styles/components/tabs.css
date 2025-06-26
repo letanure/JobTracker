@@ -41,7 +41,7 @@
 
 .tab-button.active {
 	color: var(--text-color);
-	border-bottom-color: #fd8c73;
+	border-bottom-color: var(--orange-400);
 	background: transparent;
 	/* Use a slightly bolder weight that's closer to the normal weight */
 	font-weight: 600;

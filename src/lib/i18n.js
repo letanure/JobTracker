@@ -81,9 +81,11 @@ const I18n = {
 
 		// Update URL to reflect current language
 		I18n.setLanguageInURL(I18n.currentLanguage);
-	}};
+	},
+};
 
 // Translation constants
 I18n.translations = {
 	en: EN_TRANSLATIONS,
-	pt: PT_TRANSLATIONS};
+	pt: PT_TRANSLATIONS,
+};

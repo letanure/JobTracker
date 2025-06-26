@@ -26,7 +26,7 @@ async function archiveJob(job) {
 		if (originalIndex !== -1) {
 			originalData[originalIndex].archived = true;
 			originalData[originalIndex].archivedAt = new Date().toISOString();
-			
+
 			// Update filtered data to exclude archived jobs
 			jobsData = originalData.filter((job) => !job.archived);
 			saveToLocalStorage();
@@ -50,4 +50,3 @@ function addRow() {
 		console.error("KanbanBoard not available for job creation");
 	}
 }
-

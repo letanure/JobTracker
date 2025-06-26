@@ -144,9 +144,15 @@
 }
 
 /* Legacy aliases - use .priority-high .priority-medium .priority-low instead */
-.priority-dot.high { background-color: var(--priority-high); }
-.priority-dot.medium { background-color: var(--priority-medium); }
-.priority-dot.low { background-color: var(--priority-low); }
+.priority-dot.high {
+	background-color: var(--priority-high);
+}
+.priority-dot.medium {
+	background-color: var(--priority-medium);
+}
+.priority-dot.low {
+	background-color: var(--priority-low);
+}
 
 /* Common form field styling */
 .form-field {

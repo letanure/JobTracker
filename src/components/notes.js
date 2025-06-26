@@ -140,7 +140,6 @@ const NotesModal = ({ job, onClose }) => {
 		(a, b) => new Date(a.date) - new Date(b.date)
 	);
 
-
 	const refreshNotesModal = (job) => {
 		const modalBody = document.querySelector(".modal-body");
 		if (!modalBody) return;
@@ -184,8 +183,6 @@ const NotesModal = ({ job, onClose }) => {
 	);
 };
 
-
-
 // ============================================================================
 // NOTES MANAGEMENT FUNCTIONS
 // ============================================================================
@@ -198,7 +195,7 @@ const enableNoteEditing = (note, job) => {
 	// Replace entire row with editing structure
 	noteRow.innerHTML = `
 		<td class="note-date-cell">${formatDate(note.date)}</td>
-		<td class="note-phase-cell">${note.phase ? I18n.t(`phases.${note.phase}`) : ''}</td>
+		<td class="note-phase-cell">${note.phase ? I18n.t(`phases.${note.phase}`) : ""}</td>
 		<td class="note-text-cell">
 			<textarea class="note-edit-textarea" rows="2" placeholder="${I18n.t("modals.notes.placeholder")}">${note.text || ""}</textarea>
 		</td>
@@ -320,11 +317,11 @@ const handleAddNote = () => {
 	// Find the job from the modal
 	const modalTitle = document.querySelector(".modal-title");
 	if (!modalTitle) return;
-	
+
 	// Extract job info from title or use a data attribute approach
-	const currentModal = modalTitle.closest('.modal-overlay');
+	const currentModal = modalTitle.closest(".modal-overlay");
 	const jobId = currentModal.dataset.jobId;
-	const job = jobsData.find(j => j.id == jobId);
+	const job = jobsData.find((j) => j.id === jobId);
 	if (!job) return;
 
 	const newNote = {

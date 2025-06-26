@@ -12,28 +12,33 @@ const formatDate = (dateString) => {
 			return date.toLocaleDateString("en-GB", {
 				year: "2-digit",
 				month: "2-digit",
-				day: "2-digit"});
+				day: "2-digit",
+			});
 		case "MM/DD/YY":
 			return date.toLocaleDateString("en-US", {
 				year: "2-digit",
 				month: "2-digit",
-				day: "2-digit"});
+				day: "2-digit",
+			});
 		case "YYYY-MM-DD":
 			return date.toISOString().split("T")[0];
 		case "DD/MM/YY HH:MM":
 			return `${date.toLocaleDateString("en-GB", {
 				year: "2-digit",
 				month: "2-digit",
-				day: "2-digit"})} ${date.toLocaleTimeString("en-GB", {
+				day: "2-digit",
+			})} ${date.toLocaleTimeString("en-GB", {
 				hour: "2-digit",
 				minute: "2-digit",
-				hour12: false})}`;
+				hour12: false,
+			})}`;
 		default:
 			// Default to DD/MM/YY format
 			return date.toLocaleDateString("en-GB", {
 				year: "2-digit",
 				month: "2-digit",
-				day: "2-digit"});
+				day: "2-digit",
+			});
 	}
 };
 
@@ -41,13 +46,13 @@ function getPhaseClass(phase) {
 	return phase.toLowerCase().replace(/\s+/g, "_");
 }
 
-
 // Helper function for task status text
 const getTaskStatusText = (statusKey) => {
 	const statusMap = {
 		todo: I18n.t("modals.tasks.statusTodo"),
 		"in-progress": I18n.t("modals.tasks.statusInProgress"),
-		done: I18n.t("modals.tasks.statusDone")};
+		done: I18n.t("modals.tasks.statusDone"),
+	};
 	return statusMap[statusKey] || statusKey;
 };
 

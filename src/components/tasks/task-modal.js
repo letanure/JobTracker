@@ -7,7 +7,7 @@ const enableTaskModalEditing = (task, job) => {
 	// Find the task row by looking for the span with data-task-id
 	const taskSpan = document.querySelector(`[data-task-id="${task.id}"]`);
 	if (!taskSpan) return;
-	
+
 	const taskRow = taskSpan.closest("tr");
 	if (!taskRow) return;
 
@@ -86,7 +86,7 @@ const saveTaskEdits = (task, job) => {
 	// Find the row with the save button (since data-task-id is no longer there after editing)
 	const saveBtn = document.querySelector(".save-task-btn");
 	if (!saveBtn) return;
-	
+
 	const taskRow = saveBtn.closest("tr");
 	if (!taskRow) return;
 
@@ -117,7 +117,9 @@ const saveTaskEdits = (task, job) => {
 
 	jobsData[jobIndex].tasks[taskIndex].status = newData.status;
 	jobsData[jobIndex].tasks[taskIndex].priority = newData.priority;
-	jobsData[jobIndex].tasks[taskIndex].dueDate = newData.dueDate ? new Date(newData.dueDate).toISOString() : null;
+	jobsData[jobIndex].tasks[taskIndex].dueDate = newData.dueDate
+		? new Date(newData.dueDate).toISOString()
+		: null;
 	jobsData[jobIndex].tasks[taskIndex].duration = newData.duration || null;
 	jobsData[jobIndex].tasks[taskIndex].text = newData.text;
 
@@ -332,8 +334,7 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 										"td.tasks-table-actions",
 										h("button.action-btn.archive-btn", {
 											title: I18n.t("modals.tasks.unarchiveTitle"),
-											innerHTML:
-												'<span class="material-symbols-outlined icon-14">unarchive</span>',
+											innerHTML: '<span class="material-symbols-outlined icon-14">unarchive</span>',
 											onclick: () => archiveTask(task, job),
 										})
 									)
@@ -426,7 +427,7 @@ const createTasksContent = (job, sortedActiveTasks, sortedArchivedTasks) => {
 	);
 };
 
-// Refresh tasks modal content  
+// Refresh tasks modal content
 const refreshTasksModal = (job) => {
 	const modalBody = document.querySelector(".modal-body");
 	if (!modalBody) return;
@@ -524,10 +525,6 @@ const TasksModal = ({ job, onClose }) => {
 		refreshInterface();
 	};
 
-
-
-
-
 	return h(
 		"div.modal-overlay",
 		{
@@ -549,7 +546,7 @@ const TasksModal = ({ job, onClose }) => {
 	);
 };
 
-// Global task handling function  
+// Global task handling function
 const handleAddTask = () => {
 	const textarea = document.querySelector(".add-task-textarea");
 	const statusSelect = document.querySelector(".add-task-status");
@@ -567,10 +564,10 @@ const handleAddTask = () => {
 	// Find the job from the modal
 	const modalTitle = document.querySelector(".modal-title");
 	if (!modalTitle) return;
-	
-	const currentModal = modalTitle.closest('.modal-overlay');
+
+	const currentModal = modalTitle.closest(".modal-overlay");
 	const jobId = currentModal.dataset.jobId;
-	const job = jobsData.find(j => j.id == jobId);
+	const job = jobsData.find((j) => j.id === jobId);
 	if (!job) return;
 
 	// Use datetime-local value directly

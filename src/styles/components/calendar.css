@@ -582,51 +582,93 @@
 
 /* Day event mini cards - 2px border left */
 .calendar-day-event-mini.calendar-event-task-high,
-.calendar-day-event-mini.priority-high { border-left: 2px solid var(--red-500); }
+.calendar-day-event-mini.priority-high {
+	border-left: 2px solid var(--red-500);
+}
 .calendar-day-event-mini.calendar-event-task-medium,
-.calendar-day-event-mini.priority-medium { border-left: 2px solid var(--orange-500); }
+.calendar-day-event-mini.priority-medium {
+	border-left: 2px solid var(--orange-500);
+}
 .calendar-day-event-mini.calendar-event-task-low,
-.calendar-day-event-mini.priority-low { border-left: 2px solid var(--green-500); }
+.calendar-day-event-mini.priority-low {
+	border-left: 2px solid var(--green-500);
+}
 .calendar-day-event-mini.calendar-event-task-default,
-.calendar-day-event-mini.priority-default { border-left: 2px solid var(--blue-500); }
+.calendar-day-event-mini.priority-default {
+	border-left: 2px solid var(--blue-500);
+}
 .calendar-day-event-mini.calendar-event-applied,
-.calendar-day-event-mini.status-applied { border-left: 2px solid var(--green-500); }
+.calendar-day-event-mini.status-applied {
+	border-left: 2px solid var(--green-500);
+}
 .calendar-day-event-mini.calendar-event-interview,
-.calendar-day-event-mini.status-interview { border-left: 2px solid var(--orange-500); }
+.calendar-day-event-mini.status-interview {
+	border-left: 2px solid var(--orange-500);
+}
 .calendar-day-event-mini.calendar-event-followup,
-.calendar-day-event-mini.status-followup { border-left: 2px solid var(--purple-500); }
+.calendar-day-event-mini.status-followup {
+	border-left: 2px solid var(--purple-500);
+}
 
 /* Week view events - 3px border left + background */
 .calendar-week-event.calendar-event-task-high,
-.calendar-week-event.priority-high { border-left: 3px solid var(--red-500); }
+.calendar-week-event.priority-high {
+	border-left: 3px solid var(--red-500);
+}
 .calendar-week-event.calendar-event-task-medium,
-.calendar-week-event.priority-medium { border-left: 3px solid var(--orange-500); }
+.calendar-week-event.priority-medium {
+	border-left: 3px solid var(--orange-500);
+}
 .calendar-week-event.calendar-event-task-low,
-.calendar-week-event.priority-low { border-left: 3px solid var(--green-500); }
+.calendar-week-event.priority-low {
+	border-left: 3px solid var(--green-500);
+}
 .calendar-week-event.calendar-event-task-default,
-.calendar-week-event.priority-default { border-left: 3px solid var(--blue-500); }
+.calendar-week-event.priority-default {
+	border-left: 3px solid var(--blue-500);
+}
 .calendar-week-event.calendar-event-applied,
-.calendar-week-event.status-applied { border-left: 3px solid var(--green-500); }
+.calendar-week-event.status-applied {
+	border-left: 3px solid var(--green-500);
+}
 .calendar-week-event.calendar-event-interview,
-.calendar-week-event.status-interview { border-left: 3px solid var(--orange-500); }
+.calendar-week-event.status-interview {
+	border-left: 3px solid var(--orange-500);
+}
 .calendar-week-event.calendar-event-followup,
-.calendar-week-event.status-followup { border-left: 3px solid var(--purple-500); }
+.calendar-week-event.status-followup {
+	border-left: 3px solid var(--purple-500);
+}
 
 /* Day view events - 4px border left + background */
 .calendar-day-event.calendar-event-task-high,
-.calendar-day-event.priority-high { border-left: 4px solid var(--red-500); }
+.calendar-day-event.priority-high {
+	border-left: 4px solid var(--red-500);
+}
 .calendar-day-event.calendar-event-task-medium,
-.calendar-day-event.priority-medium { border-left: 4px solid var(--orange-500); }
+.calendar-day-event.priority-medium {
+	border-left: 4px solid var(--orange-500);
+}
 .calendar-day-event.calendar-event-task-low,
-.calendar-day-event.priority-low { border-left: 4px solid var(--green-500); }
+.calendar-day-event.priority-low {
+	border-left: 4px solid var(--green-500);
+}
 .calendar-day-event.calendar-event-task-default,
-.calendar-day-event.priority-default { border-left: 4px solid var(--blue-500); }
+.calendar-day-event.priority-default {
+	border-left: 4px solid var(--blue-500);
+}
 .calendar-day-event.calendar-event-applied,
-.calendar-day-event.status-applied { border-left: 4px solid var(--green-500); }
+.calendar-day-event.status-applied {
+	border-left: 4px solid var(--green-500);
+}
 .calendar-day-event.calendar-event-interview,
-.calendar-day-event.status-interview { border-left: 4px solid var(--orange-500); }
+.calendar-day-event.status-interview {
+	border-left: 4px solid var(--orange-500);
+}
 .calendar-day-event.calendar-event-followup,
-.calendar-day-event.status-followup { border-left: 4px solid var(--purple-500); }
+.calendar-day-event.status-followup {
+	border-left: 4px solid var(--purple-500);
+}
 
 /* ============================================================================ */
 /* DRAG AND DROP INDICATORS */
@@ -665,7 +707,7 @@
 	border-radius: 6px;
 	border: 1px solid var(--green-300);
 	z-index: 3000;
-	box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .calendar-move-notification-title {
@@ -741,35 +783,33 @@
 	position: relative;
 	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
 	flex: 1;
-	background-image: 
-		repeating-linear-gradient(
-			to bottom,
-			transparent 0px,
-			transparent 19px,
-			rgba(0, 0, 0, 0.03) 19px,
-			rgba(0, 0, 0, 0.03) 20px,
-			transparent 20px,
-			transparent 39px,
-			rgba(0, 0, 0, 0.06) 39px,
-			rgba(0, 0, 0, 0.06) 40px
-		);
+	background-image: repeating-linear-gradient(
+		to bottom,
+		transparent 0px,
+		transparent 19px,
+		rgba(0, 0, 0, 0.03) 19px,
+		rgba(0, 0, 0, 0.03) 20px,
+		transparent 20px,
+		transparent 39px,
+		rgba(0, 0, 0, 0.06) 39px,
+		rgba(0, 0, 0, 0.06) 40px
+	);
 }
 
 .calendar-day-events-column {
 	position: relative;
 	min-height: 260px; /* 13 slots (8am-8pm) * 20px */
-	background-image: 
-		repeating-linear-gradient(
-			to bottom,
-			transparent 0px,
-			transparent 19px,
-			rgba(0, 0, 0, 0.03) 19px,
-			rgba(0, 0, 0, 0.03) 20px,
-			transparent 20px,
-			transparent 39px,
-			rgba(0, 0, 0, 0.06) 39px,
-			rgba(0, 0, 0, 0.06) 40px
-		);
+	background-image: repeating-linear-gradient(
+		to bottom,
+		transparent 0px,
+		transparent 19px,
+		rgba(0, 0, 0, 0.03) 19px,
+		rgba(0, 0, 0, 0.03) 20px,
+		transparent 20px,
+		transparent 39px,
+		rgba(0, 0, 0, 0.06) 39px,
+		rgba(0, 0, 0, 0.06) 40px
+	);
 }
 
 .calendar-time-slot {
