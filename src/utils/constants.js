@@ -11,7 +11,7 @@ const CONFIG = {
 		{ code: "pt", name: "Português", flag: "🇧🇷" },
 	],
 	// Default tab to show on application load
-	defaultTab: "jobs",
+	defaultTab: "dashboard",
 };
 
 // ============================================================================
