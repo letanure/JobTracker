@@ -72,77 +72,167 @@ Each stage has customizable substeps and automatic workflow progression.
 
 ## 🚀 Getting Started
 
+### Option 1: Use Online
+Visit [jobtracker.cv](http://jobtracker.cv) to try it instantly.
+
+### Option 2: Download & Run Locally
 1. **Download** `dist/index.html` 
 2. **Open** in any modern browser
-3. **Start tracking jobs** - Demo data included to show features
+3. **Start tracking jobs** - Add `?demo` to URL to load sample data
 
-### Live Demo
-Visit [jobtracker.cv](http://jobtracker.cv) to try it online.
+### Option 3: Development Setup
+```bash
+# Clone the repository
+git clone https://github.com/letanure/job-tracker-plain.git
+cd job-tracker-plain
+
+# Install dependencies
+pnpm install  # or npm install
+
+# Start development server
+pnpm run dev  # Opens at http://localhost:3000
+```
 
 ## 💾 Data Management
 
-- **Local Storage** - Data saved in your browser
-- **Privacy** - No external services, no tracking*
-
-*\*Note: Visit tracking works only on jobtracker.cv domain, not locally*
+- **Local Storage** - All data saved in your browser's localStorage
+- **Export/Import** - Backup and restore your data anytime
+- **Demo Data** - Load sample data with `?demo` or `?seed` URL parameter
+- **Privacy** - No external services, no tracking, no analytics
+- **Data Persistence** - Your data remains until you clear browser storage
 
 ## 🛠️ Development
 
 Built with vanilla JavaScript and a philosophy of simplicity:
 
+### Scripts
 ```bash
+# Development server with hot reload
+pnpm run dev              # Starts at http://localhost:3000
+
 # Build optimized single file
-npm run build
+pnpm run build            # Creates dist/index.html
 
-# Build with dead CSS analysis  
-npm run build:analyze
+# Build with CSS analysis  
+pnpm run build:analyze    # Reports unused CSS
 
-# Development server
-npm run dev
+# Code quality
+pnpm run lint             # Run Biome linter
+pnpm run lint:fix         # Auto-fix linting issues
 
-# Watch mode
-npm run watch
+# Testing
+pnpm run test             # Run Playwright tests
+pnpm run test:ui          # Run tests with UI mode
+pnpm run test:headed      # Run tests in browser
+pnpm run test:update-snapshots  # Update visual regression snapshots
 ```
 
 ### Architecture
-- **Component System** - Not so React-like components in vanilla JS + emmet style
-- **State Management** - Simple localStorage persistence  
-- **Modular CSS** - Component-based styling. that was the idea, right?
-- **Build System** - Custom bundler for single-file output.  dont try that at home, ok?
+- **Component System** - Vanilla JS components with hyperscript-like helper (h function)
+- **State Management** - Simple localStorage persistence with auto-save
+- **Event System** - Centralized event delegation for better performance
+- **CSS Organization** - Modular component styles with shared constants
+- **Form Validation** - Reusable validation utilities with rule-based system
+- **Modal System** - Base modal component for consistent UI patterns
+- **Build System** - Custom bundler that creates a single HTML file with everything embedded
+
+### Testing
+- **Framework**: Playwright for end-to-end testing
+- **Coverage**: 10 tests covering all major features
+- **Visual Regression**: Screenshot comparisons for UI consistency
+- **Test Data**: Uses demo mode for consistent test environment
 
 ## 🎨 Design Philosophy
 
-**Embrace Constraints** - Single file, no dependencies, old school JS
-**User Control** - Your data, your device, your rules
-**Feature Creep Resistance** - Every feature must solve a real job search problem
-**Progressive Enhancement** - Start simple, add complexity only when needed. if have more that 5 files, add a batle etsted server and build. I skiped because was kind of fun
+- **Embrace Constraints** - Single file, no dependencies, vanilla JavaScript
+- **User Control** - Your data, your device, your rules
+- **Privacy First** - No tracking, no analytics, no external services
+- **Feature Creep Resistance** - Every feature must solve a real job search problem
+- **Progressive Enhancement** - Start simple, add complexity only when needed
+- **Mobile First** - Responsive design that works on all devices
+- **Performance** - Fast load times, efficient updates, minimal overhead
 
 ## 📁 Project Structure
 
 ```
 src/
-├── components/        # UI components
-├── utils/            # Utilities and constants  
-├── styles/           # Modular CSS
-└── index.html        # Main template
+├── components/       # UI components (jobs, tasks, calendar, etc.)
+├── utils/           # Utilities and helpers
+│   ├── constants.js     # App constants and enums
+│   ├── data-models.js   # Data structure definitions
+│   ├── event-manager.js # Centralized event delegation
+│   ├── form-validation.js # Validation utilities
+│   └── storage.js       # localStorage management
+├── styles/          # Modular CSS
+│   ├── constants.css    # CSS variables and constants
+│   ├── base.css        # Reset and foundation
+│   └── components/     # Component-specific styles
+├── index.html       # Main template
+└── styles.css       # Main stylesheet
 
 dist/
-└── index.html        # Built single file
+└── index.html       # Built single file (~300KB)
+
+tests/
+├── basic.spec.js    # Playwright E2E tests
+└── basic.spec.js-snapshots/  # Visual regression screenshots
 ```
 
 ## 🔮 Future Ideas
 
-- **Better Resume Builder** - More templates and export formats
+- **Resume Export** - PDF export for CV/Resume builder
+- **Data Sync** - Optional encrypted cloud backup
+- **More Languages** - Additional language translations
+- **Advanced Analytics** - Deeper insights into job search progress
+- **Interview Prep** - Question banks and preparation tools
+- **Email Templates** - Follow-up email generators
 
 ## 🤝 Contributing
 
-Contributions welcome! If you're crazy enought, just create a MR or issue
+Contributions welcome! If you're crazy enough to work with vanilla JS in 2024, feel free to:
 
-Ideas:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Run tests (`pnpm test`)
+4. Commit your changes
+5. Push to the branch
+6. Open a Pull Request
+
+### Contribution Ideas
 - New language translations
-- UI improvements  
-- Feature additions
+- UI/UX improvements
+- Bug fixes
 - Performance optimizations
+- Documentation improvements
+- Test coverage expansion
+
+### Development Guidelines
+- Follow existing code style (Biome enforced)
+- Update tests for new features
+- Keep the single-file philosophy
+- Test on mobile devices
+- Update CLAUDE.md for AI assistance context
+
+## 🛠 Technologies Used
+
+### Core
+- **Vanilla JavaScript** - No frameworks, just pure JS
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling with CSS Grid and Flexbox
+- **LocalStorage API** - Data persistence
+
+### Build Tools
+- **Custom Build Script** - Node.js based bundler
+- **Terser** - JavaScript minification
+- **CSSO** - CSS optimization
+- **HTML Minifier** - HTML compression
+- **PostCSS** - CSS processing with PurgeCSS
+
+### Development Tools
+- **Biome** - Fast linter and formatter
+- **Playwright** - E2E testing framework
+- **Node.js** - Development server and build tools
+- **PNPM** - Package management
 
 ## 📄 License
 
