@@ -1052,7 +1052,7 @@ tr.editing .actions-cell button {
 }
 
 .contact-name {
-	font-size: 11px;
+	font-size: 13px;
 	color: var(--gray-700);
 	font-weight: 600;
 	white-space: nowrap;
@@ -1062,7 +1062,7 @@ tr.editing .actions-cell button {
 }
 
 .contact-email {
-	font-size: 11px;
+	font-size: 13px;
 	color: var(--gray-600);
 	font-weight: 500;
 	white-space: nowrap;
@@ -1072,7 +1072,7 @@ tr.editing .actions-cell button {
 }
 
 .contact-phone {
-	font-size: 11px;
+	font-size: 13px;
 	color: var(--gray-600);
 	font-weight: 500;
 	white-space: nowrap;
@@ -1082,7 +1082,7 @@ tr.editing .actions-cell button {
 }
 
 .contact-company {
-	font-size: 11px;
+	font-size: 13px;
 	color: var(--gray-600);
 	font-weight: 500;
 	white-space: nowrap;
@@ -1103,7 +1103,7 @@ tr.editing .actions-cell button {
 	border: none;
 	outline: none;
 	background: transparent;
-	font-size: 11px;
+	font-size: 13px;
 	color: var(--text-color);
 	padding: 2px 4px;
 	border-radius: 3px;
@@ -1114,6 +1114,42 @@ tr.editing .actions-cell button {
 	outline-offset: -2px;
 	background: var(--white);
 	padding: 4px;
+}
+
+/* Add contact form grid layout */
+.add-contact-grid-row {
+	display: grid;
+	grid-template-columns: 140px 160px 120px 120px 1fr;
+	align-items: center;
+	padding: 8px 12px;
+	background: var(--gray-50);
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	gap: 12px;
+	min-height: 40px;
+}
+
+.add-contact-grid-row input {
+	font-size: 13px;
+	padding: 6px 8px;
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	background: var(--white);
+	color: var(--text-color);
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.add-contact-grid-row input:focus {
+	outline: 2px solid var(--blue-500);
+	outline-offset: -2px;
+	border-color: var(--blue-500);
+}
+
+.add-contact-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
 }
 
 /* Tasks list layout - exactly same as notes but with 5 columns */

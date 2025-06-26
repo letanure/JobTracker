@@ -855,7 +855,7 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 					},
 				},
 				h(
-					"div.contact-form-row",
+					"div.add-contact-grid-row",
 					h("input.add-contact-name", {
 						type: "text",
 						placeholder: I18n.t("modals.contacts.placeholderName"),
@@ -895,14 +895,14 @@ const createContactsContent = (job, sortedActiveContacts, sortedArchivedContacts
 								e.target.closest("form").dispatchEvent(new Event("submit"));
 							}
 						},
-					})
-				),
-				h(
-					"div.add-contact-form-actions",
+					}),
 					h(
-						"button.action-btn.primary-btn",
-						{ type: "submit" },
-						I18n.t("modals.contacts.addButton")
+						"div.add-contact-actions",
+						h(
+							"button.action-btn.primary-btn",
+							{ type: "submit" },
+							I18n.t("modals.contacts.addButton")
+						)
 					)
 				)
 			)
